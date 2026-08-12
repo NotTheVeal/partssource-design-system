@@ -2,6 +2,7 @@
 
 
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PartsSource Design System — Component Library</title>
   <link rel="stylesheet" href="../tokens.css">
   <link rel="stylesheet" href="../colors_and_type.css">
@@ -98,6 +99,14 @@
       color:var(--ps-sem-fg-tertiary);
       line-height:1.6;
       margin:0;
+    }
+
+    @media (max-width:600px){
+      body{padding:20px 16px;}
+      h1{font-size:26px;}
+      .intro{font-size:15px;}
+      .grid{grid-template-columns:1fr;gap:16px;}
+      .section-label{margin:32px 0 12px;}
     }
   </style>
 </head>
