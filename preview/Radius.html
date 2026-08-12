@@ -1,0 +1,115 @@
+<!doctype html>
+<!-- @dsCard group="Foundation" name="Border Radius" subtitle="Corner radius tokens — 0 px sharp through 9999 px full-round · 4 px default · 9999 px pill" viewport="700x180" -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Radius</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+
+    .section-body{padding:24px;}
+
+    .row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    .cell { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+    .box { width: 96px; height: 72px; background: var(--ps-brand-light); border: 1px solid var(--ps-brand-primary); }
+    .name { font-size: 12px; font-weight: 600; color: var(--ps-brand-secondary); }
+    .val { font-size: 11px; color: var(--ps-fg-secondary); font-family: ui-monospace, Menlo, monospace; margin-top: 2px; }
+    .use { font-size: 10px; color: var(--ps-fg-tertiary); margin-top: 4px; letter-spacing: .3px; text-transform: uppercase; font-weight: 600;}
+  </style>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Border Radius</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Radius</h1>
+  <p class="intro">Border radius scale for buttons, cards, inputs, and containers. Use 4px (md) as the default for most interactive elements. Sharper corners (0-2px) for banners and alerts; pill shapes (100px) for badges only.</p>
+
+  <!-- Border Radius Scale -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Radius Scale</h2>
+      <div class="desc">Five-step scale from sharp (0px) to pill (100px). Default is md (4px) for buttons, inputs, and cards.</div>
+    </div>
+    <div class="section-body">
+      <div class="row">
+    <div class="cell">
+      <div class="box" style="border-radius: var(--ps-radius-none)"></div>
+      <div><div class="name">none</div><div class="val">0</div><div class="use">Banners, bars</div></div>
+    </div>
+    <div class="cell">
+      <div class="box" style="border-radius: var(--ps-radius-sm)"></div>
+      <div><div class="name">sm</div><div class="val">2px</div><div class="use">Checkbox</div></div>
+    </div>
+    <div class="cell">
+      <div class="box" style="border-radius: var(--ps-radius-md)"></div>
+      <div><div class="name">md · default</div><div class="val">4px</div><div class="use">Buttons, inputs, cards</div></div>
+    </div>
+    <div class="cell">
+      <div class="box" style="border-radius: var(--ps-radius-xl)"></div>
+      <div><div class="name">xl</div><div class="val">8px</div><div class="use">Modals, panels</div></div>
+    </div>
+    <div class="cell">
+      <div class="box" style="border-radius: 100px"></div>
+      <div><div class="name">pill</div><div class="val">100px</div><div class="use">Badges, pill CTAs</div></div>
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section" style="margin-top:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);">
+    <div class="section-head" style="padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <h2 style="font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-sem-fg-brand);font-weight:700;margin:0;flex-shrink:0;">ACCESSIBILITY &amp; BEST PRACTICES</h2>
+      <div class="desc" style="font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;">WCAG compliance and implementation guidance for inclusive border radius usage.</div>
+    </div>
+    <div class="states">
+      <ul style="margin:0;padding:20px 24px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Consistency creates familiarity</strong> — use 4px radius for all standard buttons, inputs, and cards</li>
+        <li><strong>Sharper corners (0-2px) for banners and alerts</strong> — edges align with viewport boundaries</li>
+        <li><strong>Pill shapes (100px) for badges only</strong> — high radius on clickable elements can confuse users about hit area</li>
+        <li><strong>Avoid excessive rounding</strong> — overly rounded corners can make small text harder to read near edges</li>
+        <li><strong>Border radius doesn't affect accessibility directly,</strong> but consistency aids cognitive accessibility and learnability</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

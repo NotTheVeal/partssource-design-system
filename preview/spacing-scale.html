@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- @dsCard group="Foundation" name="Spacing Scale" subtitle="4px-base scale · 1 → 24" viewport="700x320" --><html><head><meta charset="utf-8"><title>Spacing Scale</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+  /* Card container — matches the rest of the design system */
+  .section{margin-bottom:40px;border:1px solid var(--ps-border-default, #DCDCDC);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+  .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default, #DCDCDC);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-sem-fg-brand, #005BA6);font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+  .section-body{padding:24px;}
+
+  /* Spacing scale rows */
+  .row{
+    display:grid;
+    grid-template-columns:120px 1fr 80px;
+    gap:24px;align-items:center;
+    padding:14px 0;border-bottom:1px solid #F1F1F1;
+  }
+  .row:last-child{border-bottom:0;}
+  .lbl{font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#002F48;font-weight:600;}
+  .bar-wrap{display:flex;align-items:center;}
+  .bar{
+    background:#005BA6;          /* explicit hex — token var was undefined in some contexts */
+    height:18px;border-radius:2px;
+    box-shadow:0 1px 2px rgba(0,91,166,.15);
+  }
+  .v{font-size:13px;color:#777;font-family:ui-monospace,Menlo,monospace;text-align:right;}
+
+  /* Breadcrumb (shared) */
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__back svg{flex-shrink:0;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+</style></head><body>
+
+<nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+  <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+    Design System
+  </a>
+  <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+  <span class="ps-breadcrumb__current">Spacing Scale</span>
+</nav>
+
+<h1>Spacing Scale</h1>
+<p class="intro">A 4&nbsp;px base unit driving every margin, padding, and gap in the system. Use the named tokens (<code style="font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;">--ps-space-*</code>) rather than raw pixel values so density adjustments stay consistent.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Spacing Tokens</h2>
+    <div class="desc">Nine steps from 4&nbsp;px to 96&nbsp;px. Multiples of 4 to maintain visual rhythm across components.</div>
+  </div>
+  <div class="section-body">
+    <div class="row"><div class="lbl">space-1</div><div class="bar-wrap"><div class="bar" style="width:4px"></div></div><div class="v">4px</div></div>
+    <div class="row"><div class="lbl">space-2</div><div class="bar-wrap"><div class="bar" style="width:8px"></div></div><div class="v">8px</div></div>
+    <div class="row"><div class="lbl">space-3</div><div class="bar-wrap"><div class="bar" style="width:12px"></div></div><div class="v">12px</div></div>
+    <div class="row"><div class="lbl">space-4</div><div class="bar-wrap"><div class="bar" style="width:16px"></div></div><div class="v">16px</div></div>
+    <div class="row"><div class="lbl">space-6</div><div class="bar-wrap"><div class="bar" style="width:24px"></div></div><div class="v">24px</div></div>
+    <div class="row"><div class="lbl">space-8</div><div class="bar-wrap"><div class="bar" style="width:32px"></div></div><div class="v">32px</div></div>
+    <div class="row"><div class="lbl">space-12</div><div class="bar-wrap"><div class="bar" style="width:48px"></div></div><div class="v">48px</div></div>
+    <div class="row"><div class="lbl">space-16</div><div class="bar-wrap"><div class="bar" style="width:64px"></div></div><div class="v">64px</div></div>
+    <div class="row"><div class="lbl">space-24</div><div class="bar-wrap"><div class="bar" style="width:96px"></div></div><div class="v">96px</div></div>
+  </div>
+</div>
+
+<!-- Accessibility -->
+<div class="section">
+  <div class="section-head">
+    <h2>Accessibility &amp; Best Practices</h2>
+    <div class="desc">WCAG compliance and implementation guidance for inclusive spacing design.</div>
+  </div>
+  <div class="section-body">
+    <ul style="margin:0;padding-left:20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);">
+      <li><strong>Touch target spacing:</strong> Minimum 8px between interactive elements (WCAG 2.5.5) — prevents accidental taps</li>
+      <li><strong>Text spacing:</strong> Line-height minimum 1.5×, paragraph spacing minimum 2×, word spacing minimum 0.16× (WCAG 1.4.12)</li>
+      <li><strong>Consistent spacing creates rhythm</strong> — use scale multiples (8px, 16px, 24px) rather than arbitrary values</li>
+      <li><strong>Dense layouts need more spacing</strong> — increase padding/margins in data-heavy interfaces for breathing room</li>
+      <li><strong>Mobile: favor larger spacing</strong> — touch targets are less precise, need more generous padding than desktop</li>
+      <li><strong>Use rem for scalable spacing</strong> — respects user's browser zoom settings better than fixed px values</li>
+    </ul>
+  </div>
+</div>
+
+</body></html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="93px" height="65px" viewBox="0 0 93 65" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+    <title>Empty Box</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Empty-Queue" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Orders---Card-View/Awaiting-Approval" transform="translate(-529.000000, -408.000000)">
+            <g id="No-Cards" transform="translate(140.000000, 408.000000)">
+                <g id="Empty-Box" transform="translate(389.000000, 0.000000)">
+                    <polygon id="Path" fill="#DCDCDC" points="79.4215375 -8.76685935e-05 13.4596625 -8.76685935e-05 3.74999999e-05 36.996685 3.74999999e-05 64.9042283 92.8811625 64.9042283 92.8811625 36.996685"></polygon>
+                    <path d="M56.2459125,32.4520703 C56.2459125,37.8790067 51.8562875,42.2773401 46.4396625,42.2773401 C41.0250375,42.2773401 36.6332875,37.8790067 36.6332875,32.4520703 C36.6332875,32.3615212 36.6352875,32.2709721 36.6371625,32.1804229 L6.8682875,32.1804229 L16.8245375,4.81617437 L76.0566625,4.81617437 L86.0130375,32.1804229 L56.2421625,32.1804229 C56.2440375,32.2709721 56.2459125,32.3615212 56.2459125,32.4520703 Z" id="Path" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

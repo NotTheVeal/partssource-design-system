@@ -1,0 +1,56 @@
+<!-- @dsCard group="Components" name="Empty State" subtitle="Empty content panels and full-page error layouts — 5 tones, inline variant, 404/500/offline error pages" viewport="620x300" -->
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../tokens.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+</head><body style="margin:0;padding:20px;background:#FAFAFA;">
+<div id="root"></div>
+<script>
+(function(){
+  var EmptyState = window.EmptyState, ErrorPage = window.ErrorPage;
+  if (!EmptyState) { document.getElementById('root').innerHTML='<p style="color:#9E2020;font-size:13px;font-family:sans-serif;padding:8px">⚠ EmptyState not in bundle — rebuild _ds_bundle.js</p>'; return; }
+  var e = React.createElement;
+  var lbl = function(t) { return e('p',{style:{margin:'0 0 8px',fontSize:11,fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase',color:'#999',fontFamily:'sans-serif'}},t); };
+
+  var inboxIcon = e('svg',{width:24,height:24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.5,strokeLinecap:'round',strokeLinejoin:'round'},
+    e('polyline',{points:'22 12 16 12 14 15 10 15 8 12 2 12'}),
+    e('path',{d:'M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z'})
+  );
+
+  var warnIcon = e('svg',{width:24,height:24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.5,strokeLinecap:'round',strokeLinejoin:'round'},
+    e('path',{d:'M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z'}),
+    e('line',{x1:'12',y1:'9',x2:'12',y2:'13'}),
+    e('line',{x1:'12',y1:'17',x2:'12.01',y2:'17'})
+  );
+
+  var Demo = function() {
+    return e('div',{style:{display:'flex',gap:16}},
+      e('div',{style:{flex:1}},
+        lbl('Empty State'),
+        e(EmptyState,{
+          icon:inboxIcon,
+          tone:'info',
+          title:'No parts requests yet',
+          body:'Submit a new request and it will appear here.',
+          primaryAction:{label:'New Request'},
+          secondaryAction:{label:'Learn more'}
+        })
+      ),
+      e('div',{style:{flex:1}},
+        lbl('Error Page'),
+        e(ErrorPage,{
+          code:'404',
+          title:'Page not found',
+          body:'The page you\'re looking for doesn\'t exist or has been moved.',
+          primaryAction:{label:'Go to Dashboard'},
+          secondaryAction:{label:'Contact support'}
+        })
+      )
+    );
+  };
+  ReactDOM.createRoot(document.getElementById('root')).render(e(Demo,null));
+})();
+</script></body></html>

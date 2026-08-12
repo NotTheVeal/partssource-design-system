@@ -1,0 +1,486 @@
+<!DOCTYPE html><html><head>
+
+
+  <meta charset="utf-8">
+  <title>Alerts</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 56px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);margin-bottom:32px;}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0 0 4px;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+
+    .alerts{padding:24px;display:flex;flex-direction:column;gap:16px;}
+
+    /* Alert base — 40px min-height, 5px radius, icon + text */
+    .alert{
+      display:flex;align-items:center;gap:18px;
+      min-height:40px;padding:12px 18px 12px 18px;border-radius:5px;
+      font-size:14px;line-height:18px;position:relative;
+    }
+    .alert svg{
+      flex-shrink:0;width:24px;height:24px;
+      stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;
+    }
+    .alert .txt{font-weight:400;flex:1;}
+    .alert .txt strong,.alert .txt b{font-weight:700;}
+
+    /* Close button */
+    .alert .close{
+      flex-shrink:0;width:24px;height:24px;
+      background:transparent;border:0;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      opacity:.6;transition:opacity .15s;padding:0;margin-left:12px;
+    }
+    .alert .close:hover{opacity:1;}
+    .alert .close svg{width:18px;height:18px;stroke-width:2.5;}
+
+    /* Action buttons — Secondary SM from button spec */
+    .alert .actions{
+      display:flex;gap:8px;margin-left:auto;padding-left:18px;
+    }
+    .alert .actions button{
+      height:32px;min-width:87px;padding:0 8px;
+      border-radius:4px;border:1px solid #DCDCDC;
+      font-family: 'Source Sans Pro',var(--ps-font-sans);font-size:10px;font-weight:500;
+      background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-secondary);cursor:pointer;
+      transition:background .15s,color .15s,border-color .15s;
+    }
+    .alert .actions button:hover{
+      background:var(--ps-sem-action-default);color:var(--ps-sem-fg-inverse);border-color:var(--ps-sem-fg-brand);
+    }
+
+    /* Success — green */
+    .alert.success{background:#E2F5EE;color:#0E7C55;}
+    .alert.success svg{stroke:#0E7C55;}
+    .alert.success .close svg{stroke:#0E7C55;}
+
+    /* Fail — red */
+    .alert.fail{background:#FEF0F0;color:#E00000;}
+    .alert.fail svg{stroke:#E00000;}
+    .alert.fail .close svg{stroke:#E00000;}
+
+    /* Info — blue */
+    .alert.info{background:#EFF9FE;color:var(--ps-sem-fg-brand);}
+    .alert.info svg{stroke:#005BA6;}
+    .alert.info .close svg{stroke:#005BA6;}
+
+    /* Warning — amber */
+    .alert.warning{background:#FFF4E5;color:#B45309;}
+    .alert.warning svg{stroke:#B45309;}
+    .alert.warning .close svg{stroke:#B45309;}
+
+    /* Toast notifications — transient bottom-right popups */
+    .toast-container{
+      position:fixed;bottom:24px;right:24px;
+      display:flex;flex-direction:column;gap:12px;
+      max-width:420px;z-index:9999;pointer-events:none;
+    }
+    .toast{
+      display:flex;align-items:center;gap:18px;
+      min-height:56px;padding:16px 18px;border-radius:8px;
+      font-size:14px;line-height:18px;
+      box-shadow:0 4px 12px rgba(0,0,0,.15),0 0 0 1px rgba(0,0,0,.05);
+      pointer-events:auto;
+      animation:slideIn .25s ease-out;
+    }
+    @keyframes slideIn{
+      from{transform:translateX(100%);opacity:0;}
+      to{transform:translateX(0);opacity:1;}
+    }
+    .toast svg{
+      flex-shrink:0;width:24px;height:24px;
+      stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;
+    }
+    .toast .txt{font-weight:400;flex:1;}
+    .toast .txt strong,.toast .txt b{font-weight:600;}
+    .toast .close{
+      flex-shrink:0;width:24px;height:24px;
+      background:transparent;border:0;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      opacity:.6;transition:opacity .15s;padding:0;margin-left:12px;
+    }
+    .toast .close:hover{opacity:1;}
+    .toast .close svg{width:18px;height:18px;stroke-width:2.5;}
+
+    /* Toast variants */
+    .toast.success{background:#E2F5EE;color:#0E7C55;}
+    .toast.success svg{stroke:#0E7C55;}
+    .toast.success .close svg{stroke:#0E7C55;}
+
+    .toast.fail{background:#FEF0F0;color:#E00000;}
+    .toast.fail svg{stroke:#E00000;}
+    .toast.fail .close svg{stroke:#E00000;}
+
+    .toast.info{background:#EFF9FE;color:var(--ps-sem-fg-brand);}
+    .toast.info svg{stroke:#005BA6;}
+    .toast.info .close svg{stroke:#005BA6;}
+
+    .caption{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;margin-top:8px;}
+    .caption code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--ps-sem-bg-muted);padding:2px 6px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+  </style>
+</head>
+<body data-cc-id="cc-1" style="cursor: crosshair; font-family: &quot;Source Sans Pro&quot;;">
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Alerts</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+  <h1>Alerts</h1>
+  <p class="intro">Inline notification banners that communicate status, feedback, and important information to users. Three core variants (Success, Info, Fail) come directly from Figma; Warning and dismissible/actionable patterns follow design system best practices.</p>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Core Alert Variants</h2>
+      <div class="desc">Pulled directly from the Figma <code>Success Alert</code>, <code>Fail Alert</code>, and <code>Info Alert</code> frames. Warning variant follows brand palette.</div>
+    </div>
+    <div class="alerts">
+
+      <!-- Success -->
+      <div>
+        <div class="alert success">
+          <!-- lucide: circle-check-big -->
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+            <path d="m9 11 3 3L22 4"></path>
+          </svg>
+          <span class="txt">Requester has been nudged for Part Order #: <strong>64434335</strong></span>
+        </div>
+        <div class="caption">
+          Background <code>#E2F5EE</code> (Form Success tint), text + icon Green 3 <code>#0E7C55</code>. 18 px gap between icon and label.
+        </div>
+      </div>
+
+      <!-- Fail -->
+      <div>
+        <div class="alert fail">
+          <!-- lucide: circle-x -->
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="m15 9-6 6"></path>
+            <path d="m9 9 6 6"></path>
+          </svg>
+          <span class="txt">Part Order #: <strong>64434335</strong> has been rejected.</span>
+        </div>
+        <div class="caption">
+          Background <code>#FEF0F0</code>, text + icon <code>#E00000</code> (Red 1). Per Figma redlines.
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div>
+        <div class="alert info">
+          <!-- lucide: info -->
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+          <span class="txt">You have a new PM for Asset <strong>343433</strong>.</span>
+        </div>
+        <div class="caption">
+          Background <code>#EFF9FE</code>, text + icon PS Blue <code>#005BA6</code>. Use for neutral notifications and updates.
+        </div>
+      </div>
+
+      <!-- Warning -->
+      <div>
+        <div class="alert warning">
+          <!-- lucide: alert-triangle -->
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path>
+            <path d="M12 9v4"></path>
+            <path d="M12 17h.01"></path>
+          </svg>
+          <span class="txt">Your session will expire in <strong>5 minutes</strong>. Save your work.</span>
+        </div>
+        <div class="caption">
+          Background <code>#FFF4E5</code>, text + icon <code>#B45309</code> (amber). Use for non-critical but important warnings.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Dismissible Alerts -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Dismissible Alerts</h2>
+      <div class="desc">Add a close button (18×18 × icon, 24 px hit area) on the right. Use for low-priority info that users can safely dismiss.</div>
+    </div>
+    <div class="alerts">
+
+      <div>
+        <div class="alert info">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+          <span class="txt">New features are now available. Check out the latest updates.</span>
+          <button class="close" aria-label="Dismiss">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="caption">
+          Info alert with dismiss. Close icon opacity 60%, 100% on hover.
+        </div>
+      </div>
+
+      <div>
+        <div class="alert success">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+            <path d="m9 11 3 3L22 4"></path>
+          </svg>
+          <span class="txt">Your preferences have been saved successfully.</span>
+          <button class="close" aria-label="Dismiss">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="caption">
+          Success confirmation with dismiss. Use after non-critical user actions.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Alerts with Actions -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Alerts with Actions</h2>
+      <div class="desc">Include 1–2 action buttons (Secondary SM style: 32 px, 10px Source Sans Pro Medium, 4 px radius, neutral grey border). All buttons use the same neutral Secondary style regardless of alert variant.</div>
+    </div>
+    <div class="alerts">
+
+      <div>
+        <div class="alert fail">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="m15 9-6 6"></path>
+            <path d="m9 9 6 6"></path>
+          </svg>
+          <span class="txt">Payment failed. Please update your billing information.</span>
+          <div class="actions">
+            <button>Update</button>
+          </div>
+        </div>
+        <div class="caption">
+          Error alert with single action. Button uses neutral Secondary SM style (grey border, PS Blue hover).
+        </div>
+      </div>
+
+      <div>
+        <div class="alert warning">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path>
+            <path d="M12 9v4"></path>
+            <path d="M12 17h.01"></path>
+          </svg>
+          <span class="txt">This action cannot be undone. Are you sure you want to continue?</span>
+          <div class="actions">
+            <button>Cancel</button>
+            <button>Continue</button>
+          </div>
+        </div>
+        <div class="caption">
+          Warning with two actions. Use sparingly — limit to 2 buttons max per alert.
+        </div>
+      </div>
+
+      <div>
+        <div class="alert info">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+          <span class="txt">A software update is available. Restart now or schedule for later.</span>
+          <div class="actions">
+            <button>Later</button>
+            <button>Restart</button>
+          </div>
+        </div>
+        <div class="caption">
+          Info with choice actions. Primary action (Restart) on the right.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Multi-line -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Multi-line Support</h2>
+      <div class="desc">Alerts auto-grow to fit content (min-height 40 px). Best practice: limit to 2 lines (~140 chars) to avoid obscuring main content.</div>
+    </div>
+    <div class="alerts">
+
+      <div>
+        <div class="alert warning">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path>
+            <path d="M12 9v4"></path>
+            <path d="M12 17h.01"></path>
+          </svg>
+          <span class="txt"><strong>Scheduled maintenance</strong> will occur on Saturday, May 3rd from 2:00 AM to 6:00 AM EST. Some features may be temporarily unavailable during this time.</span>
+          <button class="close" aria-label="Dismiss">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="caption">
+          Two-line alert with dismiss. Text wraps naturally; icon and close button stay top-aligned.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Toast Notifications</h2>
+      <div class="desc">Transient popups that appear bottom-right, auto-dismiss after 3–5 seconds. Use for non-blocking feedback: "Item added", "Changes saved", "Upload complete". 56 px min-height, 8 px radius, elevated shadow.</div>
+    </div>
+    <div class="alerts">
+
+      <div>
+        <div style="position:relative;height:80px;background:var(--ps-sem-bg-canvas);border-radius:8px;overflow:visible;">
+          <div style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:12px;max-width:420px;">
+            <div class="toast success">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                <path d="m9 11 3 3L22 4"></path>
+              </svg>
+              <span class="txt">Item added to cart</span>
+              <button class="close" aria-label="Dismiss">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18 6 6 18"></path>
+                  <path d="m6 6 12 12"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          Success toast. In production, appears fixed bottom-right (24 px margin), slides in from right, max-width 420 px. Shadow: <code>0 4px 12px rgba(0,0,0,.15)</code>.
+        </div>
+      </div>
+
+      <div>
+        <div style="position:relative;height:80px;background:var(--ps-sem-bg-canvas);border-radius:8px;overflow:visible;">
+          <div style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:12px;max-width:420px;">
+            <div class="toast info">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 16v-4"></path>
+                <path d="M12 8h.01"></path>
+              </svg>
+              <span class="txt">Your changes have been saved</span>
+              <button class="close" aria-label="Dismiss">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18 6 6 18"></path>
+                  <path d="m6 6 12 12"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          Info toast. Use for confirmations and status updates. Auto-dismiss after 4–5 seconds or allow manual close.
+        </div>
+      </div>
+
+      <div>
+        <div style="position:relative;height:80px;background:var(--ps-sem-bg-canvas);border-radius:8px;overflow:visible;">
+          <div style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:12px;max-width:420px;">
+            <div class="toast fail">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="m15 9-6 6"></path>
+                <path d="m9 9 6 6"></path>
+              </svg>
+              <span class="txt">Upload failed. Please try again.</span>
+              <button class="close" aria-label="Dismiss">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18 6 6 18"></path>
+                  <path d="m6 6 12 12"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          Error toast. Use sparingly — for non-critical errors that don't block workflow. Critical errors should use inline alerts or modals instead.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance, ARIA roles, and implementation guidance for inclusive alert design.</div>
+    </div>
+    <div class="states">
+      <ul style="margin:0;padding:20px 24px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Use proper ARIA roles:</strong> <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">role="alert"</code> for Fail alerts (interrupts), <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">role="status"</code> for Success/Info (polite)</li>
+        <li><strong>Icons convey meaning beyond color:</strong> 24×24 Lucide icons (circle-check-big, info, alert-triangle, circle-x) with 2px stroke pair with color — meets WCAG 1.4.1</li>
+        <li><strong>Dismiss × needs label:</strong> 18×18 icon at 60% opacity; add <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">aria-label="Dismiss"</code> — visual alone is insufficient</li>
+        <li><strong>Toast auto-dismiss:</strong> 3-5 second persistence, pause on hover/focus; never auto-dismiss Fail toasts with critical errors (WCAG 2.2.1)</li>
+        <li><strong>Contrast verified:</strong> Success green (#0E7C55 on #E2F5EE) = 5.2:1; Info blue (#005BA6 on #EFF9FE) = 7.1:1; Fail red (#E00000 on #FEF0F0) = 5.8:1</li>
+        <li><strong>Action buttons:</strong> Secondary SM style (32px height, 87px min-width) — keyboard navigable, 44×44px touch target with surrounding padding</li>
+        <li><strong>Multi-line alerts:</strong> Icon and × align top (not center) when text wraps beyond 40px min-height</li>
+        <li><strong>Toast stacking:</strong> Bottom-right fixed position (24px margins), 12px vertical gap, z-index 9999 — announced via <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">aria-live="polite"</code> container</li>
+      </ul>
+    </div>
+  </div>
+
+
+
+</body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

@@ -1,0 +1,26 @@
+<!-- @dsCard group="Components" name="Alert" subtitle="Inline notification banners — success, info, warning, fail + dismissable Toast" viewport="560x280" -->
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../tokens.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+</head><body style="margin:0;padding:20px;background:#FAFAFA;">
+<div id="root"></div>
+<script>
+(function(){
+  var Alert = window.Alert;
+  if (!Alert) { document.getElementById('root').innerHTML='<p style="color:#9E2020;font-size:13px;font-family:sans-serif">⚠ Alert not in bundle</p>'; return; }
+  var e = React.createElement;
+  var Demo = function() {
+    return e('div', {style:{display:'flex',flexDirection:'column',gap:10}},
+      e(Alert,{severity:'success'},'Parts order confirmed — PO #88421 submitted successfully.'),
+      e(Alert,{severity:'info'},'Scheduled maintenance window: Saturday 2–4 AM EST.'),
+      e(Alert,{severity:'warning'},'Quote expires in 2 days. Review before it lapses.'),
+      e(Alert,{severity:'fail'},'Unable to reach vendor. Check network and retry.')
+    );
+  };
+  ReactDOM.createRoot(document.getElementById('root')).render(e(Demo,null));
+})();
+</script></body></html>

@@ -1,0 +1,18 @@
+<svg width="420" height="56" viewBox="0 0 420 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="420" height="56" rx="8" fill="#E2F5EE"></rect>
+  <rect x="0.5" y="0.5" width="419" height="55" rx="7.5" stroke="#00000005" stroke-width="1"></rect>
+  <g transform="translate(18, 16)">
+    <circle cx="12" cy="12" r="10" stroke="#0E7C55" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></circle>
+    <path d="M8.801 12A10 10 0 1 1 4 5.335" stroke="#0E7C55" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M9 11l3 3L22 4" stroke="#0E7C55" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(-9, -2)"></path>
+  </g>
+  <text x="60" y="33" font-family="Source Sans Pro, sans-serif" font-size="14" font-weight="600" fill="#0E7C55">Item added to cart</text>
+  <g transform="translate(384, 16)" opacity="0.6">
+    <path d="M18 6L6 18" stroke="#0E7C55" stroke-width="2.5" stroke-linecap="round" transform="translate(-9, -9)"></path>
+    <path d="M6 6l12 12" stroke="#0E7C55" stroke-width="2.5" stroke-linecap="round" transform="translate(-9, -9)"></path>
+  </g>
+  <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+    <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.15"></feDropShadow>
+  </filter>
+  <rect width="420" height="56" rx="8" fill="none" filter="url(#shadow)"></rect>
+</svg>

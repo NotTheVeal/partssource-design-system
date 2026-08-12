@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PartsSource Design System — Complete Visual Reference</title>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+    
+    :root {
+      /* Brand Colors */
+      --ps-brand-primary: #005BA6;
+      --ps-brand-midnight: #002F48;
+      --ps-brand-airway: #009CF4;
+      --ps-brand-cyan: #00DCFF;
+      
+      /* Semantic Colors */
+      --ps-success: #0E7C55;
+      --ps-error: #E00000;
+      --ps-warning: #B45309;
+      --ps-info: #005BA6;
+      
+      /* Neutrals */
+      --ps-neutral-900: #2B2B2B;
+      --ps-neutral-800: #4A4A4A;
+      --ps-neutral-700: #5C5C5C;
+      --ps-neutral-600: #777777;
+      --ps-neutral-500: #949494;
+      --ps-neutral-400: #CCCCCC;
+      --ps-neutral-300: #DCDCDC;
+      --ps-neutral-200: #E6E6E6;
+      --ps-neutral-100: #F1F1F1;
+      --ps-neutral-50: #FAFAFA;
+      
+      /* Orange Scale */
+      --ps-orange-1: #FF9505;
+      --ps-orange-2: #EC8000;
+      --ps-orange-3: #D27200;
+      --ps-orange-4: #FFCA82;
+      
+      /* Typography */
+      --ps-font-sans: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ps-font-mono: ui-monospace, Menlo, Monaco, 'Courier New', monospace;
+      
+      /* Spacing */
+      --ps-space-1: 4px;
+      --ps-space-2: 8px;
+      --ps-space-3: 12px;
+      --ps-space-4: 16px;
+      --ps-space-5: 20px;
+      --ps-space-6: 24px;
+      --ps-space-8: 32px;
+      --ps-space-10: 40px;
+      --ps-space-12: 48px;
+      
+      /* Border Radius */
+      --ps-radius-sm: 2px;
+      --ps-radius-md: 4px;
+      --ps-radius-lg: 8px;
+      --ps-radius-xl: 12px;
+      --ps-radius-full: 9999px;
+      
+      /* Shadows */
+      --ps-shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --ps-shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+      --ps-shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--ps-font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ps-neutral-800);
+      background: white;
+    }
+    
+    /* Layout */
+    .nav {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--ps-neutral-50);
+      border-right: 1px solid var(--ps-neutral-200);
+      overflow-y: auto;
+      padding: var(--ps-space-6);
+      z-index: 100;
+    }
+    
+    .nav-brand {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ps-brand-midnight);
+      margin-bottom: var(--ps-space-6);
+      padding-bottom: var(--ps-space-4);
+      border-bottom: 2px solid var(--ps-brand-primary);
+    }
+    
+    .nav-section {
+      margin-bottom: var(--ps-space-6);
+    }
+    
+    .nav-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--ps-neutral-600);
+      margin-bottom: var(--ps-space-2);
+    }
+    
+    .nav-link {
+      display: block;
+      padding: var(--ps-space-2) var(--ps-space-3);
+      font-size: 14px;
+      color: var(--ps-neutral-700);
+      text-decoration: none;
+      border-radius: var(--ps-radius-md);
+      transition: all 0.15s;
+    }
+    
+    .nav-link:hover {
+      background: white;
+      color: var(--ps-brand-primary);
+    }
+    
+    .content {
+      margin-left: 280px;
+      padding: var(--ps-space-10) var(--ps-space-12);
+      max-width: 1400px;
+    }
+    
+    /* Typography */
+    h1 {
+      font-size: 34px;
+      font-weight: 300;
+      color: var(--ps-brand-midnight);
+      margin: 0 0 var(--ps-space-3);
+      line-height: 1.2;
+    }
+    
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--ps-brand-midnight);
+      margin: var(--ps-space-12) 0 var(--ps-space-6);
+      padding-top: var(--ps-space-8);
+      border-top: 1px solid var(--ps-neutral-200);
+    }
+    
+    h2:first-of-type {
+      border-top: none;
+      padding-top: 0;
+      margin-top: var(--ps-space-8);
+    }
+    
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ps-neutral-900);
+      margin: var(--ps-space-8) 0 var(--ps-space-4);
+    }
+    
+    .intro {
+      font-size: 16px;
+      color: var(--ps-neutral-700);
+      margin-bottom: var(--ps-space-8);
+      max-width: 900px;
+    }
+    
+    /* Component Display */
+    .component-section {
+      margin-bottom: var(--ps-space-10);
+    }
+    
+    .component-grid {
+      display: grid;
+      gap: var(--ps-space-6);
+      margin-bottom: var(--ps-space-8);
+    }
+    
+    .component-demo {
+      background: white;
+      border: 1px solid var(--ps-neutral-200);
+      border-radius: var(--ps-radius-lg);
+      padding: var(--ps-space-8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ps-space-4);
+    }
+    
+    .state-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--ps-neutral-600);
+      margin-bottom: var(--ps-space-2);
+    }
+    
+    .component-row {
+      display: flex;
+      align-items: center;
+      gap: var(--ps-space-6);
+      padding: var(--ps-space-4) 0;
+      border-bottom: 1px solid var(--ps-neutral-100);
+    }
+    
+    .component-row:last-child {
+      border-bottom: none;
+    }
+    
+    .state-name {
+      min-width: 120px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--ps-neutral-600);
+    }
+    
+    .component-preview {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: var(--ps-space-4);
+    }
+    
+    .component-spec {
+      font-size: 13px;
+      color: var(--ps-neutral-600);
+      font-family: var(--ps-font-mono);
+    }
+    
+    /* Color Swatches */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--ps-space-4);
+    }
+    
+    .color-swatch {
+      border: 1px solid var(--ps-neutral-200);
+      border-radius: var(--ps-radius-md);
+      overflow: hidden;
+    }
+    
+    .color-box {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+    
+    .color-info {
+      padding: var(--ps-space-3);
+      background: white;
+    }
+    
+    .color-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ps-neutral-900);
+      margin-bottom: var(--ps-space-1);
+    }
+    
+    .color-value {
+      font-size: 12px;
+      font-family: var(--ps-font-mono);
+      color: var(--ps-neutral-600);
+    }
+    
+    /* Buttons */
+    .btn {
+      font-family: inherit;
+      font-weight: 400;
+      letter-spacing: 0;
+      border-radius: var(--ps-radius-md);
+      border: 2px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    
+    .btn-lg {
+      height: 50px;
+      min-width: 325px;
+      padding: 0 15px;
+      font-size: 15px;
+    }
+    
+    .btn-sm {
+      height: 32px;
+      min-width: 87px;
+      padding: 0 8px;
+      font-size: 10px;
+      border-width: 1px;
+      font-weight: 500;
+    }
+    
+    .btn-primary {
+      background: white;
+      color: var(--ps-brand-primary);
+      border-color: var(--ps-brand-primary);
+    }
+    
+    .btn-primary.hover {
+      background: var(--ps-brand-primary);
+      color: white;
+      border-color: var(--ps-brand-airway);
+    }
+    
+    .btn-primary.pressed {
+      background: #004A84;
+      color: white;
+      border-color: #004A84;
+      box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+    }
+    
+    .btn-primary.focus {
+      background: white;
+      color: var(--ps-brand-primary);
+      border-color: var(--ps-brand-primary);
+      box-shadow: 0 0 0 3px rgba(176,198,211,0.91);
+    }
+    
+    .btn-primary:disabled {
+      background: var(--ps-neutral-400);
+      color: var(--ps-neutral-600);
+      border-color: var(--ps-neutral-600);
+      cursor: not-allowed;
+    }
+    
+    .btn-secondary {
+      background: white;
+      color: var(--ps-neutral-800);
+      border-color: var(--ps-neutral-300);
+    }
+    
+    .btn-secondary.hover {
+      background: var(--ps-brand-primary);
+      color: white;
+      border-color: var(--ps-brand-primary);
+    }
+    
+    .btn-pill {
+      background: var(--ps-orange-1);
+      color: white;
+      border-radius: var(--ps-radius-full);
+      border-color: transparent;
+      height: 48px;
+      padding: 0 32px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn-pill.hover {
+      background: var(--ps-orange-2);
+    }
+    
+    /* Inputs */
+    .input {
+      width: 100%;
+      max-width: 400px;
+      height: 48px;
+      padding: 0 16px;
+      border: 1px solid var(--ps-neutral-800);
+      border-radius: var(--ps-radius-md);
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--ps-neutral-900);
+      transition: all 0.15s;
+    }
+    
+    .input::placeholder {
+      color: var(--ps-neutral-600);
+    }
+    
+    .input:hover {
+      border-color: var(--ps-orange-2);
+    }
+    
+    .input:focus {
+      outline: none;
+      border-color: var(--ps-orange-2);
+      box-shadow: 0 0 10px 5px rgba(0,91,166,0.5);
+    }
+    
+    .input:disabled {
+      background: var(--ps-neutral-100);
+      border-color: var(--ps-neutral-400);
+      color: var(--ps-neutral-500);
+      cursor: not-allowed;
+    }
+    
+    .input.error {
+      border-color: var(--ps-error);
+    }
+    
+    .input-lg {
+      height: 80px;
+      font-size: 18px;
+      padding: 0 20px;
+    }
+    
+    /* Checkboxes & Radio */
+    .checkbox {
+      width: 24px;
+      height: 24px;
+      background: white;
+      border: 1.5px solid var(--ps-neutral-800);
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .checkbox.checked {
+      background: var(--ps-orange-1);
+      border-color: var(--ps-orange-1);
+    }
+    
+    .checkbox:hover {
+      border-color: var(--ps-orange-2);
+    }
+    
+    .radio {
+      width: 24px;
+      height: 24px;
+      background: white;
+      border: 1.5px solid var(--ps-neutral-800);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .radio.selected::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--ps-orange-1);
+      border-radius: 50%;
+    }
+    
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 12px;
+      border-radius: var(--ps-radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    
+    .badge-success {
+      background: #E2F5EE;
+      color: var(--ps-success);
+    }
+    
+    .badge-error {
+      background: #FEF0F0;
+      color: var(--ps-error);
+    }
+    
+    .badge-warning {
+      background: #FFF4E5;
+      color: var(--ps-warning);
+    }
+    
+    .badge-info {
+      background: #EFF9FE;
+      color: var(--ps-info);
+    }
+    
+    /* Alerts */
+    .alert {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-height: 40px;
+      padding: 12px 18px;
+      border-radius: 5px;
+      font-size: 14px;
+      line-height: 18px;
+    }
+    
+    .alert-success {
+      background: #E2F5EE;
+      color: var(--ps-success);
+    }
+    
+    .alert-error {
+      background: #FEF0F0;
+      color: var(--ps-error);
+    }
+    
+    .alert-warning {
+      background: #FFF4E5;
+      color: var(--ps-warning);
+    }
+    
+    .alert-info {
+      background: #EFF9FE;
+      color: var(--ps-info);
+    }
+    
+    .alert svg {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    
+    .alert-text {
+      font-weight: 700;
+      flex: 1;
+    }
+    
+    /* Cards */
+    .card {
+      background: white;
+      border: 1px solid var(--ps-neutral-300);
+      border-radius: var(--ps-radius-md);
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+    
+    .card:hover {
+      box-shadow: var(--ps-shadow-md);
+    }
+    
+    .card-body {
+      padding: var(--ps-space-6);
+    }
+    
+    .card-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--ps-neutral-800);
+      margin: 0 0 var(--ps-space-2);
+    }
+    
+    .card-text {
+      font-size: 14px;
+      color: var(--ps-neutral-600);
+      margin: 0;
+    }
+    
+    /* Tables */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: var(--ps-space-6) 0;
+    }
+    
+    .spec-table th {
+      text-align: left;
+      padding: var(--ps-space-3);
+      background: var(--ps-neutral-50);
+      font-weight: 600;
+      border-bottom: 2px solid var(--ps-neutral-200);
+    }
+    
+    .spec-table td {
+      padding: var(--ps-space-3);
+      border-bottom: 1px solid var(--ps-neutral-100);
+    }
+    
+    .spec-table code {
+      font-family: var(--ps-font-mono);
+      font-size: 12px;
+      background: var(--ps-neutral-50);
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--ps-brand-primary);
+    }
+    
+    @media (max-width: 1024px) {
+      .nav {
+        position: static;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--ps-neutral-200);
+      }
+      
+      .content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <template id="__bundler_thumbnail" data-bg-color="#FAFAFA">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#FAFAFA"/>
+      <circle cx="600" cy="400" r="120" fill="#005BA6" opacity="0.2"/>
+      <circle cx="600" cy="400" r="80" fill="#005BA6" opacity="0.4"/>
+      <circle cx="600" cy="400" r="40" fill="#005BA6"/>
+      <text x="600" y="540" font-family="system-ui, sans-serif" font-size="48" font-weight="700" fill="#002F48" text-anchor="middle">PartsSource</text>
+      <text x="600" y="590" font-family="system-ui, sans-serif" font-size="24" fill="#777777" text-anchor="middle">Design System</text>
+    </svg>
+  </template>
+
+  <nav class="nav">
+    <div class="nav-brand">PartsSource Design System</div>
+    
+    <div class="nav-section">
+      <div class="nav-section-title">Foundation</div>
+      <a href="#colors" class="nav-link">Colors</a>
+      <a href="#typography" class="nav-link">Typography</a>
+      <a href="#spacing" class="nav-link">Spacing</a>
+      <a href="#elevation" class="nav-link">Shadows</a>
+    </div>
+    
+    <div class="nav-section">
+      <div class="nav-section-title">Components</div>
+      <a href="#buttons" class="nav-link">Buttons</a>
+      <a href="#inputs" class="nav-link">Input Fields</a>
+      <a href="#selections" class="nav-link">Checkboxes & Radio</a>
+      <a href="#badges" class="nav-link">Badges</a>
+      <a href="#alerts" class="nav-link">Alerts</a>
+      <a href="#cards" class="nav-link">Cards</a>
+    </div>
+  </nav>
+
+  <main class="content">
+    <h1>Complete Visual Reference</h1>
+    <p class="intro">
+      Comprehensive design system documentation with visual examples of every component state. 
+      This reference shows exactly what each component looks like across all interaction states.
+    </p>
+
+    <!-- COLORS -->
+    <h2 id="colors">Colors</h2>
+    
+    <h3>Brand Colors</h3>
+    <div class="color-grid">
+      <div class="color-swatch">
+        <div class="color-box" style="background: #005BA6; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">PS Blue</div>
+          <div class="color-value">#005BA6</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #002F48; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Midnight</div>
+          <div class="color-value">#002F48</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #009CF4; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Airway</div>
+          <div class="color-value">#009CF4</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #00DCFF; color: #002F48;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Cyan</div>
+          <div class="color-value">#00DCFF</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Semantic Colors</h3>
+    <div class="color-grid">
+      <div class="color-swatch">
+        <div class="color-box" style="background: #0E7C55; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Success</div>
+          <div class="color-value">#0E7C55</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #E00000; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Error</div>
+          <div class="color-value">#E00000</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #B45309; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Warning</div>
+          <div class="color-value">#B45309</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #005BA6; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Info</div>
+          <div class="color-value">#005BA6</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Orange Scale (Interactive States)</h3>
+    <div class="color-grid">
+      <div class="color-swatch">
+        <div class="color-box" style="background: #FF9505; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Orange 1 — Default</div>
+          <div class="color-value">#FF9505</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #EC8000; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Orange 2 — Hover</div>
+          <div class="color-value">#EC8000</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #D27200; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Orange 3 — Pressed</div>
+          <div class="color-value">#D27200</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #FFCA82; color: #2B2B2B;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Orange 4 — Halo</div>
+          <div class="color-value">#FFCA82</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Neutral Scale</h3>
+    <div class="color-grid">
+      <div class="color-swatch">
+        <div class="color-box" style="background: #2B2B2B; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Grey 0 — Midnight</div>
+          <div class="color-value">#2B2B2B</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #4A4A4A; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Grey 1</div>
+          <div class="color-value">#4A4A4A</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #777777; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Grey 2</div>
+          <div class="color-value">#777777</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #949494; color: white;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Grey 3</div>
+          <div class="color-value">#949494</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #CCCCCC; color: #2B2B2B;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Grey 4</div>
+          <div class="color-value">#CCCCCC</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #DCDCDC; color: #2B2B2B;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Grey 4.5</div>
+          <div class="color-value">#DCDCDC</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #F1F1F1; color: #2B2B2B;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Grey 6</div>
+          <div class="color-value">#F1F1F1</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #FAFAFA; color: #2B2B2B; border: 1px solid #E6E6E6;">Aa</div>
+        <div class="color-info">
+          <div class="color-name">Grey 7 — BG</div>
+          <div class="color-value">#FAFAFA</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPOGRAPHY -->
+    <h2 id="typography">Typography</h2>
+    
+    <h3>Display Scale</h3>
+    <div class="component-demo">
+      <div style="font-size: 34px; font-weight: 300; line-height: 1.2; color: #002F48;">
+        Mission-critical uptime, on-demand.
+      </div>
+      <div class="component-spec">Header 00: 34px / 300 / 1.2</div>
+    </div>
+    
+    <div class="component-demo">
+      <div style="font-size: 30px; font-weight: 300; line-height: 1.2; color: #002F48;">
+        Evidence-based procurement
+      </div>
+      <div class="component-spec">H1: 30px / 300 / 1.2</div>
+    </div>
+    
+    <div class="component-demo">
+      <div style="font-size: 24px; font-weight: 300; line-height: 1.2; color: #002F48;">
+        Parts, service, and labor
+      </div>
+      <div class="component-spec">H2: 24px / 300 / 1.2</div>
+    </div>
+    
+    <div class="component-demo">
+      <div style="font-size: 18px; font-weight: 600; line-height: 1.2; color: #002F48;">
+        Request a quote
+      </div>
+      <div class="component-spec">H4: 18px / 600 / 1.2</div>
+    </div>
+
+    <h3>Body Text</h3>
+    <div class="component-demo">
+      <div style="font-size: 16px; font-weight: 400; line-height: 1.5; color: #4A4A4A;">
+        Default body copy. Use for paragraph text, card descriptions, and most in-product prose.
+      </div>
+      <div class="component-spec">Body-01: 16px / 400 / 1.5</div>
+    </div>
+    
+    <div class="component-demo">
+      <div style="font-size: 12px; font-weight: 400; line-height: 1.5; color: #777777;">
+        Captions, helper text, footnotes, metadata.
+      </div>
+      <div class="component-spec">Micro: 12px / 400 / 1.5</div>
+    </div>
+
+    <!-- BUTTONS -->
+    <h2 id="buttons">Buttons</h2>
+    
+    <h3>Primary Button — Large (50px)</h3>
+    <div class="component-demo">
+      <div class="component-row">
+        <div class="state-name">Default</div>
+        <div class="component-preview">
+          <button class="btn btn-lg btn-primary">Buy Now</button>
+        </div>
+        <div class="component-spec">White bg, PS Blue border & text</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Hover</div>
+        <div class="component-preview">
+          <button class="btn btn-lg btn-primary hover">Buy Now</button>
+        </div>
+        <div class="component-spec">PS Blue fill, white text</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Pressed</div>
+        <div class="component-preview">
+          <button class="btn btn-lg btn-primary pressed">Buy Now</button>
+        </div>
+        <div class="component-spec">Midnight fill, drop shadow</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Focus</div>
+        <div class="component-preview">
+          <button class="btn btn-lg btn-primary focus">Buy Now</button>
+        </div>
+        <div class="component-spec">Blue-gray focus ring</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Disabled</div>
+        <div class="component-preview">
+          <button class="btn btn-lg btn-primary" disabled>Buy Now</button>
+        </div>
+        <div class="component-spec">Grey 4 fill, Grey 2 text</div>
+      </div>
+    </div>
+
+    <h3>Secondary Button — Small (32px)</h3>
+    <div class="component-demo">
+      <div class="component-row">
+        <div class="state-name">Default</div>
+        <div class="component-preview">
+          <button class="btn btn-sm btn-secondary">Apply Filter</button>
+        </div>
+        <div class="component-spec">White bg, Grey 4.5 border</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Hover</div>
+        <div class="component-preview">
+          <button class="btn btn-sm btn-secondary hover">Apply Filter</button>
+        </div>
+        <div class="component-spec">PS Blue fill, white text</div>
+      </div>
+    </div>
+
+    <h3>Orange Pill Button (48px) — Legacy CTA</h3>
+    <div class="component-demo">
+      <div class="component-row">
+        <div class="state-name">Default</div>
+        <div class="component-preview">
+          <button class="btn btn-pill">Request Quote</button>
+        </div>
+        <div class="component-spec">Orange 1 fill, uppercase</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Hover</div>
+        <div class="component-preview">
+          <button class="btn btn-pill hover">Request Quote</button>
+        </div>
+        <div class="component-spec">Orange 2 fill</div>
+      </div>
+    </div>
+
+    <!-- INPUTS -->
+    <h2 id="inputs">Input Fields</h2>
+    
+    <h3>Standard Input (48px)</h3>
+    <div class="component-demo">
+      <div class="component-row">
+        <div class="state-name">Default</div>
+        <div class="component-preview">
+          <input type="text" class="input" placeholder="Enter part number">
+        </div>
+        <div class="component-spec">Grey 1 border, 1px</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Hover</div>
+        <div class="component-preview">
+          <input type="text" class="input" placeholder="Enter part number" style="border-color: #EC8000;">
+        </div>
+        <div class="component-spec">Orange 2 border</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Focus</div>
+        <div class="component-preview">
+          <input type="text" class="input" placeholder="Enter part number" value="PS-4421-A" style="border-color: #EC8000; box-shadow: 0 0 10px 5px rgba(0,91,166,0.5);">
+        </div>
+        <div class="component-spec">Orange 2 border + blue glow</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Disabled</div>
+        <div class="component-preview">
+          <input type="text" class="input" disabled placeholder="Enter part number">
+        </div>
+        <div class="component-spec">Grey 6 bg, Grey 4 border</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Error</div>
+        <div class="component-preview">
+          <input type="text" class="input error" value="Invalid input">
+        </div>
+        <div class="component-spec">Red border</div>
+      </div>
+    </div>
+
+    <h3>Large Input (80px)</h3>
+    <div class="component-demo">
+      <div class="component-row">
+        <div class="state-name">Default</div>
+        <div class="component-preview">
+          <input type="text" class="input input-lg" placeholder="Search products...">
+        </div>
+        <div class="component-spec">80px height, 18px font</div>
+      </div>
+    </div>
+
+    <h3>Dropdown Type 1 — Standard with Menu</h3>
+    <div class="component-demo" style="min-height: 280px;">
+      <div class="component-row" style="flex-direction: column; align-items: stretch; position: relative;">
+        <div class="state-name">Closed State</div>
+        <div style="position: relative; width: 400px;">
+          <input type="text" class="input" placeholder="Select option..." style="cursor: pointer;">
+        </div>
+      </div>
+      
+      <div class="component-row" style="flex-direction: column; align-items: stretch; position: relative;">
+        <div class="state-name">Open with Menu</div>
+        <div style="position: relative; width: 400px;">
+          <input type="text" class="input" value="Label" readonly style="border-color: #005DA6; box-shadow: 0 0 10px 5px rgba(0,91,166,0.5);">
+          <div style="position: absolute; top: calc(100% + 1px); left: 0; width: 100%; background: white; border: 1px solid #F1F1F1; border-radius: 2px; box-shadow: 0 4px 4px rgba(0,0,0,0.25); z-index: 10;">
+            <div style="padding: 10px; font-size: 14px; color: #000; border-bottom: 1px solid #F1F1F1; cursor: pointer;">Item 1</div>
+            <div style="padding: 10px; font-size: 14px; color: #000; border-bottom: 1px solid #F1F1F1; background: #D0EDFC; cursor: pointer;">Item 2</div>
+            <div style="padding: 10px; font-size: 14px; color: #000; cursor: pointer;">Item 3</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="component-row" style="flex-direction: column; align-items: stretch;">
+        <div class="state-name">Item Selected</div>
+        <div style="position: relative; width: 400px;">
+          <input type="text" class="input" value="Item 2" readonly>
+        </div>
+      </div>
+    </div>
+
+    <h3>Dropdown Type 2 — Compact with Bold Items</h3>
+    <div class="component-demo" style="min-height: 240px;">
+      <div class="component-row" style="flex-direction: column; align-items: stretch; position: relative;">
+        <div class="state-name">Open with Typing</div>
+        <div style="position: relative; width: 335px;">
+          <input type="text" class="input" value="Opt" style="border-color: #005DA6; box-shadow: 0 0 10px 5px rgba(0,91,166,0.5);">
+          <div style="position: absolute; top: calc(100% + 1px); left: 0; width: 100%; background: white; border: 1px solid #F1F1F1; border-radius: 2px; box-shadow: 0 4px 4px rgba(0,0,0,0.25); z-index: 10;">
+            <div style="padding: 14px 10px; font-size: 14px; font-weight: 700; color: #000; background: #F1F1F1; border-bottom: 1px solid #F1F1F1;">Option 1</div>
+            <div style="padding: 14px 10px; font-size: 14px; font-weight: 700; color: #000; border-bottom: 1px solid #F1F1F1;">Option 2</div>
+            <div style="padding: 14px 10px; font-size: 14px; font-weight: 700; color: #000;">Option 3</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="component-row" style="flex-direction: column; align-items: stretch; position: relative;">
+        <div class="state-name">Item Hovering</div>
+        <div style="position: relative; width: 335px;">
+          <input type="text" class="input" value="Label" readonly style="border-color: #005DA6;">
+          <div style="position: absolute; top: calc(100% + 1px); left: 0; width: 100%; background: white; border: 1px solid #F1F1F1; border-radius: 2px; box-shadow: 0 4px 4px rgba(0,0,0,0.25); z-index: 10;">
+            <div style="padding: 14px 10px; font-size: 14px; font-weight: 700; color: #000; background: #D6EBFF; border-bottom: 1px solid #F1F1F1;">Option 1</div>
+            <div style="padding: 14px 10px; font-size: 14px; font-weight: 700; color: #000; border-bottom: 1px solid #F1F1F1;">Option 2</div>
+            <div style="padding: 14px 10px; font-size: 14px; font-weight: 700; color: #000;">Option 3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SELECTIONS -->
+    <h2 id="selections">Checkboxes & Radio Buttons</h2>
+    
+    <h3>Checkboxes</h3>
+    <div class="component-demo">
+      <div class="component-row">
+        <div class="state-name">Unselected</div>
+        <div class="component-preview">
+          <div class="checkbox"></div>
+          <span>Include compatible parts</span>
+        </div>
+        <div class="component-spec">24×24px, 2px radius</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Selected</div>
+        <div class="component-preview">
+          <div class="checkbox checked">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+              <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"/>
+            </svg>
+          </div>
+          <span>Include compatible parts</span>
+        </div>
+        <div class="component-spec">Orange 1 fill, white check</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Hover</div>
+        <div class="component-preview">
+          <div class="checkbox" style="border-color: #EC8000;"></div>
+          <span>Include compatible parts</span>
+        </div>
+        <div class="component-spec">Orange 2 border</div>
+      </div>
+    </div>
+
+    <h3>Radio Buttons</h3>
+    <div class="component-demo">
+      <div class="component-row">
+        <div class="state-name">Unselected</div>
+        <div class="component-preview">
+          <div class="radio"></div>
+          <span>Option A</span>
+        </div>
+        <div class="component-spec">24×24px circle</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Selected</div>
+        <div class="component-preview">
+          <div class="radio selected"></div>
+          <span>Option A</span>
+        </div>
+        <div class="component-spec">Orange 1 inner dot</div>
+      </div>
+    </div>
+
+    <!-- BADGES -->
+    <h2 id="badges">Badges</h2>
+    
+    <h3>Status Badges — Bordered</h3>
+    <div class="component-demo">
+      <div class="component-row">
+        <div class="state-name">Not Shipped</div>
+        <div class="component-preview">
+          <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; background: #E5E5E5; color: #525252; border: 1px solid #DCDCDC;">Not Shipped</span>
+        </div>
+        <div class="component-spec">Grey bg, grey border</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">In Transit</div>
+        <div class="component-preview">
+          <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; background: #E5F4FF; color: #005BA6; border: 1px solid #B0D7F4;">In Transit</span>
+        </div>
+        <div class="component-spec">Blue tint bg, blue border</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Delivered</div>
+        <div class="component-preview">
+          <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; background: #E5F9F2; color: #0A7850; border: 1px solid #B8E6D5;">Delivered</span>
+        </div>
+        <div class="component-spec">Green tint bg, green border</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Urgent</div>
+        <div class="component-preview">
+          <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; background: #FFF4E5; color: #C56F00; border: 1px solid #FFD9B3;">Urgent</span>
+        </div>
+        <div class="component-spec">Orange tint bg, orange border</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Critical</div>
+        <div class="component-preview">
+          <span style="display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; background: #FFEBEB; color: #9E2020; border: 1px solid #FFCFCF;">Critical</span>
+        </div>
+        <div class="component-spec">Red tint bg, red border</div>
+      </div>
+    </div>
+
+    <h3>Pill Badges — Uppercase</h3>
+    <div class="component-demo">
+      <div class="component-row">
+        <div class="state-name">Shopping</div>
+        <div class="component-preview">
+          <span style="display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 40px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; background: #F5E6FF; color: #9333EA;">Shopping</span>
+        </div>
+        <div class="component-spec">Purple tint bg, uppercase</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Preventative</div>
+        <div class="component-preview">
+          <span style="display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 40px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; background: #E0F2FE; color: #0284C7;">Preventative</span>
+        </div>
+        <div class="component-spec">Cyan tint bg, uppercase</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Restocking</div>
+        <div class="component-preview">
+          <span style="display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 40px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; background: #FCE7F3; color: #BE185D;">Restocking</span>
+        </div>
+        <div class="component-spec">Pink tint bg, uppercase</div>
+      </div>
+    </div>
+
+    <h3>Simple Status Badges</h3>
+    <div class="component-demo">
+      <div class="component-row">
+        <div class="state-name">Success</div>
+        <div class="component-preview">
+          <span class="badge badge-success">In Stock</span>
+        </div>
+        <div class="component-spec">Green tint bg, green text</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Error</div>
+        <div class="component-preview">
+          <span class="badge badge-error">Out of Stock</span>
+        </div>
+        <div class="component-spec">Red tint bg, red text</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Warning</div>
+        <div class="component-preview">
+          <span class="badge badge-warning">Low Stock</span>
+        </div>
+        <div class="component-spec">Amber tint bg, amber text</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Info</div>
+        <div class="component-preview">
+          <span class="badge badge-info">New</span>
+        </div>
+        <div class="component-spec">Blue tint bg, blue text</div>
+      </div>
+    </div>
+
+    <!-- ALERTS -->
+    <h2 id="alerts">Alerts</h2>
+    
+    <div class="component-demo">
+      <div class="component-row" style="flex-direction: column; align-items: stretch;">
+        <div class="state-name">Success Alert</div>
+        <div class="alert alert-success">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21.801 10A10 10 0 1 1 17 3.335"/>
+            <path d="m9 11 3 3L22 4"/>
+          </svg>
+          <div class="alert-text">Order has been successfully submitted</div>
+        </div>
+      </div>
+      
+      <div class="component-row" style="flex-direction: column; align-items: stretch;">
+        <div class="state-name">Error Alert</div>
+        <div class="alert alert-error">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 8v4m0 4h.01"/>
+          </svg>
+          <div class="alert-text">Unable to process payment. Please try again.</div>
+        </div>
+      </div>
+      
+      <div class="component-row" style="flex-direction: column; align-items: stretch;">
+        <div class="state-name">Warning Alert</div>
+        <div class="alert alert-warning">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+            <path d="M12 9v4m0 4h.01"/>
+          </svg>
+          <div class="alert-text">This part requires certification for installation</div>
+        </div>
+      </div>
+      
+      <div class="component-row" style="flex-direction: column; align-items: stretch;">
+        <div class="state-name">Info Alert</div>
+        <div class="alert alert-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 16v-4m0-4h.01"/>
+          </svg>
+          <div class="alert-text">System maintenance scheduled for tonight at 2:00 AM EST</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARDS -->
+    <h2 id="cards">Cards</h2>
+    
+    <h3>Product Card</h3>
+    <div class="component-demo">
+      <div class="card" style="max-width: 400px;">
+        <div class="card-body">
+          <h4 class="card-title">Medical Equipment Part</h4>
+          <p class="card-text">Part Number: PS-4421-A</p>
+          <p class="card-text">In Stock • Ships in 2-3 days</p>
+          <p style="font-size: 20px; font-weight: 700; color: #005BA6; margin: 12px 0 0;">$247.99</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Event Card with Icon</h3>
+    <div class="component-demo">
+      <div class="card" style="max-width: 320px;">
+        <div class="card-body">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
+            <div style="width: 46px; height: 46px; border-radius: 50%; background: #D0EDFC; display: flex; align-items: center; justify-content: center;">
+              <svg width="23" height="23" viewBox="0 0 24 24" fill="#005BA6">
+                <circle cx="12" cy="12" r="10"/>
+              </svg>
+            </div>
+            <div>
+              <div style="font-size: 19px; font-weight: 700; color: #4A4A4A; line-height: 18px;">PM Due</div>
+              <div style="font-size: 16px; color: #777777; line-height: 18px; margin-top: 4px;">MRI Scanner</div>
+            </div>
+          </div>
+          <div style="font-size: 16px; color: #777777; line-height: 18px;">
+            <div>Asset: <span style="color: #4A4A4A;">MRI-001</span></div>
+            <div style="margin-top: 2px;">Due: <span style="color: #4A4A4A;">May 15, 2026</span></div>
+          </div>
+        </div>
+        <div style="background: #FAFAFA; border-top: 1px solid #F1F1F1; padding: 18px 0; text-align: center;">
+          <a href="#" style="color: #009CF4; text-decoration: none; font-size: 16px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+            View Details
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <h3>Status Card — Compact</h3>
+    <div class="component-demo">
+      <div style="width: 220px; height: 73px; background: white; border: 1px solid #DCDCDC; border-radius: 4px; padding: 14px; display: flex; gap: 12px; align-items: center;">
+        <div style="width: 45px; height: 45px; border-radius: 50%; background: #D0EDFC; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#005BA6" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <div style="flex: 1;">
+          <div style="font-size: 20px; font-weight: 700; color: #4A4A4A; line-height: 1;">24</div>
+          <div style="font-size: 12px; color: #777777; margin-top: 4px;">Active Orders</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPACING -->
+    <h2 id="spacing">Spacing Scale</h2>
+    
+    <table class="spec-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Value</th>
+          <th>Usage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>--ps-space-1</code></td>
+          <td>4px</td>
+          <td>Tight gaps, inline spacing</td>
+        </tr>
+        <tr>
+          <td><code>--ps-space-2</code></td>
+          <td>8px</td>
+          <td>Small component padding</td>
+        </tr>
+        <tr>
+          <td><code>--ps-space-3</code></td>
+          <td>12px</td>
+          <td>Compact layouts</td>
+        </tr>
+        <tr>
+          <td><code>--ps-space-4</code></td>
+          <td>16px</td>
+          <td>Default spacing</td>
+        </tr>
+        <tr>
+          <td><code>--ps-space-6</code></td>
+          <td>24px</td>
+          <td>Section padding</td>
+        </tr>
+        <tr>
+          <td><code>--ps-space-8</code></td>
+          <td>32px</td>
+          <td>Component separation</td>
+        </tr>
+        <tr>
+          <td><code>--ps-space-12</code></td>
+          <td>48px</td>
+          <td>Major sections</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ELEVATION -->
+    <h2 id="elevation">Shadows & Elevation</h2>
+    
+    <div class="component-demo">
+      <div class="component-row">
+        <div class="state-name">Small</div>
+        <div class="component-preview">
+          <div style="width: 200px; height: 100px; background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border-radius: 4px;"></div>
+        </div>
+        <div class="component-spec">0 1px 2px rgba(0,0,0,0.05)</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Medium</div>
+        <div class="component-preview">
+          <div style="width: 200px; height: 100px; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 4px;"></div>
+        </div>
+        <div class="component-spec">0 4px 8px rgba(0,0,0,0.1)</div>
+      </div>
+      
+      <div class="component-row">
+        <div class="state-name">Large</div>
+        <div class="component-preview">
+          <div style="width: 200px; height: 100px; background: white; box-shadow: 0 8px 16px rgba(0,0,0,0.15); border-radius: 4px;"></div>
+        </div>
+        <div class="component-spec">0 8px 16px rgba(0,0,0,0.15)</div>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

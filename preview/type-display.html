@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Foundation" name="Display Type" subtitle="Header00 / H1–H4 · Source Sans 3 Light for display" viewport="700x260" -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Typography · Display</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+
+    .callout-banner{padding:14px 24px;background:#F4F9FE;border-bottom:1px solid #D8E9F7;display:flex;gap:10px;align-items:flex-start;}
+    .callout-banner .pill{flex:0 0 auto;height:20px;padding:0 8px;border-radius:10px;background:var(--ps-brand-primary);color:var(--ps-sem-fg-inverse);font-size:10px;letter-spacing:.8px;font-weight:700;display:inline-flex;align-items:center;text-transform:uppercase;}
+    .callout-banner .text{color:var(--ps-sem-fg-primary);font-size:13px;font-weight:600;line-height:1.4;}
+    .callout-banner .text b{color:var(--ps-brand-primary);}
+
+    .callout-banner.orange{background:#FFF7EC;border-bottom-color:#FFE2B5;}
+    .callout-banner.orange .pill{background:#FF9505;}
+    .callout-banner.orange .text{color:var(--ps-sem-fg-primary);}
+
+    .states{padding:8px 0;}
+    .state-row{display:grid;grid-template-columns:140px minmax(0,360px) minmax(220px,1fr);gap:32px;align-items:center;padding:16px 24px;border-bottom:1px solid #F1F1F1;}
+    @media (max-width: 980px){
+      .state-row{grid-template-columns:140px minmax(0,1fr);}
+      .state-row .caption{grid-column:2;margin-top:-4px;}
+    }
+    .state-row:last-child{border-bottom:0;}
+    .state-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-fg-tertiary);font-weight:700;}
+    .type-cell{display:flex;align-items:baseline;}
+    .caption{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+    .caption code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--ps-sem-bg-muted);padding:2px 6px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+
+    .src{font-family:"Source Sans 3","Source Sans Pro",-apple-system,BlinkMacSystemFont,sans-serif;}
+    .metro{font-family:"Metronic Pro","Source Sans 3",sans-serif;}
+    .cond{font-family:"Metronic Pro Condensed","Metronic Pro",sans-serif;}
+  </style>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Display Type</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Typography · Display</h1>
+  <p class="intro">Source Sans Pro is the PartsSource primary typeface — it sets every heading, body line, and UI label across the product. Metronic Pro is reserved for marketing and editorial surfaces where a more distinct brand voice is needed (campaign hero, print collateral, presentations).</p>
+
+  <!-- Source Sans Pro Display -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Source Sans Pro · Display</h2>
+      <div class="desc">Primary typeface for all product &amp; UI surfaces. Light (300) weight headings are the brand's typographic signature.</div>
+    </div>
+    <div class="callout-banner">
+      <span class="pill">Primary</span>
+      <div class="text"><b>Use Source Sans Pro by default.</b> It's the system typeface for web, app, transactional email, and any interface surface. Reach for Metronic Pro only when the brief calls for brand-forward display type.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Header 00</div>
+        <div class="type-cell"><h2 class="src" style="font-size:34px;font-weight:300;line-height:1.2;margin:0;color:#002F48;">Mission-critical uptime, on-demand.</h2></div>
+        <div class="caption"><code>34px / 300 / 1.2</code> — largest heading, homepage heroes.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">H1</div>
+        <div class="type-cell"><h1 class="src" style="font-size:30px;font-weight:300;line-height:1.2;margin:0;color:#002F48;">Evidence-based procurement</h1></div>
+        <div class="caption"><code>30px / 300 / 1.2</code> — page-level heading, Light weight.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">H2</div>
+        <div class="type-cell"><h2 class="src" style="font-size:24px;font-weight:300;line-height:1.2;margin:0;color:#002F48;">Parts, service, and labor</h2></div>
+        <div class="caption"><code>24px / 300 / 1.2</code> — section headings, Light weight.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">H3</div>
+        <div class="type-cell"><h3 class="src" style="font-size:24px;font-weight:400;line-height:1.2;margin:0;color:#002F48;">Clinical resource management</h3></div>
+        <div class="caption"><code>24px / 400 / 1.2</code> — sub-section headings, Regular weight.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">H4</div>
+        <div class="type-cell"><h4 class="src" style="font-size:18px;font-weight:600;line-height:1.2;margin:0;color:#002F48;">Request a quote</h4></div>
+        <div class="caption"><code>18px / 600 / 1.2</code> — smallest heading, SemiBold weight.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Source Sans Pro Weight Range -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Source Sans Pro · Weight Range</h2>
+      <div class="desc">Full weight spectrum — ExtraLight 200 → Black 900. Use Light 300 for headings, Regular 400 for body, SemiBold 600 for emphasis.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">ExtraLight</div>
+        <div class="type-cell"><p class="src" style="font-size:40px;font-weight:200;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>200</code> — ultra-light display, rare.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Light</div>
+        <div class="type-cell"><p class="src" style="font-size:40px;font-weight:300;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>300</code> — primary heading weight.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Regular</div>
+        <div class="type-cell"><p class="src" style="font-size:40px;font-weight:400;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>400</code> — body copy default.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">SemiBold</div>
+        <div class="type-cell"><p class="src" style="font-size:40px;font-weight:600;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>600</code> — emphasis and H4 headings.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Bold</div>
+        <div class="type-cell"><p class="src" style="font-size:40px;font-weight:700;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>700</code> — strong emphasis in body text.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Black</div>
+        <div class="type-cell"><p class="src" style="font-size:40px;font-weight:900;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>900</code> — maximum weight, special use.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metronic Pro Display -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Metronic Pro · Display</h2>
+      <div class="desc">Secondary typeface for brand &amp; marketing surfaces only — heroes, campaign headlines, presentation decks, print.</div>
+    </div>
+    <div class="callout-banner orange">
+      <span class="pill">Brand</span>
+      <div class="text"><b>Use sparingly.</b> Metronic Pro is our editorial voice — heroes, campaign headlines, presentation decks, print. Never substitute it for Source Sans Pro in transactional UI, forms, or tables.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Hero</div>
+        <div class="type-cell"><h2 class="metro" style="font-size:34px;font-weight:300;line-height:1.2;margin:0;color:#002F48;">Mission-critical uptime, on-demand.</h2></div>
+        <div class="caption"><code>34px / 300 / 1.2</code> — campaign hero, homepage marquee.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Display 1</div>
+        <div class="type-cell"><h2 class="metro" style="font-size:30px;font-weight:300;line-height:1.2;margin:0;color:#002F48;">Evidence-based procurement</h2></div>
+        <div class="caption"><code>30px / 300 / 1.2</code> — marketing page heading.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Display 2</div>
+        <div class="type-cell"><h2 class="metro" style="font-size:24px;font-weight:300;line-height:1.2;margin:0;color:#002F48;">Parts, service, and labor</h2></div>
+        <div class="caption"><code>24px / 300 / 1.2</code> — editorial section heading.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metronic Pro Weight Range -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Metronic Pro · Full Weight Range</h2>
+      <div class="desc">Air 100 → Black 900. Extended weight range for editorial flexibility.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Air</div>
+        <div class="type-cell"><p class="metro" style="font-size:40px;font-weight:100;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>100</code> — lightest weight, brand signature.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Light</div>
+        <div class="type-cell"><p class="metro" style="font-size:40px;font-weight:300;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>300</code> — primary display weight.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Regular</div>
+        <div class="type-cell"><p class="metro" style="font-size:40px;font-weight:400;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>400</code> — neutral weight.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">SemiBold</div>
+        <div class="type-cell"><p class="metro" style="font-size:40px;font-weight:600;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>600</code> — medium emphasis.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Bold</div>
+        <div class="type-cell"><p class="metro" style="font-size:40px;font-weight:700;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>700</code> — strong emphasis.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Black</div>
+        <div class="type-cell"><p class="metro" style="font-size:40px;font-weight:900;line-height:1.1;margin:0;color:#002F48;">PartsSource</p></div>
+        <div class="caption"><code>900</code> — maximum weight.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metronic Pro Condensed -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Metronic Pro Condensed</h2>
+      <div class="desc">Tight display contexts — space-constrained layouts, narrow columns, infographic labels.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Condensed Light</div>
+        <div class="type-cell"><p class="cond" style="font-size:36px;font-weight:300;line-height:1.1;margin:0;color:#002F48;">Condensed display type</p></div>
+        <div class="caption"><code>300</code> — narrow display, Light.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Condensed Regular</div>
+        <div class="type-cell"><p class="cond" style="font-size:36px;font-weight:400;line-height:1.1;margin:0;color:#002F48;">Condensed display type</p></div>
+        <div class="caption"><code>400</code> — narrow display, Regular.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Condensed SemiBold</div>
+        <div class="type-cell"><p class="cond" style="font-size:36px;font-weight:600;line-height:1.1;margin:0;color:#002F48;">Condensed display type</p></div>
+        <div class="caption"><code>600</code> — narrow display, SemiBold.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Condensed Bold</div>
+        <div class="type-cell"><p class="cond" style="font-size:36px;font-weight:700;line-height:1.1;margin:0;color:#002F48;">Condensed display type</p></div>
+        <div class="caption"><code>700</code> — narrow display, Bold.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Condensed Black</div>
+        <div class="type-cell"><p class="cond" style="font-size:36px;font-weight:900;line-height:1.1;margin:0;color:#002F48;">Condensed display type</p></div>
+        <div class="caption"><code>900</code> — narrow display, Black.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance and implementation guidance for inclusive display typography.</div>
+    </div>
+    <div class="states">
+      <ul style="margin:0;padding:20px 24px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Semantic HTML:</strong> Use proper heading hierarchy (&lt;h1&gt; → &lt;h2&gt; → &lt;h3&gt;) — screen readers rely on structure for navigation</li>
+        <li><strong>Don't skip heading levels</strong> — going h1 → h3 confuses assistive technology and users who navigate by headings</li>
+        <li><strong>Large text contrast: 3:1 minimum</strong> (WCAG AA) for text 18px+ or 14px+ bold — lower threshold than body text</li>
+        <li><strong>Tight line-height (1.1-1.2) acceptable</strong> for display type, but increase to 1.5 if text wraps multiple lines</li>
+        <li><strong>Avoid light weights (200-300) on small screens</strong> — thin strokes are harder to read, especially on low-DPI displays</li>
+        <li><strong>Condensed for space-constrained layouts only</strong> — normal width is more legible for long headings</li>
+        <li><strong>Use weight to establish hierarchy,</strong> not just size — bolder weights create clearer visual structure</li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>

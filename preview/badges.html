@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Badges" subtitle="Pill badges with status dot" viewport="700x90" --><html><head>
+
+
+  <meta charset="utf-8">
+  <title>Badges</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 32px 40px 72px;
+      font-family: var(--ps-font-sans);
+      background: var(--ps-sem-bg-surface);
+      color: var(--ps-fg-primary);
+      font-size: 15px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      letter-spacing: -0.2px;
+    }
+
+    .intro {
+      font-size: 15px;
+      color: var(--ps-fg-secondary);
+      margin: 0 0 32px;
+      max-width: 860px;
+      line-height: 1.6;
+    }
+
+    .section {
+      margin-bottom: 40px;
+      border: 1px solid var(--ps-border-default);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--ps-sem-bg-surface);
+    }
+
+    .section-head {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--ps-border-default);
+      background: var(--ps-sem-bg-canvas);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 {
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ps-brand-primary);
+      font-weight: 700;
+      margin: 0;
+      flex-shrink: 0;
+    }
+
+    .section-head .desc {
+      font-size: 13px;
+      color: var(--ps-fg-secondary);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .section-body {
+      padding: 32px 24px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .badge-row + .badge-row {
+      margin-top: 24px;
+    }
+
+    /* Status Badges — 4px top/bottom, 8px left/right */
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      gap: 8px;
+      border: 0;
+    }
+
+    .badge-status.not-shipped {
+      background: #E5E5E5;
+      color: #525252;
+    }
+
+    .badge-status.in-transit {
+      background: #E5F4FF;
+      color: var(--ps-sem-fg-brand);
+    }
+
+    .badge-status.delivered {
+      background: #E5F9F2;
+      color: #0A7850;
+    }
+
+    .badge-status.urgent {
+      background: #FFF4E5;
+      color: #C56F00;
+    }
+
+    .badge-status.critical {
+      background: #FFEBEB;
+      color: #9E2020;
+    }
+
+    .badge-status.approved {
+      background: #E5F9F2;
+      color: #0A7850;
+    }
+
+    .badge-status.pending {
+      background: #E5F4FF;
+      color: var(--ps-sem-fg-brand);
+    }
+
+    .badge-status.under-contract {
+      background: #E5F4FF;
+      color: var(--ps-sem-fg-brand);
+    }
+
+    .badge-status.items-count {
+      background: #E5F4FF;
+      color: var(--ps-sem-fg-brand);
+    }
+
+    /* List Type Badges */
+    .badge-list-type {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 16px;
+      border-radius: 40px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .badge-list-type.shopping {
+      background: #F5E6FF;
+      color: #9333EA;
+    }
+
+    .badge-list-type.preventative {
+      background: #E0F2FE;
+      color: #0284C7;
+    }
+
+    .badge-list-type.restocking {
+      background: #FCE7F3;
+      color: #BE185D;
+    }
+
+    /* Specs Display */
+    .specs {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #F1F1F1;
+    }
+
+    .specs h3 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ps-sem-fg-secondary);
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .spec-item {
+      background: var(--ps-sem-bg-canvas);
+      border: 1px solid #F1F1F1;
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+
+    .spec-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #949494;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 6px;
+    }
+
+    .spec-value {
+      font-family: var(--ps-font-mono);
+      font-size: 13px;
+      color: var(--ps-sem-fg-primary);
+    }
+
+    .color-mapping-item {
+      background: var(--ps-sem-bg-canvas);
+      border: 1px solid #F1F1F1;
+      border-radius: 6px;
+      padding: 12px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .color-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .color-info {
+      flex: 1;
+    }
+
+    .color-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #949494;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+
+    .color-codes {
+      font-family: var(--ps-font-mono);
+      font-size: 12px;
+      color: var(--ps-sem-fg-primary);
+      line-height: 1.4;
+    }
+
+    .accessibility {
+      background: #E0F2FE;
+      border-color: #0284C7;
+    }
+
+    .accessibility h2 {
+      color: #0284C7;
+    }
+
+    .accessibility .section-body ul {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .accessibility .section-body li {
+      color: var(--ps-sem-fg-primary);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  </style>
+<link id="gfont-Source-Sans-Pro" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;500;600;700&amp;display=swap"></head>
+<body data-cc-id="cc-1" style="cursor: crosshair; font-family: &quot;Source Sans Pro&quot;;">
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Badges</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1 data-cc-id="cc-9" style="">Badges</h1>
+  <p class="intro" data-cc-id="cc-8" style="font-family: &quot;Source Sans Pro&quot;;">Status indicators and list type labels. Badges communicate state, category, or metadata at a glance.</p>
+
+  <!-- Status Badges -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Status Badges</h2>
+      <div class="desc">Rounded badges for shipment status, approval states, and item counts. Each color maps to semantic meaning.</div>
+    </div>
+    <div class="section-body">
+      <div class="badge-row">
+        <span class="badge-status not-shipped">Not Shipped</span>
+        <span class="badge-status in-transit">In Transit</span>
+        <span class="badge-status delivered">Delivered</span>
+        <span class="badge-status urgent">Urgent</span>
+        <span class="badge-status critical">Critical</span>
+        <span class="badge-status approved">Approved</span>
+        <span class="badge-status pending">Pending</span>
+        <span class="badge-status under-contract">Under Contract</span>
+        <span class="badge-status items-count">XX Items</span>
+      </div>
+
+      <div class="specs">
+        <h3>Specifications</h3>
+        <div class="spec-grid">
+          <div class="spec-item">
+            <div class="spec-label">Padding</div>
+            <div class="spec-value">4px 8px</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Border Radius</div>
+            <div class="spec-value">4px</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Font Size</div>
+            <div class="spec-value">12px</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Font Weight</div>
+            <div class="spec-value">700 (Bold)</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Border</div>
+            <div class="spec-value">none</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Display</div>
+            <div class="spec-value">inline-flex</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- List Type Badges -->
+  <div class="section">
+    <div class="section-head">
+      <h2>List Type Badges</h2>
+      <div class="desc">Small uppercase labels for list categorization. Used in cards to indicate list type (Shopping, Preventative Maintenance, Restocking, etc.).</div>
+    </div>
+    <div class="section-body">
+      <div class="badge-row">
+        <span class="badge-list-type shopping">SHOPPING</span>
+        <span class="badge-list-type preventative">PREVENTATIVE MAINTENANCE</span>
+        <span class="badge-list-type restocking">RESTOCKING</span>
+      </div>
+
+      <div class="specs">
+        <h3>Specifications</h3>
+        <div class="spec-grid">
+          <div class="spec-item">
+            <div class="spec-label">Padding</div>
+            <div class="spec-value">6px 16px</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Border Radius</div>
+            <div class="spec-value">40px (pill shape)</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Font Size</div>
+            <div class="spec-value">12px</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Font Weight</div>
+            <div class="spec-value">700 (Bold)</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Letter Spacing</div>
+            <div class="spec-value">0.5px</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Text Transform</div>
+            <div class="spec-value">uppercase</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Color Mapping -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Status Color Mapping</h2>
+      <div class="desc">Each status maps to specific background and text color pairs for consistent semantic meaning.</div>
+    </div>
+    <div class="section-body">
+      <div class="spec-grid">
+        <div class="color-mapping-item">
+          <div class="color-swatch" style="background: #E6E6E6;"></div>
+          <div class="color-info">
+            <div class="color-name">Not Shipped</div>
+            <div class="color-codes">bg: #E6E6E6<br>text: #4A4A4A</div>
+          </div>
+        </div>
+        <div class="color-mapping-item">
+          <div class="color-swatch" style="background: #E5F4FF;"></div>
+          <div class="color-info">
+            <div class="color-name">In Transit</div>
+            <div class="color-codes">bg: #E5F4FF<br>text: #005BA6</div>
+          </div>
+        </div>
+        <div class="color-mapping-item">
+          <div class="color-swatch" style="background: #E5F9F2;"></div>
+          <div class="color-info">
+            <div class="color-name">Delivered</div>
+            <div class="color-codes">bg: #E5F9F2<br>text: #0A7850</div>
+          </div>
+        </div>
+        <div class="color-mapping-item">
+          <div class="color-swatch" style="background: #FFF4E5;"></div>
+          <div class="color-info">
+            <div class="color-name">Urgent</div>
+            <div class="color-codes">bg: #FFF4E5<br>text: #C56F00</div>
+          </div>
+        </div>
+        <div class="color-mapping-item">
+          <div class="color-swatch" style="background: #FFEBEB;"></div>
+          <div class="color-info">
+            <div class="color-name">Critical</div>
+            <div class="color-codes">bg: #FFEBEB<br>text: #9E2020</div>
+          </div>
+        </div>
+        <div class="color-mapping-item">
+          <div class="color-swatch" style="background: #E5F9F2;"></div>
+          <div class="color-info">
+            <div class="color-name">Approved</div>
+            <div class="color-codes">bg: #E5F9F2<br>text: #0A7850</div>
+          </div>
+        </div>
+        <div class="color-mapping-item">
+          <div class="color-swatch" style="background: #E5F4FF;"></div>
+          <div class="color-info">
+            <div class="color-name">Pending</div>
+            <div class="color-codes">bg: #E5F4FF<br>text: #005BA6</div>
+          </div>
+        </div>
+        <div class="color-mapping-item">
+          <div class="color-swatch" style="background: #E5F4FF;"></div>
+          <div class="color-info">
+            <div class="color-name">Under Contract</div>
+            <div class="color-codes">bg: #E5F4FF<br>text: #005BA6</div>
+          </div>
+        </div>
+        <div class="color-mapping-item">
+          <div class="color-swatch" style="background: #F5E6FF;"></div>
+          <div class="color-info">
+            <div class="color-name">Shopping</div>
+            <div class="color-codes">bg: #F5E6FF<br>text: #9333EA</div>
+          </div>
+        </div>
+        <div class="color-mapping-item">
+          <div class="color-swatch" style="background: #E0F2FE;"></div>
+          <div class="color-info">
+            <div class="color-name">Preventative Maintenance</div>
+            <div class="color-codes">bg: #E0F2FE<br>text: #0284C7</div>
+          </div>
+        </div>
+        <div class="color-mapping-item">
+          <div class="color-swatch" style="background: #FCE7F3;"></div>
+          <div class="color-info">
+            <div class="color-name">Restocking</div>
+            <div class="color-codes">bg: #FCE7F3<br>text: #BE185D</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility & Best Practices -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance and implementation guidance for inclusive badge design.</div>
+    </div>
+    <div class="section-body">
+      <ul style="margin:0;padding:0 0 0 20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Color + text:</strong> Never rely on color alone — badge text must be legible and descriptive</li>
+        <li><strong>Contrast:</strong> All badge color pairs meet WCAG AA standards (4.5:1 minimum)</li>
+        <li><strong>Semantic HTML:</strong> Use <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">&lt;span&gt;</code> for inline badges, wrap in <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">&lt;div&gt;</code> when part of card metadata</li>
+        <li><strong>Consistent mapping:</strong> Status colors should map consistently across the app (blue = in progress, green = complete, red = critical)</li>
+        <li><strong>Concise text:</strong> Keep badge labels short (1-3 words max). For counts, use "XX Items" format</li>
+        <li><strong>Hover states:</strong> Optional subtle lift (<code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">translateY(-1px)</code>) on hover for interactive contexts</li>
+        <li><strong>Screen readers:</strong> Ensure badge context is clear from surrounding content or use <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">aria-label</code> if standalone</li>
+        <li><strong>Responsive sizing:</strong> Font size and padding should scale appropriately on mobile (minimum 11px text)</li>
+      </ul>
+    </div>
+  </div>
+
+
+
+</body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

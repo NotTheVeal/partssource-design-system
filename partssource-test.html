@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Brand" name="PartsSource Canonical Stylesheet Test" subtitle="Verifies the canonical stylesheet works" -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>partssource.css — kitchen sink</title>
+
+<!-- THIS IS THE ONLY STYLESHEET. Everything below is on-brand because of it. -->
+<link rel="stylesheet" href="partssource.css">
+
+<style>
+  /* Page-only layout (not part of the design system). */
+  body { padding: 48px 0; }
+  section { padding: 32px 0; border-bottom: 1px solid var(--ps-sem-border-default); }
+  section:last-child { border-bottom: 0; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 12px; }
+  .note { color: var(--ps-sem-fg-tertiary); font-size: 13px; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<div class="ps-container">
+
+  <header style="margin-bottom: 16px;">
+    <div class="ps-eyebrow">CANONICAL STYLESHEET</div>
+    <h1 style="margin-top: 8px;">partssource.css — kitchen sink</h1>
+    <p style="color: var(--ps-sem-fg-secondary); max-width: 720px;">
+      Every element on this page is styled by <code>partssource.css</code> alone. No inline styles, no extra CSS files, no per-component overrides. If anything looks off-brand, the stylesheet is wrong — not the page.
+    </p>
+  </header>
+
+  <section>
+    <div class="ps-eyebrow">TYPOGRAPHY</div>
+    <h1>H1 — Light 300 Midnight</h1>
+    <h2>H2 — Light 300 Midnight</h2>
+    <h3>H3 — Light 300 Midnight</h3>
+    <h4>H4 — Semibold 600 (the signature jump)</h4>
+    <h5>H5 — Semibold 600</h5>
+    <h6>H6 — Uppercase tracked</h6>
+    <p>This is a paragraph. The body is Source Sans 3 at 16/1.5 in neutral-800 on canvas. <strong>Strong text</strong>, <em>emphasized text</em>, <a href="#">a link</a>, and <code>inline code</code> all inherit on-brand defaults.</p>
+    <p class="note">Headings are airy; body is dense. That contrast is the typographic fingerprint.</p>
+  </section>
+
+  <section>
+    <div class="ps-eyebrow">BUTTONS — bare HTML</div>
+    <p class="note">A naked <code>&lt;button&gt;</code> with no class is the primary button. Add <code>.ps-btn-secondary</code>, <code>.ps-btn-tertiary</code>, or <code>.ps-btn-pill</code> for the other variants.</p>
+    <div class="row">
+      <button>Primary</button>
+      <button class="ps-btn-secondary">Secondary</button>
+      <button class="ps-btn-tertiary">Tertiary</button>
+      <button class="ps-btn-pill">Become a Pro Member</button>
+      <button disabled>Disabled</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="ps-eyebrow">FORM INPUTS — bare HTML</div>
+    <div class="grid-2">
+      <div>
+        <label for="email">Work email</label>
+        <input id="email" type="email" placeholder="you@hospital.org">
+      </div>
+      <div>
+        <label for="qty">Quantity</label>
+        <input id="qty" type="number" value="1">
+      </div>
+      <div>
+        <label for="dept">Department</label>
+        <select id="dept">
+          <option>Biomedical Engineering</option>
+          <option>Supply Chain</option>
+          <option>Procurement</option>
+        </select>
+      </div>
+      <div>
+        <label for="notes">Notes</label>
+        <textarea id="notes" placeholder="HCPCS code or part description"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="ps-eyebrow">CARDS</div>
+    <div class="grid-3">
+      <div class="ps-card">
+        <h4>OEM Part Available</h4>
+        <p style="color: var(--ps-sem-fg-secondary); font-size: 14px;">Reusable Finger Sensor by Masimo. In stock — ships same day.</p>
+        <button class="ps-btn-secondary" style="margin-top: 12px;">View details</button>
+      </div>
+      <div class="ps-card">
+        <h4>Service Agreement</h4>
+        <p style="color: var(--ps-sem-fg-secondary); font-size: 14px;">3-year coverage on imaging assets across two campuses.</p>
+        <button class="ps-btn-secondary" style="margin-top: 12px;">View details</button>
+      </div>
+      <div class="ps-card">
+        <h4>Request a Quote</h4>
+        <p style="color: var(--ps-sem-fg-secondary); font-size: 14px;">Multi-line orders &gt; $5k qualify for PRO pricing.</p>
+        <button class="ps-btn-secondary" style="margin-top: 12px;">Start RFQ</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="ps-eyebrow">BADGES</div>
+    <div class="row">
+      <span class="ps-badge">In Stock</span>
+      <span class="ps-badge ps-badge--success">Approved</span>
+      <span class="ps-badge ps-badge--warning">Backorder</span>
+      <span class="ps-badge ps-badge--danger">Discontinued</span>
+      <span class="ps-badge ps-badge--info">New</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="ps-eyebrow">ALERTS</div>
+    <div style="display: grid; gap: 12px; margin-top: 12px;">
+      <div class="ps-alert ps-alert--success"><strong>Order confirmed.</strong> Tracking will appear in My Orders within 1 business day.</div>
+      <div class="ps-alert"><strong>Notice.</strong> Stryker is accepting orders; tracking may be delayed. PartsSource will provide updates as more information becomes available.</div>
+      <div class="ps-alert ps-alert--warning"><strong>Backorder.</strong> This SKU is expected to ship in 3–4 weeks.</div>
+      <div class="ps-alert ps-alert--danger"><strong>Quote expired.</strong> Pricing was valid through 03/14/26. Request a new quote.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="ps-eyebrow">TABLES</div>
+    <table style="margin-top: 12px;">
+      <thead>
+        <tr><th>SKU</th><th>Description</th><th>Manufacturer</th><th>Qty</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2515-DCI</td><td>Reusable Finger Sensor</td><td>Masimo</td><td>4</td></tr>
+        <tr><td>SP-0125</td><td>Hose, Blood Pressure, 5 ft.</td><td>Welch Allyn Inc.</td><td>12</td></tr>
+        <tr><td>HW-300</td><td>Bair Hugger Warming Unit</td><td>3M Healthcare</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="ps-eyebrow">UTILITY CLASSES</div>
+    <div class="row">
+      <span class="ps-text-primary">primary</span>
+      <span class="ps-text-secondary">secondary</span>
+      <span class="ps-text-tertiary">tertiary</span>
+      <span class="ps-text-brand">brand</span>
+      <span class="ps-text-midnight">midnight</span>
+    </div>
+    <div class="grid-3" style="margin-top: 16px;">
+      <div class="ps-bg-airway"  style="padding: 16px; border-radius: 4px;">.ps-bg-airway</div>
+      <div class="ps-bg-brand"   style="padding: 16px; border-radius: 4px;">.ps-bg-brand</div>
+      <div class="ps-bg-midnight"style="padding: 16px; border-radius: 4px;">.ps-bg-midnight</div>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

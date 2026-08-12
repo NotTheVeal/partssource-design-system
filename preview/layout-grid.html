@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Layout &amp; Grid · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb a{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;}
+  .ps-breadcrumb a:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCC;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+  .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+  .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0 0 4px;}
+  .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+  .section-body{padding:24px;}
+
+  /* Breakpoint table */
+  table.bp{width:100%;border-collapse:collapse;font-size:13px;}
+  table.bp th,table.bp td{padding:12px 14px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:middle;}
+  table.bp th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.bp code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+  .bp-bar{display:inline-block;height:14px;background:#005BA6;border-radius:2px;vertical-align:middle;margin-right:8px;}
+
+  /* Column grid demo */
+  .grid-demo{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;padding:18px;}
+  .grid-demo h3{margin:0 0 10px;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:#777;font-weight:700;}
+  .cols-12,.cols-8,.cols-4{display:grid;gap:12px;}
+  .cols-12{grid-template-columns:repeat(12,1fr);}
+  .cols-8{grid-template-columns:repeat(8,1fr);}
+  .cols-4{grid-template-columns:repeat(4,1fr);}
+  .col-cell{background:#D0EDFC;border-radius:3px;height:38px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#005BA6;font-weight:700;}
+
+  /* Container widths visualizer */
+  .container-viz{padding:24px 8px;background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;}
+  .container-row{margin:0 auto 14px;height:32px;background:#fff;border:1px solid #E6E6E6;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:11px;color:#4A4A4A;font-family:ui-monospace,Menlo,monospace;font-weight:600;justify-content:space-between;position:relative;}
+  .container-row b{color:#002F48;}
+  .container-row span.measure{color:#777;}
+  .c-narrow{max-width:760px;}
+  .c-default{max-width:1280px;}
+  .c-marketing{max-width:1280px;background:#EFF9FE;border-color:#B0D7F4;color:#005BA6;}
+  .c-shell{max-width:1440px;background:#FAFAFA;border-color:#DCDCDC;}
+
+  /* Spacing scale */
+  .space-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;}
+  .space-card{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;padding:14px;}
+  .space-card .bar{height:8px;background:#005BA6;border-radius:2px;margin-bottom:8px;}
+  .space-card b{display:block;font-size:11px;font-family:ui-monospace,Menlo,monospace;color:#002F48;}
+  .space-card span{display:block;font-size:11px;color:#777;margin-top:2px;}
+
+  /* Page templates */
+  .template-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+  .template{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;overflow:hidden;}
+  .template-canvas{aspect-ratio:16/10;background:#fff;border-bottom:1px solid #F1F1F1;padding:8px;display:flex;flex-direction:column;gap:6px;}
+  .template-canvas .nav{height:14px;background:#003763;border-radius:2px;}
+  .template-canvas .body{flex:1;display:flex;gap:6px;}
+  .template-canvas .rail{width:24%;background:#003763;border-radius:2px;}
+  .template-canvas .content{flex:1;background:#F1F1F1;border-radius:2px;}
+  .template-canvas .hero{height:22%;background:#D0EDFC;border-radius:2px;}
+  .template-canvas .row{height:10%;background:#E6E6E6;border-radius:2px;}
+  .template-meta{padding:14px;}
+  .template-meta h3{margin:0 0 4px;font-size:14px;font-weight:700;color:#002F48;}
+  .template-meta p{margin:0;font-size:12.5px;color:var(--ps-fg-secondary);line-height:1.5;}
+
+  /* Responsive demo */
+  .resp-demo{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  @media(max-width:880px){.resp-demo{grid-template-columns:1fr;}}
+  .resp-frame{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;padding:14px;}
+  .resp-frame h4{margin:0 0 8px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#005BA6;font-weight:700;display:flex;justify-content:space-between;}
+  .resp-frame h4 small{color:#777;font-family:ui-monospace,Menlo,monospace;letter-spacing:0;text-transform:none;font-weight:500;}
+  .resp-frame .preview{aspect-ratio:4/3;background:#fff;border:1px solid #E6E6E6;border-radius:4px;padding:8px;display:flex;flex-direction:column;gap:4px;}
+  .resp-frame .preview .b{background:#D0EDFC;border-radius:2px;}
+  .resp-frame .preview .b.full{height:18px;}
+  .resp-frame .preview .b.row{height:30px;flex:1;}
+
+  /* Code */
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+  pre{margin:0;padding:14px 18px;background:#0F1E2E;color:#E6F0FA;border-radius:6px;overflow-x:auto;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.6;}
+  pre .k{color:#FFB86C;}
+  pre .s{color:#A3E8A2;}
+  pre .c{color:#7FA0BC;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Layout &amp; Grid</span>
+</nav>
+
+<h1>Layout &amp; Grid</h1>
+<p class="intro">Breakpoints, container widths, columns and gutters. The grid is opinionated on purpose — most product screens fit in one of three templates, and every responsive decision is made against the same five breakpoints.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Breakpoints</h2>
+    <div class="desc">Five tiers. Always mobile-first; <code>min-width</code> only.</div>
+  </div>
+  <div class="section-body">
+    <table class="bp">
+      <thead><tr><th>Token</th><th>Min width</th><th>Range</th><th>Typical device</th><th>Columns</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-bp-xs</code></td><td><code>0</code></td><td>0 – 599 px</td><td><span class="bp-bar" style="width:32px;"></span>Phone (portrait)</td><td>4</td></tr>
+        <tr><td><code>--ps-bp-sm</code></td><td><code>600 px</code></td><td>600 – 767 px</td><td><span class="bp-bar" style="width:46px;"></span>Phone (landscape) · small tablet</td><td>4</td></tr>
+        <tr><td><code>--ps-bp-md</code></td><td><code>768 px</code></td><td>768 – 1023 px</td><td><span class="bp-bar" style="width:64px;"></span>Tablet</td><td>8</td></tr>
+        <tr><td><code>--ps-bp-lg</code></td><td><code>1024 px</code></td><td>1024 – 1439 px</td><td><span class="bp-bar" style="width:88px;"></span>Laptop · small desktop</td><td>12</td></tr>
+        <tr><td><code>--ps-bp-xl</code></td><td><code>1440 px</code></td><td>1440 px +</td><td><span class="bp-bar" style="width:120px;"></span>Desktop · external monitor</td><td>12</td></tr>
+      </tbody>
+    </table>
+    <p style="margin:14px 0 0;font-size:13px;color:#777;line-height:1.55;">Use <strong>container queries</strong> (not viewport media queries) for components that may be embedded in side rails, drawers, or modals. See <a href="tabs-responsive.html" style="color:#005BA6;">Tabs — Responsive</a> for a pattern reference.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Container widths</h2>
+    <div class="desc">Four canonical content widths. Pick by content type, not by component.</div>
+  </div>
+  <div class="section-body">
+    <div class="container-viz">
+      <div class="container-row c-narrow"><b>--ps-sem-container-narrow</b><span class="measure">760 px</span></div>
+      <div class="container-row c-default"><b>--ps-sem-container-default</b><span class="measure">1280 px</span></div>
+      <div class="container-row c-marketing"><b>--ps-sem-container-marketing</b><span class="measure">1280 px · marketing surfaces</span></div>
+      <div class="container-row c-shell"><b>--ps-sem-container-shell</b><span class="measure">1440 px · top-nav outer frame</span></div>
+    </div>
+    <table class="bp" style="margin-top:18px;">
+      <thead><tr><th>Container</th><th>Width</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td><code>narrow</code></td><td>760 px</td><td>Long-form text · single-column forms · article body</td></tr>
+        <tr><td><code>default</code></td><td>1280 px</td><td>Most product screens · dashboards · tables · cards</td></tr>
+        <tr><td><code>marketing</code></td><td>1280 px</td><td>Hero rows · landing pages · CMS-driven surfaces</td></tr>
+        <tr><td><code>shell</code></td><td>1440 px</td><td>Outer top-nav frame · full-bleed page chrome</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Column grids</h2>
+    <div class="desc">12-column for laptop+, 8 for tablet, 4 for mobile. 24 px gutter at <code>md</code> and up; 16 px below.</div>
+  </div>
+  <div class="section-body" style="display:grid;gap:18px;">
+    <div class="grid-demo">
+      <h3>12 columns · lg + xl</h3>
+      <div class="cols-12">
+        <div class="col-cell">1</div><div class="col-cell">2</div><div class="col-cell">3</div><div class="col-cell">4</div>
+        <div class="col-cell">5</div><div class="col-cell">6</div><div class="col-cell">7</div><div class="col-cell">8</div>
+        <div class="col-cell">9</div><div class="col-cell">10</div><div class="col-cell">11</div><div class="col-cell">12</div>
+      </div>
+    </div>
+    <div class="grid-demo">
+      <h3>8 columns · md</h3>
+      <div class="cols-8">
+        <div class="col-cell">1</div><div class="col-cell">2</div><div class="col-cell">3</div><div class="col-cell">4</div>
+        <div class="col-cell">5</div><div class="col-cell">6</div><div class="col-cell">7</div><div class="col-cell">8</div>
+      </div>
+    </div>
+    <div class="grid-demo">
+      <h3>4 columns · xs &amp; sm</h3>
+      <div class="cols-4">
+        <div class="col-cell">1</div><div class="col-cell">2</div><div class="col-cell">3</div><div class="col-cell">4</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Spacing scale</h2>
+    <div class="desc">4 px base unit. Every margin, gap, and padding in the system comes from this scale.</div>
+  </div>
+  <div class="section-body">
+    <div class="space-list">
+      <div class="space-card"><div class="bar" style="width:4px;"></div><b>--ps-space-1</b><span>4 px</span></div>
+      <div class="space-card"><div class="bar" style="width:8px;"></div><b>--ps-space-2</b><span>8 px</span></div>
+      <div class="space-card"><div class="bar" style="width:12px;"></div><b>--ps-space-3</b><span>12 px</span></div>
+      <div class="space-card"><div class="bar" style="width:16px;"></div><b>--ps-space-4</b><span>16 px</span></div>
+      <div class="space-card"><div class="bar" style="width:20px;"></div><b>--ps-space-5</b><span>20 px</span></div>
+      <div class="space-card"><div class="bar" style="width:24px;"></div><b>--ps-space-6</b><span>24 px</span></div>
+      <div class="space-card"><div class="bar" style="width:32px;"></div><b>--ps-space-8</b><span>32 px</span></div>
+      <div class="space-card"><div class="bar" style="width:40px;"></div><b>--ps-space-10</b><span>40 px</span></div>
+      <div class="space-card"><div class="bar" style="width:48px;"></div><b>--ps-space-12</b><span>48 px</span></div>
+      <div class="space-card"><div class="bar" style="width:64px;"></div><b>--ps-space-16</b><span>64 px</span></div>
+      <div class="space-card"><div class="bar" style="width:96px;"></div><b>--ps-space-24</b><span>96 px</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Page templates</h2>
+    <div class="desc">The four shapes 90% of PartsSource screens take. Pick one, then compose into it.</div>
+  </div>
+  <div class="section-body">
+    <div class="template-grid">
+      <div class="template">
+        <div class="template-canvas">
+          <div class="nav"></div>
+          <div class="body">
+            <div class="rail"></div>
+            <div class="content"></div>
+          </div>
+        </div>
+        <div class="template-meta">
+          <h3>App Shell</h3>
+          <p>Top nav + left rail + main content. The default. Used for Marketplace, Pro, Command Center.</p>
+        </div>
+      </div>
+      <div class="template">
+        <div class="template-canvas">
+          <div class="nav"></div>
+          <div class="hero"></div>
+          <div class="row"></div>
+          <div class="row"></div>
+          <div class="row"></div>
+        </div>
+        <div class="template-meta">
+          <h3>Marketing / CMS</h3>
+          <p>Top nav + full-bleed hero + stacked content blocks. No left rail. Used for landing &amp; campaign pages.</p>
+        </div>
+      </div>
+      <div class="template">
+        <div class="template-canvas">
+          <div class="nav"></div>
+          <div class="body" style="justify-content:center;">
+            <div class="content" style="max-width:60%;"></div>
+          </div>
+        </div>
+        <div class="template-meta">
+          <h3>Focused Task</h3>
+          <p>Top nav + 760 px centered column. Used for sign-in, single-purpose forms, checkout.</p>
+        </div>
+      </div>
+      <div class="template">
+        <div class="template-canvas">
+          <div class="nav"></div>
+          <div class="body">
+            <div class="content"></div>
+            <div class="rail" style="background:#F1F1F1;"></div>
+          </div>
+        </div>
+        <div class="template-meta">
+          <h3>Detail + Rail</h3>
+          <p>Top nav + main + right rail (status, related, actions). Used for PDP, asset detail, order detail.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Responsive principles</h2>
+    <div class="desc">How a layout adapts across the breakpoint scale.</div>
+  </div>
+  <div class="section-body">
+    <div class="resp-demo">
+      <div class="resp-frame">
+        <h4>xs · 375 <small>4 col</small></h4>
+        <div class="preview">
+          <div class="b full"></div>
+          <div class="b row"></div>
+          <div class="b row"></div>
+        </div>
+        <p style="margin:10px 0 0;font-size:12.5px;color:#777;line-height:1.5;">Single column. Left rail collapses to drawer. Tables become card lists. Hero stacks above content.</p>
+      </div>
+      <div class="resp-frame">
+        <h4>md · 768 <small>8 col</small></h4>
+        <div class="preview">
+          <div class="b full"></div>
+          <div class="b row" style="height:24px;"></div>
+          <div style="display:flex;gap:4px;flex:1;"><div class="b row" style="flex:1;"></div><div class="b row" style="flex:1;"></div></div>
+        </div>
+        <p style="margin:10px 0 0;font-size:12.5px;color:#777;line-height:1.5;">Two-column grids. Rail still collapsible. Tables show 4–6 columns max; rest behind a "more" disclosure.</p>
+      </div>
+      <div class="resp-frame">
+        <h4>xl · 1440 <small>12 col</small></h4>
+        <div class="preview">
+          <div class="b full"></div>
+          <div style="display:flex;gap:4px;flex:1;"><div class="b row" style="width:20%;background:#003763;"></div><div class="b row" style="flex:1;"></div><div class="b row" style="width:25%;background:#F1F1F1;"></div></div>
+        </div>
+        <p style="margin:10px 0 0;font-size:12.5px;color:#777;line-height:1.5;">Full shell. Left rail expanded. Right rail visible for detail screens. Tables show all columns.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Code · how to use</h2>
+    <div class="desc">CSS variables are exposed from <code>tokens.css</code>.</div>
+  </div>
+  <div class="section-body">
+    <pre><span class="c">/* CSS — use the container token, gutter token, and a responsive grid */</span>
+<span class="k">.page</span> {
+  <span class="k">max-width</span>: <span class="s">var(--ps-sem-container-default)</span>; <span class="c">/* 1280 px */</span>
+  <span class="k">margin</span>: <span class="s">0 auto</span>;
+  <span class="k">padding</span>: <span class="s">0 var(--ps-space-6)</span>; <span class="c">/* 24 px gutter */</span>
+}
+
+<span class="k">.dashboard-grid</span> {
+  <span class="k">display</span>: <span class="s">grid</span>;
+  <span class="k">grid-template-columns</span>: <span class="s">repeat(4, 1fr)</span>;   <span class="c">/* xs · sm */</span>
+  <span class="k">gap</span>: <span class="s">var(--ps-space-4)</span>;
+}
+
+<span class="k">@media</span> (min-width: 768px) {
+  <span class="k">.dashboard-grid</span> { <span class="k">grid-template-columns</span>: <span class="s">repeat(8, 1fr)</span>; <span class="k">gap</span>: <span class="s">var(--ps-space-6)</span>; }
+}
+
+<span class="k">@media</span> (min-width: 1024px) {
+  <span class="k">.dashboard-grid</span> { <span class="k">grid-template-columns</span>: <span class="s">repeat(12, 1fr)</span>; }
+}</pre>
+  </div>
+</div>
+
+</body>
+</html>

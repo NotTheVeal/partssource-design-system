@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Foundation" name="Motion" subtitle="Duration tokens, easing curves, choreography rules, and reduced-motion policy" viewport="700x260" -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motion · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb a{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;}
+  .ps-breadcrumb a:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCC;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+  .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+  .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0 0 4px;}
+  .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+  .section-body{padding:24px;}
+
+  /* Duration tokens */
+  .dur-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+  .dur-card{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;padding:18px;}
+  .dur-card .name{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:#002F48;font-weight:600;}
+  .dur-card .value{font-size:22px;font-weight:300;color:#005BA6;margin:6px 0 2px;}
+  .dur-card .note{font-size:12.5px;color:var(--ps-fg-secondary);line-height:1.5;margin-bottom:14px;}
+  .dur-track{position:relative;height:6px;background:#E6E6E6;border-radius:3px;overflow:hidden;}
+  .dur-bubble{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;background:#005BA6;left:0;animation-iteration-count:infinite;animation-direction:alternate;animation-fill-mode:both;animation-timing-function:cubic-bezier(0.4,0,0.2,1);}
+  .dur-1 .dur-bubble{animation:slide 75ms infinite alternate;}
+  .dur-2 .dur-bubble{animation:slide 150ms infinite alternate;}
+  .dur-3 .dur-bubble{animation:slide 250ms infinite alternate;}
+  .dur-4 .dur-bubble{animation:slide 400ms infinite alternate;}
+  .dur-5 .dur-bubble{animation:slide 600ms infinite alternate;}
+  @keyframes slide{from{left:0;}to{left:calc(100% - 14px);}}
+
+  /* Easing curves */
+  .ease-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;}
+  .ease-card{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;padding:16px;}
+  .ease-card .name{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:#002F48;font-weight:600;}
+  .ease-card .curve{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#777;margin:4px 0 10px;}
+  .ease-card svg{width:100%;height:120px;display:block;}
+  .ease-card .note{font-size:12.5px;color:var(--ps-fg-secondary);line-height:1.5;margin-top:10px;}
+
+  /* When to use what */
+  table.use{width:100%;border-collapse:collapse;font-size:13px;}
+  table.use th,table.use td{padding:12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.use th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.use code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  /* Choreography */
+  .choreo{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+  .choreo-card{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;padding:16px;}
+  .choreo-card h3{margin:0 0 6px;font-size:14px;font-weight:700;color:#002F48;}
+  .choreo-card p{margin:0;font-size:12.5px;color:var(--ps-fg-secondary);line-height:1.55;}
+  .choreo-card .seq{display:flex;align-items:center;gap:4px;margin-top:10px;font-size:11px;color:#005BA6;font-family:ui-monospace,Menlo,monospace;}
+  .choreo-card .seq span{padding:3px 8px;border-radius:3px;background:#EFF9FE;border:1px solid #B0D7F4;}
+  .choreo-card .seq svg{flex-shrink:0;}
+
+  /* Reduced motion */
+  .rm{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:680px){.rm{grid-template-columns:1fr;}}
+  .rm-card{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;padding:16px;}
+  .rm-card h4{margin:0 0 6px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#005BA6;font-weight:700;}
+  .rm-card p{margin:0;font-size:12.5px;color:var(--ps-fg-secondary);line-height:1.55;}
+
+  /* Do/Don't */
+  .dodont{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:780px){.dodont{grid-template-columns:1fr;}}
+  .dodont__col{background:#fff;border:1px solid #F1F1F1;border-radius:8px;overflow:hidden;}
+  .dodont__col h4{margin:0;padding:12px 16px;font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  .dodont__do h4{background:#E5F9F2;color:#0A7850;}
+  .dodont__dont h4{background:#FDECEC;color:#9E2A1C;}
+  .dodont__col ul{list-style:none;margin:0;padding:14px 18px;display:flex;flex-direction:column;gap:10px;font-size:13px;line-height:1.5;}
+  .dodont__col li{padding-left:14px;position:relative;}
+  .dodont__col li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;}
+  .dodont__do li::before{background:#0A7850;}
+  .dodont__dont li::before{background:#9E2A1C;}
+
+  pre{margin:0;padding:14px 18px;background:#0F1E2E;color:#E6F0FA;border-radius:6px;overflow-x:auto;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.6;}
+  pre .k{color:#FFB86C;}
+  pre .s{color:#A3E8A2;}
+  pre .c{color:#7FA0BC;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Motion</span>
+</nav>
+
+<h1>Motion</h1>
+<p class="intro">Motion is a language, not a decoration. The right animation tells a user what happened, where their attention should go, and what's about to be possible. The wrong animation makes the product feel slow. Five durations, three easing curves, one rule: every motion serves a function.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Duration tokens</h2>
+    <div class="desc">Five steps. Pick the slowest that still feels instant for the gesture.</div>
+  </div>
+  <div class="section-body">
+    <div class="dur-grid">
+      <div class="dur-card dur-1"><div class="name">--ps-duration-instant</div><div class="value">75 ms</div><div class="note">Hover color swaps, focus rings. Should feel instantaneous.</div><div class="dur-track"><div class="dur-bubble"></div></div></div>
+      <div class="dur-card dur-2"><div class="name">--ps-duration-fast</div><div class="value">150 ms</div><div class="note">Button press, tooltip fade, accordion toggle. Default for most micro-interactions.</div><div class="dur-track"><div class="dur-bubble"></div></div></div>
+      <div class="dur-card dur-3"><div class="name">--ps-duration-standard</div><div class="value">250 ms</div><div class="note">Modal/drawer in-and-out, tab change, panel expansion.</div><div class="dur-track"><div class="dur-bubble"></div></div></div>
+      <div class="dur-card dur-4"><div class="name">--ps-duration-slow</div><div class="value">400 ms</div><div class="note">Page transitions, full-card content swap. Used sparingly.</div><div class="dur-track"><div class="dur-bubble"></div></div></div>
+      <div class="dur-card dur-5"><div class="name">--ps-duration-emphasis</div><div class="value">600 ms</div><div class="note">Hero parallax, onboarding reveals, success celebrations. One per screen, max.</div><div class="dur-track"><div class="dur-bubble"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Easing curves</h2>
+    <div class="desc">Three curves. Standard for most things; decelerate for entrances; accelerate for exits.</div>
+  </div>
+  <div class="section-body">
+    <div class="ease-grid">
+      <div class="ease-card">
+        <div class="name">--ps-ease-standard</div>
+        <div class="curve">cubic-bezier(0.4, 0, 0.2, 1)</div>
+        <svg viewBox="0 0 200 120" preserveAspectRatio="none">
+          <line x1="0" y1="110" x2="200" y2="10" stroke="#E6E6E6" stroke-dasharray="3,3"/>
+          <path d="M 0 110 C 80 110, 100 30, 200 10" fill="none" stroke="#005BA6" stroke-width="2"/>
+          <circle cx="0" cy="110" r="3" fill="#005BA6"/><circle cx="200" cy="10" r="3" fill="#005BA6"/>
+        </svg>
+        <div class="note">Default. Symmetric acceleration. Use for state changes that have no inherent direction (toggles, tabs, button presses).</div>
+      </div>
+      <div class="ease-card">
+        <div class="name">--ps-ease-decelerate</div>
+        <div class="curve">cubic-bezier(0, 0, 0.2, 1)</div>
+        <svg viewBox="0 0 200 120" preserveAspectRatio="none">
+          <line x1="0" y1="110" x2="200" y2="10" stroke="#E6E6E6" stroke-dasharray="3,3"/>
+          <path d="M 0 110 C 20 110, 80 30, 200 10" fill="none" stroke="#0A7850" stroke-width="2"/>
+          <circle cx="0" cy="110" r="3" fill="#0A7850"/><circle cx="200" cy="10" r="3" fill="#0A7850"/>
+        </svg>
+        <div class="note">Entrances. Starts fast, settles. Use for elements coming into view — drawer opens, toast appears, dropdown reveals.</div>
+      </div>
+      <div class="ease-card">
+        <div class="name">--ps-ease-accelerate</div>
+        <div class="curve">cubic-bezier(0.4, 0, 1, 1)</div>
+        <svg viewBox="0 0 200 120" preserveAspectRatio="none">
+          <line x1="0" y1="110" x2="200" y2="10" stroke="#E6E6E6" stroke-dasharray="3,3"/>
+          <path d="M 0 110 C 100 110, 150 110, 200 10" fill="none" stroke="#B45309" stroke-width="2"/>
+          <circle cx="0" cy="110" r="3" fill="#B45309"/><circle cx="200" cy="10" r="3" fill="#B45309"/>
+        </svg>
+        <div class="note">Exits. Starts slow, accelerates out. Use for elements leaving view — drawer closes, toast dismisses.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>When to use what</h2>
+    <div class="desc">Pair durations with curves by gesture.</div>
+  </div>
+  <div class="section-body">
+    <table class="use">
+      <thead><tr><th>Gesture</th><th>Duration</th><th>Easing</th><th>Property</th></tr></thead>
+      <tbody>
+        <tr><td>Color/background swap (hover, focus)</td><td><code>instant · 75 ms</code></td><td><code>standard</code></td><td><code>background-color</code>, <code>color</code></td></tr>
+        <tr><td>Button press scale</td><td><code>fast · 150 ms</code></td><td><code>standard</code></td><td><code>transform: scale(0.98)</code></td></tr>
+        <tr><td>Tooltip fade</td><td><code>fast · 150 ms</code></td><td><code>decelerate</code> in / <code>accelerate</code> out</td><td><code>opacity</code></td></tr>
+        <tr><td>Accordion / disclosure</td><td><code>standard · 250 ms</code></td><td><code>standard</code></td><td><code>height</code>, <code>opacity</code></td></tr>
+        <tr><td>Tab transition</td><td><code>standard · 250 ms</code></td><td><code>standard</code></td><td><code>transform: translateX()</code> on the track</td></tr>
+        <tr><td>Drawer in</td><td><code>standard · 250 ms</code></td><td><code>decelerate</code></td><td><code>transform: translateX(0)</code></td></tr>
+        <tr><td>Drawer out</td><td><code>fast · 150 ms</code></td><td><code>accelerate</code></td><td><code>transform: translateX(100%)</code></td></tr>
+        <tr><td>Modal in</td><td><code>standard · 250 ms</code></td><td><code>decelerate</code></td><td>scrim opacity + dialog scale 0.96 → 1</td></tr>
+        <tr><td>Modal out</td><td><code>fast · 150 ms</code></td><td><code>accelerate</code></td><td>reverse</td></tr>
+        <tr><td>Toast slide-in</td><td><code>standard · 250 ms</code></td><td><code>decelerate</code></td><td><code>transform: translateX(100%)</code> → 0 + fade</td></tr>
+        <tr><td>Page transition</td><td><code>slow · 400 ms</code></td><td><code>standard</code></td><td><code>opacity</code> cross-fade</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Choreography</h2>
+    <div class="desc">When multiple elements animate, sequence matters more than duration.</div>
+  </div>
+  <div class="section-body">
+    <div class="choreo">
+      <div class="choreo-card">
+        <h3>Scrim before dialog</h3>
+        <p>Open a modal by fading the scrim in first, then bringing the dialog in over the top. Reverse on close.</p>
+        <div class="seq"><span>scrim</span><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5h9m0 0L7 2m3 3L7 8" stroke="#005BA6"/></svg><span>dialog</span></div>
+      </div>
+      <div class="choreo-card">
+        <h3>Container then contents</h3>
+        <p>A drawer slides in first; its internal elements stagger by 30 ms thereafter so the user perceives the chrome before scanning content.</p>
+        <div class="seq"><span>drawer</span><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5h9m0 0L7 2m3 3L7 8" stroke="#005BA6"/></svg><span>row 1</span><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5h9m0 0L7 2m3 3L7 8" stroke="#005BA6"/></svg><span>row 2</span></div>
+      </div>
+      <div class="choreo-card">
+        <h3>Exit faster than entry</h3>
+        <p>Closing always uses the shorter of the duration pair. The user has decided to dismiss — get out of their way.</p>
+        <div class="seq"><span>in: 250 ms</span><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5h9m0 0L7 2m3 3L7 8" stroke="#005BA6"/></svg><span>out: 150 ms</span></div>
+      </div>
+      <div class="choreo-card">
+        <h3>One emphasis per screen</h3>
+        <p>Hero animations, success celebrations, parallax — at most one of these per screen. Two competing emphases cancel each other.</p>
+        <div class="seq"><span>hero only</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Reduced motion</h2>
+    <div class="desc">All motion respects <code>prefers-reduced-motion</code>. Substitutes carry the same information without movement.</div>
+  </div>
+  <div class="section-body">
+    <div class="rm">
+      <div class="rm-card">
+        <h4>Default</h4>
+        <p>Drawer slides in from the right at 250 ms with decelerate easing.</p>
+      </div>
+      <div class="rm-card">
+        <h4>Reduced</h4>
+        <p>Drawer cross-fades into place at 75 ms. Same start and end states; no translate.</p>
+      </div>
+      <div class="rm-card">
+        <h4>Default</h4>
+        <p>Toast slides in from the bottom-right corner with a 250 ms decelerate.</p>
+      </div>
+      <div class="rm-card">
+        <h4>Reduced</h4>
+        <p>Toast fades in at 75 ms in its final position; auto-announces via <code>aria-live</code>.</p>
+      </div>
+    </div>
+    <p style="margin:16px 0 0;font-size:13px;color:#777;line-height:1.55;">Never use motion as the only signal of state change. Pair every animation with a label, focus shift, or screen-reader announcement.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Code · how to use</h2>
+    <div class="desc">CSS variables from <code>tokens.css</code>. Same names work in <code>tokens.ts</code> for the React kit.</div>
+  </div>
+  <div class="section-body">
+    <pre><span class="c">/* Drawer entrance */</span>
+<span class="k">.drawer</span> {
+  <span class="k">transform</span>: <span class="s">translateX(100%)</span>;
+  <span class="k">transition</span>: <span class="s">transform var(--ps-duration-standard) var(--ps-ease-decelerate)</span>;
+}
+<span class="k">.drawer.is-open</span> {
+  <span class="k">transform</span>: <span class="s">translateX(0)</span>;
+}
+
+<span class="c">/* Drawer exit — shorter, accelerate */</span>
+<span class="k">.drawer.is-closing</span> {
+  <span class="k">transition</span>: <span class="s">transform var(--ps-duration-fast) var(--ps-ease-accelerate)</span>;
+  <span class="k">transform</span>: <span class="s">translateX(100%)</span>;
+}
+
+<span class="c">/* Reduced motion — global short-circuit */</span>
+<span class="k">@media</span> (prefers-reduced-motion: reduce) {
+  <span class="k">*</span>, <span class="k">*::before</span>, <span class="k">*::after</span> {
+    <span class="k">animation-duration</span>: <span class="s">75ms !important</span>;
+    <span class="k">transition-duration</span>: <span class="s">75ms !important</span>;
+  }
+  <span class="k">.drawer</span> { <span class="k">transform</span>: <span class="s">none</span>; <span class="k">opacity</span>: <span class="s">0</span>; }
+  <span class="k">.drawer.is-open</span> { <span class="k">opacity</span>: <span class="s">1</span>; }
+}</pre>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Do &amp; Don't</h2>
+    <div class="desc">Rules that prevent most motion bugs.</div>
+  </div>
+  <div class="section-body">
+    <div class="dodont">
+      <div class="dodont__col dodont__do">
+        <h4>Do</h4>
+        <ul>
+          <li>Animate <code>transform</code> and <code>opacity</code> — they're GPU-cheap.</li>
+          <li>Use decelerate for entrances, accelerate for exits.</li>
+          <li>Make exit shorter than entry.</li>
+          <li>Stagger siblings by 30–50 ms when they enter together.</li>
+          <li>Test with <code>prefers-reduced-motion: reduce</code> on.</li>
+        </ul>
+      </div>
+      <div class="dodont__col dodont__dont">
+        <h4>Don't</h4>
+        <ul>
+          <li>Animate <code>width</code>, <code>height</code>, <code>left</code>, <code>top</code> — they trigger layout on every frame.</li>
+          <li>Use motion as the only signal of a state change.</li>
+          <li>Stack more than one emphasis animation per screen.</li>
+          <li>Override <code>--ps-duration-*</code> tokens inline. If you need a one-off, propose a new token.</li>
+          <li>Animate scrolling. Let the browser handle it.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

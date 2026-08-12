@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Visualization — PS Design Library</title>
+<template id="__bundler_thumbnail" data-bg-color="#FAFAFA">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#FAFAFA"/>
+    <g transform="translate(180,150)">
+      <rect width="380" height="220" rx="12" fill="#FFFFFF" stroke="#DCDCDC"/>
+      <text x="24" y="44" font-family="Source Sans Pro,sans-serif" font-size="13" font-weight="700" fill="#005BA6" letter-spacing="1.6">PARTS SPEND</text>
+      <text x="24" y="100" font-family="Source Sans Pro,sans-serif" font-size="42" font-weight="300" fill="#002F48">$1.2M</text>
+      <rect x="24" y="140" width="280" height="14" rx="3" fill="#005BA6"/>
+      <rect x="24" y="160" width="200" height="14" rx="3" fill="#009CF4"/>
+      <rect x="24" y="180" width="140" height="14" rx="3" fill="#B0C6D3"/>
+    </g>
+    <g transform="translate(640,150)">
+      <rect width="380" height="220" rx="12" fill="#FFFFFF" stroke="#DCDCDC"/>
+      <text x="24" y="44" font-family="Source Sans Pro,sans-serif" font-size="13" font-weight="700" fill="#005BA6" letter-spacing="1.6">UPTIME TREND</text>
+      <polyline points="24,180 80,150 140,160 200,120 260,130 320,90 356,80" fill="none" stroke="#005BA6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="356" cy="80" r="5" fill="#005BA6"/>
+    </g>
+    <g transform="translate(180,420)">
+      <rect width="840" height="220" rx="12" fill="#FFFFFF" stroke="#DCDCDC"/>
+      <text x="24" y="44" font-family="Source Sans Pro,sans-serif" font-size="13" font-weight="700" fill="#005BA6" letter-spacing="1.6">COST BY CATEGORY</text>
+      <g transform="translate(24,70)">
+        <rect x="0" y="80" width="60" height="60" fill="#005BA6"/>
+        <rect x="80" y="40" width="60" height="100" fill="#1A6FB5"/>
+        <rect x="160" y="60" width="60" height="80" fill="#4D90C8"/>
+        <rect x="240" y="20" width="60" height="120" fill="#009CF4"/>
+        <rect x="320" y="90" width="60" height="50" fill="#B0C6D3"/>
+        <rect x="400" y="55" width="60" height="85" fill="#17AB78"/>
+        <rect x="480" y="105" width="60" height="35" fill="#E3A92D"/>
+        <rect x="560" y="70" width="60" height="70" fill="#005BA6"/>
+        <rect x="640" y="35" width="60" height="105" fill="#1A6FB5"/>
+        <rect x="720" y="85" width="60" height="55" fill="#4D90C8"/>
+      </g>
+    </g>
+    <text x="600" y="730" font-family="Source Sans Pro,sans-serif" font-size="20" font-weight="300" fill="#002F48" text-anchor="middle">Data Visualization — PartsSource Design System</text>
+  </svg>
+</template>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --b900:#002F48;--b800:#003870;--b700:#004A84;--b600:#004E94;
+  --b500:#005BA6;--b400:#1A6FB5;--b300:#4D90C8;--b200:#009CF4;
+  --b100:#DCEAED;--b50:#B0C6D3;
+  --success:#17AB78;--warning:#E3A92D;--danger:#E00000;
+  --n0:#FFFFFF;--n50:#FAFAFA;--n100:#F1F1F1;--n200:#DCDCDC;
+  --n300:#CCCCCC;--n400:#949494;--n500:#777777;--n700:#4A4A4A;
+  --fg:  #4A4A4A;--fg2:#777777;--fg3:#949494;--link:#005BA6;
+  --border:#DCDCDC;
+  --font:'Source Sans Pro',-apple-system,sans-serif;
+  --mono:'SF Mono',Consolas,monospace;
+  --sh-md:0 2px 10px rgba(0,47,72,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--n50);color:var(--fg);font-size:15px;line-height:1.5;padding:40px 40px 80px}
+/* header */
+.page-hd{max-width:1200px;margin:0 auto 40px}
+.crumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:14px}
+.crumb a{color:var(--link);text-decoration:none}.crumb a:hover{text-decoration:underline}
+h1{font-size:30px;font-weight:300;color:var(--b900);letter-spacing:-.3px;margin-bottom:8px}
+.pdesc{font-size:15px;color:var(--fg2);max-width:700px;line-height:1.6}
+/* section */
+.sec{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;margin:0 auto 32px;max-width:1200px}
+.sh{padding:15px 24px;border-bottom:1px solid var(--border);background:var(--n50);display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sh h2{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--b500);font-weight:700;white-space:nowrap}
+.sh .sd{font-size:12px;color:var(--fg2)}
+.sb{padding:24px}
+/* chart card */
+.cc{background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;transition:box-shadow 200ms ease;display:flex;flex-direction:column}
+.cc:hover{box-shadow:0 4px 12px rgba(0,47,72,.10)}
+.ch{padding:14px 18px 0;display:flex;justify-content:space-between;align-items:flex-start;flex-shrink:0}
+.ct{font-size:13px;font-weight:600;color:var(--b900)}
+.cs{font-size:11px;color:var(--fg2);margin-top:2px}
+.cb{padding:12px 18px 18px;flex:1;min-height:0}
+/* legend */
+.leg{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;font-size:11px;color:var(--fg2)}
+.leg span{display:flex;align-items:center;gap:5px}
+.ld{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+/* canvas wrap */
+.cw{position:relative;width:100%}
+/* grids */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.gm{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+/* kpi */
+.kpi{background:var(--n50);border-radius:4px;padding:14px 16px}
+.kl{font-size:11px;color:var(--fg2);margin-bottom:4px}
+.kv{font-size:22px;font-weight:700;color:var(--b900);line-height:1}
+.kd{font-size:11px;font-weight:600;margin-top:4px;display:flex;align-items:center;gap:3px}
+.kd.up{color:#0E7C55}.kd.dn{color:#E00000}
+/* swatches */
+.swrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.sw{width:56px;text-align:center}
+.swb{height:40px;border-radius:4px;border:1px solid rgba(0,0,0,.06);margin-bottom:4px}
+.swh{font-size:9px;color:var(--fg2);font-family:var(--mono)}
+.swn{font-size:9px;color:var(--fg3)}
+/* tok */
+.tok{display:inline-block;font-family:var(--mono);font-size:11px;color:#2B2B2B;background:var(--n100);padding:2px 6px;border-radius:3px}
+/* comp label */
+.cn{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--fg2);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+/* spec table */
+.st{width:100%;border-collapse:collapse;font-size:12px}
+.st th{text-align:left;padding:7px 12px;background:var(--n50);border-bottom:1px solid var(--border);font-weight:600;color:var(--fg2);font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+.st td{padding:9px 12px;border-bottom:1px solid var(--n100);vertical-align:top}
+.st tr:last-child td{border-bottom:none}
+.st td:first-child{font-weight:600}
+/* tooltip demo */
+.ttd{background:#fff;border:1px solid var(--border);border-radius:4px;padding:10px 14px;box-shadow:var(--sh-md);display:inline-block;font-size:12px}
+.ttl{color:var(--fg2);margin-bottom:6px;font-weight:600}
+.ttr{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.ttdot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.ttn{color:var(--fg2);flex:1}.ttv{font-weight:700;color:var(--fg)}
+/* code */
+pre{background:#F5F5F5;padding:20px;border-radius:4px;overflow-x:auto}
+code{font-family:var(--mono);font-size:12px;color:#2B2B2B;line-height:1.7}
+/* sep */
+.sep{height:1px;background:var(--border);margin:20px 0}
+@media(max-width:960px){.g2,.g3,.g4,.gm{grid-template-columns:1fr}body{padding:24px 20px 60px}}
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<header class="page-hd">
+  <nav class="crumb">
+    <a href="#">PS Design Library</a>
+    <i data-lucide="chevron-right" style="width:13px;height:13px;"></i>
+    <span>Data Visualization</span>
+  </nav>
+  <h1>Data Visualization</h1>
+  <p class="pdesc">Chart components, series color tokens, axis conventions, tooltip anatomy and component naming — all built on the PS blue scale. Use Recharts or Nivo with <span class="tok">psNivoTheme</span> for consistent styling.</p>
+</header>
+
+<!-- 1. SERIES PALETTE -->
+<section class="sec">
+  <div class="sh"><h2>Series Color Palette</h2><span class="sd">PS blue scale — apply in this order across all chart series</span></div>
+  <div class="sb">
+    <div class="swrow">
+      <div class="sw"><div class="swb" style="background:#005BA6"></div><div class="swh">#005BA6</div><div class="swn">Blue 500</div><div class="swn" style="color:var(--b500);font-weight:700">S1</div></div>
+      <div class="sw"><div class="swb" style="background:#1A6FB5"></div><div class="swh">#1A6FB5</div><div class="swn">Blue 400</div><div class="swn" style="color:var(--b500);font-weight:700">S2</div></div>
+      <div class="sw"><div class="swb" style="background:#4D90C8"></div><div class="swh">#4D90C8</div><div class="swn">Blue 300</div><div class="swn" style="color:var(--b500);font-weight:700">S3</div></div>
+      <div class="sw"><div class="swb" style="background:#009CF4"></div><div class="swh">#009CF4</div><div class="swn">Blue 200</div><div class="swn" style="color:var(--b500);font-weight:700">S4</div></div>
+      <div class="sw"><div class="swb" style="background:#B0C6D3"></div><div class="swh">#B0C6D3</div><div class="swn">Blue 50</div><div class="swn" style="color:var(--b500);font-weight:700">S5</div></div>
+      <div class="sw"><div class="swb" style="background:#DCEAED;border:1px solid #ccc"></div><div class="swh">#DCEAED</div><div class="swn">Blue 100</div><div class="swn" style="color:var(--b500);font-weight:700">S6</div></div>
+      <div class="sw" style="margin-left:12px"><div class="swb" style="background:#002F48"></div><div class="swh">#002F48</div><div class="swn">Blue 900</div><div class="swn">Emphasis</div></div>
+      <div class="sw"><div class="swb" style="background:#004A84"></div><div class="swh">#004A84</div><div class="swn">Blue 700</div><div class="swn">Hover</div></div>
+      <div class="sw" style="margin-left:12px"><div class="swb" style="background:#17AB78"></div><div class="swh">#17AB78</div><div class="swn">Success</div><div class="swn">Positive</div></div>
+      <div class="sw"><div class="swb" style="background:#E3A92D"></div><div class="swh">#E3A92D</div><div class="swn">Warning</div><div class="swn">At-risk</div></div>
+      <div class="sw"><div class="swb" style="background:#E00000"></div><div class="swh">#E00000</div><div class="swn">Danger</div><div class="swn">Negative</div></div>
+    </div>
+    <pre><code>export const PS_SERIES = ['#005BA6','#1A6FB5','#4D90C8','#009CF4','#B0C6D3','#DCEAED'];
+// Semantic overrides
+export const PS_POSITIVE = '#17AB78'; // success — revenue up, delivered, approved
+export const PS_WARNING  = '#E3A92D'; // at-risk — delayed, expiring, threshold
+export const PS_NEGATIVE = '#E00000'; // danger  — cost, loss, failed, overdue</code></pre>
+  </div>
+</section>
+
+<!-- 2. BAR CHART -->
+<section class="sec">
+  <div class="sh"><h2>BarChart</h2><span class="sd">Vertical · grouped · @nivo/bar · DataViz/BarChart</span></div>
+  <div class="sb">
+    <div class="g2">
+      <div class="cc">
+        <div class="ch"><div><div class="ct">Monthly Revenue</div><div class="cs">Jan – Aug 2025 · USD thousands</div></div></div>
+        <div class="cb">
+          <div class="leg"><span><span class="ld" style="background:#005BA6"></span>Revenue</span></div>
+          <div class="cw" style="height:220px"><canvas id="bar1" role="img" aria-label="Monthly revenue bar chart Jan–Aug 2025">Revenue data.</canvas></div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="ch"><div><div class="ct">Revenue · Cost · Profit</div><div class="cs">Grouped bars · Jan – Aug 2025</div></div></div>
+        <div class="cb">
+          <div class="leg">
+            <span><span class="ld" style="background:#005BA6"></span>Revenue</span>
+            <span><span class="ld" style="background:#4D90C8"></span>Cost</span>
+            <span><span class="ld" style="background:#009CF4"></span>Profit</span>
+          </div>
+          <div class="cw" style="height:220px"><canvas id="bar2" role="img" aria-label="Grouped bar chart revenue cost profit">Grouped data.</canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. LINE + AREA -->
+<section class="sec">
+  <div class="sh"><h2>LineChart · AreaChart</h2><span class="sd">Continuous trends over time · @nivo/line · DataViz/LineChart</span></div>
+  <div class="sb">
+    <div class="g2">
+      <div class="cc">
+        <div class="ch"><div><div class="ct">Multi-Series Line</div><div class="cs">Revenue, cost and profit trend</div></div></div>
+        <div class="cb">
+          <div class="leg">
+            <span><span class="ld" style="background:#005BA6"></span>Revenue</span>
+            <span><span class="ld" style="background:#4D90C8"></span>Cost</span>
+            <span><span class="ld" style="background:#009CF4"></span>Profit</span>
+          </div>
+          <div class="cw" style="height:220px"><canvas id="line1" role="img" aria-label="Multi-series line chart">Line data.</canvas></div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="ch"><div><div class="ct">Area Chart</div><div class="cs">Revenue with forecast · filled area</div></div></div>
+        <div class="cb">
+          <div class="leg">
+            <span><span class="ld" style="background:#005BA6"></span>Revenue</span>
+            <span><span class="ld" style="background:#009CF4;border:1px dashed #009CF4;background:transparent"></span>Forecast</span>
+          </div>
+          <div class="cw" style="height:220px"><canvas id="area1" role="img" aria-label="Area chart revenue and forecast">Area data.</canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. PIE + DONUT -->
+<section class="sec">
+  <div class="sh"><h2>PieChart · DonutChart</h2><span class="sd">Part-to-whole · max 6 segments · @nivo/pie · DataViz/PieChart</span></div>
+  <div class="sb">
+    <div class="g2">
+      <div class="cc">
+        <div class="ch"><div><div class="ct">Revenue by Channel</div><div class="cs">Pie · YTD share</div></div></div>
+        <div class="cb">
+          <div class="cw" style="height:240px"><canvas id="pie1" role="img" aria-label="Pie chart revenue by channel">Pie data.</canvas></div>
+          <div class="leg" style="justify-content:center;margin-top:10px;margin-bottom:0">
+            <span><span class="ld" style="background:#005BA6"></span>Direct 38%</span>
+            <span><span class="ld" style="background:#1A6FB5"></span>Organic 27%</span>
+            <span><span class="ld" style="background:#4D90C8"></span>Referral 19%</span>
+            <span><span class="ld" style="background:#009CF4"></span>Social 11%</span>
+            <span><span class="ld" style="background:#B0C6D3"></span>Email 5%</span>
+          </div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="ch"><div><div class="ct">Revenue by Channel</div><div class="cs">Donut · 62% cutout · center label</div></div></div>
+        <div class="cb">
+          <div class="cw" style="height:240px"><canvas id="donut1" role="img" aria-label="Donut chart revenue by channel">Donut data.</canvas></div>
+          <div class="leg" style="justify-content:center;margin-top:10px;margin-bottom:0">
+            <span><span class="ld" style="background:#005BA6"></span>Direct 38%</span>
+            <span><span class="ld" style="background:#1A6FB5"></span>Organic 27%</span>
+            <span><span class="ld" style="background:#4D90C8"></span>Referral 19%</span>
+            <span><span class="ld" style="background:#009CF4"></span>Social 11%</span>
+            <span><span class="ld" style="background:#B0C6D3"></span>Email 5%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. SCATTER + BUBBLE -->
+<section class="sec">
+  <div class="sh"><h2>ScatterPlot · BubbleChart</h2><span class="sd">Correlation between two continuous variables · @nivo/scatterplot · DataViz/ScatterPlot</span></div>
+  <div class="sb">
+    <div class="g2">
+      <div class="cc">
+        <div class="ch"><div><div class="ct">Order Value vs Lead Time</div><div class="cs">3 supplier tiers · n=120 orders</div></div></div>
+        <div class="cb">
+          <div class="leg">
+            <span><span class="ld" style="background:#005BA6"></span>Tier 1</span>
+            <span><span class="ld" style="background:#4D90C8"></span>Tier 2</span>
+            <span><span class="ld" style="background:#009CF4"></span>Tier 3</span>
+          </div>
+          <div class="cw" style="height:240px"><canvas id="scatter1" role="img" aria-label="Scatter plot order value vs lead time">Scatter data.</canvas></div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="ch"><div><div class="ct">Price Index vs Fill Rate</div><div class="cs">Bubble size = order volume · 4 categories</div></div></div>
+        <div class="cb">
+          <div class="leg">
+            <span><span class="ld" style="background:#005BA6"></span>Imaging</span>
+            <span><span class="ld" style="background:#1A6FB5"></span>Surgical</span>
+            <span><span class="ld" style="background:#4D90C8"></span>ICU</span>
+            <span><span class="ld" style="background:#009CF4"></span>Lab</span>
+          </div>
+          <div class="cw" style="height:240px"><canvas id="bubble1" role="img" aria-label="Bubble chart price vs fill rate">Bubble data.</canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. RADAR -->
+<section class="sec">
+  <div class="sh"><h2>RadarChart</h2><span class="sd">Multi-attribute comparison · max 4 entities · @nivo/radar · DataViz/RadarChart</span></div>
+  <div class="sb">
+    <div class="g2">
+      <div class="cc">
+        <div class="ch"><div><div class="ct">Supplier Scorecard</div><div class="cs">3 suppliers across 6 performance KPIs</div></div></div>
+        <div class="cb">
+          <div class="leg">
+            <span><span class="ld" style="background:#005BA6"></span>Supplier A</span>
+            <span><span class="ld" style="background:#4D90C8"></span>Supplier B</span>
+            <span><span class="ld" style="background:#009CF4"></span>Supplier C</span>
+          </div>
+          <div class="cw" style="height:280px"><canvas id="radar1" role="img" aria-label="Radar chart supplier scorecard 6 KPIs">Radar data.</canvas></div>
+        </div>
+      </div>
+      <div>
+        <div class="cn" style="margin-bottom:16px">RadarChart spec</div>
+        <table class="st">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Max entities</td><td>4 (readability degrades beyond 4)</td></tr>
+            <tr><td>Axes</td><td>5–8 recommended; minimum 3</td></tr>
+            <tr><td>Fill opacity</td><td><span class="tok">0.12</span> per series</td></tr>
+            <tr><td>Line width</td><td><span class="tok">2px</span></td></tr>
+            <tr><td>Point size</td><td><span class="tok">4px</span> · <span class="tok">6px</span> on hover</td></tr>
+            <tr><td>Grid color</td><td><span class="tok">#DCDCDC</span> --ps-border-default</td></tr>
+            <tr><td>Tick labels</td><td><span class="tok">11px / 400 / #777777</span></td></tr>
+            <tr><td>Series 1</td><td><span class="tok">#005BA6</span> --ps-blue-500</td></tr>
+            <tr><td>Series 2</td><td><span class="tok">#4D90C8</span> --ps-blue-300</td></tr>
+            <tr><td>Series 3</td><td><span class="tok">#009CF4</span> --ps-blue-200</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. HEATMAP -->
+<section class="sec">
+  <div class="sh"><h2>HeatMap</h2><span class="sd">2D intensity · PS blue sequential scale · @nivo/heatmap · DataViz/HeatMap</span></div>
+  <div class="sb">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Order Activity by Day &amp; Hour</div><div class="cs">Orders placed · Mon–Fri · 6am–9pm · darker = higher volume</div></div></div>
+      <div class="cb">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:11px;color:var(--fg2)">
+          <span>Low</span>
+          <div style="display:flex;gap:2px">
+            <div style="width:20px;height:12px;background:#DCEAED;border-radius:2px"></div>
+            <div style="width:20px;height:12px;background:#B0C6D3;border-radius:2px"></div>
+            <div style="width:20px;height:12px;background:#4D90C8;border-radius:2px"></div>
+            <div style="width:20px;height:12px;background:#1A6FB5;border-radius:2px"></div>
+            <div style="width:20px;height:12px;background:#005BA6;border-radius:2px"></div>
+            <div style="width:20px;height:12px;background:#002F48;border-radius:2px"></div>
+          </div>
+          <span>High</span>
+        </div>
+        <div id="heatmap-grid"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. FUNNEL -->
+<section class="sec">
+  <div class="sh"><h2>FunnelChart</h2><span class="sd">Drop-off across sequential steps · @nivo/funnel · DataViz/FunnelChart</span></div>
+  <div class="sb">
+    <div class="g2">
+      <div class="cc">
+        <div class="ch"><div><div class="ct">Procurement Funnel</div><div class="cs">Requisition → PO → Receipt · Q3 2025</div></div></div>
+        <div class="cb"><div id="funnel1"></div></div>
+      </div>
+      <div class="cc">
+        <div class="ch"><div><div class="ct">Approval Pipeline</div><div class="cs">Submitted → Approved → Fulfilled</div></div></div>
+        <div class="cb"><div id="funnel2"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. WAFFLE -->
+<section class="sec">
+  <div class="sh"><h2>WaffleChart</h2><span class="sd">Proportional grid · 10×10 cells · @nivo/waffle · DataViz/WaffleChart</span></div>
+  <div class="sb">
+    <div class="cc" style="max-width:480px">
+      <div class="ch"><div><div class="ct">Contract Status</div><div class="cs">100 active contracts</div></div></div>
+      <div class="cb">
+        <div class="leg">
+          <span><span class="ld" style="background:#005BA6"></span>Active 68%</span>
+          <span><span class="ld" style="background:#4D90C8"></span>Pending 14%</span>
+          <span><span class="ld" style="background:#B0C6D3"></span>Expired 12%</span>
+          <span><span class="ld" style="background:#DCEAED;border:1px solid #ccc"></span>Draft 6%</span>
+        </div>
+        <div id="waffle1" style="display:flex;flex-wrap:wrap;gap:3px;padding:4px 0"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. TREEMAP -->
+<section class="sec">
+  <div class="sh"><h2>TreeMap</h2><span class="sd">Hierarchical size encoding · PS blue by depth · @nivo/treemap · DataViz/TreeMap</span></div>
+  <div class="sb">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Spend by Department &amp; Category</div><div class="cs">FY 2025 · area proportional to spend</div></div></div>
+      <div class="cb">
+        <div id="treemap1" style="width:100%;height:340px;position:relative"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11. BUMP CHART -->
+<section class="sec">
+  <div class="sh"><h2>BumpChart</h2><span class="sd">Rank changes over time · @nivo/bump · DataViz/BumpChart</span></div>
+  <div class="sb">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Supplier Performance Ranking</div><div class="cs">Quarterly rank · Q1 2024 – Q1 2025 · lower rank = better</div></div></div>
+      <div class="cb">
+        <div class="leg">
+          <span><span class="ld" style="background:#005BA6"></span>Supplier A</span>
+          <span><span class="ld" style="background:#1A6FB5"></span>Supplier B</span>
+          <span><span class="ld" style="background:#4D90C8"></span>Supplier C</span>
+          <span><span class="ld" style="background:#009CF4"></span>Supplier D</span>
+          <span><span class="ld" style="background:#B0C6D3"></span>Supplier E</span>
+        </div>
+        <div id="bump1" style="width:100%;overflow-x:auto"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12. STREAM -->
+<section class="sec">
+  <div class="sh"><h2>StreamChart</h2><span class="sd">Volume evolution across categories · stacked area · @nivo/stream · DataViz/StreamChart</span></div>
+  <div class="sb">
+    <div class="cc">
+      <div class="ch"><div><div class="ct">Order Volume by Category</div><div class="cs">12 months · silhouette offset</div></div></div>
+      <div class="cb">
+        <div class="leg">
+          <span><span class="ld" style="background:#005BA6"></span>Imaging</span>
+          <span><span class="ld" style="background:#1A6FB5"></span>Surgical</span>
+          <span><span class="ld" style="background:#4D90C8"></span>ICU</span>
+          <span><span class="ld" style="background:#009CF4"></span>Lab</span>
+          <span><span class="ld" style="background:#B0C6D3"></span>Cardio</span>
+        </div>
+        <div class="cw" style="height:260px"><canvas id="stream1" role="img" aria-label="Stream chart order volume by category 12 months">Stream data.</canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13. DASHBOARD LAYOUT PATTERN -->
+<section class="sec">
+  <div class="sh"><h2>Dashboard Layout Pattern</h2><span class="sd">1:1 from Figma · Visual Analytics 2025 · components 1318-20651, 1318-20723, 1325-61469, 1318-4691</span></div>
+  <div class="sb">
+
+<style>
+/* ─── 13A Long Top Card ─── */
+.ltc-wrap { background:#fff; border:1px solid #DCDCDC; border-radius:4px; overflow:hidden; margin-bottom:16px; }
+.ltc-header { display:flex; align-items:center; justify-content:space-between; padding:12px 18px; border-bottom:1px solid #DCDCDC; }
+.ltc-header-left { display:flex; align-items:center; gap:8px; font-size:13px; color:#4A4A4A; }
+.ltc-header-right { display:flex; align-items:center; gap:6px; }
+.ltc-btn-blue { display:inline-flex; align-items:center; gap:5px; font-size:12px; padding:5px 14px; border-radius:4px; border:none; background:#005BA6; color:#fff; cursor:pointer; font-family:inherit; }
+.ltc-btn-out  { font-size:12px; padding:5px 13px; border-radius:4px; border:1px solid #DCDCDC; background:#fff; color:#4A4A4A; cursor:pointer; font-family:inherit; }
+.ltc-btn-icon { background:none; border:none; cursor:pointer; padding:2px; color:#CCCCCC; line-height:0; }
+.ltc-body { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; padding:16px 18px 20px; }
+.ltc-box { background:#F5F5F5; border-radius:6px; padding:16px 20px 14px; }
+/* Number row: big num · small% baseline · label baseline */
+.ltc-numline { display:flex; align-items:baseline; flex-wrap:nowrap; gap:3px; }
+.ltc-n    { font-size:40px; font-weight:300; color:#3D3D3D; letter-spacing:-1px; line-height:1; font-family:inherit; }
+.ltc-n-r  { font-size:40px; font-weight:300; color:#D32F2F; letter-spacing:-1px; line-height:1; font-family:inherit; }
+.ltc-pct  { font-size:14px; color:#777777; line-height:1; }
+.ltc-pct-r{ font-size:14px; color:#D32F2F; line-height:1; }
+.ltc-lbl  { font-size:13px; color:#777777; margin-left:4px; line-height:1; }
+.ltc-sub  { font-size:12px; color:#9E9E9E; margin-top:8px; text-align:center; }
+
+/* ─── 13B Second Card ─── */
+.sc-grid  { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+.sc-card  { border:1px solid #DCDCDC; border-radius:4px; padding:14px 16px; background:#fff; }
+.sc-card-active { border:1px solid #DCDCDC; border-left:3px solid #1976D2; border-radius:4px; padding:14px 14px 14px 14px; background:#F0F7FF; }
+.sc-top   { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.sc-label { display:flex; align-items:center; gap:6px; font-size:12px; color:#616161; }
+.sc-menu  { background:none; border:none; cursor:pointer; padding:0; color:#BDBDBD; line-height:0; }
+.sc-value { font-size:28px; font-weight:300; color:#212121; line-height:1.1; margin-bottom:5px; font-family:inherit; }
+.sc-unit  { font-size:14px; color:#757575; margin-left:3px; font-weight:400; }
+.sc-sub   { font-size:12px; color:#9E9E9E; }
+.sc-sub-b { font-size:12px; color:#1565C0; }
+
+/* ─── 13C Graph Card ─── */
+.gc-wrap  { border:1px solid #DCDCDC; border-radius:4px; background:#fff; margin-bottom:16px; overflow:hidden; }
+.gc-head  { display:flex; align-items:center; justify-content:space-between; padding:12px 18px 8px; }
+.gc-head-l{ display:flex; align-items:center; gap:7px; font-size:13px; color:#4A4A4A; }
+.gc-head-r{ display:flex; align-items:center; gap:6px; }
+.gc-segs  { display:inline-flex; border:1px solid #DCDCDC; border-radius:4px; overflow:hidden; }
+.gc-segs button { font-size:12px; padding:5px 12px; border:none; border-right:1px solid #DCDCDC; background:#fff; color:#757575; cursor:pointer; font-family:inherit; }
+.gc-segs button:last-child { border-right:none; }
+.gc-segs .seg-on { background:#005BA6; color:#fff; display:inline-flex; align-items:center; gap:4px; }
+.gc-chart { padding:4px 18px 0; }
+.gc-legend{ display:flex; align-items:center; justify-content:center; gap:24px; padding:8px 0 14px; font-size:12px; color:#757575; }
+.gc-legend span { display:flex; align-items:center; gap:6px; }
+.gc-dot   { width:10px; height:10px; border-radius:50%; display:inline-block; }
+
+/* ─── 13D Accordion ─── */
+.acc-wrap  { border:1px solid #DCDCDC; border-radius:4px; background:#fff; overflow:hidden; margin-bottom:12px; }
+.acc-head  { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid #DCDCDC; }
+.acc-head-l{ display:flex; align-items:center; gap:12px; }
+/* 6-dot drag handle */
+.grip { display:grid; grid-template-columns:1fr 1fr; gap:3px; cursor:grab; }
+.grip span { width:3px; height:3px; border-radius:50%; background:#CCCCCC; display:block; }
+/* Rounded-square icon (8px radius) */
+.acc-icon  { width:40px; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.acc-title { font-size:20px; font-weight:300; color:#212121; font-family:inherit; }
+.acc-chevron { background:none; border:none; cursor:pointer; padding:2px; color:#CCCCCC; line-height:0; }
+/* Cards grid */
+.acc-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; padding:16px; }
+/* Metric card */
+.mc-wrap  { border:1px solid #E0E0E0; border-radius:6px; padding:14px 16px; background:#fff; }
+.mc-top   { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.mc-lbl   { display:flex; align-items:center; gap:5px; font-size:12px; color:#757575; }
+.mc-link  { font-size:12px; color:#1976D2; text-decoration:none; }
+.mc-link:hover { text-decoration:underline; }
+.mc-val   { font-size:26px; font-weight:300; color:#212121; line-height:1.2; margin-bottom:6px; font-family:inherit; }
+.mc-vunit { font-size:13px; color:#757575; margin-left:3px; font-weight:400; }
+.mc-delta { display:flex; align-items:center; gap:6px; font-size:12px; margin-bottom:4px; }
+.pill-g   { display:inline-flex; align-items:center; gap:3px; background:#E8F5E9; color:#2E7D32; border-radius:3px; padding:1px 7px; font-size:11px; font-weight:600; }
+.pill-r   { display:inline-flex; align-items:center; gap:3px; background:#FFEBEE; color:#C62828; border-radius:3px; padding:1px 7px; font-size:11px; font-weight:600; }
+.pill-n   { display:inline-flex; align-items:center; gap:3px; color:#757575; font-size:11px; font-weight:600; }
+.mc-bench { font-size:11px; color:#9E9E9E; }
+
+/* ─── Charts 2-col ─── */
+.chart-2col { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
+.chart-box  { border:1px solid #DCDCDC; border-radius:4px; background:#fff; overflow:hidden; }
+.chart-boxhd{ display:flex; align-items:center; justify-content:space-between; padding:12px 16px 8px; }
+.chart-boxhl{ display:flex; align-items:center; gap:6px; font-size:13px; color:#4A4A4A; }
+.chart-boxb { padding:12px 16px 16px; }
+
+/* ─── 13G Table ─── */
+.tbl-wrap   { border:1px solid #DCDCDC; border-radius:8px; overflow:hidden; background:#fff; }
+.tbl-toolbar{ display:flex; align-items:center; justify-content:space-between; padding:14px 20px; }
+.tbl-search { position:relative; width:210px; }
+.tbl-search input { width:100%; height:34px; padding:0 34px 0 10px; border:1px solid #DCDCDC; border-radius:4px; font-size:13px; font-family:inherit; color:#4A4A4A; outline:none; background:#fff; }
+.tbl-search input::placeholder { color:#9E9E9E; }
+.tbl-search input:focus { border-color:#1976D2; }
+.tbl-search-ico { position:absolute; right:10px; top:50%; transform:translateY(-50%); pointer-events:none; color:#9E9E9E; line-height:0; }
+.tbl-acts   { display:flex; align-items:center; gap:10px; }
+.tbl-act    { background:none; border:none; cursor:pointer; padding:4px; color:#616161; border-radius:3px; line-height:0; }
+.tbl-act:hover { background:#F5F5F5; }
+.tbl-toggle { display:flex; }
+.tbl-toggle button { background:#fff; border:1px solid #DCDCDC; cursor:pointer; padding:5px 7px; color:#616161; line-height:0; }
+.tbl-toggle button:first-child { border-radius:4px 0 0 4px; border-right:none; }
+.tbl-toggle .tog-on { background:#EEEEEE; color:#212121; border-radius:0 4px 4px 0; }
+.tbl-tbl    { width:100%; border-collapse:collapse; font-size:13px; font-family:inherit; }
+.tbl-tbl thead tr { border-bottom:1px solid #DCDCDC; }
+.tbl-tbl th { text-align:left; padding:10px 16px; font-weight:600; color:#212121; background:#fff; }
+.tbl-tbl td { padding:14px 16px; color:#616161; border-bottom:1px solid #EEEEEE; vertical-align:top; line-height:1.4; }
+.tbl-tbl td:first-child { color:#212121; }
+.tbl-tbl tbody tr:last-child td { border-bottom:none; }
+.tbl-tbl tbody tr:hover td { background:#F5F5F5; }
+.tbl-foot   { display:flex; align-items:center; justify-content:space-between; padding:10px 20px; border-top:1px solid #DCDCDC; }
+.tbl-count  { font-size:13px; font-weight:600; color:#212121; }
+.tbl-pages  { display:flex; align-items:center; gap:2px; }
+.tbl-pg     { min-width:28px; height:28px; padding:0 5px; border:1px solid transparent; border-radius:4px; background:none; font-size:13px; color:#616161; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; justify-content:center; }
+.tbl-pg:hover { background:#F5F5F5; }
+.tbl-pg.pg-on { border-color:#DCDCDC; color:#212121; font-weight:600; }
+.tbl-show   { display:flex; align-items:center; gap:7px; font-size:13px; color:#212121; }
+.tbl-showsel{ display:inline-flex; align-items:center; gap:4px; border:1px solid #DCDCDC; border-radius:4px; padding:4px 8px; cursor:pointer; font-size:13px; }
+</style>
+
+    <!-- ═══════════════════════════════════
+         13A  LONG TOP CARD
+         Figma node: 1318-20651 · 1159×215
+    ═══════════════════════════════════ -->
+
+    <!-- ══════════════════════════════════════════
+         13A  LONG TOP CARD
+         Figma: 1318-20651 · bg white · border 2px #F1F1F1 · radius 4px · padding 24px 18px
+         Number: 48px/regular/#4A4A4A  %: 18px baseline  Label: 16px/#777
+         Sub: 16px/#777  Boxes: bg #FAFAFA radius 3px
+    ══════════════════════════════════════════ -->
+    <div class="cn">13A — Long Top Card · Response Time Analysis · 3-column</div>
+    <style>
+      /* 13A */
+      .f-ltc { background:#fff; border:2px solid #F1F1F1; border-radius:4px; padding:24px 18px; margin-bottom:16px; }
+      .f-ltc-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+      .f-ltc-hd-l { display:flex; align-items:center; gap:5px; font-size:14px; color:#002; font-family:'Source Sans Pro',sans-serif; }
+      .f-ltc-hd-r { display:flex; align-items:center; gap:24px; }
+      .f-ltc-seg { display:flex; }
+      .f-ltc-seg-on  { background:#005BA6; color:#fff; border:none; border-radius:3px 0 0 3px; height:30px; padding:0 12px; font-size:14px; font-weight:500; cursor:pointer; display:flex; align-items:center; gap:6px; font-family:inherit; }
+      .f-ltc-seg-off { background:#F1F1F1; color:#4A4A4A; border:none; border-radius:0 3px 3px 0; height:30px; padding:0 12px; font-size:14px; font-weight:500; cursor:pointer; font-family:inherit; }
+      .f-ltc-kebab   { background:none; border:none; cursor:pointer; padding:0; color:#949494; line-height:0; }
+      .f-ltc-cells { display:grid; grid-template-columns:1fr 1fr 1fr; gap:48px; padding:0 56px; }
+      .f-ltc-cell  { display:flex; flex-direction:column; align-items:center; gap:8px; }
+      .f-ltc-box   { background:#FAFAFA; border-radius:3px; padding:8px 24px; width:100%; display:flex; align-items:flex-end; justify-content:center; gap:4px; height:73px; }
+      /* Number + % baseline aligned */
+      .f-ltc-num   { font-size:48px; font-weight:400; color:#4A4A4A; line-height:55px; font-family:'Source Sans Pro',sans-serif; }
+      .f-ltc-num-r { font-size:48px; font-weight:400; color:red; line-height:55px; font-family:'Source Sans Pro',sans-serif; }
+      .f-ltc-pct   { font-size:18px; color:#4A4A4A; line-height:37px; font-family:'Source Sans Pro',sans-serif; }
+      .f-ltc-pct-r { font-size:18px; color:red; line-height:37px; font-family:'Source Sans Pro',sans-serif; }
+      .f-ltc-inlbl { font-size:16px; color:#777; line-height:29px; font-family:'Source Sans Pro',sans-serif; padding:8px 0; }
+      .f-ltc-sub   { font-size:16px; color:#777; line-height:20px; font-family:'Source Sans Pro',sans-serif; padding:6px 0; }
+
+      /* 13B */
+      .f-sc-row  { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:16px; }
+      /* Active card: bg #EFF9FE border 2px #6AC7FC */
+      .f-sc-active { background:#EFF9FE; border:2px solid #6AC7FC; border-radius:4px; padding:16px 18px; }
+      /* Standard: bg white border 2px #F1F1F1 */
+      .f-sc-std    { background:#fff; border:2px solid #F1F1F1; border-radius:4px; padding:16px 18px; }
+      .f-sc-top    { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px; }
+      .f-sc-lbl    { display:flex; align-items:center; gap:5px; font-size:14px; color:#002; font-family:'Source Sans Pro',sans-serif; }
+      .f-sc-kb     { background:none; border:none; cursor:pointer; padding:0; color:#BDBDBD; line-height:0; }
+      /* Value row: 30px number + 18px unit baseline */
+      .f-sc-valrow { display:flex; align-items:flex-end; gap:4px; height:55px; }
+      .f-sc-val    { font-size:30px; color:#4A4A4A; line-height:normal; font-family:'Source Sans Pro',sans-serif; }
+      .f-sc-unit   { font-size:18px; color:#4A4A4A; line-height:29px; font-family:'Source Sans Pro',sans-serif; }
+      .f-sc-sub    { font-size:16px; color:#777; line-height:20px; font-family:'Source Sans Pro',sans-serif; padding:6px 0; }
+
+      /* 13C */
+      .f-gc-wrap { background:#fff; border:2px solid #F1F1F1; border-radius:4px; margin-bottom:16px; overflow:hidden; }
+      .f-gc-hd   { display:flex; align-items:center; justify-content:space-between; padding:12px 18px 8px; }
+      .f-gc-hdl  { display:flex; align-items:center; gap:5px; font-size:14px; color:#002; font-family:'Source Sans Pro',sans-serif; }
+      .f-gc-seg  { display:inline-flex; border:1px solid #DCDCDC; border-radius:4px; overflow:hidden; }
+      .f-gc-seg button { font-size:12px; padding:5px 12px; border:none; border-right:1px solid #DCDCDC; background:#fff; color:#757575; cursor:pointer; font-family:inherit; }
+      .f-gc-seg button:last-child { border-right:none; }
+      .f-gc-seg .seg-on { background:#005BA6; color:#fff; display:inline-flex; align-items:center; gap:4px; }
+      .f-gc-body { padding:4px 18px 0; }
+      .f-gc-leg  { display:flex; align-items:center; justify-content:center; gap:24px; padding:8px 0 14px; font-size:12px; color:#757575; font-family:'Source Sans Pro',sans-serif; }
+      .f-gc-leg span { display:flex; align-items:center; gap:6px; }
+      .f-gc-dot  { width:10px; height:10px; border-radius:50%; display:inline-block; }
+
+      /* 13D Accordion */
+      .f-acc-wrap  { background:#fff; border:2px solid #F1F1F1; border-radius:5px; padding:24px; margin-bottom:12px; }
+      .f-acc-hd    { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+      .f-acc-hdl   { display:flex; align-items:center; gap:9px; }
+      /* drag-drop-horizontal: rotated 90deg — using CSS dot grid instead */
+      .f-drag { display:grid; grid-template-columns:1fr 1fr; gap:3px; cursor:grab; }
+      .f-drag span { width:3px; height:3px; border-radius:50%; background:#CCCCCC; display:block; }
+      /* Icon bubble: bg #D2FFFB radius 8px 48×48 */
+      .f-acc-bubble { width:36px; height:36px; border-radius:8px; background:#D2FFFB; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+      .f-acc-title  { font-size:20px; font-weight:300; color:#1F2937; font-family:'Source Sans Pro',sans-serif; line-height:1.3; }
+      .f-acc-chev   { background:none; border:none; cursor:pointer; padding:0; color:#949494; line-height:0; }
+      /* Cards grid */
+      .f-acc-cards  { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+      /* Metric card: bg white border 2px #F1F1F1 radius 5px padding 16px */
+      .f-mc         { background:#fff; border:2px solid #F1F1F1; border-radius:5px; padding:16px; }
+      .f-mc-hd      { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:16px; }
+      .f-mc-lbl     { display:flex; align-items:center; gap:5px; font-size:14px; color:#002; font-family:'Source Sans Pro',sans-serif; }
+      .f-mc-link    { font-size:12px; color:#4A4A4A; text-decoration:underline; font-family:'Source Sans Pro',sans-serif; letter-spacing:-0.12px; white-space:nowrap; }
+      .f-mc-link:hover { color:#005BA6; }
+      /* Value: 34px + 14px unit, centered */
+      .f-mc-valrow  { display:flex; align-items:flex-end; justify-content:center; gap:4px; width:100%; }
+      .f-mc-val     { font-size:34px; color:#4A4A4A; line-height:normal; font-family:'Source Sans Pro',sans-serif; }
+      .f-mc-vunit   { font-size:14px; color:#777; line-height:28px; font-family:'Source Sans Pro',sans-serif; }
+      /* Divider line under value */
+      .f-mc-line    { height:1px; background:#E5E7EB; width:235px; margin:4px auto; }
+      /* Delta row */
+      .f-mc-delta   { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:4px 8px; padding:6px 0; }
+      /* Green pill: bg rgba(23,171,120,0.1) = #E8F7F1 text #17AB78 */
+      .f-pill-g     { background:rgba(23,171,120,0.1); color:#17AB78; border-radius:6px; padding:0 6px; font-size:18px; line-height:20px; font-family:'Source Sans Pro',sans-serif; display:inline-flex; align-items:center; gap:2px; }
+      /* Red pill: bg rgba(214,39,0,0.1) text red */
+      .f-pill-r     { background:rgba(214,39,0,0.1); color:red; border-radius:6px; padding:0 6px; font-size:18px; line-height:normal; font-family:'Source Sans Pro',sans-serif; display:inline-flex; align-items:center; gap:2px; }
+      .f-mc-vs      { font-size:14px; color:#777; line-height:20px; font-family:'Source Sans Pro',sans-serif; }
+      .f-mc-bench   { font-size:16px; color:#949494; line-height:16px; font-family:'Source Sans Pro',sans-serif; text-align:center; width:100%; }
+    </style>
+
+    <div class="f-ltc">
+      <div class="f-ltc-hd">
+        <div class="f-ltc-hd-l">
+          <i data-lucide="timer" style="width:18px;height:18px;color:#9E9E9E"></i>
+          Response Time Analysis
+        </div>
+        <div class="f-ltc-hd-r">
+          <div class="f-ltc-seg">
+            <button class="f-ltc-seg-on">
+              <i data-lucide="check" style="width:12px;height:12px"></i> Benchmark
+            </button>
+            <button class="f-ltc-seg-off">Prior Period</button>
+          </div>
+          <button class="f-ltc-kebab"><i data-lucide="ellipsis-vertical" style="width:16px;height:16px"></i></button>
+        </div>
+      </div>
+      <div class="f-ltc-cells">
+        <div class="f-ltc-cell">
+          <div class="f-ltc-box">
+            <span class="f-ltc-num">74.2</span>
+            <span class="f-ltc-pct">%</span>
+            <span class="f-ltc-inlbl">Current Period</span>
+          </div>
+          <div class="f-ltc-sub">vs last month</div>
+        </div>
+        <div class="f-ltc-cell">
+          <div class="f-ltc-box">
+            <span class="f-ltc-num">90</span>
+            <span class="f-ltc-pct">%</span>
+            <span class="f-ltc-inlbl">Target</span>
+          </div>
+          <div class="f-ltc-sub">Industry Benchmark</div>
+        </div>
+        <div class="f-ltc-cell">
+          <div class="f-ltc-box">
+            <span class="f-ltc-num-r">-15.8</span>
+            <span class="f-ltc-pct-r">%</span>
+            <span class="f-ltc-inlbl">Change</span>
+          </div>
+          <div class="f-ltc-sub">vs Target Benchmark</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         13B  SECOND CARD
+         Figma: 1318-20723 · active bg #EFF9FE border 2px #6AC7FC
+         std bg #fff border 2px #F1F1F1 · radius 4px · h 155px
+         Value: 30px/#4A4A4A  Days: 18px baseline  Sub: 16px/#777
+    ══════════════════════════════════════════ -->
+    <div class="cn">13B — Second Card · 4-up metric strip</div>
+    <div class="f-sc-row">
+      <!-- Critical Rate — active -->
+      <div class="f-sc-active">
+        <div class="f-sc-top">
+          <div class="f-sc-lbl">
+            <i data-lucide="triangle-alert" style="width:15px;height:15px;color:#E65100"></i>
+            Critical Rate
+          </div>
+          <button class="f-sc-kb"><i data-lucide="ellipsis-vertical" style="width:16px;height:16px"></i></button>
+        </div>
+        <div class="f-sc-valrow"><span class="f-sc-val">74.2%</span></div>
+        <div class="f-sc-sub">Resolved in less than 2 days</div>
+      </div>
+      <!-- Avg Resolution Time -->
+      <div class="f-sc-std">
+        <div class="f-sc-top">
+          <div class="f-sc-lbl">
+            <i data-lucide="clipboard-list" style="width:15px;height:15px;color:#9E9E9E"></i>
+            Avg Resolution Time
+          </div>
+          <button class="f-sc-kb"><i data-lucide="ellipsis-vertical" style="width:16px;height:16px"></i></button>
+        </div>
+        <div class="f-sc-valrow">
+          <span class="f-sc-val">2.3</span>
+          <span class="f-sc-unit">Days</span>
+        </div>
+        <div class="f-sc-sub">Average in selected period</div>
+      </div>
+      <!-- Total Critical Events -->
+      <div class="f-sc-std">
+        <div class="f-sc-top">
+          <div class="f-sc-lbl">
+            <i data-lucide="calendar-days" style="width:15px;height:15px;color:#9E9E9E"></i>
+            Total Critical Events
+          </div>
+          <button class="f-sc-kb"><i data-lucide="ellipsis-vertical" style="width:16px;height:16px"></i></button>
+        </div>
+        <div class="f-sc-valrow"><span class="f-sc-val">67</span></div>
+        <div class="f-sc-sub">Count in selected period</div>
+      </div>
+      <!-- Avg Response Time -->
+      <div class="f-sc-std">
+        <div class="f-sc-top">
+          <div class="f-sc-lbl">
+            <i data-lucide="clock" style="width:15px;height:15px;color:#9E9E9E"></i>
+            Avg Response Time
+          </div>
+          <button class="f-sc-kb"><i data-lucide="ellipsis-vertical" style="width:16px;height:16px"></i></button>
+        </div>
+        <div class="f-sc-valrow">
+          <span class="f-sc-val">1.6</span>
+          <span class="f-sc-unit">Days</span>
+        </div>
+        <div class="f-sc-sub">Average in selected period</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         13C  GRAPH CARD
+         Figma: 1325-61469 · border 2px #F1F1F1
+    ══════════════════════════════════════════ -->
+    <div class="cn">13C — Graph Card · Response Time Trend · Segmented Button</div>
+    <div class="f-gc-wrap">
+      <div class="f-gc-hd">
+        <div class="f-gc-hdl">
+          <i data-lucide="bar-chart-2" style="width:15px;height:15px;color:#9E9E9E"></i>
+          Response Time Trend
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="f-gc-seg">
+            <button>Daily</button>
+            <button>Weekly</button>
+            <button class="seg-on"><i data-lucide="check" style="width:11px;height:11px"></i> Monthly</button>
+          </div>
+          <button class="f-ltc-kebab"><i data-lucide="ellipsis-vertical" style="width:15px;height:15px"></i></button>
+        </div>
+      </div>
+      <div class="f-gc-body">
+        <div style="position:relative;width:100%;height:280px">
+          <canvas id="dash-trend" role="img" aria-label="Response time trend with 90% benchmark">Trend data.</canvas>
+        </div>
+      </div>
+      <div class="f-gc-leg">
+        <span><span class="f-gc-dot" style="background:#90CAF9"></span> Resolution Rate (≤2 days)</span>
+        <span><span class="f-gc-dot" style="background:#1565C0"></span> Benchmark (90%)</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         13D  ACCORDION
+         Figma: 1318-4691 · bg white · border 2px #F1F1F1 · radius 5px · padding 24px
+         Icon bubble: bg #D2FFFB radius 8px 48×48
+         Title: 30px Light #1F2937
+         Cards: bg white border 2px #F1F1F1 radius 5px padding 16px
+         Value: 34px/#4A4A4A  Unit: 14px/#777
+         Green pill: bg rgba(23,171,120,0.1) text #17AB78 18px
+         Red pill: bg rgba(214,39,0,0.1) text red 18px
+    ══════════════════════════════════════════ -->
+    <div class="cn">13D — Actionable Events Updates · Accordion · Design System component · 3-col metric cards</div>
+
+    <!-- Parts Management -->
+    <div class="f-acc-wrap">
+      <div class="f-acc-hd">
+        <div class="f-acc-hdl">
+          <div class="f-drag">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+          </div>
+          <div class="f-acc-bubble">
+            <i data-lucide="store" style="width:18px;height:18px;color:#009688"></i>
+          </div>
+          <span class="f-acc-title">Parts Management</span>
+        </div>
+        <button class="f-acc-chev"><i data-lucide="chevron-up" style="width:24px;height:24px"></i></button>
+      </div>
+      <div class="f-acc-cards">
+        <div class="f-mc">
+          <div class="f-mc-hd">
+            <div class="f-mc-lbl"><i data-lucide="store" style="width:16px;height:16px"></i> Parts Spend</div>
+            <a href="#" class="f-mc-link">View Details</a>
+          </div>
+          <div class="f-mc-valrow"><span class="f-mc-val">$1.2M</span><span class="f-mc-vunit">Parts Spend</span></div>
+          <div class="f-mc-line"></div>
+          <div class="f-mc-delta">
+            <span class="f-pill-g">5.3% <i data-lucide="trending-up" style="width:11px;height:11px;display:inline-block;vertical-align:middle"></i></span>
+            <span class="f-mc-vs">vs last year</span>
+            <div class="f-mc-bench">15% below peer benchmark</div>
+          </div>
+        </div>
+        <div class="f-mc">
+          <div class="f-mc-hd">
+            <div class="f-mc-lbl"><i data-lucide="piggy-bank" style="width:16px;height:16px"></i> Missed Savings</div>
+            <a href="#" class="f-mc-link">View Details</a>
+          </div>
+          <div class="f-mc-valrow"><span class="f-mc-val">$75K</span><span class="f-mc-vunit">Missed Savings</span></div>
+          <div class="f-mc-line"></div>
+          <div class="f-mc-delta">
+            <span class="f-pill-r">-10% <i data-lucide="trending-down" style="width:11px;height:11px;display:inline-block;vertical-align:middle"></i></span>
+            <span class="f-mc-vs">vs last year</span>
+            <div class="f-mc-bench">22% below peer benchmark</div>
+          </div>
+        </div>
+        <div class="f-mc">
+          <div class="f-mc-hd">
+            <div class="f-mc-lbl"><i data-lucide="activity" style="width:16px;height:16px"></i> OEM Spend Percent</div>
+            <a href="#" class="f-mc-link">View Details</a>
+          </div>
+          <div class="f-mc-valrow"><span class="f-mc-val">84%</span><span class="f-mc-vunit">Spend to OEM</span></div>
+          <div class="f-mc-line"></div>
+          <div class="f-mc-delta">
+            <span class="f-pill-r">-4% <i data-lucide="trending-down" style="width:11px;height:11px;display:inline-block;vertical-align:middle"></i></span>
+            <span class="f-mc-vs">OEM Purchases</span>
+            <div class="f-mc-bench">15% below peer benchmark</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service Operations -->
+    <div class="f-acc-wrap">
+      <div class="f-acc-hd">
+        <div class="f-acc-hdl">
+          <div class="f-drag"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="f-acc-bubble">
+            <i data-lucide="wrench" style="width:18px;height:18px;color:#009688"></i>
+          </div>
+          <span class="f-acc-title">Service Operations</span>
+        </div>
+        <button class="f-acc-chev"><i data-lucide="chevron-up" style="width:24px;height:24px"></i></button>
+      </div>
+      <div class="f-acc-cards">
+        <div class="f-mc">
+          <div class="f-mc-hd"><div class="f-mc-lbl"><i data-lucide="newspaper" style="width:16px;height:16px"></i> Spend: Contracted Service</div><a href="#" class="f-mc-link">View Details</a></div>
+          <div class="f-mc-valrow"><span class="f-mc-val">$1.5M</span><span class="f-mc-vunit">Contracted Service Spend</span></div>
+          <div class="f-mc-line"></div>
+          <div class="f-mc-delta"><span class="f-pill-g">10% <i data-lucide="trending-up" style="width:11px;height:11px;display:inline-block;vertical-align:middle"></i></span><span class="f-mc-vs">vs last year</span><div class="f-mc-bench">18% below peer benchmark</div></div>
+        </div>
+        <div class="f-mc">
+          <div class="f-mc-hd"><div class="f-mc-lbl"><i data-lucide="activity" style="width:16px;height:16px"></i> Service Budget</div><a href="#" class="f-mc-link">View Details</a></div>
+          <div class="f-mc-valrow"><span class="f-mc-val">$1.9M</span><span class="f-mc-vunit">Service Budget</span></div>
+          <div class="f-mc-line"></div>
+          <div class="f-mc-delta"><span style="font-size:18px;color:#777">— 0%</span><span class="f-mc-vs">vs last year</span><div class="f-mc-bench">8% below peer benchmark</div></div>
+        </div>
+        <div class="f-mc">
+          <div class="f-mc-hd"><div class="f-mc-lbl"><i data-lucide="warehouse" style="width:16px;height:16px"></i> Spend: Depot</div><a href="#" class="f-mc-link">View Details</a></div>
+          <div class="f-mc-valrow"><span class="f-mc-val">$250K</span><span class="f-mc-vunit">Total Depot Spend</span></div>
+          <div class="f-mc-line"></div>
+          <div class="f-mc-delta"><span class="f-pill-g">15% <i data-lucide="trending-up" style="width:11px;height:11px;display:inline-block;vertical-align:middle"></i></span><span class="f-mc-vs">vs last year</span><div class="f-mc-bench">-2% below peer benchmark</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Asset Management -->
+    <div class="f-acc-wrap" style="margin-bottom:20px">
+      <div class="f-acc-hd">
+        <div class="f-acc-hdl">
+          <div class="f-drag"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="f-acc-bubble" style="background:#FFF3E0">
+            <i data-lucide="briefcase" style="width:18px;height:18px;color:#E65100"></i>
+          </div>
+          <span class="f-acc-title">Asset Management</span>
+        </div>
+        <button class="f-acc-chev"><i data-lucide="chevron-down" style="width:24px;height:24px"></i></button>
+      </div>
+      <div class="f-acc-cards">
+        <div class="f-mc"><div class="f-mc-hd"><div class="f-mc-lbl"><i data-lucide="clipboard-list" style="width:16px;height:16px"></i> Cumulative Downtime</div><a href="#" class="f-mc-link">View Details</a></div><div class="f-mc-valrow"><span class="f-mc-val">50</span><span class="f-mc-vunit">Avg Hours per Asset</span></div><div class="f-mc-line"></div><div class="f-mc-delta"><span class="f-pill-g">-10% <i data-lucide="trending-down" style="width:11px;height:11px;display:inline-block;vertical-align:middle"></i></span><span class="f-mc-vs">vs last year</span><div class="f-mc-bench">10% below peer benchmark</div></div></div>
+        <div class="f-mc"><div class="f-mc-hd"><div class="f-mc-lbl"><i data-lucide="timer" style="width:16px;height:16px"></i> Cycle Time</div><a href="#" class="f-mc-link">View Details</a></div><div class="f-mc-valrow"><span class="f-mc-val">24</span><span class="f-mc-vunit">Avg Hours per WO</span></div><div class="f-mc-line"></div><div class="f-mc-delta"><span class="f-pill-r">-5% <i data-lucide="trending-down" style="width:11px;height:11px;display:inline-block;vertical-align:middle"></i></span><span class="f-mc-vs">vs last year</span><div class="f-mc-bench">5% below peer benchmark</div></div></div>
+        <div class="f-mc"><div class="f-mc-hd"><div class="f-mc-lbl"><i data-lucide="wrench" style="width:16px;height:16px"></i> Mean Time to Repair</div><a href="#" class="f-mc-link">View Details</a></div><div class="f-mc-valrow"><span class="f-mc-val">3.5</span><span class="f-mc-vunit">Avg Hours per WO</span></div><div class="f-mc-line"></div><div class="f-mc-delta"><span class="f-pill-g">15% <i data-lucide="trending-up" style="width:11px;height:11px;display:inline-block;vertical-align:middle"></i></span><span class="f-mc-vs">vs last year</span><div class="f-mc-bench">-10% below peer benchmark</div></div></div>
+        <div class="f-mc"><div class="f-mc-hd"><div class="f-mc-lbl"><i data-lucide="clock" style="width:16px;height:16px"></i> Idle Time</div><a href="#" class="f-mc-link">View Details</a></div><div class="f-mc-valrow"><span class="f-mc-val">20.5</span><span class="f-mc-vunit">Avg Hours per WO</span></div><div class="f-mc-line"></div><div class="f-mc-delta"><span class="f-pill-r">10% <i data-lucide="trending-up" style="width:11px;height:11px;display:inline-block;vertical-align:middle"></i></span><span class="f-mc-vs">vs last year</span><div class="f-mc-bench">15% below peer benchmark</div></div></div>
+        <div class="f-mc"><div class="f-mc-hd"><div class="f-mc-lbl"><i data-lucide="clipboard-check" style="width:16px;height:16px"></i> PM Compliance</div><a href="#" class="f-mc-link">View Details</a></div><div class="f-mc-valrow"><span class="f-mc-val">98%</span><span class="f-mc-vunit">Compliance</span></div><div class="f-mc-line"></div><div class="f-mc-delta"><span class="f-pill-g">3% <i data-lucide="trending-up" style="width:11px;height:11px;display:inline-block;vertical-align:middle"></i></span><span class="f-mc-vs">vs last year</span><div class="f-mc-bench">4% below peer benchmark</div></div></div>
+      </div>
+    </div>
+
+    <div class="cn">13E — Critical Events by Equipment Type · Critical Events by Location</div>
+    <div class="chart-2col">
+      <div class="chart-box">
+        <div class="chart-boxhd"><div class="chart-boxhl"><i data-lucide="bar-chart-2" style="width:14px;height:14px;color:#9E9E9E"></i> Critical Events by Equipment Type</div><button class="ltc-btn-icon"><i data-lucide="ellipsis-vertical" style="width:14px;height:14px"></i></button></div>
+        <div class="chart-boxb">
+          <div style="position:relative;width:100%;height:220px"><canvas id="dash-equip-donut" role="img" aria-label="Equipment type">Equipment data.</canvas></div>
+          <div class="leg" style="margin-top:10px;margin-bottom:0;flex-wrap:wrap;gap:8px;font-size:11px;color:#616161">
+            <span><span class="ld" style="background:#005BA6"></span>CT 13</span><span><span class="ld" style="background:#1A6FB5"></span>Analyzer 11</span><span><span class="ld" style="background:#4D90C8"></span>MRI 9</span><span><span class="ld" style="background:#009CF4"></span>SPECT 7</span><span><span class="ld" style="background:#B0C6D3"></span>PET/CT 5</span><span><span class="ld" style="background:#DCEAED;border:1px solid #ccc"></span>Other 22</span>
+          </div>
+        </div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-boxhd"><div class="chart-boxhl"><i data-lucide="map-pin" style="width:14px;height:14px;color:#9E9E9E"></i> Critical Events by Location</div><button class="ltc-btn-icon"><i data-lucide="ellipsis-vertical" style="width:14px;height:14px"></i></button></div>
+        <div class="chart-boxb"><div style="position:relative;width:100%;height:220px"><canvas id="dash-location-bar" role="img" aria-label="Location bar">Location data.</canvas></div></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════
+         13F  2-COL HORIZONTAL BARS
+    ═══════════════════════════════════ -->
+    <div class="cn">13F — Critical Events by Manufacturer · Critical Events by Vendor Type</div>
+    <div class="chart-2col">
+      <div class="chart-box">
+        <div class="chart-boxhd"><div class="chart-boxhl"><i data-lucide="factory" style="width:14px;height:14px;color:#9E9E9E"></i> Critical Events by Manufacturer</div><button class="ltc-btn-icon"><i data-lucide="ellipsis-vertical" style="width:14px;height:14px"></i></button></div>
+        <div class="chart-boxb"><div style="position:relative;width:100%;height:280px"><canvas id="dash-mfr-bar" role="img" aria-label="Manufacturer bar">Manufacturer data.</canvas></div></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-boxhd"><div class="chart-boxhl"><i data-lucide="truck" style="width:14px;height:14px;color:#9E9E9E"></i> Critical Events by Vendor Type</div><button class="ltc-btn-icon"><i data-lucide="ellipsis-vertical" style="width:14px;height:14px"></i></button></div>
+        <div class="chart-boxb"><div style="position:relative;width:100%;height:280px"><canvas id="dash-vendor-bar" role="img" aria-label="Vendor bar">Vendor data.</canvas></div></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════
+         13G  COST IMPACT TABLE
+         Figma node: 1318-21308
+         No title row — toolbar → table → footer
+    ═══════════════════════════════════ -->
+    <div class="cn">13G — Cost Impact by Modality · search · download · view toggle · pagination</div>
+    <div class="tbl-wrap">
+      <div class="tbl-toolbar">
+        <div class="tbl-search">
+          <input type="text" placeholder="Search">
+          <span class="tbl-search-ico"><i data-lucide="search" style="width:15px;height:15px"></i></span>
+        </div>
+        <div class="tbl-acts">
+          <button class="tbl-act"><i data-lucide="sliders-horizontal" style="width:18px;height:18px"></i></button>
+          <button class="tbl-act"><i data-lucide="download" style="width:18px;height:18px"></i></button>
+          <div class="tbl-toggle">
+            <button><i data-lucide="layout-grid" style="width:17px;height:17px"></i></button>
+            <button class="tog-on"><i data-lucide="list" style="width:17px;height:17px"></i></button>
+          </div>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="tbl-tbl">
+          <thead><tr>
+            <th>Location</th><th>Equipment Type</th><th>Manufacturer</th><th>Model</th><th>Priority</th><th>Request Date</th><th>Vendor Type</th><th>R</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>Carroll Hospital</td><td>X-Ray Unit</td><td>General Electric</td><td>Optima XR240AMX</td><td>Urgent</td><td>12/22/25</td><td>OEM</td><td>N</td></tr>
+            <tr><td>Grace Medical Center</td><td>Analyzer</td><td>Siemens</td><td>Dimension EXL</td><td>Urgent</td><td>1/2/26</td><td>OEM</td><td>N</td></tr>
+            <tr><td>Sinai Hospital of Baltimore</td><td>CT</td><td>General Electric</td><td>Optima CT640</td><td style="color:#C62828">Critical</td><td>1/4/26</td><td>OEM</td><td>N</td></tr>
+            <tr><td>Sinai Hospital of Baltimore</td><td>Smoke Evacuation System</td><td>General Electric</td><td>Optima XR240AMX</td><td>Urgent</td><td>1/4/26</td><td>OEM</td><td>N</td></tr>
+            <tr><td>Sinai Hospital of Baltimore</td><td>PET/CT</td><td>Philips</td><td>Allura Xper FD20</td><td>Urgent</td><td>1/4/26</td><td>OEM</td><td>N</td></tr>
+            <tr><td>Carroll Hospital</td><td>X-Ray Unit</td><td>Stryker Corporation</td><td>Neptune 3</td><td>Urgent</td><td>1/8/26</td><td>OEM</td><td>N</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tbl-foot">
+        <span class="tbl-count">1-06&nbsp; of 42</span>
+        <div class="tbl-pages">
+          <button class="tbl-pg pg-on">1</button><button class="tbl-pg">2</button><button class="tbl-pg">3</button><button class="tbl-pg">4</button><button class="tbl-pg">5</button><button class="tbl-pg">6</button><button class="tbl-pg">7</button>
+        </div>
+        <div class="tbl-show">Show <div class="tbl-showsel">06 <i data-lucide="chevron-down" style="width:12px;height:12px;color:#9E9E9E"></i></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 14. TOOLTIP ANATOMY -->
+<section class="sec">
+  <div class="sh"><h2>Tooltip</h2><span class="sd">Hover tooltip anatomy · tokens · positioning rules</span></div>
+  <div class="sb">
+    <div class="g2">
+      <div>
+        <div class="cn">Single-series tooltip</div>
+        <div class="ttd" style="margin-bottom:16px">
+          <div class="ttl">April 2025</div>
+          <div class="ttr"><span class="ttdot" style="background:#005BA6"></span><span class="ttn">Revenue</span><span class="ttv">$630k</span></div>
+        </div>
+        <div class="cn">Multi-series tooltip</div>
+        <div class="ttd">
+          <div class="ttl">April 2025</div>
+          <div class="ttr"><span class="ttdot" style="background:#005BA6"></span><span class="ttn">Revenue</span><span class="ttv">$630k</span></div>
+          <div class="ttr"><span class="ttdot" style="background:#4D90C8"></span><span class="ttn">Cost</span><span class="ttv">$350k</span></div>
+          <div class="ttr" style="border-top:1px solid #DCDCDC;margin-top:5px;padding-top:5px;margin-bottom:0">
+            <span class="ttdot" style="background:transparent"></span>
+            <span class="ttn" style="font-weight:600;color:#4A4A4A">Profit</span>
+            <span class="ttv" style="color:#17AB78">$280k</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="cn">Tooltip tokens</div>
+        <table class="st">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Background</td><td><span class="tok">#FFFFFF</span></td></tr>
+            <tr><td>Border</td><td><span class="tok">1px solid #DCDCDC</span></td></tr>
+            <tr><td>Radius</td><td><span class="tok">4px --ps-radius-md</span></td></tr>
+            <tr><td>Shadow</td><td><span class="tok">--ps-shadow-md</span></td></tr>
+            <tr><td>Padding</td><td><span class="tok">10px 14px</span></td></tr>
+            <tr><td>Label</td><td><span class="tok">12px / 600 / #777777</span></td></tr>
+            <tr><td>Series name</td><td><span class="tok">12px / 400 / #777777</span></td></tr>
+            <tr><td>Value</td><td><span class="tok">12px / 700 / #4A4A4A</span></td></tr>
+            <tr><td>Series dot</td><td><span class="tok">8×8px / radius: 2px</span></td></tr>
+            <tr><td>Font</td><td><span class="tok">Source Sans Pro</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15. NIVO THEME -->
+<section class="sec">
+  <div class="sh"><h2>Nivo Theme Config</h2><span class="sd">Drop-in <span class="tok" style="font-size:10px">psNivoTheme</span> — pass as <code style="font-size:11px">theme</code> prop to every Nivo chart</span></div>
+  <div class="sb">
+    <pre><code>export const psNivoTheme = {
+  background: 'transparent',
+  textColor: '#4A4A4A',            // --ps-fg-primary
+  fontSize: 12,
+  fontFamily: "'Source Sans Pro', sans-serif",
+  axis: {
+    ticks:  { text: { fill: '#777777', fontSize: 11 } },  // --ps-fg-secondary
+    legend: { text: { fill: '#4A4A4A', fontSize: 12, fontWeight: 600 } }
+  },
+  grid: { line: { stroke: '#DCDCDC', strokeWidth: 1 } },  // --ps-border-default
+  legends: { text: { fill: '#4A4A4A', fontSize: 11 } },
+  tooltip: {
+    container: {
+      background: '#FFFFFF', color: '#4A4A4A', fontSize: 12,
+      borderRadius: 4, border: '1px solid #DCDCDC',
+      boxShadow: '0 2px 10px rgba(0,47,72,0.10)',         // --ps-shadow-md
+      fontFamily: "'Source Sans Pro', sans-serif"
+    }
+  }
+};</code></pre>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+/* ─── Palette ─── */
+const B = {
+  b900:'#002F48', b800:'#003870', b700:'#004A84', b600:'#004E94',
+  b500:'#005BA6', b400:'#1A6FB5', b300:'#4D90C8', b200:'#009CF4',
+  b100:'#DCEAED', b50:'#B0C6D3',
+  ok:'#17AB78', warn:'#E3A92D', err:'#E00000',
+  fg:'#4A4A4A', fg2:'#777777', grid:'#DCDCDC', white:'#FFFFFF'
+};
+const S = [B.b500,B.b400,B.b300,B.b200,B.b50,B.b100];
+
+/* ─── Axis defaults ─── */
+const XA = { grid:{display:false}, ticks:{color:B.fg2,font:{size:11,family:"'Source Sans Pro'"}}, border:{display:false} };
+const YA = { grid:{color:B.grid,lineWidth:1}, ticks:{color:B.fg2,font:{size:11,family:"'Source Sans Pro'"}}, border:{display:false} };
+const NL = { plugins:{legend:{display:false}} };
+function pt(c){ return {pointBackgroundColor:B.white,pointBorderColor:c,pointRadius:4,pointHoverRadius:6,pointBorderWidth:2}; }
+function yk(v){ return '$'+v+'k'; }
+
+/* ─── Data ─── */
+const MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'];
+const RV = [420,510,390,630,580,720,680,750];
+const CO = [280,310,260,350,330,400,380,410];
+const PR = [140,200,130,280,250,320,300,340];
+function scatter(n,cx,cy,sp){ return Array.from({length:n},()=>({x:+(cx+(Math.random()-.5)*sp*2).toFixed(1),y:+(cy+(Math.random()-.5)*sp*2).toFixed(1)})); }
+
+/* ════ 2. BAR ════ */
+new Chart('bar1',{type:'bar',data:{labels:MO,datasets:[{label:'Revenue',data:RV,backgroundColor:B.b500,borderRadius:3,hoverBackgroundColor:B.b700}]},options:{responsive:true,maintainAspectRatio:false,...NL,scales:{x:XA,y:{...YA,ticks:{...YA.ticks,callback:yk}}}}});
+new Chart('bar2',{type:'bar',data:{labels:MO,datasets:[{label:'Revenue',data:RV,backgroundColor:B.b500,borderRadius:3},{label:'Cost',data:CO,backgroundColor:B.b300,borderRadius:3},{label:'Profit',data:PR,backgroundColor:B.b200,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,...NL,scales:{x:XA,y:{...YA,ticks:{...YA.ticks,callback:yk}}}}});
+
+/* ════ 3. LINE + AREA ════ */
+new Chart('line1',{type:'line',data:{labels:MO,datasets:[{label:'Revenue',data:RV,borderColor:B.b500,borderWidth:2,tension:.35,fill:false,...pt(B.b500)},{label:'Cost',data:CO,borderColor:B.b300,borderWidth:2,tension:.35,fill:false,...pt(B.b300)},{label:'Profit',data:PR,borderColor:B.b200,borderWidth:2,tension:.35,fill:false,...pt(B.b200)}]},options:{responsive:true,maintainAspectRatio:false,...NL,scales:{x:XA,y:{...YA,ticks:{...YA.ticks,callback:yk}}}}});
+const FC = RV.map(v=>Math.round(v*1.09));
+new Chart('area1',{type:'line',data:{labels:MO,datasets:[{label:'Revenue',data:RV,borderColor:B.b500,borderWidth:2,tension:.35,fill:true,backgroundColor:'rgba(0,91,166,0.13)',...pt(B.b500)},{label:'Forecast',data:FC,borderColor:B.b200,borderWidth:2,tension:.35,fill:false,borderDash:[5,4],...pt(B.b200)}]},options:{responsive:true,maintainAspectRatio:false,...NL,scales:{x:XA,y:{...YA,ticks:{...YA.ticks,callback:yk}}}}});
+
+/* ════ 4. PIE + DONUT ════ */
+const PC = [B.b500,B.b400,B.b300,B.b200,B.b50];
+const PD = {labels:['Direct','Organic','Referral','Social','Email'],datasets:[{data:[38,27,19,11,5],backgroundColor:PC,borderWidth:2,borderColor:B.white,hoverOffset:6}]};
+new Chart('pie1',{type:'pie',data:PD,options:{responsive:true,maintainAspectRatio:false,...NL}});
+new Chart('donut1',{type:'doughnut',data:PD,options:{responsive:true,maintainAspectRatio:false,cutout:'62%',...NL}});
+
+/* ════ 5. SCATTER + BUBBLE ════ */
+new Chart('scatter1',{type:'scatter',data:{datasets:[{label:'Tier 1',data:scatter(30,25,80,15),backgroundColor:B.b500+'cc',pointRadius:5},{label:'Tier 2',data:scatter(25,55,60,20),backgroundColor:B.b300+'cc',pointRadius:5},{label:'Tier 3',data:scatter(20,75,40,18),backgroundColor:B.b200+'cc',pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,...NL,scales:{x:{...XA,title:{display:true,text:'Order Value ($k)',color:B.fg2,font:{size:11}}},y:{...YA,title:{display:true,text:'Lead Time (days)',color:B.fg2,font:{size:11}}}}}});
+new Chart('bubble1',{type:'bubble',data:{datasets:[{label:'Imaging',data:[{x:80,y:92,r:16}],backgroundColor:B.b500+'bb'},{label:'Surgical',data:[{x:65,y:85,r:20}],backgroundColor:B.b400+'bb'},{label:'ICU',data:[{x:45,y:78,r:11}],backgroundColor:B.b300+'bb'},{label:'Lab',data:[{x:30,y:70,r:9}],backgroundColor:B.b200+'bb'}]},options:{responsive:true,maintainAspectRatio:false,...NL,scales:{x:{...XA,min:10,max:100,title:{display:true,text:'Price Index',color:B.fg2,font:{size:11}}},y:{...YA,min:50,max:110,title:{display:true,text:'Fill Rate %',color:B.fg2,font:{size:11}}}}}});
+
+/* ════ 6. RADAR ════ */
+new Chart('radar1',{type:'radar',data:{labels:['Quality','Delivery','Pricing','Support','Compliance','Innovation'],datasets:[{label:'Supplier A',data:[88,76,64,80,90,72],borderColor:B.b500,backgroundColor:B.b500+'1f',borderWidth:2,pointBackgroundColor:B.b500,pointRadius:3},{label:'Supplier B',data:[72,85,78,65,82,88],borderColor:B.b300,backgroundColor:B.b300+'1f',borderWidth:2,pointBackgroundColor:B.b300,pointRadius:3},{label:'Supplier C',data:[60,70,91,74,68,55],borderColor:B.b200,backgroundColor:B.b200+'1f',borderWidth:2,pointBackgroundColor:B.b200,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,...NL,scales:{r:{grid:{color:B.grid},angleLines:{color:B.grid},pointLabels:{color:B.fg2,font:{size:11,family:"'Source Sans Pro'"}},ticks:{color:B.fg2,font:{size:9},backdropColor:'transparent',stepSize:20},min:0,max:100}}}});
+
+/* ════ 7. HEATMAP ════ */
+(function(){
+  const days=['Mon','Tue','Wed','Thu','Fri'];
+  const hrs=['6am','8am','10am','12pm','2pm','4pm','6pm','8pm'];
+  const pal=[B.b100,B.b50,B.b300,B.b400,B.b500,B.b700];
+  const raw=days.map(()=>hrs.map(()=>Math.floor(Math.random()*6)));
+  const vals=days.map((_,ri)=>hrs.map((__,ci)=>raw[ri][ci]*4+Math.floor(Math.random()*4)));
+  const el=document.getElementById('heatmap-grid');
+  el.style.position='relative';
+  el.style.display='inline-block';
+  const lW=44,lH=22,cW=46,cH=30,gap=4;
+  const W=lW+hrs.length*(cW+gap),H=lH+days.length*(cH+gap);
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="font-family:'Source Sans Pro',sans-serif;max-width:100%;height:auto;overflow:visible">`;
+  hrs.forEach((h,ci)=>{ s+=`<text x="${lW+ci*(cW+gap)+cW/2}" y="${lH-7}" text-anchor="middle" font-size="11" fill="${B.fg2}">${h}</text>`; });
+  days.forEach((d,ri)=>{
+    const y=lH+ri*(cH+gap);
+    s+=`<text x="${lW-8}" y="${y+cH/2+4}" text-anchor="end" font-size="11" fill="${B.fg2}">${d}</text>`;
+    hrs.forEach((h,ci)=>{
+      const x=lW+ci*(cW+gap), val=raw[ri][ci], fill=pal[val];
+      const tf=val>=2?'#fff':B.fg2;
+      s+=`<rect class="hm-cell" data-r="${ri}" data-c="${ci}" x="${x}" y="${y}" width="${cW}" height="${cH}" rx="3" fill="${fill}" style="transition:opacity .15s, stroke-width .15s; cursor:pointer" stroke="${B.fg1||'#002F48'}" stroke-width="0"/>`;
+      s+=`<text class="hm-lbl" data-r="${ri}" data-c="${ci}" x="${x+cW/2}" y="${y+cH/2+4}" text-anchor="middle" font-size="12" font-weight="600" fill="${tf}" style="pointer-events:none;transition:opacity .15s">${vals[ri][ci]}</text>`;
+    });
+  });
+  s+=`</svg>`;
+  s+=`<div id="hm-tip" style="position:absolute;pointer-events:none;opacity:0;transition:opacity .12s;background:#002F48;color:#fff;padding:6px 10px;border-radius:4px;font-size:12px;font-family:'Source Sans Pro',sans-serif;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.18);z-index:10;transform:translate(-50%,-100%);margin-top:-6px"></div>`;
+  el.innerHTML=s;
+  const tip=el.querySelector('#hm-tip');
+  const cells=el.querySelectorAll('.hm-cell');
+  const labels=el.querySelectorAll('.hm-lbl');
+  cells.forEach(rect=>{
+    rect.addEventListener('mouseenter',e=>{
+      const r=+rect.dataset.r,c=+rect.dataset.c;
+      cells.forEach(o=>{ const sel=o.dataset.r===rect.dataset.r&&o.dataset.c===rect.dataset.c; o.style.opacity=sel?'1':'0.35'; o.setAttribute('stroke-width',sel?'2':'0'); });
+      labels.forEach(o=>{ o.style.opacity=(o.dataset.r===rect.dataset.r&&o.dataset.c===rect.dataset.c)?'1':'0.35'; });
+      const cellRect=rect.getBoundingClientRect(),hostRect=el.getBoundingClientRect();
+      tip.innerHTML=`<span style="font-weight:600">${days[r]} · ${hrs[c]}</span> &nbsp; <span style="color:#B0C6D3">${vals[r][c]} orders</span>`;
+      tip.style.left=(cellRect.left-hostRect.left+cellRect.width/2)+'px';
+      tip.style.top=(cellRect.top-hostRect.top)+'px';
+      tip.style.opacity='1';
+    });
+    rect.addEventListener('mouseleave',()=>{
+      cells.forEach(o=>{ o.style.opacity='1'; o.setAttribute('stroke-width','0'); });
+      labels.forEach(o=>{ o.style.opacity='1'; });
+      tip.style.opacity='0';
+    });
+  });
+})();
+
+/* ════ 8. FUNNEL ════ */
+function renderFunnel(id,steps){
+  const el=document.getElementById(id);
+  const W=Math.max(el.offsetWidth||300,260),maxV=steps[0].value;
+  const colors=[B.b500,B.b400,B.b300,B.b200,B.b50];
+  const H=steps.length*56+8;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="font-family:'Source Sans Pro',sans-serif">`;
+  steps.forEach((st,i)=>{
+    const pct=st.value/maxV, bW=Math.max(pct*(W-80),80);
+    const x=(W-bW)/2, y=i*56+4;
+    const drop=i>0?Math.round((1-st.value/steps[i-1].value)*100):null;
+    s+=`<rect x="${x}" y="${y}" width="${bW}" height="38" rx="3" fill="${colors[i]}"/>`;
+    s+=`<text x="${W/2}" y="${y+23}" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">${st.label}</text>`;
+    s+=`<text x="${x+bW+8}" y="${y+23}" font-size="11" fill="${B.fg2}">${st.value.toLocaleString()}</text>`;
+    if(drop!==null) s+=`<text x="${W-2}" y="${y+23}" text-anchor="end" font-size="10" fill="${B.err}">−${drop}%</text>`;
+  });
+  s+=`</svg>`;
+  el.innerHTML=s;
+}
+renderFunnel('funnel1',[{label:'Requisitions',value:8500},{label:'Approved',value:5200},{label:'PO Issued',value:3800},{label:'Received',value:3100},{label:'Invoiced',value:2840}]);
+renderFunnel('funnel2',[{label:'Submitted',value:1200},{label:'Under Review',value:880},{label:'Approved',value:650},{label:'Fulfilled',value:590}]);
+
+/* ════ 9. WAFFLE ════ */
+function renderWaffle(id,segments){
+  const el=document.getElementById(id);
+  const cells=[];
+  segments.forEach(s=>{ for(let i=0;i<s.v;i++) cells.push(s.c); });
+  cells.forEach(c=>{
+    const d=document.createElement('div');
+    d.style.cssText=`width:calc(10% - 3px);aspect-ratio:1;background:${c};border-radius:2px;flex-shrink:0`;
+    el.appendChild(d);
+  });
+}
+renderWaffle('waffle1',[{v:68,c:B.b500},{v:14,c:B.b300},{v:12,c:B.b50},{v:6,c:B.b100}]);
+
+/* ════ 10. TREEMAP ════ */
+(function(){
+  const el=document.getElementById('treemap1');
+  const W=el.offsetWidth||800,H=340;
+  const data=[
+    {name:'Sales / Enterprise',value:180,d:0},{name:'Engineering / Frontend',value:120,d:1},
+    {name:'Sales / SMB',value:110,d:0},{name:'Engineering / Backend',value:95,d:1},
+    {name:'Marketing / Content',value:80,d:2},{name:'Product / Design',value:70,d:3},
+    {name:'Engineering / DevOps',value:60,d:1},{name:'Marketing / Paid',value:65,d:2},
+    {name:'Product / Research',value:50,d:3},{name:'Support',value:40,d:4}
+  ].sort((a,b)=>b.value-a.value);
+  const total=data.reduce((a,d)=>a+d.value,0);
+  const cols=[B.b500,B.b400,B.b300,B.b200,B.b50];
+  const half=Math.ceil(data.length/2);
+  const top=data.slice(0,half),bot=data.slice(half);
+  const topTotal=top.reduce((a,d)=>a+d.value,0);
+  const topH=Math.round(H*topTotal/total);
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="font-family:'Source Sans Pro',sans-serif">`;
+  function row(items,y,h){
+    const rt=items.reduce((a,d)=>a+d.value,0);
+    let cx=0;
+    items.forEach((d,i)=>{
+      const cw=(d.value/rt)*W;
+      const col=cols[d.d]||B.b500;
+      const tf='#fff';
+      s+=`<rect x="${cx+1}" y="${y+1}" width="${cw-2}" height="${h-2}" rx="3" fill="${col}"/>`;
+      if(cw>30&&h>20){
+        const parts=d.name.split('/');
+        const label=parts.length>1?parts[0].trim():d.name;
+        const sub=parts.length>1?parts[1].trim():'';
+        s+=`<text x="${cx+cw/2}" y="${y+h/2+(sub&&h>36?-7:4)}" text-anchor="middle" font-size="11" font-weight="600" fill="${tf}">${cw>70?label:label.slice(0,6)+'…'}</text>`;
+        if(sub&&h>36) s+=`<text x="${cx+cw/2}" y="${y+h/2+8}" text-anchor="middle" font-size="10" fill="#fff">${cw>60?sub:sub.slice(0,5)+'…'}</text>`;
+        if(h>52) s+=`<text x="${cx+cw/2}" y="${y+h-10}" text-anchor="middle" font-size="10" fill="#fff">$${d.value}k</text>`;
+      }
+      cx+=cw;
+    });
+  }
+  row(top,0,topH);
+  row(bot,topH,H-topH);
+  s+=`</svg>`;
+  el.innerHTML=s;
+})();
+
+/* ════ 11. BUMP ════ */
+(function(){
+  const el=document.getElementById('bump1');
+  const quarters=['Q1\'24','Q2\'24','Q3\'24','Q4\'24','Q1\'25'];
+  const series=[
+    {name:'Supplier A',ranks:[1,2,1,3,2],c:B.b500},
+    {name:'Supplier B',ranks:[3,1,2,1,1],c:B.b400},
+    {name:'Supplier C',ranks:[2,3,3,2,3],c:B.b300},
+    {name:'Supplier D',ranks:[4,4,4,4,4],c:B.b200},
+    {name:'Supplier E',ranks:[5,5,5,5,5],c:B.b50},
+  ];
+  const W=Math.max(el.offsetWidth||640,400),H=220;
+  const pL=90,pR=90,pT=28,pB=8;
+  const gW=W-pL-pR,gH=H-pT-pB;
+  const xS=gW/(quarters.length-1),yS=gH/4;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="font-family:'Source Sans Pro',sans-serif">`;
+  quarters.forEach((q,i)=>{ s+=`<text x="${pL+i*xS}" y="${pT-8}" text-anchor="middle" font-size="10" fill="${B.fg2}">${q}</text>`; });
+  series.forEach(sr=>{
+    const pts=sr.ranks.map((r,i)=>[pL+i*xS,pT+(r-1)*yS]);
+    let d=`M${pts[0][0]},${pts[0][1]}`;
+    for(let i=1;i<pts.length;i++){ const mx=(pts[i][0]+pts[i-1][0])/2; d+=` C${mx},${pts[i-1][1]} ${mx},${pts[i][1]} ${pts[i][0]},${pts[i][1]}`; }
+    s+=`<path d="${d}" fill="none" stroke="${sr.c}" stroke-width="2.5"/>`;
+    pts.forEach(([x,y])=>{ s+=`<circle cx="${x}" cy="${y}" r="4" fill="${B.white}" stroke="${sr.c}" stroke-width="2"/>`; });
+    s+=`<text x="${pL-8}" y="${pts[0][1]+4}" text-anchor="end" font-size="11" fill="${sr.c}" font-weight="600">${sr.name}</text>`;
+    s+=`<text x="${pL+gW+8}" y="${pts[pts.length-1][1]+4}" font-size="11" fill="${sr.c}" font-weight="600">#${sr.ranks[sr.ranks.length-1]}</text>`;
+  });
+  s+=`</svg>`;
+  el.innerHTML=s;
+})();
+
+/* ════ 12. STREAM ════ */
+(function(){
+  const labels=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const keys=['Imaging','Surgical','ICU','Lab','Cardio'];
+  const cols=[B.b500,B.b400,B.b300,B.b200,B.b50];
+  const raw=keys.map(()=>labels.map(()=>Math.floor(Math.random()*180+40)));
+  new Chart('stream1',{type:'line',data:{labels,datasets:keys.map((k,i)=>({label:k,data:raw[i],borderColor:cols[i],backgroundColor:cols[i]+'55',borderWidth:1.5,fill:i===0?'origin':'-1',tension:.4,pointRadius:0}))},options:{responsive:true,maintainAspectRatio:false,...NL,scales:{x:XA,y:{...YA,stacked:false}},interaction:{mode:'index',intersect:false}}});
+})();
+
+/* ════ 13. DASHBOARD — VA Dashboard patterns ════ */
+
+// Response Time Trend — line with benchmark reference line
+(function(){
+  const labels = ['2023-01','2023-04','2023-07','2023-10','2024-01','2024-04','2024-07','2024-10','2025-01'];
+  const resolution = [88,72,62,68,80,85,78,82,74];
+  const benchmark  = [90,90,90,90,90,90,90,90,90];
+  new Chart('dash-trend',{type:'line',data:{labels,datasets:[
+    {label:'Resolution Rate (≤2 days)',data:resolution,borderColor:B.b500,borderWidth:2.5,tension:.35,fill:false,...pt(B.b500),pointRadius:3},
+    {label:'Benchmark (90%)',data:benchmark,borderColor:B.b200,borderWidth:1.5,borderDash:[6,4],tension:0,fill:false,pointRadius:0},
+  ]},options:{responsive:true,maintainAspectRatio:false,...NL,
+    scales:{
+      x:{...XA,ticks:{...XA.ticks,maxRotation:45,font:{size:10,family:"'Source Sans Pro'"}}},
+      y:{...YA,min:0,max:100,ticks:{...YA.ticks,callback:v=>v+'%'}}
+    }}});
+})();
+
+// Equipment Type donut
+new Chart('dash-equip-donut',{type:'doughnut',
+  data:{labels:['CT','Analyzer','MRI','SPECT','PET/CT','X-Ray/Fluoro','Other'],
+    datasets:[{data:[13,11,9,7,5,5,17],backgroundColor:[B.b500,B.b400,B.b300,B.b200,B.b50,B.b100,B.n300||'#CCCCCC'],borderWidth:2,borderColor:'#fff',hoverOffset:5}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'55%',...NL}});
+
+// Critical Events by Location — horizontal bar
+new Chart('dash-location-bar',{type:'bar',
+  data:{labels:['Sinai Hospital of Baltimore','Carroll Hospital','Grace Medical Center','NW Hospital Center'],
+    datasets:[{data:[38,22,5,2],backgroundColor:[B.b500,B.b400,B.b300,B.b200],borderRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',...NL,
+    scales:{
+      x:{...XA,ticks:{...XA.ticks,stepSize:10}},
+      y:{...YA,grid:{display:false},ticks:{...YA.ticks,font:{size:11,family:"'Source Sans Pro'"}}}
+    }}});
+
+// Critical Events by Manufacturer — horizontal bar
+new Chart('dash-mfr-bar',{type:'bar',
+  data:{labels:['Philips','General Electric','Siemens','Sebia','DiaSorin','Stryker','Medrad','Parks Medical','Biosense Webster','Roche'],
+    datasets:[{data:[19,18,12,4,3,2,2,1,1,1],backgroundColor:B.b500,borderRadius:3,hoverBackgroundColor:B.b700}]},
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',...NL,
+    scales:{
+      x:{...XA},
+      y:{...YA,grid:{display:false},ticks:{...YA.ticks,font:{size:10,family:"'Source Sans Pro'"}}}
+    }}});
+
+// Critical Events by Vendor Type — horizontal bar
+new Chart('dash-vendor-bar',{type:'bar',
+  data:{labels:['OEM','ISO','Unknown'],
+    datasets:[{data:[46,18,3],backgroundColor:[B.b500,B.b400,B.b200],borderRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',...NL,
+    scales:{
+      x:{...XA},
+      y:{...YA,grid:{display:false},ticks:{...YA.ticks,font:{size:11,family:"'Source Sans Pro'"}}}
+    }}});
+
+/* ─── Lucide icons ─── */
+if(typeof lucide!=='undefined') lucide.createIcons();
+
+}); // DOMContentLoaded
+</script>
+</body>
+</html>

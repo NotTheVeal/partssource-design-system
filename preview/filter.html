@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Filter" subtitle="1-for-1 from Figma documentation" viewport="1100x600" --><html><head>
+
+
+  <meta charset="utf-8">
+  <title>Filter</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;border-radius:12px 12px 0 0;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+
+    .states{padding:8px 0;}
+    .state-row{display:grid;grid-template-columns:140px minmax(0,1fr) 280px;gap:32px;align-items:flex-start;padding:28px 24px;border-bottom:1px solid #F1F1F1;}
+    .state-row:last-child{border-bottom:0;}
+    .state-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-fg-tertiary);font-weight:700;padding-top:6px;}
+    .state-lbl .caption{text-transform:none;letter-spacing:0;font-weight:400;}
+    .visual-cell{display:flex;flex-direction:column;align-items:flex-start;gap:16px;width:100%;min-width:0;}
+    .caption{font-size:13px;color:var(--ps-fg-secondary);line-height:1.6;}
+    .caption code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--ps-sem-bg-muted);padding:2px 6px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+
+    /* ─── Filter Shell (FAFAFA wrap, 8px radius, 68px tall) ─ */
+    .filter-shell{
+      width:100%;max-width:960px;
+      background:var(--ps-sem-bg-canvas);
+      border:1px solid #DCDCDC;
+      border-radius:8px;
+      padding:14px 10px;
+      position:relative;
+    }
+    .bar{
+      display:flex;align-items:center;
+      width:100%;height:40px;
+      gap:0;
+    }
+    .bar-icon{
+      flex-shrink:0;width:42px;height:40px;
+      display:flex;align-items:center;justify-content:center;
+      background:var(--ps-sem-bg-surface);border:1px solid #CCCCCC;
+      border-radius:5px 0 0 5px;
+      cursor:pointer;color:var(--ps-sem-fg-secondary);
+      transition:all .15s ease;
+    }
+    .bar-icon:hover{background:var(--ps-sem-bg-canvas);}
+    .bar-icon.active{color:var(--ps-sem-fg-brand);border-color:var(--ps-sem-fg-brand);}
+    .bar-trigger{
+      flex-shrink:0;width:212px;height:40px;
+      display:flex;align-items:center;
+      background:var(--ps-sem-bg-surface);border:1px solid #CCCCCC;border-left:0;border-right:0;
+      border-radius:0;padding:0 15px;
+      cursor:pointer;font-family:inherit;text-align:left;
+      position:relative;
+    }
+    .bar-trigger .label-stack{
+      flex:1;display:flex;flex-direction:column;
+      line-height:1;min-width:0;
+    }
+    .bar-trigger .l1{font-size:16px;color:#5C5C5C;font-weight:400;letter-spacing:-0.16px;}
+    .bar-trigger .l2{font-size:11px;color:var(--ps-sem-fg-brand);font-weight:600;display:none;letter-spacing:.2px;margin-bottom:3px;}
+    .bar-trigger .l3{font-size:16px;color:var(--ps-sem-fg-brand);font-weight:400;display:none;letter-spacing:-0.16px;}
+    .bar-trigger .chev{
+      display:flex;align-items:center;justify-content:center;
+      width:20px;height:20px;color:#5C5C5C;flex-shrink:0;
+      margin-left:8px;
+    }
+    .bar-trigger .chev svg{display:block;}
+    .bar-trigger.open{border:1px solid #005BA6;}
+    .bar-trigger.open .l1{display:none;}
+    .bar-trigger.open .l2,.bar-trigger.open .l3{display:block;}
+    .bar-trigger.open .chev{color:var(--ps-sem-fg-brand);}
+    .bar-trigger.open .chev svg{transform:none;}
+    .bar-rest{
+      flex:1;height:40px;
+      background:var(--ps-sem-bg-surface);border:1px solid #CCCCCC;border-left:0;
+      border-radius:0 5px 5px 0;
+    }
+
+    /* dropdown menu */
+    .dropdown{
+      position:absolute;top:calc(100% + 4px);left:0;
+      width:266px;max-height:520px;overflow:auto;
+      background:var(--ps-sem-bg-surface);
+      border-radius:4px;
+      box-shadow:0 2px 10px 0 rgba(0,0,0,0.30);
+      padding:8px 0;z-index:10;
+    }
+    .dropdown .item{
+      padding:8px 16px;font-size:15px;color:var(--ps-sem-fg-primary);cursor:pointer;
+      transition:background .12s ease;
+    }
+    .dropdown .item:hover{background:#F5F5F5;}
+    .dropdown .item.selected{background:#D0EDFC;color:var(--ps-sem-fg-primary);}
+
+    /* ─── Chip row (sits BELOW shell, 24px left inset matching icon position) ── */
+    .chip-row{
+      display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+      padding:0 0 0 24px;width:100%;max-width:960px;
+    }
+    .chip{
+      display:inline-flex;align-items:center;gap:6px;
+      height:23px;padding:0 11px;
+      background:#D0EDFC;border-radius:100px;
+      font-size:15px;color:var(--ps-sem-fg-primary);line-height:1;
+      white-space:nowrap;
+    }
+    .chip .key{font-weight:700;}
+    .chip .val{font-weight:400;}
+    .chip .x{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:14px;height:14px;cursor:pointer;color:var(--ps-sem-fg-secondary);
+      margin-left:2px;
+    }
+    .chip .x:hover{color:var(--ps-sem-fg-brand);}
+
+    .text-action{
+      background:none;border:0;cursor:pointer;
+      font-family:inherit;font-size:15px;color:var(--ps-sem-fg-primary);font-weight:400;line-height:1;
+      padding:6px 14px;border-radius:100px;
+      transition:background .12s ease;
+    }
+    .text-action:hover{
+      background:var(--ps-sem-bg-muted);
+    }
+
+    .empty-text{font-size:15px;color:#949494;font-style:italic;line-height:1;padding:0 0 0 24px;}
+
+    /* ─── Save Filter Set button (white default → blue hover) ─ */
+    .pill-btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      height:36px;padding:0 18px;border-radius:100px;
+      border:1px solid #DCDCDC;background:var(--ps-sem-bg-surface);
+      font-family:inherit;font-size:14px;color:var(--ps-sem-fg-primary);font-weight:600;
+      cursor:pointer;transition:all .15s ease;
+    }
+    .pill-btn:hover,.pill-btn.hover{
+      background:var(--ps-sem-action-default);border-color:var(--ps-sem-fg-brand);color:var(--ps-sem-fg-inverse);
+    }
+
+    /* ─── Saved Filter Set card ──────────────────────────── */
+    .saved-card{
+      width:420px;background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;border-radius:6px;
+      padding:18px 20px 16px;
+    }
+    .saved-card + .saved-card{margin-top:12px;}
+    .saved-card .row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+    .saved-card .name{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:600;color:var(--ps-sem-fg-primary);}
+    .saved-card .name .pencil{color:var(--ps-sem-fg-tertiary);cursor:pointer;}
+    .saved-card .name input{
+      font:inherit;font-size:16px;font-weight:600;color:var(--ps-sem-fg-primary);
+      border:0;border-bottom:1px solid #2B2B2B;outline:none;background:transparent;
+      padding:2px 0;min-width:140px;
+    }
+    .saved-card .default-badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ps-sem-fg-brand);font-weight:600;}
+    .saved-card .default-badge.muted{color:var(--ps-sem-fg-tertiary);font-weight:400;cursor:pointer;}
+    .saved-card .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+    .saved-card .actions{display:flex;align-items:center;justify-content:space-between;}
+    .saved-card .delete{font-size:13px;color:var(--ps-sem-fg-primary);cursor:pointer;background:none;border:0;padding:0;}
+    .saved-card .delete:hover{color:var(--ps-sem-fg-brand);text-decoration:underline;}
+    .saved-card .apply{
+      display:inline-flex;align-items:center;justify-content:center;
+      height:32px;padding:0 16px;border-radius:100px;
+      background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;color:var(--ps-sem-fg-primary);
+      font-size:13px;font-weight:600;cursor:pointer;
+    }
+    .saved-card .apply:hover{background:var(--ps-sem-action-default);border-color:var(--ps-sem-fg-brand);color:var(--ps-sem-fg-inverse);}
+
+    /* ─── Save Filter Selection modal ────────────────────── */
+    .modal{
+      width:520px;background:var(--ps-sem-bg-surface);border-radius:6px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.20);
+      padding:28px 28px 24px;
+    }
+    .modal .row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+    .modal h3{margin:0;font-size:22px;font-weight:600;color:var(--ps-sem-fg-primary);letter-spacing:-.1px;}
+    .modal .close{background:none;border:0;cursor:pointer;color:var(--ps-sem-fg-secondary);padding:4px;}
+    .modal .input-wrap{margin-bottom:20px;}
+    .modal input[type="text"]{
+      width:100%;height:42px;padding:0 14px;
+      border:1px solid #DCDCDC;border-radius:4px;
+      font:inherit;font-size:14px;color:var(--ps-sem-fg-primary);outline:none;
+    }
+    .modal input[type="text"]::placeholder{color:#949494;}
+    .modal input[type="text"]:focus{border-color:var(--ps-sem-fg-brand);box-shadow:0 0 0 2px rgba(0,91,166,0.12);}
+    .modal .preview{
+      min-height:120px;padding:14px;border:1px solid #F1F1F1;border-radius:4px;
+      display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;margin-bottom:24px;
+    }
+    .modal .actions{display:flex;align-items:center;justify-content:flex-end;gap:18px;}
+    .modal .cancel{
+      background:none;border:0;padding:0;cursor:pointer;
+      font:inherit;font-size:13px;font-weight:700;letter-spacing:.6px;color:var(--ps-sem-fg-secondary);text-transform:uppercase;
+    }
+    .modal .save-preset{
+      display:inline-flex;align-items:center;justify-content:center;
+      height:42px;padding:0 28px;border-radius:100px;border:0;
+      background:#F58220;color:var(--ps-sem-fg-inverse);font:inherit;font-size:13px;font-weight:700;letter-spacing:.6px;
+      text-transform:uppercase;cursor:pointer;
+    }
+    .modal .save-preset:hover{background:#D96C0F;}
+
+    /* ─── Spec illustrations ─────────────────────────────── */
+    .spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;padding:24px;}
+    .spec-card{border:1px solid #F1F1F1;border-radius:6px;padding:20px;background:var(--ps-sem-bg-surface);}
+    .spec-card h4{margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);}
+    .spec-card .row{display:flex;justify-content:space-between;font-size:13px;color:var(--ps-sem-fg-primary);padding:6px 0;border-bottom:1px dashed #F1F1F1;}
+    .spec-card .row:last-child{border-bottom:0;}
+    .spec-card .row .v{color:var(--ps-sem-fg-secondary);font-family:ui-monospace,Menlo,monospace;font-size:12px;}
+
+    .swatch{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:middle;margin-right:6px;border:1px solid rgba(0,0,0,0.05);}
+  </style>
+</head>
+<body style="">
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Filter</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Filter</h1>
+  <p class="intro">A multi-faceted filter pattern. Built around a 69px-tall bar with an icon cell on the left, an "Add a Filter" dropdown that expands inline, and a <strong>dynamic input area on the right</strong> whose contents change to match whichever facet is currently selected (free-form text, comma-separated values, date pickers, range inputs, multi-select chips, etc.). Applied filters render as Brand-Light pill chips on the row below; the row also hosts the "Clear all" and "Save Filer Set" actions. Saved sets persist as named cards with their own apply / edit / delete affordances. Based on the 1440px breakpoint; bar width is dynamic up to 960px.</p>
+
+  <!-- 1 — Default bar -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Default Bar</h2>
+      <div class="desc">Empty state — filter icon cell + "Add a Filter" trigger + dynamic remainder. 69px tall, up to 960px wide.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Default</div>
+        <div class="visual-cell">
+          <div class="filter-shell">
+            <div class="bar">
+              <div class="bar-icon" aria-label="Filter">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+                  <circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle>
+                  <circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle>
+                  <circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle>
+                </svg>
+              </div>
+              <button class="bar-trigger" type="button">
+                <span class="label-stack">
+                  <span class="l1">Add a Filter</span>
+                </span>
+                <span class="chev">
+                  <svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
+                    <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+              </button>
+              <div class="bar-rest"></div>
+            </div>
+          </div>
+          <div class="caption">69px height, 1px Grey 4 <code>#DCDCDC</code> border, 4px radius. Icon cell 69px wide with right divider; trigger min-width 280px with 14px icon→label gap, 18px right padding. The empty rectangle to the right of the trigger is the <strong>dynamic input area</strong> — its contents are determined by the active facet (see Dynamic Input Area below).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1b — Dynamic input area -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Dynamic Input Area</h2>
+      <div class="desc">The right-hand region of the bar is a dynamic slot. Whichever facet is selected in the trigger determines the input control, prompt copy, and any suggestion menu. Layout, height, and chrome stay identical — only the input behavior swaps. The trigger continues to render the facet name in mixed case (no overline).</div>
+    </div>
+    <div class="states">
+
+      <div class="state-row">
+        <div class="state-lbl">Free-form text<br><span style="font-weight:400;letter-spacing:0;text-transform:none;color:var(--ps-sem-fg-tertiary);">e.g. Cost Center, Description</span></div>
+        <div class="visual-cell">
+          <div class="filter-shell">
+            <div class="bar">
+              <div class="bar-icon" aria-label="Filter">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg>
+              </div>
+              <button class="bar-trigger" type="button">
+                <span class="label-stack"><span class="l1">Cost Center</span></span>
+                <span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </button>
+              <div class="bar-rest" style="display:flex;align-items:center;padding:0 18px;">
+                <input type="text" placeholder="Enter Cost Center..." style="flex:1;border:0;outline:0;background:transparent;font:inherit;font-size:16px;color:var(--ps-sem-fg-primary);">
+              </div>
+            </div>
+          </div>
+          <div class="caption">Single-line text input. Placeholder follows the pattern <code>Enter &lt;Facet&gt;...</code>. Pressing Enter commits the value and renders a chip below the bar.</div>
+        </div>
+      </div>
+
+      <div class="state-row">
+        <div class="state-lbl">Numeric / ID<br><span style="font-weight:400;letter-spacing:0;text-transform:none;color:var(--ps-sem-fg-tertiary);">e.g. PO #, Order #, Serial #</span></div>
+        <div class="visual-cell">
+          <div class="filter-shell">
+            <div class="bar">
+              <div class="bar-icon" aria-label="Filter">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg>
+              </div>
+              <button class="bar-trigger" type="button">
+                <span class="label-stack"><span class="l1">PO #</span></span>
+                <span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </button>
+              <div class="bar-rest" style="display:flex;align-items:center;padding:0 18px;">
+                <input type="text" placeholder="Enter PO #..." style="flex:1;border:0;outline:0;background:transparent;font:inherit;font-size:16px;color:var(--ps-sem-fg-primary);">
+              </div>
+            </div>
+          </div>
+          <div class="caption">Same input chrome — only the trigger label and placeholder change. Comma-separated values are accepted for facets that support multiple entries.</div>
+        </div>
+      </div>
+
+      <div class="state-row">
+        <div class="state-lbl">Search w/ suggestions<br><span style="font-weight:400;letter-spacing:0;text-transform:none;color:var(--ps-sem-fg-tertiary);">e.g. Timeframe, Modality</span><div class="caption" style="margin: 45px 0px 0px; max-width: 240px; width: 270px;">Trigger collapses to overline + PS Blue facet name. Placeholder <code>Search &lt;Facet&gt;...</code>; focus opens single-select list flush under the input area.</div></div>
+        <div class="visual-cell">
+          <div style="position:relative;width:100%;min-height:330px;">
+            <div class="filter-shell">
+              <div class="bar">
+                <div class="bar-icon" aria-label="Filter">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg>
+                </div>
+                <button class="bar-trigger open" type="button">
+                  <span class="label-stack">
+                    <span class="l2">Add a Filter</span>
+                    <span class="l3">Timeframe</span>
+                  </span>
+                  <span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                </button>
+                <div class="bar-rest" style="display:flex;align-items:center;padding:0 18px;">
+                  <input type="text" placeholder="Search Timeframe..." style="flex:1;border:0;outline:0;background:transparent;font:inherit;font-size:16px;color:var(--ps-sem-fg-tertiary);">
+                </div>
+              </div>
+            </div>
+            <!-- suggestion dropdown — flush under bar -->
+            <div style="position: absolute; top: 54px; left: 264px; right: 10px; background: rgb(255, 255, 255); border-width: 1px; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-right-color: rgb(220, 220, 220); border-bottom-color: rgb(220, 220, 220); border-left-color: rgb(220, 220, 220); border-image: initial; border-top-style: initial; border-top-color: initial; border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.06) 0px 4px 12px; z-index: 2; margin: 4px 0px 0px;">
+              <div style="padding:14px 22px;font-size:16px;color:var(--ps-sem-fg-primary);border-bottom:1px solid #F1F1F1;cursor:pointer;">Last 7 days</div>
+              <div style="padding:14px 22px;font-size:16px;color:var(--ps-sem-fg-primary);border-bottom:1px solid #F1F1F1;cursor:pointer;">Last 14 days</div>
+              <div style="padding:14px 22px;font-size:16px;color:var(--ps-sem-fg-primary);border-bottom:1px solid #F1F1F1;cursor:pointer;">Last 30 days</div>
+              <div style="padding:14px 22px;font-size:16px;color:var(--ps-sem-fg-primary);border-bottom:1px solid #F1F1F1;cursor:pointer;">Last 90 days</div>
+              <div style="padding:14px 22px;font-size:16px;color:var(--ps-sem-fg-primary);cursor:pointer;">Last 6 months</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-row">
+        <div class="state-lbl">Multi-select<br><span style="font-weight:400;letter-spacing:0;text-transform:none;color:var(--ps-sem-fg-tertiary);">e.g. Order Type, Status, Category</span><div class="caption" style="margin: 64px 0px 0px; width: 240px;">Same active-trigger styling. Each row carries a checkbox; selections accumulate and commit as separate chips when the menu closes.</div></div>
+        <div class="visual-cell">
+          <div style="position:relative;width:100%;min-height:300px;">
+            <div class="filter-shell">
+              <div class="bar">
+                <div class="bar-icon" aria-label="Filter">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg>
+                </div>
+                <button class="bar-trigger open" type="button">
+                  <span class="label-stack">
+                    <span class="l2">Add a Filter</span>
+                    <span class="l3">Order Type</span>
+                  </span>
+                  <span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                </button>
+                <div class="bar-rest" style="display:flex;align-items:center;padding:0 18px;">
+                  <input type="text" placeholder="Search Order Type..." style="flex:1;border:0;outline:0;background:transparent;font:inherit;font-size:16px;color:var(--ps-sem-fg-tertiary);">
+                </div>
+              </div>
+            </div>
+            <!-- multi-select dropdown -->
+            <div style="position: absolute; top: 54px; left: 264px; right: 10px; background: rgb(255, 255, 255); border-width: 1px; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-right-color: rgb(220, 220, 220); border-bottom-color: rgb(220, 220, 220); border-left-color: rgb(220, 220, 220); border-image: initial; border-top-style: initial; border-top-color: initial; border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.06) 0px 4px 12px; z-index: 2; padding: 0px; margin: 4px 0px 0px;">
+              <label style="display:flex;align-items:center;gap:14px;padding:14px 22px;font-size:16px;color:var(--ps-sem-fg-primary);border-bottom:1px solid #F1F1F1;cursor:pointer;"><span style="display:inline-block;width:16px;height:16px;border:1.5px solid #BFBFBF;border-radius:2px;background:var(--ps-sem-bg-surface);"></span>Part</label>
+              <label style="display:flex;align-items:center;gap:14px;padding:14px 22px;font-size:16px;color:var(--ps-sem-fg-primary);border-bottom:1px solid #F1F1F1;cursor:pointer;"><span style="display:inline-block;width:16px;height:16px;border:1.5px solid #BFBFBF;border-radius:2px;background:var(--ps-sem-bg-surface);"></span>Repair</label>
+              <label style="display:flex;align-items:center;gap:14px;padding:14px 22px;font-size:16px;color:var(--ps-sem-fg-primary);border-bottom:1px solid #F1F1F1;cursor:pointer;"><span style="display:inline-block;width:16px;height:16px;border:1.5px solid #BFBFBF;border-radius:2px;background:var(--ps-sem-bg-surface);"></span>Loaner</label>
+              <label style="display: flex; align-items: center; gap: 14px; padding: 14px 22px; font-size: 16px; color: rgb(43, 43, 43); cursor: pointer;"><span style="display:inline-block;width:16px;height:16px;border:1.5px solid #BFBFBF;border-radius:2px;background:var(--ps-sem-bg-surface);"></span>Service</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2 — Dropdown open -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Dropdown — Open</h2>
+      <div class="desc">Opening the trigger reveals a list of every available filter facet. Active selection: PS Blue overline label + selected facet name; menu shows hover row in <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;">#D0EDFC</code>.</div>
+    </div>
+    <div class="states">
+      <div class="state-row" style="height: 662px">
+        <div class="state-lbl">Open<div class="caption" style="margin: 80px 0px 0px; width: 182px;">Trigger label collapses into an 11px PS Blue overline + 15px PS Blue selected facet. Menu: 266px wide, 8px vertical padding, drop shadow X:0 Y:2 Blur:10 Spread:0 #000000 30%.</div></div>
+        <div class="visual-cell">
+          <div style="position:relative;width:100%;min-height:720px;">
+          <div class="filter-shell">
+            <div class="bar">
+              <div class="bar-icon" aria-label="Filter">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+                  <circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle>
+                  <circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle>
+                  <circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle>
+                </svg>
+              </div>
+              <button class="bar-trigger open" type="button">
+                <span class="label-stack">
+                  <span class="l2">Add a Filter</span>
+                  <span class="l3">Facility</span>
+                </span>
+                <span class="chev">
+                  <svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
+                    <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                <div class="dropdown" style="width: 212px;">
+                  <div class="item">Account</div>
+                  <div class="item">Asset ID</div>
+                  <div class="item">Checked In</div>
+                  <div class="item">Cost Center</div>
+                  <div class="item">Description</div>
+                  <div class="item">Equipment Serial #</div>
+                  <div class="item">FSR #</div>
+                  <div class="item selected">Facility</div>
+                  <div class="item">Invoice #</div>
+                  <div class="item">Item #</div>
+                  <div class="item">Lot # (Core/Exchange Part)</div>
+                  <div class="item">Manufacturer</div>
+                  <div class="item">Model</div>
+                  <div class="item" style="">Modally</div>
+                  <div class="item">Category</div>
+                  <div class="item">OEM</div>
+                  <div class="item">Order #</div>
+                  <div class="item">Order Type</div>
+                  <div class="item">PO #</div>
+                  <div class="item">Priority</div>
+                  <div class="item">Ref #</div>
+                  <div class="item">Repair Reason</div>
+                  <div class="item">Requester</div>
+                  <div class="item">Status</div>
+                  <div class="item">Tracking #</div>
+                  <div class="item">Work Order</div>
+                </div>
+              </button>
+              <div class="bar-rest"></div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 — With chips -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Bar + Chips</h2>
+      <div class="desc">Once a filter is applied it renders as a Brand-Light chip 16px below the bar, with 24px left inset matching the icon cell. "Clear all" and "Save Filer Set" sit inline after the chips.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Single chip</div>
+        <div class="visual-cell">
+          <div class="filter-shell">
+            <div class="bar">
+              <div class="bar-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg></div>
+              <button class="bar-trigger" type="button">
+                <span class="label-stack"><span class="l1">Add a Filter</span></span>
+                <span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </button>
+              <div class="bar-rest"></div>
+            </div>
+          </div>
+          <div class="chip-row">
+            <div class="chip">
+              <span class="key">Facility:</span><span class="val">Hospital A</span>
+              <span class="x" aria-label="Remove"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span>
+            </div>
+            <button class="text-action" type="button">Clear all</button>
+            <button class="text-action" type="button">Save Filer Set</button>
+          </div>
+          <div class="caption">Chip: 23px tall, 11px L/R padding, 100px pill radius. Fill <code>#D0EDFC</code>. Key Source Sans Pro Bold 15pt; value Regular 15pt; ⊗ remove glyph.</div>
+        </div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">No chips applied</div>
+        <div class="visual-cell">
+          <div class="filter-shell">
+            <div class="bar">
+              <div class="bar-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg></div>
+              <button class="bar-trigger" type="button">
+                <span class="label-stack"><span class="l1">Add a Filter</span></span>
+                <span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </button>
+              <div class="bar-rest"></div>
+            </div>
+          </div>
+          <div class="empty-text">No Filters applied</div>
+          <div class="caption">When the user has touched the bar but applied nothing, the chip row is replaced by an italic Grey 3 placeholder, 16px below the bar at 24px left inset.</div>
+        </div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Many chips</div>
+        <div class="visual-cell">
+          <div class="filter-shell">
+            <div class="bar">
+              <div class="bar-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg></div>
+              <button class="bar-trigger" type="button">
+                <span class="label-stack"><span class="l1">Add a Filter</span></span>
+                <span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </button>
+              <div class="bar-rest"></div>
+            </div>
+          </div>
+          <div class="chip-row">
+            <div class="chip"><span class="key">Facility:</span><span class="val">Hospital A</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+            <div class="chip"><span class="key">Asset ID:</span><span class="val">44335453</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+            <div class="chip"><span class="key">Status:</span><span class="val">Ordered</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+            <div class="chip"><span class="key">Manufacturer:</span><span class="val">GE Healthcare</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+            <button class="text-action" type="button">Clear all</button>
+            <button class="text-action" type="button">Save Filer Set</button>
+          </div>
+          <div class="caption">Chips wrap to a new line as needed; 20px gap maintained. Each chip is removable individually via its ⊗ glyph; "Clear all" removes all at once.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3b — Empty results state -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Empty Results State</h2>
+      <div class="desc">When applied filters return zero matches, the page area below the chip row swaps to a centered empty state — bold confirmation copy + a secondary outlined "Search Your History" button — so users have a clear next step without losing their applied filters.</div>
+    </div>
+    <div class="states">
+      <div class="state-row" style="grid-template-columns:140px minmax(0,1fr);">
+        <div class="state-lbl">No matches</div>
+        <div class="visual-cell">
+          <div class="filter-shell">
+            <div class="bar">
+              <div class="bar-icon" aria-label="Filter">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg>
+              </div>
+              <button class="bar-trigger open" type="button">
+                <span class="label-stack">
+                  <span class="l2">Add a Filter</span>
+                  <span class="l3">Tracking #</span>
+                </span>
+                <span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </button>
+              <div class="bar-rest" style="display:flex;align-items:center;padding:0 18px;">
+                <input type="text" placeholder="Enter Tracking #..." style="flex:1;border:0;outline:0;background:transparent;font:inherit;font-size:16px;color:var(--ps-sem-fg-primary);">
+              </div>
+            </div>
+          </div>
+          <div class="chip-row">
+            <div class="chip"><span class="key">Timeframe:</span><span class="val">Last 30 days</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+            <div class="chip"><span class="key">Tracking #:</span><span class="val">35326666</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+            <button class="text-action" type="button">Clear all</button>
+            <button class="text-action" type="button">Save filter set</button>
+          </div>
+          <div style="border-top:1px solid #E5E5E5;margin-top:8px;width:100%;"></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 24px; width: 920px; line-height: 1; text-align: center; height: 124px;">
+            <div style="font-size: 16px; font-weight: 700; color: rgb(43, 43, 43); letter-spacing: -0.16px; text-align: center; line-height: 1;">There are no events that match your current filters.</div>
+            <button type="button" style="display: inline-flex; align-items: center; gap: 8px; background: rgb(255, 255, 255); border: 1px solid rgb(220, 220, 220); border-radius: 4px; padding: 11px 20px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: 1; font-family: inherit; font-optical-sizing: inherit; font-size-adjust: inherit; font-kerning: inherit; font-feature-settings: inherit; font-variation-settings: inherit; font-language-override: inherit; font-size: 14px; color: rgb(43, 43, 43); cursor: pointer; text-align: center;">
+              Search Your History
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </button>
+          </div>
+          <div style="border-top:1px solid #E5E5E5;width:100%;"></div>
+          <div class="caption">Empty-state lives <strong>inside</strong> the same #FAFAFA shell as the bar and chip row — applied chips remain visible so users can edit or remove them. Confirmation copy is Source Sans Pro Bold 16pt; "Search Your History" is the standard secondary button (white fill, 1px Grey 4 border, 4px radius) with a trailing ↗ glyph.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 — Save Filter Set button states -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Save Filter Set Button</h2>
+      <div class="desc">Pill button used at the end of the chip row. Default is white with Grey 4 border; hover fills with PS Blue.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Default</div>
+        <div class="visual-cell"><button class="pill-btn" type="button">Save Filter Set</button></div>
+        <div class="caption">36px tall, 18px horizontal padding, 100px radius. Border <code>#DCDCDC</code>, label Grey Dark Bold.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Hover</div>
+        <div class="visual-cell"><button class="pill-btn hover" type="button">Save Filter Set</button></div>
+        <div class="caption">Background and border become PS Blue <code>#005BA6</code>; label flips to white. Same dimensions; transition 150ms ease.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 — Saved Filter Set cards -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Saved Filter Set Card</h2>
+      <div class="desc">A named, reusable filter combination. Card surfaces the chips, a Default flag, and Apply / Delete actions. Pencil icon enters Edit Mode.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Default state</div>
+        <div class="visual-cell">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div class="bar-icon" style="border:1px solid #DCDCDC;border-radius:4px;width:48px;height:48px;flex-shrink:0;">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div class="saved-card">
+                <div class="row1">
+                  <span class="name">
+                    Filter Name A
+                    <span class="pencil"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9.5 2L12 4.5L4.5 12L1.5 12L1.5 9L9.5 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg></span>
+                  </span>
+                  <span class="default-badge">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 1L8.8 5L13 5.5L9.8 8.5L10.7 13L7 10.8L3.3 13L4.2 8.5L1 5.5L5.2 5Z"></path></svg>
+                    Default
+                  </span>
+                </div>
+                <div class="chips">
+                  <div class="chip"><span class="key">Facility:</span><span class="val">Hospital A</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+                  <div class="chip"><span class="key">Asset ID:</span><span class="val">44335453</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+                  <div class="chip"><span class="key">Asset ID:</span><span class="val">5353453</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+                  <div class="chip"><span class="key">Asset ID:</span><span class="val">7744333</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+                </div>
+                <div class="actions">
+                  <button class="delete" type="button">Delete</button>
+                  <button class="apply" type="button">Apply Filter</button>
+                </div>
+              </div>
+              <div class="saved-card">
+                <div class="row1">
+                  <span class="name">
+                    Filter Name B
+                    <span class="pencil"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9.5 2L12 4.5L4.5 12L1.5 12L1.5 9L9.5 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg></span>
+                  </span>
+                  <span class="default-badge muted">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M7 1L8.8 5L13 5.5L9.8 8.5L10.7 13L7 10.8L3.3 13L4.2 8.5L1 5.5L5.2 5Z" stroke-linejoin="round"></path></svg>
+                    Set as Default
+                  </span>
+                </div>
+                <div class="chips">
+                  <div class="chip"><span class="key">Lot #:</span><span class="val">ERS-334E433</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+                  <div class="chip"><span class="key">Status:</span><span class="val">Ordered</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+                  <div class="chip"><span class="key">Status:</span><span class="val">Backordered</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+                  <div class="chip"><span class="key">Status:</span><span class="val">Shipped</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+                </div>
+                <div class="actions">
+                  <button class="delete" type="button">Delete</button>
+                  <button class="apply" type="button">Apply Filter</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">Cards stack with 12px gap. "Default" star uses PS Blue fill; "Set as Default" appears as a muted outline star CTA.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Edit mode</div>
+        <div class="visual-cell">
+          <div class="saved-card" style="width:420px;">
+            <div class="row1">
+              <span class="name">
+                <input type="text" value="Filter Name A">
+                <span class="pencil"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9.5 2L12 4.5L4.5 12L1.5 12L1.5 9L9.5 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg></span>
+              </span>
+              <span class="default-badge">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 1L8.8 5L13 5.5L9.8 8.5L10.7 13L7 10.8L3.3 13L4.2 8.5L1 5.5L5.2 5Z"></path></svg>
+                Default
+              </span>
+            </div>
+            <div class="chips">
+              <div class="chip"><span class="key">Facility:</span><span class="val">Hospital A</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+              <div class="chip"><span class="key">Asset ID:</span><span class="val">44335453</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+              <div class="chip"><span class="key">Asset ID:</span><span class="val">5353453</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+              <div class="chip"><span class="key">Asset ID:</span><span class="val">7744333</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+            </div>
+            <div class="actions">
+              <button class="delete" type="button">Delete</button>
+              <button class="apply" type="button">Save</button>
+            </div>
+          </div>
+        </div>
+        <div class="caption">Pencil click puts the name into an editable input with a 1px Grey Dark underline. "Apply Filter" CTA replaced by "Save".</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6 — Save Filter Selection modal -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Save Filter Selection — Modal</h2>
+      <div class="desc">Triggered by "Save Filer Set". Captures a name + previews the chips that will be persisted. CTAs: secondary CANCEL link + primary SAVE PRESET pill (PS Orange, current pill button component).</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Modal</div>
+        <div class="visual-cell">
+          <div class="modal">
+            <div class="row1">
+              <h3>Save Filter Selection</h3>
+              <button class="close" aria-label="Close" type="button"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2L14 14M14 2L2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg></button>
+            </div>
+            <div class="input-wrap">
+              <input type="text" placeholder="Name Filter">
+            </div>
+            <div class="preview">
+              <div class="chip"><span class="key">Facility:</span><span class="val">Hospital A</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+              <div class="chip"><span class="key">Asset ID:</span><span class="val">44335453</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+              <div class="chip"><span class="key">Asset ID:</span><span class="val">5353453</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+              <div class="chip"><span class="key">Asset ID:</span><span class="val">7744333</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+            </div>
+            <div class="actions">
+              <button class="cancel" type="button">CANCEL</button>
+              <button class="save-preset" type="button">SAVE PRESET</button>
+            </div>
+          </div>
+        </div>
+        <div class="caption">520px modal. Chip preview area is non-interactive — chips remain removable here so the user can fine-tune before saving.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7 — Spec (removed) -->
+  <div class="section" style="display:none;">
+    <div class="section-head">
+      <h2>Specs</h2>
+      <div class="desc">Numeric tokens called out in the Figma documentation.</div>
+    </div>
+    <div class="spec-grid">
+      <div class="spec-card">
+        <h4>Bar</h4>
+        <div class="row"><span>Height</span><span class="v">69px</span></div>
+        <div class="row"><span>Max width</span><span class="v">960px (dynamic)</span></div>
+        <div class="row"><span>Border</span><span class="v">1px #DCDCDC</span></div>
+        <div class="row"><span>Radius</span><span class="v">4px</span></div>
+        <div class="row"><span>Icon → label</span><span class="v">14px</span></div>
+        <div class="row"><span>Icon left padding</span><span class="v">20px</span></div>
+        <div class="row"><span>Breakpoint</span><span class="v">1440px</span></div>
+      </div>
+      <div class="spec-card">
+        <h4>Chip</h4>
+        <div class="row"><span>Height</span><span class="v">23px (auto)</span></div>
+        <div class="row"><span>Padding L/R</span><span class="v">11px</span></div>
+        <div class="row"><span>Corner radius</span><span class="v">100px (pill)</span></div>
+        <div class="row"><span>Vertical gap (in card)</span><span class="v">2px</span></div>
+        <div class="row"><span>Fill</span><span class="v"><span class="swatch" style="background:#D0EDFC;"></span>#D0EDFC</span></div>
+        <div class="row"><span>Type</span><span class="v">Source Sans Pro 15pt</span></div>
+        <div class="row"><span>Key weight</span><span class="v">Bold</span></div>
+        <div class="row"><span>Value weight</span><span class="v">Regular</span></div>
+      </div>
+      <div class="spec-card">
+        <h4>Chip row</h4>
+        <div class="row"><span>Below bar</span><span class="v">16px</span></div>
+        <div class="row"><span>Left inset</span><span class="v">24px</span></div>
+        <div class="row"><span>Item gap</span><span class="v">20px</span></div>
+        <div class="row"><span>Empty text</span><span class="v">"No Filters applied" italic Grey 3</span></div>
+      </div>
+      <div class="spec-card">
+        <h4>Dropdown shadow</h4>
+        <div class="row"><span>X / Y</span><span class="v">0 / 2</span></div>
+        <div class="row"><span>Blur</span><span class="v">10</span></div>
+        <div class="row"><span>Spread</span><span class="v">0</span></div>
+        <div class="row"><span>Color</span><span class="v">#000000 30% opacity</span></div>
+        <div class="row"><span>Selected row</span><span class="v"><span class="swatch" style="background:#D0EDFC;"></span>#D0EDFC</span></div>
+      </div>
+      <div class="spec-card">
+        <h4>Save Filter Set button</h4>
+        <div class="row"><span>Default fill</span><span class="v">#FFFFFF</span></div>
+        <div class="row"><span>Default border</span><span class="v">1px #DCDCDC</span></div>
+        <div class="row"><span>Hover fill</span><span class="v"><span class="swatch" style="background:var(--ps-sem-action-default);"></span>#005BA6</span></div>
+        <div class="row"><span>Hover label</span><span class="v">#FFFFFF</span></div>
+      </div>
+      <div class="spec-card">
+        <h4>Saved set name</h4>
+        <div class="row"><span>Max characters</span><span class="v">13</span></div>
+        <div class="row"><span>Overflow</span><span class="v">Ellipsis (…)</span></div>
+        <div class="row"><span>Edit affordance</span><span class="v">Pencil icon</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7.5 — Breakpoints -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Breakpoints</h2>
+      <div class="desc">How the filter bar adapts across the four reference breakpoints from Project OneView. The chip row always sits 16px below the bar with its 24px left inset preserved.</div>
+    </div>
+    <div class="states">
+      <div class="state-row" style="grid-template-columns:140px minmax(0,1fr);">
+        <div class="state-lbl">1440 — Desktop wide</div>
+        <div class="visual-cell">
+          <div style="border:1px dashed #DCDCDC;border-radius:6px;padding:16px;background:var(--ps-sem-bg-canvas);width:100%;max-width:1000px;">
+            <div class="bar" style="max-width:960px;">
+              <div class="bar-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg></div>
+              <button class="bar-trigger" type="button"><span class="label-stack"><span class="l1">Add a Filter</span></span><span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></button>
+              <div class="bar-rest"></div>
+            </div>
+            <div class="chip-row" style="margin-top:16px;"><div class="chip"><span class="key">Facility:</span><span class="val">Hospital A</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div><button class="text-action">Clear all</button><button class="text-action">Save Filer Set</button></div>
+            <div style="margin-top:12px;font-size:11px;color:var(--ps-sem-fg-tertiary);font-family:ui-monospace,Menlo,monospace;">Bar 960px max · 69px tall · chips inline on one row</div>
+          </div>
+        </div>
+      </div>
+      <div class="state-row" style="grid-template-columns:140px minmax(0,1fr);">
+        <div class="state-lbl">1200 — Desktop</div>
+        <div class="visual-cell">
+          <div style="border:1px dashed #DCDCDC;border-radius:6px;padding:16px;background:var(--ps-sem-bg-canvas);width:100%;max-width:780px;">
+            <div class="bar">
+              <div class="bar-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg></div>
+              <button class="bar-trigger" type="button"><span class="label-stack"><span class="l1">Add a Filter</span></span><span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></button>
+              <div class="bar-rest"></div>
+            </div>
+            <div class="chip-row" style="margin-top:16px;"><div class="chip"><span class="key">Facility:</span><span class="val">Hospital A</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div><div class="chip"><span class="key">Status:</span><span class="val">Ordered</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div><button class="text-action">Clear all</button><button class="text-action">Save Filer Set</button></div>
+            <div style="margin-top:12px;font-size:11px;color:var(--ps-sem-fg-tertiary);font-family:ui-monospace,Menlo,monospace;">Bar fills container · chip row wraps when content exceeds width</div>
+          </div>
+        </div>
+      </div>
+      <div class="state-row" style="grid-template-columns:140px minmax(0,1fr);">
+        <div class="state-lbl">768 — Tablet</div>
+        <div class="visual-cell">
+          <div style="border:1px dashed #DCDCDC;border-radius:6px;padding:16px;background:var(--ps-sem-bg-canvas);width:100%;max-width:520px;">
+            <div class="bar">
+              <div class="bar-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg></div>
+              <button class="bar-trigger" type="button" style="min-width:auto;"><span class="label-stack"><span class="l1">Add a Filter</span></span><span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></button>
+              <div class="bar-rest"></div>
+            </div>
+            <div class="chip-row" style="margin-top:16px;"><div class="chip"><span class="key">Facility:</span><span class="val">Hospital A</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div><div class="chip"><span class="key">Status:</span><span class="val">Ordered</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div><button class="text-action">Clear all</button><button class="text-action">Save Filer Set</button></div>
+            <div style="margin-top:12px;font-size:11px;color:var(--ps-sem-fg-tertiary);font-family:ui-monospace,Menlo,monospace;">Trigger min-width relaxes; chip row wraps onto two lines</div>
+          </div>
+        </div>
+      </div>
+      <div class="state-row" style="grid-template-columns:140px minmax(0,1fr);">
+        <div class="state-lbl">375 — Mobile Closed</div>
+        <div class="visual-cell">
+          <div style="border:1px dashed #DCDCDC;border-radius:6px;padding:16px;background:var(--ps-sem-bg-canvas);width:100%;max-width:407px;">
+            <div style="width:375px;display:flex;flex-direction:column;">
+              <div style="height:44px;background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;display:flex;align-items:center;justify-content:flex-end;padding:0 14px;">
+                <button type="button" style="background:none;border:0;padding:0;cursor:pointer;color:var(--ps-sem-fg-secondary);display:flex;align-items:center;justify-content:center;width:24px;height:24px;">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg>
+                </button>
+              </div>
+              <div style="background:var(--ps-sem-bg-canvas);border:1px solid #DCDCDC;border-top:0;padding:12px 10px;">
+                <div style="background:var(--ps-sem-bg-surface);padding:10px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                  <div class="chip"><span class="key">Facility:</span><span class="val">Hospital A</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+                  <button class="text-action" type="button">Clear all</button>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:12px;font-size:11px;color:var(--ps-sem-fg-tertiary);font-family:ui-monospace,Menlo,monospace;">Closed: 44px white top bar with right-aligned icon · chip strip below in #FAFAFA shell</div>
+          </div>
+        </div>
+      </div>
+      <div class="state-row" style="grid-template-columns:140px minmax(0,1fr);">
+        <div class="state-lbl">375 — Mobile Open</div>
+        <div class="visual-cell">
+          <div style="border:1px dashed #DCDCDC;border-radius:6px;padding:16px;background:var(--ps-sem-bg-canvas);width:100%;max-width:407px;">
+            <div style="width:375px;display:flex;flex-direction:column;">
+              <div style="height:44px;background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;display:flex;align-items:center;justify-content:flex-end;padding:0 14px;">
+                <button type="button" style="background:none;border:0;padding:0;cursor:pointer;color:var(--ps-sem-fg-brand);display:flex;align-items:center;justify-content:center;width:24px;height:24px;">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg>
+                </button>
+              </div>
+              <div style="background:var(--ps-sem-bg-canvas);border:1px solid #DCDCDC;border-top:0;padding:12px 10px;display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;align-items:center;height:40px;">
+                  <div style="width:42px;height:40px;background:var(--ps-sem-bg-surface);border:1px solid #CCCCCC;border-radius:5px 0 0 5px;display:flex;align-items:center;justify-content:center;color:var(--ps-sem-fg-tertiary);">
+                    <svg width="16" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 5h6M14 5h3M3 10h2M10 10h7M3 15h10M16 15h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="11" cy="5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="7" cy="10" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle><circle cx="14" cy="15" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.6"></circle></svg>
+                  </div>
+                  <div style="flex:1;height:40px;background:var(--ps-sem-bg-surface);border:1px solid #CCCCCC;border-left:0;border-radius:0 5px 5px 0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;">
+                    <span style="font-size:16px;color:#5C5C5C;">Add a Filter</span>
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" style="color:#5C5C5C;"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </div>
+                </div>
+                <div style="background:var(--ps-sem-bg-surface);height:40px;border:1px solid #CCCCCC;border-radius:5px;"></div>
+                <div style="display:flex;justify-content:flex-end;">
+                  <button class="pill-btn" type="button" style="background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;color:var(--ps-sem-fg-primary);">Apply Filter</button>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:0 4px;">
+                  <div class="chip"><span class="key">Facility:</span><span class="val">Hospital A</span><span class="x"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1"></circle><path d="M3.5 3.5L6.5 6.5M6.5 3.5L3.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></span></div>
+                  <button class="text-action" type="button">Clear all</button>
+                  <button class="text-action" type="button">Save Filter Set</button>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:12px;font-size:11px;color:var(--ps-sem-fg-tertiary);font-family:ui-monospace,Menlo,monospace;">Open: filter icon turns PS Blue · shell expands to show full bar + facet input + Apply Filter + chip row</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8 — Behavior notes -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Behavior</h2>
+      <div class="desc">Multi-select rules and apply / reset behavior, paraphrased from the Figma documentation.</div>
+    </div>
+    <div class="states">
+      <ul style="margin:0;padding:20px 24px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);">
+        <li><strong>Multi-faceted filter:</strong> selecting an item in the dropdown updates the area to the right with that facet's input controls.</li>
+        <li><strong>Comma-separated entries:</strong> users can type multiple values for a single facet (e.g. three facilities) separated by commas.</li>
+        <li><strong>Apply on Enter:</strong> pressing Enter commits the active facet and renders chips below the bar.</li>
+        <li><strong>Reset:</strong> "Clear all" wipes every chip; individual chips can be removed via their ⊗ glyph.</li>
+        <li><strong>Saved Filter Set name:</strong> max 13 characters; longer names truncate with an ellipsis.</li>
+        <li><strong>Save Filter Set modal:</strong> uses the current orange pill button component — slated to update once the global pill component changes.</li>
+      </ul>
+    </div>
+  </div>
+
+
+
+</body></html>

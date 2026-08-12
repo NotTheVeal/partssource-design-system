@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Search Bar" subtitle="Global, SRP, inline, within-filter, and collapsed search variants" --><html><head>
+  <meta charset="utf-8">
+  <title>Search Bar — PartsSource Design System</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 96px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:880px;line-height:1.6;}
+
+    /* Section frame — matches the rest of the system */
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;max-width:640px;}
+    .section-body{padding:32px 24px;background:var(--ps-sem-bg-canvas);}
+    .section-body.plain{background:var(--ps-sem-bg-surface);padding:0;}
+    .section-body.tight{padding:24px;}
+
+    .stage-label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);font-weight:700;margin:0 0 10px;}
+    .stage-cap{font-size:12px;color:var(--ps-sem-fg-secondary);margin-top:8px;line-height:1.5;}
+    .stage-stack{display:flex;flex-direction:column;gap:32px;}
+    .stage-row{display:flex;flex-direction:column;gap:8px;}
+
+    code.kbd{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+
+    /* ── Search · Global (top nav) ────────────────────
+       Flush input + flush orange icon button on the right.
+       40 px tall, 4 px radius, #DCDCDC stroke. Sourced from
+       the Top Navigation main row. */
+    .ps-search-global{
+      display:flex;align-items:stretch;
+      height:40px;border:1px solid #DCDCDC;border-radius:4px;
+      background:var(--ps-sem-bg-surface);overflow:hidden;
+      font-family:'Source Sans Pro',sans-serif;
+      transition:border-color 150ms ease,box-shadow 150ms ease;
+    }
+    .ps-search-global:hover{border-color:#999;}
+    .ps-search-global:focus-within{border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+    .ps-search-global input{
+      flex:1;border:0;outline:0;background:transparent;
+      padding:0 16px;font:15px/1 'Source Sans Pro',sans-serif;
+      color:var(--ps-sem-fg-primary);
+    }
+    .ps-search-global input::placeholder{color:var(--ps-sem-fg-tertiary);}
+    .ps-search-global button{
+      width:48px;flex-shrink:0;border:0;cursor:pointer;
+      background:#FF9505;color:var(--ps-sem-fg-inverse);
+      display:flex;align-items:center;justify-content:center;
+      transition:background 120ms ease;
+    }
+    .ps-search-global button:hover{background:#E58400;}
+    .ps-search-global button svg{width:20px;height:20px;display:block;}
+
+    /* ── Search · Inline (page/card content) ───────────
+       Used inside Asset Inventory, list views, etc.
+       40 px tall, dark glyph button on right, no fill.
+       The icon button is borderless and same color as text. */
+    .ps-search-inline{
+      display:flex;align-items:stretch;
+      height:40px;border:1px solid #DCDCDC;border-radius:4px;
+      background:var(--ps-sem-bg-surface);overflow:hidden;
+      font-family:'Source Sans Pro',sans-serif;
+      transition:border-color 150ms ease,box-shadow 150ms ease;
+      width:320px;
+    }
+    .ps-search-inline:hover{border-color:#999;}
+    .ps-search-inline:focus-within{border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(0,91,166,.12);}
+    .ps-search-inline input{
+      flex:1;border:0;outline:0;background:transparent;
+      padding:0 14px;font:15px/1 'Source Sans Pro',sans-serif;
+      color:var(--ps-sem-fg-primary);
+    }
+    .ps-search-inline input::placeholder{color:var(--ps-sem-fg-tertiary);}
+    .ps-search-inline button{
+      width:42px;flex-shrink:0;border:0;cursor:pointer;
+      background:transparent;color:var(--ps-prim-gray-900);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .ps-search-inline button:hover{color:var(--ps-brand-primary);}
+    .ps-search-inline button svg{width:18px;height:18px;display:block;}
+
+    /* ── Search · Within filter ──────────────────────
+       Used inside filter rails. 32 px tall, glyph on
+       the right inside the same stroke. Quieter still. */
+    .ps-search-within{
+      display:flex;align-items:stretch;
+      height:32px;border:1px solid #DCDCDC;border-radius:3px;
+      background:var(--ps-sem-bg-surface);overflow:hidden;
+      font-family:'Source Sans Pro',sans-serif;
+      width:240px;
+    }
+    .ps-search-within:focus-within{border-color:var(--ps-brand-primary);}
+    .ps-search-within input{
+      flex:1;border:0;outline:0;background:transparent;
+      padding:0 10px;font:13px/1 'Source Sans Pro',sans-serif;
+      color:var(--ps-sem-fg-primary);
+    }
+    .ps-search-within input::placeholder{color:var(--ps-sem-fg-tertiary);}
+    .ps-search-within .icon{
+      width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+      color:var(--ps-sem-fg-tertiary);pointer-events:none;
+    }
+    .ps-search-within .icon svg{width:14px;height:14px;}
+
+    /* ── Search · Collapsed (icon-only) ───────────────
+       The lone magnifying glass that lives next to a
+       page title (e.g. My Lists header). Click expands
+       into a popover field. */
+    .ps-search-icon{
+      width:36px;height:36px;border-radius:4px;border:0;
+      background:transparent;color:var(--ps-prim-gray-900);
+      display:inline-flex;align-items:center;justify-content:center;
+      cursor:pointer;transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-search-icon:hover{background:var(--ps-sem-bg-muted);color:var(--ps-brand-primary);}
+    .ps-search-icon:focus-visible{outline:2px solid var(--ps-brand-primary);outline-offset:2px;}
+    .ps-search-icon svg{width:20px;height:20px;}
+
+    /* ── Search · SRP (header search) ─────────────────
+       The wide field that sits with the Categories+
+       button on the marketplace SRP. 40 px tall. */
+    .ps-search-srp{
+      display:flex;align-items:stretch;
+      height:40px;border:1px solid #CCCCCC;border-radius:5px;
+      background:var(--ps-sem-bg-surface);overflow:hidden;
+      font-family:'Source Sans Pro',sans-serif;
+    }
+    .ps-search-srp:focus-within{border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+    .ps-search-srp input{
+      flex:1;border:0;outline:0;background:transparent;
+      padding:0 16px;font:15px/1 'Source Sans Pro',sans-serif;
+      color:var(--ps-sem-fg-primary);
+    }
+    .ps-search-srp input::placeholder{color:var(--ps-sem-fg-tertiary);}
+    .ps-search-srp button{
+      width:48px;flex-shrink:0;border:0;cursor:pointer;
+      background:#FF9505;color:var(--ps-sem-fg-inverse);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .ps-search-srp button:hover{background:#E58400;}
+    .ps-search-srp button svg{width:20px;height:20px;}
+
+    /* In-field clear button (X) — shared */
+    .ps-search-global .clear,
+    .ps-search-inline .clear,
+    .ps-search-srp .clear{
+      flex-shrink:0;align-self:center;
+      width:24px;height:24px;border:0;border-radius:50%;
+      background:transparent;color:var(--ps-sem-fg-tertiary);
+      display:flex;align-items:center;justify-content:center;cursor:pointer;
+      margin-right:6px;
+    }
+    .ps-search-global .clear:hover,
+    .ps-search-inline .clear:hover,
+    .ps-search-srp .clear:hover{background:var(--ps-sem-bg-muted);color:var(--ps-prim-gray-900);}
+    .ps-search-global .clear svg,
+    .ps-search-inline .clear svg,
+    .ps-search-srp .clear svg{width:12px;height:12px;}
+
+    /* ── Type-ahead dropdown · Global ────────────────
+       Sits in a position:relative wrapper alongside
+       the .ps-search-global (NOT inside — overflow:hidden
+       on the bar would clip it). */
+    .ps-search-wrap{position:relative;}
+    .ps-typeahead{
+      position:absolute;left:0;right:0;top:calc(100% + 2px);
+      background:#fff;border:1px solid #DCDCDC;
+      border-radius:4px;
+      box-shadow:0 8px 24px rgba(0,47,72,.10);
+      z-index:5;overflow:hidden;
+      font-family:'Source Sans Pro',sans-serif;
+    }
+    .ps-typeahead__row{
+      display:block;padding:12px 18px;
+      font-size:15px;color:var(--ps-prim-gray-900);
+      cursor:pointer;line-height:1.3;
+    }
+    .ps-typeahead__row:hover,
+    .ps-typeahead__row.is-focus{background:#F4F6F8;}
+    .ps-typeahead__row b{font-weight:700;color:var(--ps-prim-gray-900);}
+    .ps-typeahead__row .chev{color:var(--ps-sem-fg-tertiary);margin:0 6px;font-weight:400;}
+    .ps-typeahead__divider{border-top:1px solid #E5E5E5;}
+    .ps-typeahead__product{
+      display:flex;align-items:center;gap:14px;
+      padding:10px 18px;cursor:pointer;
+      border-top:1px solid #F1F1F1;
+    }
+    .ps-typeahead__product:hover{background:#F4F6F8;}
+    .ps-typeahead__product .thumb{
+      width:36px;height:36px;flex-shrink:0;border-radius:3px;
+      background:#fff;border:1px solid #E5E5E5;
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;color:#9AA;
+    }
+    .ps-typeahead__product .thumb svg{width:24px;height:24px;}
+    .ps-typeahead__product .body{display:flex;flex-direction:column;gap:2px;}
+    .ps-typeahead__product .body b{
+      font-size:14px;font-weight:700;text-transform:uppercase;
+      color:var(--ps-sem-fg-brand);letter-spacing:.2px;
+    }
+    .ps-typeahead__product .body span{
+      font-size:13px;color:var(--ps-sem-fg-secondary);
+    }
+
+    /* ── Suggestions dropdown (type-ahead) ─────────── */
+    .sugg-wrap{position:relative;}
+    .sugg-menu{
+      position:absolute;left:0;right:0;top:calc(100% + 4px);
+      background:var(--ps-sem-bg-surface);
+      border:1px solid #E5E5E5;border-radius:6px;
+      box-shadow:0 8px 24px rgba(0,47,72,.10),0 2px 4px rgba(0,47,72,.06);
+      padding:8px 0;z-index:5;
+      font-family:'Source Sans Pro',sans-serif;
+    }
+    .sugg-section{padding:6px 0;}
+    .sugg-section + .sugg-section{border-top:1px solid #F1F1F1;}
+    .sugg-head{
+      padding:6px 16px 4px;font-size:10px;letter-spacing:1px;
+      text-transform:uppercase;color:var(--ps-sem-fg-tertiary);font-weight:700;
+    }
+    .sugg-item{
+      display:flex;align-items:center;gap:12px;
+      padding:8px 16px;font-size:14px;color:var(--ps-sem-fg-primary);
+      cursor:pointer;line-height:1.2;
+    }
+    .sugg-item:hover,.sugg-item.is-focus{background:#EFF9FE;}
+    .sugg-item .ico{width:16px;height:16px;color:var(--ps-sem-fg-tertiary);flex-shrink:0;}
+    .sugg-item b{font-weight:700;color:var(--ps-sem-fg-primary);}
+    .sugg-item .meta{margin-left:auto;font-size:12px;color:var(--ps-sem-fg-tertiary);}
+    .sugg-item .thumb{width:32px;height:32px;border-radius:3px;background:#F4F6F8;border:1px solid #E5E5E5;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--ps-sem-fg-tertiary);font-size:10px;}
+    .sugg-empty{padding:18px 16px;text-align:center;font-size:13px;color:var(--ps-sem-fg-tertiary);}
+    .sugg-empty b{display:block;color:var(--ps-sem-fg-primary);font-size:14px;margin-bottom:4px;}
+
+    /* ── Page-style demo strips ────────────────────── */
+    .demo-strip{
+      background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-default);border-radius:8px;padding:18px 22px;
+      display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+    }
+    .demo-strip--dark{background:#FFF;}
+    .demo-strip h3{font-size:20px;font-weight:300;color:#002F48;margin:0;line-height:1.2;flex-shrink:0;}
+    .demo-strip .spacer{flex:1;}
+
+    /* States grid */
+    .states-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;padding:24px;}
+    .state-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-default);border-radius:8px;overflow:hidden;}
+    .state-card .stage{padding:22px 20px;background:#F4F6F8;display:flex;align-items:center;justify-content:center;min-height:92px;}
+    .state-card .meta{padding:10px 14px;border-top:1px solid var(--ps-border-subtle);}
+    .state-card .meta b{display:block;font-size:13px;font-weight:700;color:var(--ps-sem-fg-primary);}
+    .state-card .meta span{font-size:12px;color:var(--ps-sem-fg-tertiary);}
+
+    /* Anatomy */
+    .anatomy{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start;padding:32px;background:var(--ps-sem-bg-surface);}
+    .anatomy-labels{display:flex;flex-direction:column;padding-right:16px;border-right:1px dashed #DCDCDC;}
+    .anatomy-label{padding:14px 0;display:flex;flex-direction:column;gap:3px;align-items:flex-end;text-align:right;}
+    .anatomy-label em{font-style:normal;color:var(--ps-sem-fg-tertiary);font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+    .anatomy-label b{color:var(--ps-brand-primary);font-size:13px;font-weight:700;}
+    .anatomy-label span{color:var(--ps-sem-fg-secondary);font-size:12px;line-height:1.4;}
+    .anatomy-stage{position:relative;padding:8px;}
+    .anatomy-stage .ps-search-srp{width:520px;}
+    .anatomy-pin{
+      position:absolute;background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-default);
+      border-radius:3px;padding:2px 8px;font-size:10px;font-weight:700;letter-spacing:.4px;
+      color:var(--ps-brand-primary);line-height:14px;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.04);
+    }
+
+    /* Tokens table */
+    .tokens{width:100%;border-collapse:collapse;font-size:12px;}
+    .tokens th,.tokens td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--ps-border-subtle);}
+    .tokens th{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);font-weight:700;background:var(--ps-sem-bg-canvas);}
+    .tokens td code{font-family:var(--ps-font-mono);font-size:11px;color:var(--ps-sem-fg-primary);}
+    .tokens td.label{font-weight:600;color:var(--ps-sem-fg-primary);}
+    .tokens td.swatch{width:42px;}
+    .tokens td.swatch span{display:block;width:24px;height:24px;border-radius:4px;border:1px solid rgba(0,0,0,.08);}
+
+    /* A11y grid */
+    .a11y-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;padding:24px;}
+    .a11y-card{background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;}
+    .a11y-card h4{margin:0 0 8px;font-size:13px;font-weight:700;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;}
+    .a11y-card h4 svg{width:16px;height:16px;color:var(--ps-brand-primary);}
+    .a11y-card p{margin:0;font-size:13px;line-height:1.5;color:var(--ps-sem-fg-secondary);}
+    .a11y-card code{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-sem-bg-surface);padding:1px 5px;border-radius:3px;border:1px solid #E5E7EB;}
+
+    /* Do/don't */
+    .dodont{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px;}
+    .dodont__col{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-subtle);border-radius:8px;overflow:hidden;}
+    .dodont__col h4{margin:0;padding:12px 16px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px;}
+    .dodont__col--do h4{background:#E5F9F2;color:#0A7850;}
+    .dodont__col--dont h4{background:#FDECEC;color:#9E2A1C;}
+    .dodont__col ul{list-style:none;margin:0;padding:14px 18px;display:flex;flex-direction:column;gap:10px;}
+    .dodont__col li{font-size:13px;line-height:1.5;color:var(--ps-sem-fg-primary);display:flex;align-items:flex-start;gap:8px;}
+    .dodont__col li::before{content:"";flex-shrink:0;width:6px;height:6px;border-radius:50%;margin-top:8px;}
+    .dodont__col li > span{flex:1;}
+    .dodont__col--do li::before{background:#0A7850;}
+    .dodont__col--dont li::before{background:#9E2A1C;}
+
+    /* Usage */
+    .usage{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;padding:24px;}
+    .usage-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:6px;}
+    .usage-card .tag{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--ps-brand-primary);}
+    .usage-card h4{margin:0;font-size:15px;font-weight:700;color:var(--ps-sem-fg-primary);}
+    .usage-card p{margin:0;font-size:13px;line-height:1.5;color:var(--ps-sem-fg-secondary);}
+
+    /* Asset Inventory mini-card replica */
+    .ai-card{
+      background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-default);
+      border-radius:8px;padding:22px 28px;
+    }
+    .ai-card__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+    .ai-card__head h3{margin:0;font-size:22px;font-weight:300;color:#002F48;letter-spacing:-.2px;}
+    .ai-card__head a{color:var(--ps-sem-fg-brand);font-size:14px;font-weight:600;text-decoration:underline;}
+    .ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+    .ai-tile{border:1px solid #E5E5E5;border-radius:4px;padding:16px;background:#fff;}
+    .ai-tile b{display:block;font-size:15px;font-weight:700;color:#002F48;margin-bottom:6px;}
+    .ai-tile span{display:block;font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.5;}
+
+    /* My Lists header mini-replica */
+    .ml-header{
+      display:flex;align-items:center;gap:16px;
+      padding:18px 22px;background:#fff;border:1px solid var(--ps-border-default);border-radius:8px;
+      flex-wrap:wrap;
+    }
+    .ml-header .crumb{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:300;color:#002F48;letter-spacing:-.2px;}
+    .ml-header .crumb a{color:var(--ps-sem-fg-brand);font-weight:400;text-decoration:none;}
+    .ml-header .crumb a:hover{text-decoration:underline;}
+    .ml-header .crumb .chev{color:#CCC;font-weight:300;}
+    .ml-header .right{margin-left:auto;display:flex;align-items:center;gap:14px;color:var(--ps-sem-fg-secondary);font-size:14px;}
+    .ml-header .right b{color:var(--ps-prim-gray-900);}
+    .ml-header .divider{width:1px;height:24px;background:#DCDCDC;}
+
+    /* Mobile overlay demo */
+    .mob-frame{
+      width:320px;border:1px solid var(--ps-border-default);border-radius:18px;overflow:hidden;
+      background:#fff;box-shadow:0 4px 20px rgba(0,47,72,.06);
+    }
+    .mob-frame .mob-top{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #E5E5E5;}
+    .mob-frame .mob-top .back{color:var(--ps-sem-fg-primary);}
+    .mob-frame .mob-top svg{width:18px;height:18px;}
+    .mob-frame .mob-top .ps-search-inline{flex:1;height:36px;width:auto;}
+    .mob-frame .mob-body{padding:8px 0;}
+    .mob-frame .mob-body .sugg-item{padding:10px 16px;}
+
+    /* Breadcrumb (shared) */
+    .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+    .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Search Bar</span>
+  </nav>
+
+  <h1>Search Bar</h1>
+  <p class="intro">Search appears on almost every PartsSource screen — but the bar adapts to the job. The <b>Global Search</b> in the top nav queries the catalog. <b>SRP Search</b> sits with Categories on the marketplace. <b>Inline Search</b> filters the contents of a card or list view (Asset Inventory, lists). <b>Search-within</b> trims long filter facets. And a <b>Collapsed</b> magnifier hides search on dense headers (My Lists detail). All five share one stroke + one orange submit color so the affordance reads as &ldquo;search&rdquo; everywhere it appears.</p>
+
+  <!-- ────────────────────────────────────────────────────────────
+       Variant 1 · Global Search (top nav)
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Global · Top Nav</h2>
+      <div class="desc">The catalog search that lives in the top nav. 40 px tall, 4 px radius, <code class="kbd">#DCDCDC</code> stroke, with a flush 48 px orange icon-button on the right edge. Placeholder reads <code class="kbd">Search Keyword or Item Number</code>. Submits as a full-page search regardless of the active route.</div>
+    </div>
+    <div class="section-body">
+      <div class="stage-stack">
+        <div class="stage-row">
+          <div class="stage-label">Idle (interactive)</div>
+          <div class="ps-search-global" role="search" style="max-width:580px;">
+            <input type="text" placeholder="Search Keyword or Item Number">
+            <button type="submit" aria-label="Search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+            </button>
+          </div>
+          <p class="stage-cap">Click the field and the focus ring lights up — type to enable the X clear button (visible once the field has a value).</p>
+        </div>
+
+        <div class="stage-row">
+          <div class="stage-label">Open · typing ("pro")</div>
+          <div class="ps-search-wrap" style="max-width:580px;">
+            <div class="ps-search-global" role="search">
+              <input type="text" value="pro">
+              <button type="submit" aria-label="Search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+              </button>
+            </div>
+            <div class="ps-typeahead" role="listbox">
+              <div class="ps-typeahead__row"><b>pro</b> in Medical Imaging and Glassware <span class="chev">&gt;</span> Ultrasound <span class="chev">&gt;</span> Ultrasound <b>Pro</b>bes</div>
+              <div class="ps-typeahead__row"><b>pro</b> in Biomedical Equipment <span class="chev">&gt;</span> Anesthesia <span class="chev">&gt;</span> Anesthesia</div>
+              <div class="ps-typeahead__row"><b>pro</b> in Medical Imaging and Glassware <span class="chev">&gt;</span> Ultrasound <b>Pro</b>bes &amp; Accessories <span class="chev">&gt;</span> Ultrasound <b>Pro</b>bes</div>
+              <div class="ps-typeahead__row"><b>pro</b>be</div>
+              <div class="ps-typeahead__row">welch allyn temperature <b>pro</b>be</div>
+              <div class="ps-typeahead__row">apex <b>pro</b> ch</div>
+              <div class="ps-typeahead__row"><b>pro</b>cell</div>
+              <div class="ps-typeahead__product">
+                <span class="thumb">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c4-7 14-7 18 0M3 12c4 7 14 7 18 0"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
+                </span>
+                <span class="body">
+                  <b>REUSABLE ADULT/PEDIATRIC ORAL TEMPERATURE PROBE, 9FT</b>
+                  <span>Welch Allyn Inc.</span>
+                </span>
+              </div>
+              <div class="ps-typeahead__product">
+                <span class="thumb">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c4-7 14-7 18 0M3 12c4 7 14 7 18 0"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
+                </span>
+                <span class="body">
+                  <b>4FT PROBE WELL KIT, ORAL</b>
+                  <span>Welch Allyn Inc.</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- spacer reserves layout space for the absolutely-positioned dropdown -->
+          <div aria-hidden="true" style="height:430px;"></div>
+          <p class="stage-cap" style="margin: 24px 0px 0px">Two-section dropdown — <b>category-scoped suggestions</b> on top (with breadcrumb trail and bolded match), then a <b>products</b> section with thumbnails. Match is <code class="kbd">font-weight:700</code> on the typed substring only. Row hover background is <code class="kbd">#F4F6F8</code>.</p>
+        </div>
+
+        <div class="stage-row">
+          <div class="stage-label">In context · 1440 px top nav</div>
+          <div style="background:#fff;border:1px solid var(--ps-border-default);border-radius:8px;overflow:hidden;font-family:'Source Sans Pro',sans-serif;">
+            <!-- Utility row -->
+            <div style="height:28px;border-bottom:1px solid #E0E0E0;padding:0 40px;display:flex;justify-content:flex-end;align-items:center;gap:20px;font-size:14px;color:#000;">
+              <span style="display:flex;align-items:center;gap:6px;color:#009CF4;">
+                <svg width="11" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <a href="#" style="color:#009CF4;text-decoration:none;">877-497-6412</a>
+              </span>
+              <a href="#" style="color:#000;text-decoration:none;">Help</a>
+              <a href="#" style="color:#000;text-decoration:none;">About&nbsp;Us</a>
+            </div>
+            <!-- Main row -->
+            <div style="height:60px;padding:0 40px;display:flex;align-items:center;gap:18px;">
+              <a href="#" style="flex-shrink:0;display:inline-block;"><img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource" style="display:block;width:200px;height:auto;"></a>
+              <div class="ps-search-global" role="search" style="flex:1;max-width:800px;">
+                <input type="text" placeholder="Search Keyword or Item Number">
+                <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button>
+              </div>
+              <span style="font-size:16px;font-weight:700;color:#000022;flex-shrink:0;cursor:pointer;">Categories&nbsp;+</span>
+              <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:var(--ps-sem-fg-brand);flex-shrink:0;">
+                <svg width="30" height="24" viewBox="0 0 30 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L26 7H7"/><circle cx="11" cy="24" r="1.6" fill="currentColor"/><circle cx="22" cy="24" r="1.6" fill="currentColor"/></svg>
+              </span>
+              <span style="width:1px;height:31px;background:#CCC;flex-shrink:0;"></span>
+              <span style="display:flex;align-items:center;gap:9px;flex-shrink:0;">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="currentColor" style="color:#000;"><path d="M7 0a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                <span style="display:flex;flex-direction:column;line-height:1.1;gap:2px;">
+                  <span style="font-size:12px;color:#000;">Selected&nbsp;Facility</span>
+                  <span style="font-size:16px;font-weight:700;color:#000;">Chatham&nbsp;Memorial&nbsp;Clinic</span>
+                </span>
+              </span>
+            </div>
+            <!-- Hero -->
+            <div style="height:52px;background:#003763;position:relative;overflow:hidden;display:flex;align-items:center;">
+              <span style="color:#fff;font-size:24px;letter-spacing:-.01em;line-height:36px;padding:0 24px;flex-shrink:0;">Welcome</span>
+              <span style="position:absolute;right:0;top:0;width:430px;height:52px;background:#D0EDFC;clip-path:polygon(54px 0,100% 0,100% 100%,0 100%);box-shadow:inset -4px 4px 10px 0 rgba(0,0,0,.19);display:flex;align-items:center;gap:14px;padding-left:100px;color:var(--ps-sem-fg-secondary);">
+                <span style="font-size:16px;font-weight:700;color:#4C4B46;">Chatham&nbsp;Memorial&nbsp;Hospital</span>
+                <span style="width:1px;height:24px;background:#777;"></span>
+                <span style="font-size:16px;font-weight:700;color:#00AEEF;letter-spacing:.04em;">PRO&nbsp;&nbsp;ACCOUNT</span>
+              </span>
+            </div>
+          </div>
+          <p class="stage-cap">Full <a href="top-navigation.html" style="color:var(--ps-sem-fg-brand);">Top Navigation</a> at 1440 px — utility row, main row with logo · search · Categories+ · cart · facility, then the navy hero with Pro Account panel.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       Variant 3 · Inline Search (page/card)
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Inline · Card &amp; Page</h2>
+      <div class="desc">Filters the contents of a card or list view — Asset Inventory, custom lists, audit logs, etc. 40 px tall, dark glyph (not orange), borderless icon button. The orange submit color is reserved for queries that <i>navigate</i>; inline search is a local filter, so it stays quiet.</div>
+    </div>
+    <div class="section-body">
+      <div class="stage-stack">
+
+        <div class="stage-row">
+          <div class="stage-label">Idle (interactive)</div>
+          <div class="ps-search-inline" role="search">
+            <input type="text" placeholder="Search">
+            <button type="button" aria-label="Search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="stage-row">
+          <div class="stage-label">In context · Asset Inventory card</div>
+          <div class="ai-card">
+            <div class="ai-card__head">
+              <h3>Asset Inventory</h3>
+              <a href="#">Show All Cards</a>
+            </div>
+            <div class="ps-search-inline" role="search">
+              <input type="text" placeholder="Search">
+              <button type="button" aria-label="Search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+              </button>
+            </div>
+            <div class="ai-grid">
+              <div class="ai-tile"><b>4th west wing cancer center CT</b><span>Asset ID&nbsp;: 664543322<br>OEM: Siemens Healthineers</span></div>
+              <div class="ai-tile"><b>MAGNETOM Essenza</b><span>Asset ID&nbsp;: 664543322<br>OEM: Siemens Healthineers</span></div>
+              <div class="ai-tile"><b>QuantumScan Pro</b><span>Asset ID&nbsp;: 664543322<br>OEM: Siemens Healthineers</span></div>
+            </div>
+          </div>
+          <p class="stage-cap">As-you-type filtering — never a submit. Hitting <code class="kbd">Enter</code> is a no-op; the icon button is decorative and still accepts click for parity with the chrome pattern.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       Variant 4 · Search-within (filter facet)
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Within · Filter facet</h2>
+      <div class="desc">The quiet 32 px field that lives inside long filter facets ("Search OEM", "Search Models") on the SRP filter rail. Glyph sits inside the same stroke — no submit, no button. Filtering is instant.</div>
+    </div>
+    <div class="section-body">
+      <div class="stage-stack">
+
+        <div class="stage-row">
+          <div class="stage-label">Idle (interactive)</div>
+          <div class="ps-search-within">
+            <input type="text" placeholder="Search OEM">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="stage-row">
+          <div class="stage-label">In context · filter rail</div>
+          <div style="background:#fff;border:1px solid var(--ps-border-default);border-radius:8px;padding:20px;width:280px;">
+            <div style="font:600 14px/1 'Source Sans Pro',sans-serif;color:var(--ps-prim-gray-900);margin-bottom:8px;">OEM</div>
+            <div class="ps-search-within" style="width:100%;margin-bottom:12px;">
+              <input type="text" placeholder="Search OEM">
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></span>
+            </div>
+            <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font:14px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-prim-gray-900);">
+              <li><label style="display:flex;align-items:center;gap:8px;"><input type="checkbox">GE Healthcare <span style="color:var(--ps-sem-fg-tertiary);font-size:13px;margin-left:auto;">(6,643)</span></label></li>
+              <li><label style="display:flex;align-items:center;gap:8px;"><input type="checkbox">Parks Medical Electronics <span style="color:var(--ps-sem-fg-tertiary);font-size:13px;margin-left:auto;">(79)</span></label></li>
+              <li><label style="display:flex;align-items:center;gap:8px;"><input type="checkbox">Newman Medical <span style="color:var(--ps-sem-fg-tertiary);font-size:13px;margin-left:auto;">(116)</span></label></li>
+              <li><label style="display:flex;align-items:center;gap:8px;"><input type="checkbox">Imex, LLC <span style="color:var(--ps-sem-fg-tertiary);font-size:13px;margin-left:auto;">(88)</span></label></li>
+              <li><label style="display:flex;align-items:center;gap:8px;"><input type="checkbox">Welch Allyn Inc. <span style="color:var(--ps-sem-fg-tertiary);font-size:13px;margin-left:auto;">(63)</span></label></li>
+            </ul>
+            <a href="#" style="display:inline-block;margin-top:10px;font:13px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-brand);text-decoration:underline;">Show more&nbsp;(195)</a>
+          </div>
+          <p class="stage-cap">Only show the field when the facet has &gt; 8 options — short facets read fine as a flat list and the search adds visual noise.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       Variant 5 · Collapsed (icon-only)
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Collapsed · Icon-only</h2>
+      <div class="desc">The lone magnifying glass next to a page title (e.g. My Lists detail). Clicking it expands a search popover inline. Use only when the header is already crowded — never as the <i>primary</i> way to access search.</div>
+    </div>
+    <div class="section-body">
+      <div class="stage-stack">
+
+        <div class="stage-row">
+          <div class="stage-label">Idle (interactive)</div>
+          <button class="ps-search-icon" id="collapse-trigger" aria-label="Search" aria-expanded="false" aria-controls="collapse-pop">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+          </button>
+          <p class="stage-cap">Hover lifts the glass on a faint <code class="kbd">#F4F6F8</code> chip. Activated by mouse, <code class="kbd">Enter</code>, or <code class="kbd">Space</code>.</p>
+        </div>
+
+        <div class="stage-row">
+          <div class="stage-label">In context · My Lists header (collapsed)</div>
+          <div class="ml-header">
+            <div class="crumb"><a href="#">My Lists</a><span class="chev">&rsaquo;</span>Carefusion PM List
+              <button style="background:transparent;border:0;color:var(--ps-sem-fg-tertiary);cursor:pointer;padding:4px;" aria-label="Rename">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              </button>
+            </div>
+            <div class="right">
+              Privacy: <b>My Facility</b>
+              <span style="display:inline-flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 17 20 12 15 7"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/></svg>0</span>
+              <span class="divider"></span>
+              <button class="ps-search-icon" aria-label="Search list">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+              </button>
+            </div>
+          </div>
+          <p class="stage-cap">Default state — the magnifying glass sits to the right of the page divider, after meta and share.</p>
+        </div>
+
+        <div class="stage-row">
+          <div class="stage-label">After click · expanded into Asset Inventory–style field</div>
+          <div class="ml-header" style="align-items:center;">
+            <div class="crumb"><a href="#">My Lists</a><span class="chev">&rsaquo;</span>Carefusion PM List
+              <button style="background:transparent;border:0;color:var(--ps-sem-fg-tertiary);cursor:pointer;padding:4px;" aria-label="Rename">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              </button>
+            </div>
+            <div class="right">
+              <div class="ps-search-inline" role="search" style="width:280px;background:#F4F6F8;border-color:#DCDCDC;box-shadow:none;">
+                <input type="text" placeholder="Search" autofocus style="background:transparent;">
+                <button type="button" aria-label="Search">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+                </button>
+              </div>
+              <button class="ps-search-icon" aria-label="Close search" style="color:var(--ps-sem-fg-tertiary);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+              </button>
+            </div>
+          </div>
+          <p class="stage-cap">Tapping the glass pushes the right cluster aside and reveals the same <a href="#" style="color:var(--ps-sem-fg-brand);">Inline</a> search bar used inside Asset Inventory — bordered, 40 px, dark magnifier on the right. <code class="kbd">Esc</code> or the X collapses it back.</p>
+        </div>
+
+        <div class="stage-row">
+          <div class="stage-label">Expansion behavior · interactive demo</div>
+          <div style="background:#fff;border:1px solid var(--ps-border-default);border-radius:8px;padding:14px 18px;display:flex;align-items:center;gap:14px;">
+            <span style="font:300 22px/1 'Source Sans Pro',sans-serif;color:#002F48;">Carefusion PM List</span>
+            <span class="spacer" style="flex:1;"></span>
+            <div id="collapse-expand" style="display:flex;align-items:center;gap:12px;">
+              <button class="ps-search-icon" id="collapse-glass" aria-label="Search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+              </button>
+              <div class="ps-search-inline" id="collapse-field" style="width:0;border:0;box-shadow:none;overflow:hidden;transition:width 200ms ease;">
+                <input type="text" placeholder="Search this list" id="collapse-input">
+                <button type="button" aria-label="Close" id="collapse-close">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <p class="stage-cap">Click the glass — the field grows in from the right (200 ms ease). Click the X or hit <code class="kbd">Esc</code> to collapse back.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       Sizes
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Sizes</h2>
+      <div class="desc">Three heights cover every placement. Pick by container density, not by personal preference — top nav is fixed at 32 px, page bodies at 40 px, filter rails at 32 px (compact).</div>
+    </div>
+    <div class="states-grid">
+      <div class="state-card">
+        <div class="stage">
+          <div class="ps-search-within" style="width:200px;">
+            <input type="text" placeholder="Search">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></span>
+          </div>
+        </div>
+        <div class="meta"><b>Compact · 32 px</b><span>Filter rails &middot; in-card facet trim</span></div>
+      </div>
+      <div class="state-card">
+        <div class="stage">
+          <div class="ps-search-inline">
+            <input type="text" placeholder="Search">
+            <button aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button>
+          </div>
+        </div>
+        <div class="meta"><b>Comfort · 40 px</b><span>Inline content &middot; SRP &middot; cards</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       States
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>States</h2>
+      <div class="desc">Every variant shares the same state vocabulary — idle, hover, focus, with-value, disabled. Demoed on the inline search bar style (the variant most users encounter inside Asset Inventory and lists).</div>
+    </div>
+    <div class="states-grid">
+      <div class="state-card">
+        <div class="stage">
+          <div class="ps-search-inline" style="width:240px;">
+            <input type="text" placeholder="Search">
+            <button aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button>
+          </div>
+        </div>
+        <div class="meta"><b>Idle</b><span>border <code>#DCDCDC</code> · placeholder <code>#777</code></span></div>
+      </div>
+      <div class="state-card">
+        <div class="stage">
+          <div class="ps-search-inline" style="width:240px;border-color:#999;">
+            <input type="text" placeholder="Search">
+            <button aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button>
+          </div>
+        </div>
+        <div class="meta"><b>Hover</b><span>border darkens to <code>#999</code></span></div>
+      </div>
+      <div class="state-card">
+        <div class="stage">
+          <div class="ps-search-inline" style="width:240px;border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(0,91,166,.12);">
+            <input type="text" placeholder="Search" style="color:var(--ps-sem-fg-primary);">
+            <button aria-label="Search" style="color:var(--ps-brand-primary);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button>
+          </div>
+        </div>
+        <div class="meta"><b>Focus</b><span>brand-blue border · 3 px ring</span></div>
+      </div>
+      <div class="state-card">
+        <div class="stage">
+          <div class="ps-search-inline" style="width:240px;">
+            <input type="text" value="contrast media" style="color:var(--ps-sem-fg-primary);">
+            <button type="button" class="clear" aria-label="Clear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+            <button aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button>
+          </div>
+        </div>
+        <div class="meta"><b>With value</b><span>X clear button appears inside</span></div>
+      </div>
+      <div class="state-card">
+        <div class="stage">
+          <div class="ps-search-inline" style="width:240px;background:#F7F7F7;border-color:#E5E5E5;">
+            <input type="text" placeholder="Search" disabled style="color:#BBB;background:transparent;">
+            <button disabled aria-label="Search" style="color:#BBB;cursor:not-allowed;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button>
+          </div>
+        </div>
+        <div class="meta"><b>Disabled</b><span>field <code>#F7F7F7</code> · glyph <code>#BBB</code></span></div>
+      </div>
+      <div class="state-card">
+        <div class="stage">
+          <button class="ps-search-icon" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button>
+        </div>
+        <div class="meta"><b>Collapsed · idle</b><span>icon-only · 36 × 36</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       Anatomy
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Anatomy</h2>
+      <div class="desc">Four layers per compact search bar. The glyph sits inside the same stroke — there is no separate submit button.</div>
+    </div>
+    <div class="anatomy">
+      <div class="anatomy-labels">
+        <div class="anatomy-label" style="height:60px;"><em>1 · Container</em><b>Stroke</b><span>1 px <code class="kbd">#DCDCDC</code> · 3 px radius · 32 px tall</span></div>
+        <div class="anatomy-label" style="height:60px;"><em>2 · Input</em><b>Field</b><span>Source Sans Pro · 13 px · transparent bg</span></div>
+        <div class="anatomy-label" style="height:60px;"><em>3 · Placeholder</em><b>Hint copy</b><span>13 px · <code class="kbd">#777</code> · imperative ("Search&nbsp;…")</span></div>
+        <div class="anatomy-label" style="height:60px;"><em>4 · Glyph</em><b>Search icon</b><span>14 px · stroke 2 · <code class="kbd">#777</code> · inside the stroke</span></div>
+      </div>
+      <div class="anatomy-stage" style="padding:32px 24px;">
+        <div class="ps-search-within" style="width:320px;">
+          <input type="text" placeholder="Search">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+          </span>
+        </div>
+
+        <!-- Callouts -->
+        <span class="anatomy-pin" style="top:24px;left:-8px;">1</span>
+        <span class="anatomy-pin" style="top:24px;left:80px;">2</span>
+        <span class="anatomy-pin" style="top:24px;left:200px;">3</span>
+        <span class="anatomy-pin" style="top:24px;left:320px;">4</span>
+
+        <!-- Dimension hints -->
+        <div style="margin-top:48px;display:flex;flex-direction:column;gap:6px;font:12px/1.4 var(--ps-font-mono);color:var(--ps-sem-fg-tertiary);">
+          <div><b style="color:var(--ps-sem-fg-primary);font-family:'Source Sans Pro',sans-serif;">Height</b> · 32 px</div>
+          <div><b style="color:var(--ps-sem-fg-primary);font-family:'Source Sans Pro',sans-serif;">Padding-x</b> · 10 px field · 32 px glyph cell</div>
+          <div><b style="color:var(--ps-sem-fg-primary);font-family:'Source Sans Pro',sans-serif;">Glyph</b> · 14 × 14 px · stroke 2</div>
+          <div><b style="color:var(--ps-sem-fg-primary);font-family:'Source Sans Pro',sans-serif;">Stroke</b> · 1 px <code class="kbd">#DCDCDC</code> idle · <code class="kbd">#005BA6</code> focus</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       Tokens
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Tokens</h2>
+      <div class="desc">No new colors — every value reuses an existing token. Heights and radii are codified below.</div>
+    </div>
+    <div class="section-body plain">
+      <table class="tokens">
+        <thead><tr><th></th><th>Token</th><th>Value</th><th>Where used</th></tr></thead>
+        <tbody>
+          <tr><td class="swatch"><span style="background:#DCDCDC;"></span></td><td class="label">search/border-idle</td><td><code>#DCDCDC</code></td><td>Global · SRP · Inline · Within container stroke</td></tr>
+          <tr><td class="swatch"><span style="background:#999;"></span></td><td class="label">search/border-hover</td><td><code>#999</code></td><td>Hover state on any bordered variant</td></tr>
+          <tr><td class="swatch"><span style="background:var(--ps-brand-primary);"></span></td><td class="label">search/border-focus</td><td><code>#005BA6</code></td><td>Focus state · matches brand primary</td></tr>
+          <tr><td class="swatch"><span style="background:#FF9505;"></span></td><td class="label">search/submit-bg</td><td><code>#FF9505</code></td><td>Orange submit button (Global · SRP)</td></tr>
+          <tr><td class="swatch"><span style="background:#E58400;"></span></td><td class="label">search/submit-bg-hover</td><td><code>#E58400</code></td><td>Submit button hover</td></tr>
+          <tr><td class="swatch"><span style="background:#777;"></span></td><td class="label">search/placeholder</td><td><code>#777</code></td><td>Placeholder text · idle</td></tr>
+          <tr><td></td><td class="label">search/h-compact</td><td><code>32 px</code></td><td>Within filter facet</td></tr>
+          <tr><td></td><td class="label">search/h-comfort</td><td><code>40 px</code></td><td>Global top nav · Inline content · SRP</td></tr>
+          <tr><td></td><td class="label">search/radius</td><td><code>4 px</code></td><td>Container corner radius</td></tr>
+          <tr><td></td><td class="label">search/submit-w</td><td><code>48 px</code></td><td>Orange submit button width (Global · SRP)</td></tr>
+          <tr><td></td><td class="label">search/font</td><td><code>Source Sans Pro · 14–15 px · 400</code></td><td>Input text · 13 px for Within</td></tr>
+          <tr><td></td><td class="label">search/focus-ring</td><td><code>0 0 0 3px rgba(0,91,166,.15)</code></td><td>Focus ring · all variants</td></tr>
+          <tr><td></td><td class="label">search/expand-duration</td><td><code>200 ms ease</code></td><td>Collapsed → expanded animation</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       Accessibility
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility</h2>
+      <div class="desc">Search is the keyboard-first surface — get the labels, roles, and shortcuts right.</div>
+    </div>
+    <div class="a11y-grid">
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 6h12"/></svg>Roles</h4>
+        <p>Wrap each bar in <code>role="search"</code>. The input gets <code>type="search"</code> and either a visible <code>&lt;label&gt;</code> or an <code>aria-label</code> ("Search the catalog", "Search this list"). Submit and clear buttons need their own <code>aria-label</code>.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h12M10 4l4 4-4 4"/></svg>Keyboard</h4>
+        <p><code>/</code> jumps focus to global search from anywhere. <code>↓ ↑</code> walks the suggestions list. <code>Enter</code> submits the highlighted suggestion or the raw query. <code>Esc</code> closes the menu and clears focus.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M5 8l2 2 4-4"/></svg>Type-ahead semantics</h4>
+        <p>Menu is <code>role="listbox"</code> with <code>aria-controls</code> tied to the input's <code>id</code>. Each suggestion is <code>role="option"</code>. Input gets <code>aria-activedescendant</code> pointing at the currently-focused option.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>Hit targets</h4>
+        <p>The 32 px Global bar's submit button is 34 × 32 — under the 44 px minimum, mitigated by also clicking the search icon or hitting <code>Enter</code> from the field. SRP at 40 / 48 px clears the bar. Collapsed icon is 36 × 36 with a 4 px hover pad → effectively 44 × 44.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8c2-4 8-4 10 0M3 8c2 4 8 4 10 0"/><circle cx="8" cy="8" r="2"/></svg>Focus visibility</h4>
+        <p>Focus ring is 3 px <code>rgba(0,91,166,.15)</code> outside the brand-blue border — 3.4 : 1 against white, passing 1.4.11 non-text contrast. Never hide the ring on <code>:focus-visible</code>.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M5 9l2 2 4-4"/></svg>Result announcement</h4>
+        <p>After a query lands, render the result count inside an <code>aria-live="polite"</code> region: "22,165 results for probe". Screen reader users get the count without re-focusing the page.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       Do / Don't
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Do &amp; Don't</h2>
+      <div class="desc">Picking the right variant for the job prevents 90 % of search-bar problems.</div>
+    </div>
+    <div class="dodont">
+      <div class="dodont__col dodont__col--do">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="2 8 6 12 14 4"/></svg>Do</h4>
+        <ul>
+          <li><span>Use Global search for catalog queries that <i>navigate</i> to results — orange submit signals "go".</span></li>
+          <li><span>Use Inline search for in-place filtering of card or list contents — quiet glyph signals "narrow this".</span></li>
+          <li><span>Persist the query in the URL on SRP submit so back-button and deep links work.</span></li>
+          <li><span>Bold the matched substring in type-ahead suggestions, not the whole row.</span></li>
+          <li><span>Surface a result-count caption after submit ("22,165 results for probe").</span></li>
+          <li><span>Show an X clear button as soon as the input has a value, before the submit.</span></li>
+        </ul>
+      </div>
+      <div class="dodont__col dodont__col--dont">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M3 3l10 10M13 3L3 13"/></svg>Don't</h4>
+        <ul>
+          <li><span>Put orange submit on Inline or Within search — it implies a page navigation that won't happen.</span></li>
+          <li><span>Use the placeholder as the only label — it disappears the moment a user starts typing.</span></li>
+          <li><span>Hide the Global search behind the collapsed icon on desktop — it's the primary nav action.</span></li>
+          <li><span>Auto-submit on every keystroke for SRP — debounce to 250 ms or require <code class="kbd">Enter</code>.</span></li>
+          <li><span>Show suggestions before the user has typed 2 characters — recent queries are the exception.</span></li>
+          <li><span>Mix variant heights on the same surface — pick one and stick to it.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       When to use what
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>When to use what</h2>
+      <div class="desc">Five patterns, five jobs. Pick by what the query does — navigates, filters, or trims — not by how wide your container is.</div>
+    </div>
+    <div class="usage">
+      <div class="usage-card"><span class="tag">Global</span><h4>Catalog query</h4><p>Top-nav field for everywhere in the app. Submits as a full-page navigation to the SRP. Always present, always orange.</p></div>
+      <div class="usage-card"><span class="tag">SRP</span><h4>Refine results</h4><p>Wider 40 px field on the marketplace SRP. Same orange submit; the difference is presence (always populated) and scale (next to category dropdown).</p></div>
+      <div class="usage-card"><span class="tag">Inline</span><h4>Filter a card</h4><p>40 px field embedded in a card or list view. As-you-type narrowing; no submit affordance, no navigation.</p></div>
+      <div class="usage-card"><span class="tag">Within</span><h4>Trim a long facet</h4><p>32 px field inside a filter rail facet of &gt; 8 options. Glyph sits inside the stroke; no submit.</p></div>
+      <div class="usage-card"><span class="tag">Collapsed</span><h4>Crowded header</h4><p>Lone magnifying glass next to a page title. Expands inline on click. Only when the header is genuinely out of room.</p></div>
+    </div>
+  </div>
+
+  <script>
+    // Collapse / expand interactive demo
+    (function(){
+      var trigger = document.getElementById('collapse-glass');
+      var field   = document.getElementById('collapse-field');
+      var input   = document.getElementById('collapse-input');
+      var close   = document.getElementById('collapse-close');
+      if (!trigger || !field) return;
+
+      function open(){
+        field.style.width = '240px';
+        field.style.border = '1px solid #DCDCDC';
+        field.style.boxShadow = '0 0 0 3px rgba(0,91,166,.12)';
+        field.style.borderColor = 'var(--ps-brand-primary)';
+        setTimeout(function(){ input.focus(); }, 220);
+      }
+      function shut(){
+        field.style.width = '0';
+        field.style.border = '0';
+        field.style.boxShadow = 'none';
+        input.value = '';
+        trigger.focus();
+      }
+      trigger.addEventListener('click', open);
+      close.addEventListener('click', shut);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Escape') shut(); });
+    })();
+
+    // Live X clear button on .ps-search-global / -srp / -inline that has a value
+    document.querySelectorAll('.ps-search-global input, .ps-search-srp input, .ps-search-inline input').forEach(function(inp){
+      inp.addEventListener('input', function(){
+        var wrap = inp.closest('.ps-search-global, .ps-search-srp, .ps-search-inline');
+        var clear = wrap.querySelector('.clear');
+        if (!clear) return;
+        clear.style.display = inp.value ? '' : 'none';
+      });
+    });
+    document.querySelectorAll('.ps-search-global .clear, .ps-search-srp .clear, .ps-search-inline .clear').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var wrap = btn.closest('.ps-search-global, .ps-search-srp, .ps-search-inline');
+        var inp = wrap.querySelector('input');
+        inp.value = '';
+        inp.focus();
+        btn.style.display = 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>
+</html>

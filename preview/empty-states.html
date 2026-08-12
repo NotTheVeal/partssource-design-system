@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Empty States · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+  .section-body{padding:24px;background:#FAFAFA;}
+
+  /* ── Empty state ─────────────────────────────────────────────── */
+  .empty{
+    background:var(--ps-sem-bg-surface, #fff);
+    border:1px solid var(--ps-prim-gray-200, #E6E6E6);
+    border-radius:var(--ps-sem-radius-card, 8px);
+    padding:var(--ps-cmp-empty-padding-y, 48px) var(--ps-cmp-empty-padding-x, 32px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;gap:12px;
+    min-height:280px;
+  }
+  .empty__icon{
+    width:64px;height:64px;border-radius:50%;
+    background:var(--ps-sem-bg-brand-tint, #EFF9FE);
+    color:var(--ps-sem-fg-brand, #005BA6);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:4px;
+  }
+  .empty__icon svg{width:28px;height:28px;}
+  .empty__icon--neutral{background:#F4F6F8;color:#777;}
+  .empty__icon--error{background:#FEF0F0;color:#9E2020;}
+  .empty__icon--success{background:#E5F9F2;color:#0A7850;}
+  .empty__icon--warning{background:#FFF4E5;color:#B45309;}
+  .empty h3{margin:0;font-size:var(--ps-cmp-empty-title-size, 20px);font-weight:var(--ps-cmp-empty-title-weight, 700);color:var(--ps-cmp-empty-title-fg, #002F48);line-height:1.25;}
+  .empty p{margin:0;font-size:var(--ps-cmp-empty-body-size, 14px);line-height:1.55;color:var(--ps-cmp-empty-body-fg, #4A4A4A);max-width:var(--ps-cmp-empty-body-max-width, 380px);}
+  .empty__cta{margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .btn{
+    height:40px;padding:0 18px;
+    border-radius:4px;border:2px solid #005BA7;
+    background:#005BA7;color:#fff;
+    font:600 14px/1 'Source Sans Pro',sans-serif;
+    cursor:pointer;transition:all 120ms;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .btn:hover{background:#004A84;border-color:#004A84;}
+  .btn--ghost{
+    background:#fff;border:2px solid #005BA7;color:#005BA7;
+    height:40px;font-size:14px;padding:0 18px;font-weight:600;
+  }
+  .btn--ghost:hover{background:#EFF9FE;color:#004A84;border-color:#004A84;}
+
+  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  @media(max-width:780px){.grid-2{grid-template-columns:1fr;}}
+
+  /* Inline (smaller, for table rows / cards) */
+  .empty--inline{padding:32px 20px;min-height:200px;}
+  .empty--inline .empty__icon{width:48px;height:48px;}
+  .empty--inline .empty__icon svg{width:22px;height:22px;}
+  .empty--inline h3{font-size:16px;}
+  .empty--inline p{font-size:13px;}
+
+  /* Breadcrumb */
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+
+  table.tokens{width:100%;border-collapse:collapse;font-size:13px;}
+  table.tokens th,table.tokens td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.tokens th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.tokens code{background:#F1F1F1;font-family:ui-monospace,Menlo,monospace;font-size:11px;padding:1px 6px;border-radius:3px;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Empty States</span>
+</nav>
+
+<h1>Empty States</h1>
+<p class="intro">When a view has nothing to show, an empty state explains <em>why</em> and tells the user <em>what to do next</em>. Three flavors cover almost every case: <strong>first-run</strong> (you haven't done X yet), <strong>no-results</strong> (your filter is too narrow), and <strong>error</strong> (something broke).</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>First-run</h2>
+    <div class="desc">Greet the user; explain what the area will hold; give a clear primary action.</div>
+  </div>
+  <div class="section-body">
+    <div class="empty">
+      <div class="empty__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6M9 9h2"/></svg>
+      </div>
+      <h3>No quotes yet</h3>
+      <p>When you request a quote from a vendor, it'll show up here. You can compare line items, add notes, and convert any quote into an order.</p>
+      <div class="empty__cta">
+        <button class="btn">Request a quote</button>
+        <button class="btn btn--ghost">Learn how</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>No results</h2>
+    <div class="desc">Show what was searched, suggest broadening, and offer a one-click reset.</div>
+  </div>
+  <div class="section-body">
+    <div class="empty">
+      <div class="empty__icon empty__icon--neutral">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+      </div>
+      <h3>No parts match "DS-100A"</h3>
+      <p>Try removing a filter, checking the spelling, or searching by manufacturer or item number.</p>
+      <div class="empty__cta">
+        <button class="btn">Clear filters</button>
+        <button class="btn btn--ghost">Search all categories</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Error</h2>
+    <div class="desc">Tell the user what went wrong without exposing internals. Always offer a retry.</div>
+  </div>
+  <div class="section-body">
+    <div class="empty">
+      <div class="empty__icon empty__icon--error">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+      </div>
+      <h3>Couldn't load orders</h3>
+      <p>Something went wrong on our end. Your data is safe — try refreshing in a few seconds.</p>
+      <div class="empty__cta">
+        <button class="btn">Try again</button>
+        <button class="btn btn--ghost">Contact support</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Inline (table / card)</h2>
+    <div class="desc">A more compact version for small surfaces.</div>
+  </div>
+  <div class="section-body">
+    <div class="grid-2">
+      <div class="empty empty--inline">
+        <div class="empty__icon empty__icon--neutral">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3>No service events</h3>
+        <p>This asset has no service history yet.</p>
+      </div>
+      <div class="empty empty--inline">
+        <div class="empty__icon empty__icon--warning">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg>
+        </div>
+        <h3>Permission needed</h3>
+        <p>Ask your admin to grant view access to this catalog.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Tokens</h2>
+    <div class="desc">Composed from existing card, icon, button, and copy tokens.</div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <table class="tokens">
+      <thead><tr><th>Property</th><th>Token / value</th></tr></thead>
+      <tbody>
+        <tr><td>Container</td><td>8 px radius · 1 px <code>#E6E6E6</code> · 48 × 32 px padding</td></tr>
+        <tr><td>Icon halo</td><td>64 × 64 circle · tinted fill matching severity</td></tr>
+        <tr><td>Title</td><td>Source Sans Pro · 20 px · 700 · <code>#002F48</code></td></tr>
+        <tr><td>Body copy</td><td>14 px · 1.55 · <code>#4A4A4A</code> · max-width 380</td></tr>
+        <tr><td>CTAs</td><td>Primary + Ghost button pair (max 2)</td></tr>
+        <tr><td>Min height</td><td>280 px (full) · 200 px (inline)</td></tr>
+        <tr><td>Icon tones</td><td>info · neutral · success · warning · error</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Voice</h2>
+    <div class="desc">Empty states are the highest-leverage place to set the product's tone.</div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;">
+      <div style="padding:16px 20px;border-right:1px solid #F1F1F1;">
+        <div style="font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;color:#0A7850;background:#E5F9F2;padding:8px 12px;border-radius:4px;margin-bottom:12px;display:inline-block;">Do</div>
+        <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#4A4A4A;">
+          <li>Lead with the user's outcome, not the system's state.</li>
+          <li>One clear primary action + optional secondary.</li>
+          <li>Be specific about what's missing ("No parts match X").</li>
+          <li>Keep title under 6 words.</li>
+        </ul>
+      </div>
+      <div style="padding:16px 20px;">
+        <div style="font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;color:#9E2020;background:#FDECEC;padding:8px 12px;border-radius:4px;margin-bottom:12px;display:inline-block;">Don't</div>
+        <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#4A4A4A;">
+          <li>Use "Oops!" or other cute apology copy.</li>
+          <li>Expose error codes or stack traces to users.</li>
+          <li>Show three or more CTAs.</li>
+          <li>Use a sad face / illustration in clinical contexts.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

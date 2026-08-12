@@ -1,0 +1,36 @@
+<!-- @dsCard group="Components" name="Modal" subtitle="Centered overlay with light title + body + footer — ConfirmDialog pre-wired variant" viewport="600x300" -->
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../tokens.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+</head><body style="margin:0;padding:20px;background:#FAFAFA;">
+<div id="root"></div>
+<script>
+(function(){
+  var ConfirmDialog = window.ConfirmDialog;
+  if (!ConfirmDialog) { document.getElementById('root').innerHTML='<p style="color:#9E2020;font-size:13px;font-family:sans-serif">⚠ Modal not in bundle</p>'; return; }
+  var e = React.createElement;
+  var Demo = function() {
+    var s = React.useState(true), open=s[0], setOpen=s[1];
+    return e('div',{style:{position:'relative',height:260}},
+      !open && e('button',{
+        onClick:function(){setOpen(true)},
+        style:{height:40,padding:'0 20px',background:'var(--ps-prim-blue-500)',color:'white',border:'none',borderRadius:4,cursor:'pointer',fontFamily:'Source Sans Pro,sans-serif',fontSize:14}
+      },'Show Dialog'),
+      e(ConfirmDialog,{
+        open:open,
+        title:'Remove from cart?',
+        message:'Reusable Finger Sensor by Masimo (×2) will be removed. This cannot be undone.',
+        confirmLabel:'Remove',
+        destructive:true,
+        onConfirm:function(){setOpen(false)},
+        onCancel:function(){setOpen(false)}
+      })
+    );
+  };
+  ReactDOM.createRoot(document.getElementById('root')).render(e(Demo,null));
+})();
+</script></body></html>

@@ -1,0 +1,536 @@
+<!DOCTYPE html><html lang="en"><head>
+
+
+<meta charset="UTF-8">
+<title>Asset Detail Card · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:'Source Sans Pro',sans-serif;background:#fff;color:#2B2B2B;font-size:15px;}
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:#777;margin:0 0 32px;max-width:860px;line-height:1.6;}
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:#FAFAFA;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA7;font-weight:700;margin:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;margin-top:4px;}
+  .section-body{padding:32px 24px;background:#1F1F1F;}
+  .section-body--light{background:#FAFAFA;}
+  .stack{display:flex;flex-direction:column;gap:28px;align-items:stretch;}
+  .row{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;}
+
+  /* ── Modality icon (1:1 with Figma /Modality-Iconography square tiles) ── */
+  .modality{
+    width:64px;height:64px;border-radius:8px;
+    display:inline-flex;align-items:center;justify-content:center;
+    color:#fff;
+  }
+  .modality--default{background:#5C5C5C;}
+  .modality--operational{background:#17AB78;}
+  .modality--limited{background:#E3A92D;}
+  .modality--hardDown{background:#E00000;}
+  .modality svg{width:36px;height:36px;display:block;}
+  .modality--lg{width:88px;height:88px;border-radius:10px;}
+  .modality--lg svg{width:48px;height:48px;}
+
+  /* ── Status bar (1:1 with Figma) ─────────────────────────────
+        Full-width tinted bar with leading dot + label, trailing
+        "Elapsed Time Since Operational HH:MM:SS". */
+  .status-bar{
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+    height:44px;padding:0 20px;border-radius:6px;
+    font-size:14px;color:#777777;
+  }
+  .status-bar__label{display:inline-flex;align-items:center;gap:10px;font-weight:600;}
+  .status-bar__dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:#5C5C5C;}
+  .status-bar__elapsed{color:#777777;font-size:13px;}
+  .status-bar__elapsed b{color:#777777;font-weight:700;margin-left:10px;font-variant-numeric:tabular-nums;}
+  .status-bar--default     {background:#F1F1F1;}
+  .status-bar--default .status-bar__dot{background:#5C5C5C;}
+  .status-bar--operational {background:#E0F4E9;}
+  .status-bar--operational .status-bar__dot{background:#17AB78;}
+  .status-bar--limited     {background:#FFF4E5;}
+  .status-bar--limited .status-bar__dot{background:#E3A92D;}
+  .status-bar--hardDown    {background:#FDECEC;}
+  .status-bar--hardDown .status-bar__dot{background:#E00000;}
+
+  /* Contracted pill (used in card meta) */
+  .pill-contracted{
+    display:inline-flex;align-items:center;
+    padding:4px 10px;border-radius:4px;
+    background:#E3F2FD;color:#1976D2;
+    font:700 11px/1 'Source Sans Pro',sans-serif;letter-spacing:.5px;text-transform:uppercase;
+  }
+
+  /* ── Asset Detail Card (Figma node 4434:50731) ── */
+  .adc{
+    background:#fff;border-radius:10px;overflow:hidden;
+    box-shadow:0 1px 0 rgba(0,0,0,.04);
+    width:100%;
+  }
+  .adc--wide{max-width:1320px;}
+  .adc--mid{max-width:880px;}
+  .adc--narrow{max-width:560px;}
+
+  .adc__body{
+    display:grid;grid-template-columns:auto 1fr auto;gap:24px;
+    padding:20px 24px;align-items:flex-start;
+  }
+  .adc__icon-col{display:flex;flex-direction:column;align-items:flex-start;gap:8px;}
+  .adc__info{display:flex;flex-direction:column;gap:4px;min-width:0;}
+  .adc__oem{font-size:14px;color:#777777;}
+  .adc__name{
+    display:flex;align-items:center;gap:8px;
+    font-size:22px;font-weight:700;color:#777777;line-height:1.2;
+  }
+  .adc__name svg{width:14px;height:14px;color:#777777;cursor:pointer;}
+  .adc__id{
+    font-size:13px;color:#777777;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .adc__id b{font-weight:600;color:#777777;margin-left:4px;}
+  .adc__id .dot{width:4px;height:4px;border-radius:50%;background:#CCC;}
+  .adc__loc{font-size:13px;color:#777777;}
+
+  .adc__meta{
+    background:#F4F8F9;border-radius:6px;padding:16px 20px;
+    display:grid;gap:14px 32px;
+    align-self:stretch;font-size:13px;
+  }
+  .adc__meta--3 {grid-template-columns:repeat(3, minmax(140px, 1fr));}
+  .adc__meta--4 {grid-template-columns:repeat(4, minmax(140px, 1fr));}
+  .adc__meta--2 {grid-template-columns:repeat(2, minmax(120px, 1fr));}
+  .adc__meta dt{margin:0;color:#777777;font-size:12px;font-weight:400;}
+  .adc__meta dd{margin:2px 0 0;color:#777777;font-weight:700;font-size:13px;}
+
+  /* Wide variant places meta below body */
+  .adc__meta--below{
+    margin:0 24px 20px;
+  }
+
+  /* Legend captions */
+  .label{font-size:11px;color:#999;letter-spacing:.5px;text-transform:uppercase;margin-top:8px;}
+
+  table.tokens{width:100%;border-collapse:collapse;font-size:13px;}
+  table.tokens th,table.tokens td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.tokens th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.tokens code{background:#F1F1F1;font-family:ui-monospace,Menlo,monospace;font-size:11px;padding:1px 6px;border-radius:3px;}
+
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',sans-serif;color:#949494;}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:#005BA7;text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:#2B2B2B;font-weight:600;}
+</style>
+</head>
+<body style="">
+<nav class="ps-breadcrumb"><a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>Design System</a><span class="ps-breadcrumb__sep">/</span><span class="ps-breadcrumb__current">Asset Detail Card</span></nav>
+
+<h1>Asset Detail Card</h1>
+<p class="intro">1-for-1 with Figma node <code>4434:50731</code>. Status Bar uses four states (Default · Operational · Limited · Hard Down). Modality icon is a 64&nbsp;px rounded tile filled with one of those status colors and a white modality glyph pulled from <code>/Modality-Iconography</code>. Three card sizes: wide (4-column meta), mid (2-column meta), narrow (2-column meta below).</p>
+
+<div class="section">
+  <div class="section-head"><h2>Modality Icon</h2><div class="desc">Four state colors mapped to status: Default grey, Operational green, Limited orange, Hard Down red. Glyph pulled from <code>/Modality-Iconography</code> (CT shown).</div></div>
+  <div class="section-body">
+    <div class="row" style="justify-content:flex-start;">
+      <div>
+        <div class="modality modality--default" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+        <div class="label">LOFI · #5C5C5C</div>
+      </div>
+      <div>
+        <div class="modality modality--operational" style="height: 68px; width: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+        <div class="label">Operational · #17AB78</div>
+      </div>
+      <div>
+        <div class="modality modality--limited" style="height: 68px; width: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+        <div class="label">Limited · #E3A92D</div>
+      </div>
+      <div>
+        <div class="modality modality--hardDown" style="height: 68px; width: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+        <div class="label">Hard Down · #E00000</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head"><h2>Status Bar</h2><div class="desc">Full-width 44&nbsp;px tinted bar with leading status dot, label, and right-aligned elapsed timer.</div></div>
+  <div class="section-body">
+    <div class="stack">
+      <div class="status-bar status-bar--default"><span class="status-bar__label"><span class="status-bar__dot"></span>Status</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+      <div class="status-bar status-bar--operational"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+      <div class="status-bar status-bar--limited"><span class="status-bar__label"><span class="status-bar__dot"></span>Limited</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+      <div class="status-bar status-bar--hardDown"><span class="status-bar__label"><span class="status-bar__dot"></span>Hard Down</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head"><h2>Wide Card · 4-column meta</h2><div class="desc">Full Operational state with all metadata columns inside the green-tinted info box.</div></div>
+  <div class="section-body">
+    <div class="adc adc--wide">
+      <div class="status-bar status-bar--operational" style="border-radius:0;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+      <div class="adc__body">
+        <div class="adc__icon-col">
+          <div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+          <span class="pill-contracted" style="font-size: 8px;">Contracted</span>
+        </div>
+        <div class="adc__info">
+          <div class="adc__oem">Siemens Medical Solutions</div>
+          <div class="adc__name" style="color: rgb(119, 119, 119);">SOMATOM Definition AS</div>
+          <div class="adc__id">Asset PS000145<span class="dot"></span>Serial # 301279MR</div>
+          <div class="adc__loc">6 West = 6th Floor CHM: Chatham Memorial Clinic</div>
+        </div>
+        <dl class="adc__meta adc__meta--3">
+          <div><dt>Service Strategy</dt><dd style="color: rgb(119, 119, 119);">In-house</dd></div>
+          <div><dt>Contract #</dt><dd style="color: rgb(119, 119, 119);">SOS12321423492</dd></div>
+          <div><dt>Warranty End Date</dt><dd>09/25/24</dd></div>
+          <div><dt>Last PM Date</dt><dd style="color: rgba(119, 119, 119, 0.467);">06/01/2025</dd></div>
+          <div><dt>Rolling 12mo Total Cost</dt><dd>$95,000</dd></div>
+          <div><dt>Replacement Cost</dt><dd>$795,000</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head"><h2>Mid Card · 2-column meta</h2><div class="desc">Same Operational state with a condensed Model / PM / Sub Location / Last PM meta block.</div></div>
+  <div class="section-body">
+    <div class="adc adc--mid">
+      <div class="status-bar status-bar--operational" style="border-radius:0;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+      <div class="adc__body">
+        <div class="adc__icon-col">
+          <div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+          <span class="pill-contracted" style="font-size: 8px;">Contracted</span>
+        </div>
+        <div class="adc__info">
+          <div class="adc__oem">Siemens Medical Solutions</div>
+          <div class="adc__name">SOMATOM Definition AS</div>
+          <div class="adc__id">Asset PS000145<span class="dot"></span>Serial # 301279MR</div>
+          <div class="adc__loc">6 West = 6th Floor CHM: Chatham Memorial Clinic</div>
+        </div>
+        <dl class="adc__meta adc__meta--2">
+          <div><dt>Model</dt><dd>SOMATOM</dd></div>
+          <div><dt>PM Due Date</dt><dd>—</dd></div>
+          <div><dt>Sub Location</dt><dd>—</dd></div>
+          <div><dt>Last PM Date</dt><dd>06/01/2025</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head"><h2>Narrow Card · inline edit</h2><div class="desc">Compact width with the inline pencil affordance next to the title.</div></div>
+  <div class="section-body">
+    <div class="adc adc--narrow">
+      <div class="status-bar status-bar--operational" style="border-radius:0;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+      <div class="adc__body" style="grid-template-columns:auto 1fr;">
+        <div class="adc__icon-col">
+          <div class="modality modality--operational" style="height: 68px; width: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+          <span class="pill-contracted" style="font-size: 8px;">Contracted</span>
+        </div>
+        <div class="adc__info">
+          <div class="adc__oem">Siemens Medical Solutions</div>
+          <div class="adc__name">SOMATOM Definition AS <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></div>
+          <div class="adc__id">Asset PS000145<span class="dot"></span>Serial # 301279MR</div>
+          <div class="adc__loc">6 West = 6th Floor CHM: Chatham Memorial Clinic</div>
+        </div>
+      </div>
+      <dl class="adc__meta adc__meta--2 adc__meta--below">
+        <div><dt>Model</dt><dd>SOMATOM</dd></div>
+        <div><dt>PM Due Date</dt><dd>—</dd></div>
+        <div><dt>Sub Location</dt><dd>—</dd></div>
+        <div><dt>Last PM Date</dt><dd>06/01/2025</dd></div>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head"><h2>Long Card · meta below</h2><div class="desc">Identity row on top, full meta strip beneath. Used on dense table-row drawers.</div></div>
+  <div class="section-body">
+    <div class="adc adc--wide">
+      <div class="status-bar status-bar--operational" style="border-radius:0;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+      <div class="adc__body" style="grid-template-columns:auto 1fr;">
+        <div class="adc__icon-col">
+          <div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width: 48px; height: 48px; display: block; filter: brightness(0) invert(1);"></div>
+          <span class="pill-contracted" style="font-size: 8px;">Contracted</span>
+        </div>
+        <div class="adc__info">
+          <div class="adc__oem">Siemens Medical Solutions</div>
+          <div class="adc__name">SOMATOM Definition AS</div>
+          <div class="adc__id">Asset PS000145<span class="dot"></span>Serial # 301279MR</div>
+          <div class="adc__loc">6 West = 6th Floor CHM: Chatham Memorial Clinic</div>
+        </div>
+      </div>
+      <dl class="adc__meta adc__meta--4 adc__meta--below">
+        <div><dt>Service Strategy</dt><dd>In-house</dd></div>
+        <div><dt>Contract Term</dt><dd>09/26/2024 – 09/25/2025</dd></div>
+        <div><dt>Contract #</dt><dd>SOS12321423492</dd></div>
+        <div><dt>Warranty End Date</dt><dd>09/25/24</dd></div>
+        <div><dt>Last PM Date</dt><dd>06/01/2025</dd></div>
+        <div><dt>Last Service Event Date</dt><dd>02/01/2025</dd></div>
+        <div><dt>Rolling 12mo Total Cost</dt><dd>$95,000</dd></div>
+        <div><dt>Replacement Cost</dt><dd>$795,000</dd></div>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head"><h2>Responsive variants · all 11 breakpoint × density combos</h2><div class="desc">Eleven layouts from Figma: Desktop 1920/1440 (Heavy + Light) · Tablet (Heavy + Light) · Mobile (Heavy + Light) · Right Rail (Heavy + Light + XLight).</div></div>
+  <div class="section-body">
+    <div class="stack">
+
+      <!-- Desktop 1920 Heavy -->
+      <div>
+        <div class="label" style="color:#999;margin-bottom:8px;">1920 Desktop · Heavy</div>
+        <div class="adc" style="max-width:1400px;">
+          <div class="status-bar status-bar--operational" style="border-radius:0;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+          <div class="adc__body" style="grid-template-columns:auto 1fr auto;">
+            <div class="adc__icon-col"><div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div><span class="pill-contracted" style="font-size: 8px;">Contracted</span></div>
+            <div class="adc__info"><div class="adc__oem">Siemens Medical Solutions</div><div class="adc__name">SOMATOM Definition AS</div><div class="adc__id">Asset PS000145<span class="dot"></span>Serial # 301279MR</div><div class="adc__loc">6 West = 6th Floor CHM: Chatham Memorial Clinic</div></div>
+            <dl class="adc__meta adc__meta--3"><div><dt>Service Strategy</dt><dd>In-house</dd></div><div><dt>Contract #</dt><dd>SOS12321423492</dd></div><div><dt>Warranty End Date</dt><dd>09/25/24</dd></div><div><dt>Last PM Date</dt><dd>06/01/2025</dd></div><div><dt>Rolling 12mo Total Cost</dt><dd>$95,000</dd></div><div><dt>Replacement Cost</dt><dd>$795,000</dd></div></dl>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop 1920 Light -->
+      <div>
+        <div class="label" style="color:#999;margin-bottom:8px;">1920 Desktop · Light</div>
+        <div class="adc" style="max-width:1400px;">
+          <div class="status-bar status-bar--operational" style="border-radius:0;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+          <div class="adc__body" style="grid-template-columns:auto 1fr auto;">
+            <div class="adc__icon-col"><div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div><span class="pill-contracted" style="font-size: 8px;">Contracted</span></div>
+            <div class="adc__info"><div class="adc__oem">Siemens Medical Solutions</div><div class="adc__name">SOMATOM Definition AS</div><div class="adc__id">Asset PS000145<span class="dot"></span>Serial # 301279MR</div><div class="adc__loc">6 West = 6th Floor CHM: Chatham Memorial Clinic</div></div>
+            <dl class="adc__meta adc__meta--2"><div><dt>Model</dt><dd>SOMATOM</dd></div><div><dt>PM Due Date</dt><dd>—</dd></div><div><dt>Sub Location</dt><dd>—</dd></div><div><dt>Last PM Date</dt><dd>06/01/2025</dd></div></dl>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop 1440 Heavy -->
+      <div>
+        <div class="label" style="color:#999;margin-bottom:8px;">1440 Desktop · Heavy</div>
+        <div class="adc" style="max-width:980px;">
+          <div class="status-bar status-bar--operational" style="border-radius:0;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+          <div class="adc__body" style="grid-template-columns:auto 1fr;">
+            <div class="adc__icon-col"><div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div><span class="pill-contracted" style="font-size: 8px;">Contracted</span></div>
+            <div class="adc__info"><div class="adc__oem">Siemens Medical Solutions</div><div class="adc__name">SOMATOM Definition AS</div><div class="adc__id">Asset PS000145<span class="dot"></span>Serial # 301279MR</div><div class="adc__loc">6 West = 6th Floor CHM: Chatham Memorial Clinic</div></div>
+          </div>
+          <dl class="adc__meta adc__meta--4 adc__meta--below"><div><dt>Service Strategy</dt><dd>In-house</dd></div><div><dt>Contract Term</dt><dd>09/26/2024 – 09/25/2025</dd></div><div><dt>Contract #</dt><dd>SOS12321423492</dd></div><div><dt>Warranty End Date</dt><dd>09/25/24</dd></div><div><dt>Last PM Date</dt><dd>06/01/2025</dd></div><div><dt>Last Service Event Date</dt><dd>02/01/2025</dd></div><div><dt>Rolling 12mo Total Cost</dt><dd>$95,000</dd></div><div><dt>Replacement Cost</dt><dd>$795,000</dd></div></dl>
+        </div>
+      </div>
+
+      <!-- Desktop 1440 Light -->
+      <div>
+        <div class="label" style="color:#999;margin-bottom:8px;">1440 Desktop · Light</div>
+        <div class="adc" style="max-width:980px;">
+          <div class="status-bar status-bar--operational" style="border-radius:0;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+          <div class="adc__body"><div class="adc__icon-col"><div class="modality modality--operational" style="height: 68px; width: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div><span class="pill-contracted" style="font-size: 8px;">Contracted</span></div><div class="adc__info"><div class="adc__oem">Siemens Medical Solutions</div><div class="adc__name">SOMATOM Definition AS</div><div class="adc__id">Asset PS000145<span class="dot"></span>Serial # 301279MR</div><div class="adc__loc">6 West = 6th Floor CHM: Chatham Memorial Clinic</div></div><dl class="adc__meta adc__meta--2"><div><dt>Model</dt><dd>SOMATOM</dd></div><div><dt>PM Due Date</dt><dd>—</dd></div><div><dt>Sub Location</dt><dd>—</dd></div><div><dt>Last PM Date</dt><dd>06/01/2025</dd></div></dl></div>
+        </div>
+      </div>
+
+      <!-- Tablet Heavy -->
+      <div>
+        <div class="label" style="color:#999;margin-bottom:8px;">Tablet · Heavy</div>
+        <div class="adc" style="max-width:760px;">
+          <div class="status-bar status-bar--operational" style="border-radius:0;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+          <div class="adc__body" style="grid-template-columns:auto 1fr;">
+            <div class="adc__icon-col"><div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div><span class="pill-contracted" style="font-size: 8px;">Contracted</span></div>
+            <div class="adc__info"><div class="adc__oem">Siemens Medical Solutions</div><div class="adc__name">SOMATOM Definition AS</div><div class="adc__id">Asset PS000145<span class="dot"></span>Serial # 301279MR</div><div class="adc__loc">6 West = 6th Floor CHM: Chatham Memorial Clinic</div></div>
+          </div>
+          <dl class="adc__meta adc__meta--4 adc__meta--below"><div><dt>Service Strategy</dt><dd>In-house</dd></div><div><dt>Contract Term</dt><dd>09/26/2024 – 09/25/2025</dd></div><div><dt>Contract #</dt><dd>SOS12321423492</dd></div><div><dt>Warranty End Date</dt><dd>09/25/24</dd></div><div><dt>Last PM Date</dt><dd>06/01/2025</dd></div><div><dt>Last Service Event Date</dt><dd>02/01/2025</dd></div><div><dt>Rolling 12mo Total Cost</dt><dd>$95,000</dd></div><div><dt>Replacement Cost</dt><dd>$795,000</dd></div></dl>
+        </div>
+      </div>
+
+      <!-- Tablet Light -->
+      <div>
+        <div class="label" style="color:#999;margin-bottom:8px;">Tablet · Light</div>
+        <div class="adc" style="max-width:760px;">
+          <div class="status-bar status-bar--operational" style="border-radius:0;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span><span class="status-bar__elapsed">Elapsed Time Since Operational <b>00:10:07</b></span></div>
+          <div class="adc__body"><div class="adc__icon-col"><div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div><span class="pill-contracted" style="font-size: 8px;">Contracted</span></div><div class="adc__info"><div class="adc__oem">Siemens Medical Solutions</div><div class="adc__name">SOMATOM Definition AS <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></div><div class="adc__id">Asset PS000145<span class="dot"></span>Serial # 301279MR</div><div class="adc__loc">Chatham Memorial Clinic</div></div><dl class="adc__meta adc__meta--2"><div><dt>Model</dt><dd>SOMATOM</dd></div><div><dt>PM Due Date</dt><dd>—</dd></div><div><dt>Sub Location</dt><dd>—</dd></div><div><dt>Last PM Date</dt><dd>06/01/2025</dd></div></dl></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Mobile Heavy -->
+        <div style="flex:0 0 360px;">
+          <div class="label" style="color:#999;margin-bottom:8px;">Mobile · Heavy</div>
+          <div class="adc">
+            <div class="status-bar status-bar--operational" style="border-radius:0;height:36px;padding:0 16px;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span></div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:14px;">
+              <div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+              <span class="pill-contracted" style="align-self: flex-start; font-size: 8px;">Contracted</span>
+              <div>
+                <div class="adc__oem">Siemens Medical Solutions</div>
+                <div class="adc__name">SOMATOM Definition AS</div>
+                <div class="adc__id" style="display:block;margin-top:4px;">Asset PS000145<br>Serial # 301279MR</div>
+                <div class="adc__loc">Chatham Memorial Clinic</div>
+              </div>
+              <dl class="adc__meta" style="grid-template-columns:1fr;background:#F4F8F9;border-radius:6px;padding:14px 18px;gap:14px;"><div><dt>Service Strategy</dt><dd>In-house</dd></div><div><dt>Last PM Date</dt><dd>06/01/2025</dd></div><div><dt>Contract Term</dt><dd>09/26/2024 – 09/25/2025</dd></div><div><dt>Last Service Event Date</dt><dd>02/01/2025</dd></div><div><dt>Contract #</dt><dd>SOS12321423492</dd></div><div><dt>Rolling 12mo Total Cost</dt><dd>$95,000</dd></div><div><dt>Warranty End Date</dt><dd>09/25/24</dd></div><div><dt>Replacement Cost</dt><dd>$795,000</dd></div></dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Light -->
+        <div style="flex:0 0 360px;">
+          <div class="label" style="color:#999;margin-bottom:8px;">Mobile · Light</div>
+          <div class="adc">
+            <div class="status-bar status-bar--operational" style="border-radius:0;height:36px;padding:0 16px;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span></div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:14px;">
+              <div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+              <span class="pill-contracted" style="align-self: flex-start; font-size: 8px;">Contracted</span>
+              <div>
+                <div class="adc__oem">Siemens Medical Solutions</div>
+                <div class="adc__name">SOMATOM Definition AS</div>
+                <div class="adc__id" style="display:block;margin-top:4px;">Asset PS000145<br>Serial # 301279MR</div>
+                <div class="adc__loc">Chatham Memorial Clinic</div>
+              </div>
+              <dl class="adc__meta adc__meta--2"><div><dt>Model</dt><dd>SOMATOM</dd></div><div><dt>PM Due Date</dt><dd>—</dd></div><div><dt>Sub Location</dt><dd>—</dd></div><div><dt>Last PM Date</dt><dd>06/01/2025</dd></div></dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Right Rail Heavy -->
+        <div style="flex:0 0 300px;">
+          <div class="label" style="color:#999;margin-bottom:8px;">Right Rail · Heavy</div>
+          <div class="adc">
+            <div class="status-bar status-bar--operational" style="border-radius:0;height:36px;padding:0 16px;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span></div>
+            <div style="padding:18px;display:flex;flex-direction:column;gap:12px;">
+              <div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+              <span class="pill-contracted" style="align-self: flex-start; font-size: 8px;">Contracted</span>
+              <div><div class="adc__oem">Siemens Medical Solutions</div><div class="adc__name" style="font-size:18px;">SOMATOM Definition AS</div><div class="adc__id" style="display:block;margin-top:4px;">Asset PS000145<br>Serial # 301279MR</div><div class="adc__loc">Chatham Memorial Clinic</div></div>
+              <dl class="adc__meta" style="grid-template-columns:1fr;background:#F4F8F9;border-radius:6px;padding:14px;gap:12px;"><div><dt>Service Strategy</dt><dd>In-house</dd></div><div><dt>Last PM Date</dt><dd>06/01/2025</dd></div><div><dt>Contract Term</dt><dd>09/26/2024 – 09/25/2025</dd></div><div><dt>Contract #</dt><dd>SOS12321423492</dd></div><div><dt>Rolling 12mo Total Cost</dt><dd>$95,000</dd></div><div><dt>Warranty End Date</dt><dd>09/25/24</dd></div><div><dt>Replacement Cost</dt><dd>$795,000</dd></div></dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Rail Light -->
+        <div style="flex:0 0 300px;">
+          <div class="label" style="color:#999;margin-bottom:8px;">Right Rail · Light</div>
+          <div class="adc">
+            <div class="status-bar status-bar--operational" style="border-radius:0;height:36px;padding:0 16px;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span></div>
+            <div style="padding:18px;display:flex;flex-direction:column;gap:12px;">
+              <div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+              <span class="pill-contracted" style="align-self: flex-start; font-size: 8px;">Contracted</span>
+              <div><div class="adc__oem">Siemens Medical Solutions</div><div class="adc__name" style="font-size:18px;">SOMATOM Definition AS</div><div class="adc__id" style="display:block;margin-top:4px;">Asset PS000145<br>Serial # 301279MR</div><div class="adc__loc">Chatham Memorial Clinic</div></div>
+              <dl class="adc__meta adc__meta--2"><div><dt>Model</dt><dd>SOMATOM</dd></div><div><dt>Last PM Date</dt><dd>06/01/2025</dd></div><div><dt>PM Due Date</dt><dd>—</dd></div><div><dt>Sub Location</dt><dd>—</dd></div></dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Rail XLight -->
+        <div style="flex:0 0 260px;">
+          <div class="label" style="color:#999;margin-bottom:8px;">Right Rail · XLight</div>
+          <div class="adc">
+            <div class="status-bar status-bar--operational" style="border-radius:0;height:36px;padding:0 16px;"><span class="status-bar__label"><span class="status-bar__dot"></span>Operational</span></div>
+            <div style="padding:18px;display:flex;flex-direction:column;gap:12px;">
+              <div class="modality modality--operational" style="width: 68px; height: 68px;"><img src="icons/modality/ct.svg" alt="CT" style="width:48px;height:48px;display:block;filter:brightness(0) invert(1);"></div>
+              <span class="pill-contracted" style="align-self: flex-start; font-size: 8px;">Contracted</span>
+              <div><div class="adc__oem">Siemens Medical Solutions</div><div class="adc__name" style="font-size:18px;">SOMATOM Definition AS</div><div class="adc__id" style="display:block;margin-top:4px;">Asset PS000145<br>Serial # 301279MR</div><div class="adc__loc">Chatham Memorial Clinic</div></div>
+              <a href="#" style="font-size:13px;color:#005BA7;font-weight:600;text-decoration:underline;">View Coverage</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head"><h2>Tokens</h2></div>
+  <div class="section-body section-body--light" style="background:#fff;padding:0;">
+    <table class="tokens">
+      <thead><tr><th>Property</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Modality tile</td><td>64 × 64 · 8 px radius · status fill · white glyph</td></tr>
+        <tr><td>Status colors</td><td>Default <code>#5C5C5C</code> · Operational <code>#17AB78</code> · Limited <code>#E3A92D</code> · Hard Down <code>#E00000</code></td></tr>
+        <tr><td>Status bar</td><td>44 px tall · 6 px radius · tinted bg · dot 8 × 8 · 14 px label / 13 px elapsed</td></tr>
+        <tr><td>Status bar tints</td><td><code>#F1F1F1</code> · <code>#E0F4E9</code> · <code>#FFF4E5</code> · <code>#FDECEC</code></td></tr>
+        <tr><td>Contracted pill</td><td>11 px bold uppercase · <code>#DCEAED</code> bg · <code>#005BA7</code> text · 4 px radius</td></tr>
+        <tr><td>Card</td><td>White · 10 px radius · 1 px shadow · 20 × 24 padding</td></tr>
+        <tr><td>OEM</td><td>14 px · <code>#777</code></td></tr>
+        <tr><td>Name</td><td>22 / 1.2 · 700 · <code>#002F48</code></td></tr>
+        <tr><td>ID / Serial / Location</td><td>13 px · <code>#5C5C5C</code></td></tr>
+        <tr><td>Meta panel</td><td><code>#F4F8F9</code> bg · 6 px radius · 16 × 20 padding · 14 × 32 gap</td></tr>
+        <tr><td>Meta dt</td><td>12 px · <code>#5C5C5C</code></td></tr>
+        <tr><td>Meta dd</td><td>13 px · 700 · <code>#2B2B2B</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head"><h2>Modality Icon Library</h2><div class="desc">All modality icons from <code>/Modality-Iconography</code>. Black glyph in 48&nbsp;px PS Blue container — these are the source SVGs. The asset card recolors them via CSS filter to match the status state.</div></div>
+  <div class="section-body section-body--light">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:18px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/ct.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">CT</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/mri.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">MRI</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/ultrasound.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Ultrasound</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/xray.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">XRay</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/portable-xray.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Portable XRay</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/mammography.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Mammography</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/fluoroscopy.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Fluoroscopy</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/cath-angio.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Cath Angio</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/c-arm.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">C-Arm</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/bone-density.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Bone Density</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/molecular-imaging.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Molecular Imaging</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/nuclear-medicine.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Nuclear Medicine</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/pet-scan.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">PET Scan</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/radiation-therapy.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Radiation Therapy</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/diagnostic-imaging.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Diagnostic Imaging</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/patient-monitoring.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Patient Monitoring</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/pulse-oximeter.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Pulse Oximeter</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/defibrillators.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Defibrillators</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/respiratory.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Respiratory</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/anesthesia.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Anesthesia</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/surgery.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Surgery</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/endoscopy.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Endoscopy</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/laser.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Laser</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/dialysis.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Dialysis</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/sterilization.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Sterilization</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/infusion-pumps.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Infusion Pumps</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/syringe-pump.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Syringe Pump</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/contrast-media.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Contrast Media</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/blood-bag.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Blood Bag</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/chemistry.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Chemistry</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/general-lab.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">General Lab</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/general-biomedical.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">General Biomedical</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/beds.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Beds &amp; Furniture</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/ultrasound-transducer.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Ultrasound Transducer</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/monitor-eeg.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Monitor EEG</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/stress-monitor.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Stress Monitor</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/patient-care-exam.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Patient Care &amp; Exam</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/hematology.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Hematology</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/histology.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Histology</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/immunohematology.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Immunohematology</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/microbiology.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Microbiology</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/molecular.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Molecular</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/pathology.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Pathology</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/electrophoresis.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Electrophoresis</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/spectrometers.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Spectrometers</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/peripherals.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Peripherals</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/tools-test.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Tools &amp; Test</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/hardware.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Hardware</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/electrical.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Electrical</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/processor.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Processor</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/printer.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Printer</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/networking.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Networking</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/servers.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Servers &amp; Storage</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/safety-security.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Safety &amp; Security</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/hvac.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">HVAC &amp; Refrig.</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/refrigeration.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Refrigeration</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/plumbing.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Plumbing &amp; Pumps</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/office-hospitality.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">Office &amp; Hospitality</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><img src="icons/modality/general-facilities.svg" alt="" style="width:64px;height:64px;"><code style="font-size:11px;color:#777;">General Facilities</code></div>
+    </div>
+  </div>
+</div>
+
+
+
+</body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

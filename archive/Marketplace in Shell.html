@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PartsSource Marketplace — In Shell</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;overflow:hidden;}
+  body{
+    font-family:'Source Sans Pro','Source Sans 3',system-ui,sans-serif;
+    background:#F5F5F5;
+    color:#2B2B2B;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ========================================================
+     PAGE STRUCTURE
+     ======================================================== */
+  .page{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+  .body-row{display:flex;flex:1;min-height:0;position:relative;}
+  .rail-col{position:relative;flex-shrink:0;height:100%;z-index:20;}
+  .main-col{flex:1;min-width:0;display:flex;flex-direction:column;}
+
+  /* ========================================================
+     TOP NAV — utility / main / hero
+     ======================================================== */
+  .tn{width:100%;display:flex;flex-direction:column;flex-shrink:0;background:#fff;color:#2B2B2B;}
+
+  .tn-util{
+    height:28px;background:#fff;border-bottom:1px solid #E0E0E0;
+    padding:0 40px;display:flex;justify-content:flex-end;align-items:center;
+    gap:20px;font-size:14px;line-height:16px;
+  }
+  .tn-util a{color:#000;text-decoration:none;}
+  .tn-util a:hover{color:#005BA6;text-decoration:underline;}
+  .tn-util .tn-phone{display:flex;align-items:center;gap:6px;color:#009CF4;font-weight:400;}
+  .tn-util .tn-phone svg{width:10px;height:12px;display:block;color:#000;}
+  .tn-util .tn-phone a{color:#009CF4;}
+
+  .tn-main{
+    height:60px;background:#fff;border-bottom:1px solid #E0E0E0;
+    padding:0 40px;display:flex;align-items:center;gap:18px;
+  }
+  .tn-logo{flex-shrink:0;width:200px;display:flex;align-items:center;}
+  .tn-logo img{display:block;width:200px;height:auto;}
+
+  .tn-search{
+    flex:1;max-width:800px;height:32px;display:flex;align-items:stretch;
+    border:1px solid #CCCCCC;border-radius:5px;background:#fff;overflow:hidden;
+    transition:border-color 150ms ease, box-shadow 150ms ease;
+  }
+  .tn-search:hover{border-color:#999;}
+  .tn-search:focus-within{border-color:#005BA6;box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+  .tn-search input{
+    flex:1;border:0;outline:0;padding:0 16px;
+    font:14px/1 'Source Sans Pro',sans-serif;color:#2B2B2B;background:transparent;
+  }
+  .tn-search input::placeholder{color:#777;}
+  .tn-search button{
+    width:34px;flex-shrink:0;border:0;background:#FF9505;color:#fff;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:background 120ms ease;
+  }
+  .tn-search button:hover{background:#E58400;}
+  .tn-search button svg{width:18px;height:18px;display:block;}
+
+  .tn-categories{font-size:16px;font-weight:600;color:#000022;cursor:pointer;flex-shrink:0;white-space:nowrap;padding:6px 0;}
+  .tn-categories:hover{color:#005BA6;}
+
+  .tn-cart{position:relative;width:34px;height:32px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .tn-cart svg.cart-glyph{width:30px;height:24px;color:#005BA6;}
+  .tn-cart:hover svg.cart-glyph{color:#004A84;}
+  .tn-cart-badge{
+    position:absolute;top:-4px;right:-6px;min-width:18px;height:18px;padding:0 4px;
+    border-radius:9px;background:#FF9505;color:#fff;font-size:11px;font-weight:700;
+    display:none;align-items:center;justify-content:center;line-height:1;border:2px solid #fff;
+  }
+  .tn-cart-badge[data-show]{display:inline-flex;}
+
+  .tn-divider{width:1px;height:31px;background:#CCCCCC;flex-shrink:0;}
+
+  .tn-facility{display:flex;align-items:center;gap:9px;flex-shrink:0;cursor:pointer;padding:2px 4px;border-radius:4px;}
+  .tn-facility svg.tn-pin{width:14px;height:20px;color:#2B2B2B;flex-shrink:0;}
+  .tn-facility .tn-fac-meta{display:flex;flex-direction:column;line-height:1.1;gap:2px;}
+  .tn-facility .tn-fac-label{font-size:12px;color:#2B2B2B;}
+  .tn-facility .tn-fac-name{font-size:16px;font-weight:700;color:#2B2B2B;}
+
+  .tn-hero{height:52px;background:#003763;position:relative;overflow:hidden;display:flex;align-items:center;}
+  .tn-hero__title{
+    color:#fff;font-size:24px;font-family:'Source Sans Pro',sans-serif;
+    letter-spacing:-.01em;line-height:36px;padding:0 24px;flex-shrink:0;
+  }
+  .tn-hero__pro{
+    position:absolute;right:0;top:0;width:504px;height:52px;
+    background:#D0EDFC;clip-path:polygon(54px 0, 100% 0, 100% 100%, 0 100%);
+    box-shadow:inset -4px 4px 10px 0 rgba(0,0,0,.19);
+    display:flex;align-items:center;gap:14px;padding-left:120px;color:#4C4B46;
+  }
+  .tn-hero__pro .tn-hero__hospital{display:flex;align-items:center;}
+  .tn-hero__pro .tn-hero__hospital img{display:block;height:36px;width:auto;}
+  .tn-hero__pro .tn-hero__sep{width:1px;height:24px;background:#777;}
+  .tn-hero__pro .tn-hero__pro-label{font-size:16px;font-weight:700;color:#00AEEF;letter-spacing:.04em;}
+
+  /* ========================================================
+     PS-NAV (LEFT-HAND NAV)
+     ======================================================== */
+  [data-ps-nav]{
+    --ps-nav-bg:#003763;
+    --ps-nav-header-bg:#004a84;
+    --ps-nav-app-label-bg:#022039;
+    --ps-nav-active-bg:#005ba6;
+    --ps-nav-hover-bg:#004a84;
+    --ps-nav-text:#ffffff;
+    --ps-nav-text-muted:#dcdcdc;
+    --ps-nav-divider:#004a84;
+    --ps-nav-avatar-bg:#ffffff;
+    --ps-nav-avatar-text:#005ba6;
+    --ps-nav-danger:#fdebeb;
+    --ps-nav-focus-ring:#009cf4;
+    --ps-nav-radius:5px;
+    --ps-nav-width:210px;
+    --ps-nav-width-collapsed:67px;
+    box-sizing:border-box;
+    display:flex;flex-direction:column;flex-shrink:0;
+    width:var(--ps-nav-width);height:100%;
+    font-family:'Source Sans 3','Source Sans Pro',sans-serif;
+    font-size:14px;line-height:1.4;color:var(--ps-nav-text);
+    background-color:var(--ps-nav-bg);
+    overflow:hidden;transition:width 0.3s ease;position:relative;
+  }
+  [data-ps-nav] *,[data-ps-nav] *::before,[data-ps-nav] *::after{box-sizing:border-box;margin:0;padding:0;}
+  [data-ps-nav][data-collapsed]{width:var(--ps-nav-width-collapsed);}
+  [data-ps-nav][data-collapsed] .ps-nav-label,
+  [data-ps-nav][data-collapsed] .ps-nav-back-label,
+  [data-ps-nav][data-collapsed] .ps-nav-username{opacity:0;width:0;overflow:hidden;}
+  [data-ps-nav][data-collapsed] .ps-nav-chevron{display:none;}
+  [data-ps-nav][data-collapsed] .ps-nav-item a,
+  [data-ps-nav][data-collapsed] .ps-nav-item button,
+  [data-ps-nav][data-collapsed] .ps-nav-logout button{padding-left:16.5px;padding-right:16.5px;}
+  [data-ps-nav][data-collapsed] .ps-nav-header{padding:16px 21.5px;}
+  [data-ps-nav][data-collapsed] .ps-nav-back{padding-left:17.5px;padding-right:17.5px;}
+
+  [data-ps-nav] .ps-nav-header{
+    display:flex;align-items:center;gap:16px;
+    height:60px;padding:16px;background-color:var(--ps-nav-header-bg);
+    box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:padding 0.3s ease;flex-shrink:0;
+  }
+  [data-ps-nav] .ps-nav-avatar{
+    display:flex;align-items:center;justify-content:center;
+    width:24px;height:24px;border-radius:50%;padding-top:2px;
+    font-size:12px;font-weight:700;text-transform:uppercase;
+    color:var(--ps-nav-avatar-text);background-color:var(--ps-nav-avatar-bg);flex-shrink:0;
+  }
+  [data-ps-nav] .ps-nav-username{
+    font-size:18px;font-weight:400;color:var(--ps-nav-text);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity 0.3s ease;
+  }
+
+  [data-ps-nav] .ps-nav-viewport{position:relative;flex:1;overflow:hidden;}
+  [data-ps-nav] .ps-nav-track{display:flex;width:200%;height:100%;will-change:transform;}
+  [data-ps-nav] .ps-nav-track--animate{transition:transform 0.3s ease;}
+  [data-ps-nav] .ps-nav-page{
+    width:50%;height:100%;overflow-y:auto;overflow-x:hidden;flex-shrink:0;padding:24px 8px;
+  }
+  [data-ps-nav] .ps-nav-page::-webkit-scrollbar{width:4px;}
+  [data-ps-nav] .ps-nav-page::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2);border-radius:2px;}
+
+  [data-ps-nav] .ps-nav-back{
+    display:flex;align-items:center;gap:8px;
+    width:calc(100% + 24px);margin:-24px -12px 16px;
+    padding:8px 16px;border:none;background:var(--ps-nav-app-label-bg);color:var(--ps-nav-text);
+    font:400 14px/1.4 inherit;font-family:inherit;
+    cursor:pointer;text-align:left;white-space:nowrap;
+    transition:padding 0.3s ease, background-color 0.15s ease;
+  }
+  [data-ps-nav] .ps-nav-back:hover{background:var(--ps-nav-hover-bg);}
+  [data-ps-nav] .ps-nav-back-label{margin-top:3px;white-space:nowrap;overflow:hidden;transition:opacity 0.3s ease;}
+  [data-ps-nav] .ps-nav-back-arrow{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;flex-shrink:0;}
+  [data-ps-nav] .ps-nav-back-arrow::before{
+    content:'';display:block;width:10px;height:10px;
+    border-left:2.5px solid var(--ps-nav-text);border-bottom:2.5px solid var(--ps-nav-text);
+    transform:rotate(45deg);margin-left:4px;
+  }
+
+  [data-ps-nav] .ps-nav-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  [data-ps-nav] .ps-nav-item{display:flex;}
+  [data-ps-nav] .ps-nav-item a,
+  [data-ps-nav] .ps-nav-item button{
+    display:flex;align-items:center;gap:8px;
+    width:100%;height:32px;padding:8px;border:none;border-radius:var(--ps-nav-radius);
+    background:transparent;color:var(--ps-nav-text);
+    font:400 14px/1.4 inherit;font-family:inherit;
+    text-decoration:none;cursor:pointer;text-align:left;white-space:nowrap;
+    transition:padding 0.3s ease, background-color 0.15s ease;
+  }
+  [data-ps-nav] .ps-nav-item a:hover,
+  [data-ps-nav] .ps-nav-item button:hover{background-color:var(--ps-nav-hover-bg);}
+  [data-ps-nav] .ps-nav-item--active a,
+  [data-ps-nav] .ps-nav-item--active button{background-color:var(--ps-nav-active-bg);}
+  [data-ps-nav] .ps-nav-item--active a:hover,
+  [data-ps-nav] .ps-nav-item--active button:hover{background-color:var(--ps-nav-active-bg);}
+
+  [data-ps-nav] .ps-nav-icon{width:18px;height:18px;flex-shrink:0;display:block;}
+  [data-ps-nav] .ps-nav-icon img{width:18px;height:18px;display:block;}
+  [data-ps-nav] .ps-nav-label{margin-top:3px;white-space:nowrap;overflow:hidden;transition:opacity 0.3s ease;}
+
+  [data-ps-nav] .ps-nav-chevron{margin-left:auto;width:14px;height:14px;flex-shrink:0;opacity:0.7;overflow:hidden;transition:opacity 0.3s ease;}
+  [data-ps-nav] .ps-nav-chevron::before{
+    content:'';display:block;width:7px;height:7px;margin:3px 0 0 2px;
+    border-right:2px solid var(--ps-nav-text);border-top:2px solid var(--ps-nav-text);
+    transform:rotate(45deg);
+  }
+
+  [data-ps-nav] .ps-nav-divider{list-style:none;height:1px;background-color:var(--ps-nav-divider);margin:4px 0;}
+
+  [data-ps-nav] .ps-nav-logout{list-style:none;display:flex;}
+  [data-ps-nav] .ps-nav-logout button{
+    display:flex;align-items:center;gap:8px;
+    width:100%;height:32px;padding:8px;border:none;border-radius:var(--ps-nav-radius);
+    background:transparent;color:var(--ps-nav-text);
+    font:400 14px/1.4 inherit;font-family:inherit;
+    cursor:pointer;text-align:left;white-space:nowrap;
+    transition:padding 0.3s ease, color 0.15s ease, background-color 0.15s ease;
+  }
+  [data-ps-nav] .ps-nav-logout button:hover{background-color:var(--ps-nav-hover-bg);color:var(--ps-nav-danger);}
+
+  .rail-col .ps-nav-collapse-toggle{
+    position:absolute;bottom:30px;left:190px;
+    display:flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border-radius:50%;border:none;
+    background-color:#005ba6;color:#fff;cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,0.25);
+    transition:left 0.3s ease, background-color 0.15s ease;
+    z-index:10;
+  }
+  .rail-col .ps-nav-collapse-toggle:hover{background-color:#004a84;}
+  .rail-col .ps-nav-collapse-toggle svg{
+    width:18px;height:18px;fill:none;stroke:currentColor;
+    stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+  }
+  .rail-col[data-collapsed] .ps-nav-collapse-toggle{left:18px;}
+
+  /* ========================================================
+     CONTENT AREA
+     ======================================================== */
+  .content{flex:1;background:#fff;overflow-y:auto;}
+  .content > * { display:block; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══════════════ TOP NAV ═══════════════ -->
+  <div class="tn">
+    <div class="tn-util">
+      <span class="tn-phone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <a href="tel:8774976412">877-497-6412</a>
+      </span>
+      <a href="#">Help</a>
+      <a href="#">About Us</a>
+    </div>
+
+    <div class="tn-main">
+      <a class="tn-logo" href="#" id="tn-home-link">
+        <img src="assets/logos/ps-wordmark-blue.svg" alt="PartsSource">
+      </a>
+      <form class="tn-search" role="search" id="tn-search-form">
+        <input type="text" id="tn-search-input" placeholder="Search Keyword or Item Number">
+        <button type="submit" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+        </button>
+      </form>
+      <span class="tn-categories">Categories +</span>
+      <span class="tn-cart" role="button" aria-label="Cart" id="tn-cart">
+        <svg class="cart-glyph" viewBox="0 0 30 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L26 7H7"/>
+          <circle cx="11" cy="24" r="1.6" fill="currentColor"/>
+          <circle cx="22" cy="24" r="1.6" fill="currentColor"/>
+        </svg>
+        <span class="tn-cart-badge" id="tn-cart-badge">0</span>
+      </span>
+      <span class="tn-divider"></span>
+      <span class="tn-facility" role="button">
+        <svg class="tn-pin" viewBox="0 0 14 20" fill="currentColor"><path d="M7 0a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5z"/></svg>
+        <span class="tn-fac-meta">
+          <span class="tn-fac-label">Selected Facility</span>
+          <span class="tn-fac-name">Chatham Memorial Hospital</span>
+        </span>
+      </span>
+    </div>
+
+    <div class="tn-hero">
+      <span class="tn-hero__title" id="tn-hero-title">Welcome</span>
+      <div class="tn-hero__pro">
+        <span class="tn-hero__hospital"><img src="ui_kits/ps-shell/chatham-memorial.png" alt="Chatham Memorial Hospital"></span>
+        <span class="tn-hero__sep"></span>
+        <span class="tn-hero__pro-label">PRO&nbsp;&nbsp;ACCOUNT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ BODY ROW ═══════════════ -->
+  <div class="body-row">
+
+    <div class="rail-col" id="rail-col">
+      <nav data-ps-nav id="ps-nav" aria-label="Primary navigation">
+        <div class="ps-nav-header">
+          <div class="ps-nav-avatar">EG</div>
+          <span class="ps-nav-username">Earl G.</span>
+        </div>
+        <div class="ps-nav-viewport">
+          <div class="ps-nav-track" id="ps-nav-track"></div>
+        </div>
+      </nav>
+      <button class="ps-nav-collapse-toggle" id="ps-nav-collapse-toggle" aria-label="Collapse sidebar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+    </div>
+
+    <div class="main-col">
+      <main class="content">
+        <div id="marketplace-root"></div>
+      </main>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ═══════════════ LHN SCRIPT (sliding track) ═══════════════ -->
+<script>
+(function(){
+  const ICON = (name) => `preview/lhn-icons/${name}.svg`;
+
+  const PAGES = {
+    root: {
+      label: 'Home',
+      items: [
+        { id:'my-lists',         label:'My Lists',         icon:ICON('my-lists') },
+        { id:'command-center',   label:'Command Center',   icon:ICON('command-center') },
+        { id:'my-dashboard',     label:'My Dashboard',     icon:ICON('my-dashboard') },
+        { id:'asset-uptime',     label:'Asset Uptime',     icon:ICON('asset-uptime'),    drillTo:'asset-uptime' },
+        { id:'visual-analytics', label:'Visual Analytics', icon:ICON('visual-analytics') },
+        { id:'parts-center',     label:'Parts Center',     icon:ICON('parts-center'),    drillTo:'parts-center' },
+        { id:'service-center',   label:'Service Center',   icon:ICON('service-center'),  drillTo:'service-center' },
+        { id:'tools',            label:'Tools',            icon:ICON('tools'),           drillTo:'tools' },
+        { id:'admin',            label:'Admin',            icon:ICON('admin') },
+      ],
+      showLogout: true,
+    },
+    'asset-uptime': {
+      label: 'Asset Uptime',
+      back: { to:'root', label:'Asset Uptime' },
+      items: [
+        { id:'asset-explorer',        label:'Asset Explorer',        icon:ICON('my-dashboard') },
+        { id:'operational-readiness', label:'Operational Readiness', icon:ICON('command-center') },
+      ],
+    },
+    'parts-center': {
+      label: 'Parts Center',
+      back: { to:'root', label:'Parts Center' },
+      items: [
+        { id:'shop-parts',  label:'Shop Parts',  icon:ICON('parts-center'),       active:true },
+        { id:'orders',      label:'Orders',      icon:ICON('orders') },
+        { id:'rfqs',        label:'Parts Quotes',icon:ICON('parts-quotes') },
+        { id:'returns',     label:'Returns',     icon:ICON('exchanges-returns') },
+        { id:'history',     label:'Buy It Again',icon:ICON('buy-it-again') },
+        { id:'browsing',    label:'Browsing History', icon:ICON('browsing-history') },
+      ],
+    },
+    'service-center': {
+      label: 'Service Center',
+      back: { to:'root', label:'Service Center' },
+      items: [
+        { id:'service-events', label:'Service Events', icon:ICON('service-center') },
+        { id:'work-orders',    label:'Submit Work Orders', icon:ICON('submit-work-orders') },
+        { id:'on-site',        label:'Request On-Site Service', icon:ICON('request-on-site-service') },
+        { id:'depot',          label:'Find Depot Repairs', icon:ICON('find-depot-repairs') },
+      ],
+    },
+    tools: {
+      label: 'Tools',
+      back: { to:'root', label:'Tools' },
+      items: [
+        { id:'formulary',       label:'Formulary',       icon:ICON('formulary') },
+        { id:'approvals',       label:'Approvals',       icon:ICON('approvals') },
+        { id:'reports',         label:'Reports',         icon:ICON('visual-analytics') },
+      ],
+    },
+  };
+
+  function renderPage(pageId){
+    const page = PAGES[pageId];
+    const el = document.createElement('div');
+    el.className = 'ps-nav-page';
+    el.dataset.pageId = pageId;
+
+    let html = '';
+    if(page.back){
+      html += `<button class="ps-nav-back" data-back="${page.back.to}">
+                 <span class="ps-nav-back-arrow"></span>
+                 <span class="ps-nav-back-label">${page.back.label}</span>
+               </button>`;
+    }
+    html += '<ul class="ps-nav-list">';
+    for(const item of page.items){
+      const activeCls = item.active ? ' ps-nav-item--active' : '';
+      const drillAttr = item.drillTo ? ` data-drill="${item.drillTo}"` : '';
+      const chevron   = item.drillTo ? '<span class="ps-nav-chevron"></span>' : '';
+      html += `<li class="ps-nav-item${activeCls}">
+                 <button${drillAttr}>
+                   <span class="ps-nav-icon"><img src="${item.icon}" alt=""></span>
+                   <span class="ps-nav-label">${item.label}</span>
+                   ${chevron}
+                 </button>
+               </li>`;
+    }
+    if(page.showLogout){
+      html += `<li class="ps-nav-divider" role="separator"></li>
+               <li class="ps-nav-logout">
+                 <button>
+                   <span class="ps-nav-icon"><img src="${ICON('logout')}" alt=""></span>
+                   <span class="ps-nav-label">Log Out</span>
+                 </button>
+               </li>`;
+    }
+    html += '</ul>';
+    el.innerHTML = html;
+    return el;
+  }
+
+  const track     = document.getElementById('ps-nav-track');
+  const navEl     = document.getElementById('ps-nav');
+  const railEl    = document.getElementById('rail-col');
+  const toggleBtn = document.getElementById('ps-nav-collapse-toggle');
+
+  let currentPageId = 'root'; // start at the root nav on home
+  let animating = false;
+
+  function showStatic(pageId){
+    track.classList.remove('ps-nav-track--animate');
+    track.style.transform = 'translateX(0)';
+    track.innerHTML = '';
+    track.appendChild(renderPage(pageId));
+    currentPageId = pageId;
+    bindPageEvents();
+  }
+
+  function navigate(toPageId, direction){
+    if(animating || toPageId === currentPageId) return;
+    animating = true;
+    const fromPage = renderPage(currentPageId);
+    const toPage   = renderPage(toPageId);
+    track.innerHTML = '';
+    track.classList.remove('ps-nav-track--animate');
+    if(direction === 'forward'){
+      track.appendChild(fromPage); track.appendChild(toPage);
+      track.style.transform = 'translateX(0)';
+    } else {
+      track.appendChild(toPage); track.appendChild(fromPage);
+      track.style.transform = 'translateX(-50%)';
+    }
+    track.offsetHeight;
+    requestAnimationFrame(() => {
+      track.classList.add('ps-nav-track--animate');
+      track.style.transform = direction === 'forward' ? 'translateX(-50%)' : 'translateX(0)';
+    });
+    const onEnd = (e) => {
+      if(e.propertyName !== 'transform') return;
+      track.removeEventListener('transitionend', onEnd);
+      currentPageId = toPageId;
+      showStatic(toPageId);
+      animating = false;
+    };
+    track.addEventListener('transitionend', onEnd);
+  }
+
+  function bindPageEvents(){
+    track.querySelectorAll('[data-drill]').forEach(btn => {
+      btn.addEventListener('click', () => navigate(btn.dataset.drill, 'forward'));
+    });
+    track.querySelectorAll('[data-back]').forEach(btn => {
+      btn.addEventListener('click', () => navigate(btn.dataset.back, 'back'));
+    });
+  }
+
+  function setCollapsed(collapsed){
+    if(collapsed){
+      navEl.setAttribute('data-collapsed', '');
+      railEl.setAttribute('data-collapsed', '');
+      toggleBtn.setAttribute('aria-label', 'Expand sidebar');
+      toggleBtn.querySelector('svg').innerHTML = '<polyline points="9 18 15 12 9 6"/>';
+    } else {
+      navEl.removeAttribute('data-collapsed');
+      railEl.removeAttribute('data-collapsed');
+      toggleBtn.setAttribute('aria-label', 'Collapse sidebar');
+      toggleBtn.querySelector('svg').innerHTML = '<polyline points="15 18 9 12 15 6"/>';
+    }
+  }
+  toggleBtn.addEventListener('click', () => setCollapsed(!navEl.hasAttribute('data-collapsed')));
+  document.addEventListener('keydown', (e) => {
+    if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if(e.key === 'l' || e.key === 'L') setCollapsed(!navEl.hasAttribute('data-collapsed'));
+  });
+
+  showStatic('root');
+})();
+</script>
+
+<!-- ═══════════════ MARKETPLACE COMPONENTS ═══════════════ -->
+<script type="text/babel" src="ui_kits/ps-marketplace/Homepage.jsx"></script>
+<script type="text/babel" src="ui_kits/ps-marketplace/Hero.jsx"></script>
+<script type="text/babel" src="ui_kits/ps-marketplace/ProductCard.jsx"></script>
+<script type="text/babel" src="ui_kits/ps-marketplace/ProductGrid.jsx"></script>
+<script type="text/babel" src="ui_kits/ps-marketplace/PDP.jsx"></script>
+<script type="text/babel" src="ui_kits/ps-marketplace/Cart.jsx"></script>
+<script type="text/babel" src="ui_kits/ps-marketplace/Footer.jsx"></script>
+
+<script type="text/babel">
+  const { useState, useEffect, useRef } = React;
+
+  const PRODUCTS = [
+    { id: 1, name: 'Reusable Finger Sensor by Masimo', manufacturer: 'Masimo', price: 248, sku: 'DS100A', badge: 'OEM' },
+    { id: 2, name: 'ECG Leadwire Set, 10-Lead Banana Plug', manufacturer: 'GE Healthcare', price: 412, sku: '2016560-001', badge: 'In Stock' },
+    { id: 3, name: 'Warming Unit Replacement Hose, Bair Hugger 700', manufacturer: '3M Healthcare', price: 186, sku: '775' },
+    { id: 4, name: 'Reusable Adult Oral Temperature Probe, 9ft', manufacturer: 'Welch Allyn', price: 92, sku: '02893-100' },
+    { id: 5, name: 'Hose, Blood Pressure, FAST, 5 ft', manufacturer: 'Welch Allyn', price: 38, sku: 'REUSE-10-1SC' },
+    { id: 6, name: 'SpO2 Sensor Connection Cable, 10 ft', manufacturer: 'Nellcor – Covidien', price: 124, sku: 'DEC-8' },
+    { id: 7, name: 'Xenon Replacement Halogen Lamp, 14V', manufacturer: 'Olympus America', price: 218, sku: 'CLK-4' },
+    { id: 8, name: 'Sealed Lead Acid Battery 6V 3.3Ah', manufacturer: 'GE Medical Systems', price: 64, sku: 'BAT-6V33' },
+  ];
+
+  // Update the shell's hero title bar
+  function setHeroTitle(text){
+    const el = document.getElementById('tn-hero-title');
+    if(el) el.textContent = text;
+  }
+
+  function App() {
+    const [view, setView] = useState('home');     // home | results | pdp
+    const [selected, setSelected] = useState(null);
+    const [cart, setCart] = useState([]);
+    const [cartOpen, setCartOpen] = useState(false);
+    const [query, setQuery] = useState('');
+    const contentRef = useRef(null);
+
+    const addToCart = (p, qty = 1) => {
+      setCart(prev => {
+        const ex = prev.find(i => i.id === p.id);
+        if (ex) return prev.map(i => i.id === p.id ? { ...i, qty: i.qty + qty } : i);
+        return [...prev, { ...p, qty }];
+      });
+      setCartOpen(true);
+    };
+    const removeFromCart = (it) => setCart(prev => prev.filter(i => i.id !== it.id));
+
+    const scrollTop = () => {
+      const c = document.querySelector('.content');
+      if(c) c.scrollTo(0, 0);
+    };
+    const openPDP = (p) => { setSelected(p); setView('pdp'); scrollTop(); };
+    const runSearch = (q) => { setQuery(q); setView('results'); scrollTop(); };
+    const goHome = () => { setView('home'); scrollTop(); };
+
+    // Hero title is set per-view
+    useEffect(() => {
+      if (view === 'home') setHeroTitle('Welcome');
+      else if (view === 'results') setHeroTitle(query ? `Results for "${query}"` : 'All Parts');
+      else if (view === 'pdp' && selected) setHeroTitle(selected.name);
+    }, [view, query, selected]);
+
+    // Sync cart badge
+    useEffect(() => {
+      const count = cart.reduce((s, i) => s + i.qty, 0);
+      const badge = document.getElementById('tn-cart-badge');
+      if(badge){
+        badge.textContent = String(count);
+        if(count > 0) badge.setAttribute('data-show','');
+        else badge.removeAttribute('data-show');
+      }
+    }, [cart]);
+
+    // Wire shell controls (search form, cart icon, home logo)
+    useEffect(() => {
+      const form = document.getElementById('tn-search-form');
+      const input = document.getElementById('tn-search-input');
+      const cartBtn = document.getElementById('tn-cart');
+      const homeBtn = document.getElementById('tn-home-link');
+
+      const onSubmit = (e) => { e.preventDefault(); runSearch(input.value.trim()); };
+      const onCart = () => setCartOpen(true);
+      const onHome = (e) => { e.preventDefault(); goHome(); };
+
+      form && form.addEventListener('submit', onSubmit);
+      cartBtn && cartBtn.addEventListener('click', onCart);
+      homeBtn && homeBtn.addEventListener('click', onHome);
+      return () => {
+        form && form.removeEventListener('submit', onSubmit);
+        cartBtn && cartBtn.removeEventListener('click', onCart);
+        homeBtn && homeBtn.removeEventListener('click', onHome);
+      };
+    }, []);
+
+    // Breadcrumbs removed per design feedback
+    const crumbs = [];
+
+    return (
+      <div ref={contentRef}>
+        {crumbs.length > 0 && <Breadcrumb items={crumbs} onNav={(it) => it.onClick && it.onClick()} />}
+        {view === 'home' && (
+          <Homepage onShopParts={() => { setView('results'); scrollTop(); }} />
+        )}
+
+        {view === 'results' && (
+          <>
+            <section style={{ padding: '8px 40px 56px', background: '#F5F5F5' }}>
+              <h1 style={{ fontSize: 30, fontWeight: 300, color: '#002F48', margin: '0 0 4px' }}>
+                {query ? `Results for "${query}"` : 'All Parts'}
+              </h1>
+              <div style={{ color: '#777', fontSize: 14, marginBottom: 24 }}>
+                {PRODUCTS.length} items · Showing 1–{PRODUCTS.length}
+              </div>
+              <ProductGrid products={PRODUCTS} onSelect={openPDP} />
+            </section>
+          </>
+        )}
+
+        {view === 'pdp' && selected && (
+          <div style={{ background: '#fff' }}>
+            <PDP product={selected} onBack={() => { setView('results'); scrollTop(); }} onAdd={addToCart} hideBreadcrumb />
+          </div>
+        )}
+
+        <Footer />
+
+        {cartOpen && (
+          <>
+            <div onClick={() => setCartOpen(false)}
+                 style={{ position: 'fixed', inset: 0, background: 'rgba(0,47,72,.5)', zIndex: 99 }}></div>
+            <Cart items={cart} onClose={() => setCartOpen(false)}
+                  onRemove={removeFromCart}
+                  onCheckout={() => alert('Checkout demo — not wired up.')} />
+          </>
+        )}
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('marketplace-root')).render(<App />);
+</script>
+
+</body>
+</html>

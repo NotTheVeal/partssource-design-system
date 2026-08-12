@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Date Picker · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+  .section-body{padding:32px 24px;background:#FAFAFA;}
+
+  /* ── Date Picker (1:1 with Figma /Form-Components/Date-Picker, node 396:281)
+        Field shell: 230 × 48, 1 px Grey 3 border, 3 px radius, white bg
+        Label inside: 16 px Source Sans Pro · Grey 1 · 11/14 inset
+        Trailing button: 48 × 46 orange (#FF9505) with calendar glyph
+        Section title: 20 px Source Sans Pro · black
+  */
+  .dp{
+    width:492px;max-width:100%;
+    display:flex;flex-direction:column;gap:16px;
+    font-family:'Source Sans Pro','Source Sans 3',sans-serif;
+  }
+  .dp__title{
+    font-size:20px;line-height:1;color:#000;margin:0;
+    font-weight:400;
+  }
+  .dp__row{
+    display:flex;gap:30px;
+  }
+  .dp__field{
+    position:relative;
+    width:230px;height:48px;
+    background:#fff;border:1px solid #949494;border-radius:3px;
+    overflow:hidden;cursor:pointer;
+    transition:border-color 120ms ease, box-shadow 120ms ease;
+  }
+  .dp__field:hover{border-color:#000;}
+  .dp__field:focus-within{
+    border-color:#005DA6;
+    box-shadow:0 0 10px 0 rgba(0, 91, 166, 0.5);
+  }
+  .dp__field input{
+    width:100%;height:100%;border:0;outline:0;
+    padding:0 56px 0 11px;
+    background:transparent;
+    font:400 16px/1 'Source Sans Pro',sans-serif;color:#4A4A4A;
+  }
+  .dp__field input::placeholder{color:#4A4A4A;}
+  .dp__field-trigger{
+    position:absolute;top:0;right:0;height:100%;width:48px;
+    background:#FF9505;color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    border:0;cursor:pointer;
+    border-top-right-radius:2px;border-bottom-right-radius:2px;
+    transition:background 120ms ease;
+  }
+  .dp__field-trigger:hover{background:#EC8000;}
+  .dp__field-trigger:focus-visible{outline:2px solid #002F48;outline-offset:-3px;}
+  .dp__field-trigger svg{width:18px;height:18px;}
+
+  /* Disabled state */
+  .dp__field--disabled{
+    background:#FAFAFA;border-color:#DCDCDC;cursor:not-allowed;
+  }
+  .dp__field--disabled input{color:#949494;cursor:not-allowed;}
+  .dp__field--disabled .dp__field-trigger{background:#FFCA82;cursor:not-allowed;}
+
+  /* Filled state */
+  .dp__field--filled input{color:#000;}
+
+  /* Error state */
+  .dp__field--error{border-color:#D32F2F;}
+  .dp__field--error input{color:#D32F2F;}
+  .dp__error-msg{font-size:12px;color:#D32F2F;margin-top:6px;}
+
+  /* ── Calendar popover ────────────────────────────────────── */
+  .dp-cal{
+    width:300px;background:#fff;border:1px solid #E6E6E6;border-radius:6px;
+    box-shadow:0 6px 20px rgba(0,47,72,.12);
+    padding:16px;
+    font:14px/1.4 'Source Sans Pro',sans-serif;
+  }
+  .dp-cal__head{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:12px;
+  }
+  .dp-cal__month{
+    font-size:16px;font-weight:700;color:#002F48;
+  }
+  .dp-cal__nav{
+    display:flex;gap:4px;
+  }
+  .dp-cal__nav button{
+    width:28px;height:28px;border:0;background:transparent;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;
+    color:#4A4A4A;border-radius:4px;
+  }
+  .dp-cal__nav button:hover{background:#F4F6F8;color:#005BA6;}
+  .dp-cal__nav svg{width:14px;height:14px;}
+  .dp-cal__grid{
+    display:grid;grid-template-columns:repeat(7, 1fr);gap:2px;
+  }
+  .dp-cal__dow{
+    font-size:11px;color:#949494;font-weight:700;text-transform:uppercase;
+    letter-spacing:0.5px;
+    height:28px;display:flex;align-items:center;justify-content:center;
+  }
+  .dp-cal__day{
+    width:36px;height:36px;border:0;background:transparent;cursor:pointer;
+    border-radius:6px;font-size:14px;color:#2B2B2B;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .dp-cal__day:hover:not([disabled]):not(.is-selected):not(.in-range){background:#EFF9FE;color:#005BA6;}
+  .dp-cal__day.is-other{color:#CCCCCC;}
+  .dp-cal__day.is-today{font-weight:700;color:#005BA6;}
+  .dp-cal__day.in-range{background:#EFF9FE;color:#005BA6;border-radius:0;}
+  .dp-cal__day.is-selected{background:#005BA6;color:#fff;font-weight:700;}
+  .dp-cal__day.is-range-start{border-top-left-radius:6px;border-bottom-left-radius:6px;}
+  .dp-cal__day.is-range-end{border-top-right-radius:6px;border-bottom-right-radius:6px;}
+  .dp-cal__day[disabled]{color:#DCDCDC;cursor:not-allowed;}
+  .dp-cal__foot{
+    margin-top:14px;padding-top:12px;border-top:1px solid #F1F1F1;
+    display:flex;justify-content:space-between;gap:8px;
+  }
+  .dp-cal__btn{
+    height:32px;padding:0 12px;
+    border:1px solid #DCDCDC;background:#fff;
+    border-radius:4px;font:600 13px/1 'Source Sans Pro',sans-serif;
+    color:#4A4A4A;cursor:pointer;
+  }
+  .dp-cal__btn--primary{background:#005BA6;color:#fff;border-color:#005BA6;}
+  .dp-cal__btn:hover{border-color:#005BA6;color:#005BA6;}
+  .dp-cal__btn--primary:hover{background:#004A84;border-color:#004A84;color:#fff;}
+
+  /* Anchored popover for live demo */
+  .dp--with-popover{position:relative;}
+  .dp--with-popover .dp-cal{
+    position:absolute;top:calc(100% + 8px);left:0;z-index:10;
+  }
+
+  /* States grid */
+  .states-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+  .state-card{background:#fff;border:1px solid #F1F1F1;border-radius:8px;overflow:hidden;}
+  .state-card__stage{padding:18px;background:#FAFAFA;display:flex;align-items:center;justify-content:center;min-height:90px;}
+  .state-card__meta{padding:10px 14px;border-top:1px solid #F1F1F1;font-size:12px;color:#777;}
+  .state-card__meta b{display:block;color:#002F48;font-size:13px;font-weight:700;margin-bottom:2px;}
+
+  /* Tokens */
+  table.tokens{width:100%;border-collapse:collapse;font-size:13px;}
+  table.tokens th,table.tokens td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.tokens th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.tokens code{background:#F1F1F1;font-family:ui-monospace,Menlo,monospace;font-size:11px;padding:1px 6px;border-radius:3px;}
+
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Date Picker</span>
+</nav>
+
+<h1>Date Picker</h1>
+<p class="intro">Start + End date range with a single-month calendar popover. Built 1-for-1 from Figma node <code>396:281</code> in <code>/Form-Components/Date-Picker</code> — 230 × 48 px fields, 1 px Grey 3 border, 3 px radius, and the signature orange (<code>#FF9505</code>) calendar trigger button.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Idle</h2>
+    <div class="desc">Default state. Two empty fields side-by-side with the orange calendar trigger.</div>
+  </div>
+  <div class="section-body">
+    <div class="dp">
+      <h3 class="dp__title">Preferred Window</h3>
+      <div class="dp__row">
+        <div class="dp__field">
+          <input type="text" placeholder="Start Date" aria-label="Start Date">
+          <button class="dp__field-trigger" type="button" aria-label="Open calendar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </button>
+        </div>
+        <div class="dp__field">
+          <input type="text" placeholder="End Date" aria-label="End Date">
+          <button class="dp__field-trigger" type="button" aria-label="Open calendar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>With calendar open</h2>
+    <div class="desc">Trigger expands a single-month grid with weekday headers, today highlighted, and Apply / Cancel actions.</div>
+  </div>
+  <div class="section-body">
+    <div class="dp dp--with-popover">
+      <h3 class="dp__title">Preferred Service Window</h3>
+      <div class="dp__row">
+        <div class="dp__field dp__field--filled">
+          <input type="text" value="03/12/2025" aria-label="Start Date">
+          <button class="dp__field-trigger" type="button" aria-label="Open calendar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </button>
+        </div>
+        <div class="dp__field">
+          <input type="text" placeholder="End Date" aria-label="End Date">
+          <button class="dp__field-trigger" type="button" aria-label="Open calendar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="dp-cal" role="dialog" aria-label="Calendar">
+        <div class="dp-cal__head">
+          <div class="dp-cal__month">March 2025</div>
+          <div class="dp-cal__nav">
+            <button aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+        <div class="dp-cal__grid">
+          <span class="dp-cal__dow">S</span><span class="dp-cal__dow">M</span><span class="dp-cal__dow">T</span><span class="dp-cal__dow">W</span><span class="dp-cal__dow">T</span><span class="dp-cal__dow">F</span><span class="dp-cal__dow">S</span>
+          <button class="dp-cal__day is-other">23</button><button class="dp-cal__day is-other">24</button><button class="dp-cal__day is-other">25</button><button class="dp-cal__day is-other">26</button><button class="dp-cal__day is-other">27</button><button class="dp-cal__day is-other">28</button><button class="dp-cal__day">1</button>
+          <button class="dp-cal__day">2</button><button class="dp-cal__day">3</button><button class="dp-cal__day">4</button><button class="dp-cal__day">5</button><button class="dp-cal__day">6</button><button class="dp-cal__day">7</button><button class="dp-cal__day">8</button>
+          <button class="dp-cal__day">9</button><button class="dp-cal__day">10</button><button class="dp-cal__day">11</button><button class="dp-cal__day is-selected is-range-start">12</button><button class="dp-cal__day in-range">13</button><button class="dp-cal__day in-range">14</button><button class="dp-cal__day in-range">15</button>
+          <button class="dp-cal__day in-range">16</button><button class="dp-cal__day in-range">17</button><button class="dp-cal__day is-selected is-range-end">18</button><button class="dp-cal__day is-today">19</button><button class="dp-cal__day">20</button><button class="dp-cal__day">21</button><button class="dp-cal__day">22</button>
+          <button class="dp-cal__day">23</button><button class="dp-cal__day">24</button><button class="dp-cal__day">25</button><button class="dp-cal__day">26</button><button class="dp-cal__day">27</button><button class="dp-cal__day">28</button><button class="dp-cal__day">29</button>
+          <button class="dp-cal__day">30</button><button class="dp-cal__day">31</button><button class="dp-cal__day is-other">1</button><button class="dp-cal__day is-other">2</button><button class="dp-cal__day is-other">3</button><button class="dp-cal__day is-other">4</button><button class="dp-cal__day is-other">5</button>
+        </div>
+        <div class="dp-cal__foot">
+          <button class="dp-cal__btn">Cancel</button>
+          <button class="dp-cal__btn dp-cal__btn--primary">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>States</h2>
+    <div class="desc">Idle, hover, focus, filled, disabled, and error.</div>
+  </div>
+  <div class="section-body">
+    <div class="states-grid">
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="dp__field"><input type="text" placeholder="Start Date" readonly><button class="dp__field-trigger" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button></div>
+        </div>
+        <div class="state-card__meta"><b>Idle</b>Grey 3 border · white bg</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="dp__field" style="border-color:#000;"><input type="text" placeholder="Start Date" readonly><button class="dp__field-trigger" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button></div>
+        </div>
+        <div class="state-card__meta"><b>Hover</b>Border darkens to black</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="dp__field" style="border-color:#005DA6;box-shadow:0 0 10px 0 rgba(0,91,166,0.5);"><input type="text" placeholder="Start Date" readonly><button class="dp__field-trigger" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button></div>
+        </div>
+        <div class="state-card__meta"><b>Focus</b>PS Blue border + 10 px glow</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="dp__field dp__field--filled"><input type="text" value="03/12/2025" readonly><button class="dp__field-trigger" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button></div>
+        </div>
+        <div class="state-card__meta"><b>Filled</b>Date string in Grey 9 / black</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="dp__field dp__field--disabled"><input type="text" placeholder="Start Date" disabled><button class="dp__field-trigger" tabindex="-1" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button></div>
+        </div>
+        <div class="state-card__meta"><b>Disabled</b>Light grey shell, tinted orange button</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage" style="flex-direction:column;align-items:flex-start;padding:18px;">
+          <div class="dp__field dp__field--error"><input type="text" value="13/45/2099" readonly><button class="dp__field-trigger" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button></div>
+          <span class="dp__error-msg">Enter a valid date (MM/DD/YYYY).</span>
+        </div>
+        <div class="state-card__meta"><b>Error</b>Red border + descriptive message</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Tokens</h2>
+    <div class="desc">Composed from existing input, color, and motion tokens.</div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <table class="tokens">
+      <thead><tr><th>Property</th><th>Token / value</th></tr></thead>
+      <tbody>
+        <tr><td>Field size</td><td>230 × 48 px</td></tr>
+        <tr><td>Border</td><td>1 px <code>#949494</code> · 3 px radius</td></tr>
+        <tr><td>Background</td><td><code>#FFFFFF</code></td></tr>
+        <tr><td>Label</td><td>Source Sans Pro · 16 px · <code>#4A4A4A</code></td></tr>
+        <tr><td>Trigger</td><td>48 × 46 · <code>#FF9505</code> · hover <code>#EC8000</code></td></tr>
+        <tr><td>Section title</td><td>20 px · <code>#000</code></td></tr>
+        <tr><td>Field gap</td><td>30 px</td></tr>
+        <tr><td>Calendar popover</td><td>300 px · 6 px radius · <code>0 6px 20px rgba(0,47,72,.12)</code></td></tr>
+        <tr><td>Day cell</td><td>36 × 36 · 6 px radius</td></tr>
+        <tr><td>Selected day</td><td><code>#005BA6</code> bg · white</td></tr>
+        <tr><td>In-range</td><td><code>#EFF9FE</code> bg · PS Blue text</td></tr>
+        <tr><td>Today</td><td>Bold · PS Blue text</td></tr>
+        <tr><td>Focus</td><td>PS Blue border + 10 px glow</td></tr>
+        <tr><td>Error</td><td><code>#D32F2F</code> border + 12 px message below</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Accessibility</h2>
+    <div class="desc">Keyboard, screen reader, and date-input fallback.</div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:24px;">
+    <ul style="margin:0;padding-left:20px;line-height:1.7;font-size:13.5px;color:#4A4A4A;">
+      <li>Each field is a real <code>&lt;input&gt;</code> with an <code>aria-label</code> ("Start Date" / "End Date") for screen readers.</li>
+      <li>Calendar opens with <kbd style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;border:1px solid #DCDCDC;border-bottom-width:2px;border-radius:3px;padding:1px 6px;">Enter</kbd> / <kbd style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;border:1px solid #DCDCDC;border-bottom-width:2px;border-radius:3px;padding:1px 6px;">Space</kbd> on the trigger; closes with <kbd style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;border:1px solid #DCDCDC;border-bottom-width:2px;border-radius:3px;padding:1px 6px;">Esc</kbd>.</li>
+      <li>Arrow keys navigate days; <kbd style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;border:1px solid #DCDCDC;border-bottom-width:2px;border-radius:3px;padding:1px 6px;">Page Up / Down</kbd> moves by month.</li>
+      <li>Today carries <code>aria-current="date"</code>; selected range carries <code>aria-selected="true"</code>.</li>
+      <li>Direct typing accepted in <code>MM/DD/YYYY</code>; invalid input triggers the error state instead of silently rejecting.</li>
+      <li>Orange trigger background must always be paired with white icon (3.7:1 contrast — AA Large) — it never carries text.</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

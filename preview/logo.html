@@ -1,0 +1,291 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Logo" subtitle="Split into Blue, White, and Black wordmark sections — each with on-surface variants, clearspace + minimum sizes, and don'ts" viewport="700x200" -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Logo</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    body{margin:0;padding:40px 56px 80px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-primary);font-size:15px;}
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:16px;color:var(--ps-fg-secondary);margin:0 0 40px;max-width:920px;line-height:1.55;}
+    .section{margin-bottom:48px;}
+    .section-head{display:flex;align-items:baseline;gap:14px;margin-bottom:10px;border-bottom:1px solid #EEE;padding-bottom:10px;}
+    h2{font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;}
+    .sub{font-size:15px;color:var(--ps-fg-secondary);max-width:920px;line-height:1.6;margin:12px 0 22px;}
+    .tag{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--ps-sem-fg-tertiary);background:#F4F6F8;border:1px solid #EEE;border-radius:3px;padding:2px 8px;}
+
+    .cards{display:grid;grid-template-columns:1fr;gap:20px;}
+    .card{border:1px solid #E6E6E6;border-radius:10px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .stage{min-height:220px;display:flex;align-items:center;justify-content:center;padding:56px 72px;}
+    .stage img{width:100%;max-width:720px;height:auto;display:block;}
+    .stage.white{background:var(--ps-sem-bg-surface);}
+    .stage.subtle{background:var(--ps-sem-bg-canvas);}
+    .stage.muted{background:var(--ps-sem-bg-muted);}
+    .stage.brand{background:var(--ps-sem-action-default);}
+    .stage.midnight{background:#002F48;}
+    .stage.black{background:#000000;}
+    .info{padding:16px 22px 18px;border-top:1px solid #F1F1F1;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .info .ttl{font-size:15px;font-weight:600;color:var(--ps-sem-fg-primary);}
+    .info .desc{font-size:13px;color:var(--ps-fg-secondary);margin-top:2px;}
+    .info .filetag{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#555;background:#F4F6F8;border:1px solid #EEE;border-radius:3px;padding:3px 8px;}
+
+    .guide{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;}
+    .clearspace-card{background:var(--ps-sem-bg-canvas);border:1px solid #E6E6E6;border-radius:10px;padding:28px;display:flex;flex-direction:column;gap:16px;}
+    .clearspace-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
+    .clearspace-head b{font-size:14px;color:var(--ps-sem-fg-primary);font-weight:600;}
+    .clearspace-head span{font-size:12px;color:var(--ps-fg-secondary);}
+
+    /* The actual diagram: grid with measurement gutters. */
+    .cs-grid{
+      position:relative;
+      background:var(--ps-sem-bg-surface);
+      border:1px solid #E6E6E6;
+      border-radius:8px;
+      padding:68px;           /* equals one "x" on each side */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .cs-grid svg{display:block;width:100%;height:auto;max-width:560px;}
+
+    /* x-labels in the corners */
+    .cs-corner{
+      position:absolute;width:56px;height:56px;
+      display:flex;align-items:center;justify-content:center;
+      font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--ps-sem-fg-brand);
+      background:rgba(0,91,167,.06);
+      border:1px dashed rgba(0,91,167,.45);
+      border-radius:4px;
+    }
+    .cs-corner.tl{top:8px;left:8px;}
+    .cs-corner.tr{top:8px;right:8px;}
+    .cs-corner.bl{bottom:8px;left:8px;}
+    .cs-corner.br{bottom:8px;right:8px;}
+
+    /* Dashed safe-zone outline */
+    .cs-safezone{
+      position:absolute;inset:64px;
+      border:1px dashed #005BA6;
+      border-radius:4px;
+      pointer-events:none;
+    }
+
+    /* Edge measurement labels */
+    .cs-edge{
+      position:absolute;font-family:ui-monospace,Menlo,monospace;
+      font-size:11px;color:var(--ps-sem-fg-brand);letter-spacing:.4px;
+      background:var(--ps-sem-bg-canvas);padding:2px 8px;border-radius:3px;
+    }
+    .cs-edge.top{top:32px;left:50%;transform:translate(-50%,-50%);}
+    .cs-edge.bottom{bottom:32px;left:50%;transform:translate(-50%,50%);}
+    .cs-edge.left{left:32px;top:50%;transform:translate(-50%,-50%);}
+    .cs-edge.right{right:32px;top:50%;transform:translate(50%,-50%);}
+
+    .cs-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+    .cs-legend .swatch{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:middle;margin-right:8px;border:1px dashed #005BA6;background:rgba(0,91,167,.08);}
+    .cs-legend .pill{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--ps-sem-fg-primary);background:var(--ps-sem-bg-surface);border:1px solid #E6E6E6;border-radius:3px;padding:2px 6px;margin-right:6px;}
+
+    .sizes{display:grid;gap:12px;align-content:start;}
+    .size-row{border:1px solid #E6E6E6;border-radius:8px;padding:16px 18px;display:flex;align-items:center;gap:22px;background:var(--ps-sem-bg-surface);}
+    .size-row img{display:block;height:auto;flex:none;}
+    .size-row .meta{font-size:13px;color:var(--ps-fg-secondary);}
+    .size-row .meta b{display:block;color:var(--ps-sem-fg-primary);font-size:14px;margin-bottom:2px;}
+
+    .donts{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+    .dont{border:1px solid #E6E6E6;border-radius:8px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .dont .stage{min-height:140px;padding:26px;position:relative;}
+    .dont .stage::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent calc(50% - 1px),#E00000 calc(50% - 1px),#E00000 calc(50% + 1px),transparent calc(50% + 1px));opacity:.55;pointer-events:none;}
+    .dont .info{padding:12px 16px 14px;display:block;}
+    .dont .label{color:#E00000;font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;}
+    .dont .desc{display:block;margin-top:3px;}
+  </style>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Logos</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Logo</h1>
+  <p class="intro">The PartsSource wordmark in its three official colorways. Use the blue wordmark on white and light surfaces, the white wordmark on brand blue and dark surfaces, and the black wordmark only for single-color print situations where the blue cannot be faithfully reproduced.</p>
+
+  <!-- Blue -->
+  <section class="section">
+    <div class="section-head"><h2>PS Blue Wordmark</h2><span class="tag">Primary</span></div>
+    <p class="sub">The default PartsSource logo. Use the PS Blue wordmark on white, subtle, and muted surfaces. This is the preferred treatment whenever reproduction allows color.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="stage white"><img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource blue wordmark on white"></div>
+        <div class="info"><div><div class="ttl">PS Blue on White</div><div class="desc">Default surface — marketing headers, product chrome</div></div><span class="filetag">ps-wordmark-blue.svg · #FFFFFF</span></div>
+      </div>
+      <div class="card">
+        <div class="stage subtle"><img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource blue wordmark on subtle grey"></div>
+        <div class="info"><div><div class="ttl">PS Blue on Subtle</div><div class="desc">Page background, settings shell</div></div><span class="filetag">#FAFAFA</span></div>
+      </div>
+      <div class="card">
+        <div class="stage muted"><img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource blue wordmark on muted grey"></div>
+        <div class="info"><div><div class="ttl">PS Blue on Muted</div><div class="desc">Table header, card stripe</div></div><span class="filetag">#F1F1F1</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- White -->
+  <section class="section">
+    <div class="section-head"><h2>White Wordmark</h2><span class="tag">Reversed</span></div>
+    <p class="sub">The reversed lockup. Use on brand blue, midnight, black, and any dark imagery. Never use the blue wordmark on dark backgrounds.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="stage brand"><img src="../assets/logos/ps-wordmark-white.svg" alt="PartsSource white wordmark on PS Blue"></div>
+        <div class="info"><div><div class="ttl">White on PS Blue</div><div class="desc">Primary brand surface — footer, marketing hero</div></div><span class="filetag">ps-wordmark-white.svg · #005BA6</span></div>
+      </div>
+      <div class="card">
+        <div class="stage midnight"><img src="../assets/logos/ps-wordmark-white.svg" alt="PartsSource white wordmark on midnight"></div>
+        <div class="info"><div><div class="ttl">White on Midnight</div><div class="desc">Dark-mode chrome, deep navigation</div></div><span class="filetag">#002F48</span></div>
+      </div>
+      <div class="card">
+        <div class="stage black"><img src="../assets/logos/ps-wordmark-white.svg" alt="PartsSource white wordmark on black"></div>
+        <div class="info"><div><div class="ttl">White on Black</div><div class="desc">Imagery overlay, video cards</div></div><span class="filetag">#000000</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Black -->
+  <section class="section">
+    <div class="section-head"><h2>Black Wordmark</h2><span class="tag">Single-color</span></div>
+    <p class="sub">Use the black wordmark only when color is not available — single-color print, fax, greyscale documents, or third-party placements that require monochrome marks.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="stage white"><img src="../assets/logos/ps-wordmark-black.svg" alt="PartsSource black wordmark on white"></div>
+        <div class="info"><div><div class="ttl">Black on White</div><div class="desc">Monochrome print, legal and regulatory documents</div></div><span class="filetag">ps-wordmark-black.svg · #FFFFFF</span></div>
+      </div>
+      <div class="card">
+        <div class="stage subtle"><img src="../assets/logos/ps-wordmark-black.svg" alt="PartsSource black wordmark on subtle"></div>
+        <div class="info"><div><div class="ttl">Black on Subtle</div><div class="desc">Tertiary print pieces, faxed forms</div></div><span class="filetag">#FAFAFA</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clearspace + Sizes -->
+  <section class="section">
+    <div class="section-head"><h2>Clearspace &amp; Minimum Size</h2><span class="tag">Usage rules</span></div>
+    <p class="sub">Reserve clearspace equal to the cap-height of the "P" on all sides. Never crowd the mark below this threshold. Minimum width for the full wordmark is 160 px on-screen.</p>
+    <div class="guide">
+      <div class="clearspace-card">
+        <div class="clearspace-head">
+          <b>Clearspace</b>
+          <span>x = cap-height of "P"</span>
+        </div>
+        <div class="cs-grid">
+          <span class="cs-corner tl">x</span>
+          <span class="cs-corner tr">x</span>
+          <span class="cs-corner bl">x</span>
+          <span class="cs-corner br">x</span>
+          <span class="cs-safezone"></span>
+          <span class="cs-edge top">↕ x</span>
+          <span class="cs-edge bottom">↕ x</span>
+          <span class="cs-edge left">↔ x</span>
+          <span class="cs-edge right">↔ x</span>
+          <img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource clearspace" style="width:100%;max-width:560px;display:block;position:relative;z-index:1;">
+        </div>
+        <div class="cs-legend">
+          <div><span class="swatch"></span>Minimum safe zone — no other element may enter.</div>
+          <div><span class="pill">x</span>equals the cap-height of the capital "P" in the wordmark.</div>
+        </div>
+      </div>
+      <div class="sizes">
+        <div class="size-row">
+          <img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource at 360px" style="width:360px;">
+          <div class="meta"><b>360 px</b>Marketing hero, desktop header</div>
+        </div>
+        <div class="size-row">
+          <img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource at 240px" style="width:240px;">
+          <div class="meta"><b>240 px</b>Standard app header</div>
+        </div>
+        <div class="size-row">
+          <img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource at 160px" style="width:160px;">
+          <div class="meta"><b>160 px</b>Minimum for full wordmark</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Don't -->
+  <section class="section">
+    <div class="section-head"><h2>Don't</h2><span class="tag">Misuse</span></div>
+    <p class="sub">Protect the mark. Avoid these treatments in all product, marketing, and partner materials.</p>
+    <div class="donts">
+      <div class="dont">
+        <div class="stage white"><img src="../assets/logos/ps-wordmark-blue.svg" style="max-width:220px;transform:skew(-12deg);" alt="Skewed"></div>
+        <div class="info"><span class="label">Don't</span><span class="desc">Skew, rotate, or distort the wordmark</span></div>
+      </div>
+      <div class="dont">
+        <div class="stage" style="background:#17AB78;"><img src="../assets/logos/ps-wordmark-blue.svg" style="max-width:220px;" alt="Wrong background"></div>
+        <div class="info"><span class="label">Don't</span><span class="desc">Place the blue wordmark on colored fills</span></div>
+      </div>
+      <div class="dont">
+        <div class="stage white"><img src="../assets/logos/ps-wordmark-blue.svg" style="max-width:220px;filter:hue-rotate(140deg) saturate(1.6);" alt="Recolored"></div>
+        <div class="info"><span class="label">Don't</span><span class="desc">Recolor the wordmark outside the three approved versions</span></div>
+      </div>
+      <div class="dont">
+        <div class="stage white"><img src="../assets/logos/ps-wordmark-blue.svg" style="max-width:220px;transform:scale(1,0.55);" alt="Stretched"></div>
+        <div class="info"><span class="label">Don't</span><span class="desc">Stretch or compress the aspect ratio</span></div>
+      </div>
+      <div class="dont">
+        <div class="stage black"><img src="../assets/logos/ps-wordmark-blue.svg" style="max-width:220px;" alt="Blue on black"></div>
+        <div class="info"><span class="label">Don't</span><span class="desc">Place the blue wordmark on dark surfaces — use white</span></div>
+      </div>
+      <div class="dont">
+        <div class="stage white"><img src="../assets/logos/ps-wordmark-blue.svg" style="max-width:220px;opacity:.35;" alt="Ghosted"></div>
+        <div class="info"><span class="label">Don't</span><span class="desc">Reduce opacity below 100%</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Accessibility -->
+  <section class="section" style="margin-top:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);">
+    <div class="section-head" style="padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <h2 style="font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-sem-fg-brand);font-weight:700;margin:0;flex-shrink:0;">ACCESSIBILITY &amp; BEST PRACTICES</h2>
+      <div class="desc" style="font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;">WCAG compliance and implementation guidance for inclusive logo usage.</div>
+    </div>
+    <div class="states">
+      <ul style="margin:0;padding:20px 24px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Logos are decorative:</strong> Use <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">alt=""</code> or <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">role="img" aria-label="PartsSource"</code> — screen readers announce site/page context elsewhere</li>
+        <li><strong>Clickable logos:</strong> Wrap in <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">&lt;a href="/"&gt;</code> with <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">aria-label="Go to homepage"</code> for keyboard users</li>
+        <li><strong>Contrast requirements:</strong> Blue logo on white meets WCAG AAA (11:1); white logo requires dark backgrounds (min 4.5:1)</li>
+        <li><strong>Maintain clear space:</strong> 32px minimum padding around logo ensures it's not crowded by adjacent elements</li>
+        <li><strong>Responsive sizing:</strong> Use SVG format and scale proportionally — never distort aspect ratio</li>
+        <li><strong>Don't reduce below minimum sizes:</strong> 140px wordmark, 32px icon — smaller sizes harm legibility</li>
+      </ul>
+    </div>
+  </section>
+
+</body>
+</html>

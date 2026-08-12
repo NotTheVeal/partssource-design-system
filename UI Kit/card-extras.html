@@ -1,0 +1,45 @@
+<!-- @dsCard group="Components" name="Card — Extended" subtitle="AI data cards, analytics KPI tiles (wide + square), and list/product/create/standing list cards" viewport="700x380" -->
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../tokens.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+</head><body style="margin:0;padding:20px;background:#FAFAFA;">
+<div id="root"></div>
+<script>
+(function(){
+  var AiDataCard = window.AiDataCard, AnalyticsCard = window.AnalyticsCard, ListCard = window.ListCard;
+  if (!AiDataCard) { document.getElementById('root').innerHTML='<p style="color:#9E2020;font-size:13px;font-family:sans-serif;padding:8px">⚠ CardExtras not in bundle — rebuild _ds_bundle.js</p>'; return; }
+  var e = React.createElement;
+  var lbl = function(t) { return e('p',{style:{margin:'0 0 8px',fontSize:11,fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase',color:'#999',fontFamily:'sans-serif'}},t); };
+
+  var Demo = function() {
+    return e('div',{style:{display:'flex',flexDirection:'column',gap:20}},
+      e('div',{style:{display:'flex',gap:16,flexWrap:'wrap',alignItems:'flex-start'}},
+        e('div',null,
+          lbl('AI Data Card'),
+          e(AiDataCard,{
+            title:'Masimo Finger Sensor',
+            manufacturer:'Masimo Corp.',
+            meta: e('span',null,'OEM #: 4050 · Qty on hand: 12'),
+            badges:[{tone:'urgent',label:'Urgent'},{tone:'pending',label:'Waiting for approval'}],
+            cost:'$148.50'
+          })
+        ),
+        e('div',{style:{display:'flex',flexDirection:'column',gap:10}},
+          lbl('Analytics'),
+          e(AnalyticsCard,{title:'Uptime',value:'98.4%',sub:'Last 30 days',layout:'square'}),
+          e(AnalyticsCard,{title:'Open WOs',value:'14',sub:'3 critical',layout:'square',highlight:true})
+        ),
+        e('div',null,
+          lbl('List Card'),
+          e(ListCard,{title:'Preventative Maintenance',pill:{tone:'preventative',label:'Preventative'},count:'8 items',shareCount:2})
+        )
+      )
+    );
+  };
+  ReactDOM.createRoot(document.getElementById('root')).render(e(Demo,null));
+})();
+</script></body></html>

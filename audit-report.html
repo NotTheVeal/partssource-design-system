@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Token Audit Report — PartsSource Design System</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      padding:48px 56px 96px;
+      font-family:var(--ps-font-sans);
+      background:var(--ps-sem-bg-canvas);
+      color:var(--ps-sem-fg-primary);
+      font-size:15px;
+    }
+    .wrap{max-width:960px;margin:0 auto;}
+    .eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:var(--ps-brand-primary);margin-bottom:10px;}
+    h1{font-size:32px;font-weight:300;color:#002F48;margin:0 0 10px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);max-width:680px;line-height:1.6;margin:0 0 40px;}
+    .card{background:#fff;border:1px solid var(--ps-border-default);border-radius:8px;padding:28px 32px;margin-bottom:24px;}
+    .card h2{font-size:18px;font-weight:600;color:#002F48;margin:0 0 8px;}
+    .card p{font-size:14px;color:var(--ps-fg-secondary);line-height:1.6;margin:0 0 16px;}
+    .card a{display:inline-block;padding:8px 20px;background:var(--ps-brand-primary);color:#fff;border-radius:4px;font-size:14px;font-weight:600;text-decoration:none;}
+    .card a:hover{background:#004A84;}
+    .stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:32px;}
+    .stat{background:#fff;border:1px solid var(--ps-border-default);border-radius:8px;padding:20px 22px;}
+    .stat-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--ps-brand-primary);margin-bottom:6px;}
+    .stat-value{font-size:28px;font-weight:300;color:#002F48;line-height:1;}
+    .stat-desc{font-size:12px;color:var(--ps-fg-secondary);margin-top:4px;}
+    .badge{display:inline-block;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+    .badge-ok{background:#E5F9F2;color:#0A7850;}
+    .badge-warn{background:#FFF4E5;color:#C56F00;}
+    .section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:var(--ps-brand-primary);margin:32px 0 12px;}
+    table{width:100%;border-collapse:collapse;font-size:13px;}
+    th{text-align:left;padding:8px 12px;background:var(--ps-sem-bg-canvas);border-bottom:2px solid var(--ps-border-default);font-weight:700;color:#002F48;font-size:11px;text-transform:uppercase;letter-spacing:.8px;}
+    td{padding:9px 12px;border-bottom:1px solid var(--ps-border-default);color:var(--ps-fg-secondary);}
+    tr:last-child td{border-bottom:none;}
+    td code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">PartsSource Design System</div>
+  <h1>Token Audit Report</h1>
+  <p class="intro">This report tracks raw hex literals and other non-token values found in <code>preview/*.html</code> that bypass the <code>tokens.css</code> cascade. The goal: every color, spacing, and radius value should resolve through a <code>--ps-*</code> custom property.</p>
+
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="stat-label">Token Files</div>
+      <div class="stat-value">3</div>
+      <div class="stat-desc">tokens.css · colors_and_type.css · partssource.css</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Token Levels</div>
+      <div class="stat-value">3</div>
+      <div class="stat-desc">Primitive → Semantic → Component</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Preview Pages</div>
+      <div class="stat-value">50+</div>
+      <div class="stat-desc">Components, guides, foundations</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Known Drift</div>
+      <div class="stat-value badge badge-warn">Medium</div>
+      <div class="stat-desc">Raw hex in section chrome</div>
+    </div>
+  </div>
+
+  <div class="section-label">Known Issues</div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>File</th>
+          <th>Issue</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><code>preview/*.html</code> (most)</td><td>Section chrome uses raw <code>#DCDCDC</code>, <code>#fff</code>, <code>border-radius:12px</code> instead of tokens</td><td><span class="badge badge-warn">Needs Refactor</span></td></tr>
+        <tr><td><code>preview/top-navigation.html</code></td><td>Pro panel gradient removed — replaced with <code>--ps-prim-blue-800</code></td><td><span class="badge badge-ok">Fixed</span></td></tr>
+        <tr><td><code>preview/voice-tone.html</code></td><td>Wrong blue <code>#005BA7</code> → corrected to <code>#005BA6</code></td><td><span class="badge badge-ok">Fixed</span></td></tr>
+        <tr><td><code>preview/accordion.html</code></td><td>Wrong blue <code>#005BA7</code> → corrected to <code>#005BA6</code></td><td><span class="badge badge-ok">Fixed</span></td></tr>
+        <tr><td><code>preview/tokens.html</code></td><td>Duplicate <code>tokens.css</code> link tag</td><td><span class="badge badge-ok">Fixed</span></td></tr>
+        <tr><td><code>preview/selections.standalone-src.html</code></td><td>Broken relative CSS paths (missing <code>../</code>)</td><td><span class="badge badge-ok">Fixed</span></td></tr>
+        <tr><td><code>ui_kits/ps-marketplace/index.html</code></td><td>Missing <code>tokens.css</code> — only loaded <code>colors_and_type.css</code></td><td><span class="badge badge-ok">Fixed</span></td></tr>
+        <tr><td><code>preview/Visal Data.html</code></td><td>Missing <code>tokens.css</code> + <code>colors_and_type.css</code> includes</td><td><span class="badge badge-ok">Fixed</span></td></tr>
+        <tr><td><code>colors_and_type.css</code></td><td>Shadow tokens used black <code>rgba(0,0,0,…)</code> instead of Midnight-tinted</td><td><span class="badge badge-ok">Fixed</span></td></tr>
+        <tr><td><code>colors_and_type.css</code></td><td><code>h3</code> was <code>font-weight:400</code> — corrected to <code>300</code> per brand rule</td><td><span class="badge badge-ok">Fixed</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-label">Token Downloads</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;">
+    <div class="card" style="padding:18px 22px;">
+      <h2 style="font-size:15px;">tokens.css</h2>
+      <p>CSS custom properties — source of truth for the full <code>--ps-*</code> cascade.</p>
+      <a href="tokens.css">Download</a>
+    </div>
+    <div class="card" style="padding:18px 22px;">
+      <h2 style="font-size:15px;">tokens.json</h2>
+      <p>Style Dictionary JSON — use with any platform or framework.</p>
+      <a href="tokens.json">Download</a>
+    </div>
+    <div class="card" style="padding:18px 22px;">
+      <h2 style="font-size:15px;">tokens.scss</h2>
+      <p>SCSS variables mirror — drop into any Sass pipeline.</p>
+      <a href="tokens.scss">Download</a>
+    </div>
+    <div class="card" style="padding:18px 22px;">
+      <h2 style="font-size:15px;">TOKEN_AUDIT.md</h2>
+      <p>Full governance notes, drift analysis, and reconciliation log.</p>
+      <a href="TOKEN_AUDIT.md">View</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

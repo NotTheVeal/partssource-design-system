@@ -1,0 +1,13 @@
+<svg width="600" height="40" viewBox="0 0 600 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="40" rx="5" fill="#E2F5EE"></rect>
+  <g transform="translate(18, 8)">
+    <circle cx="12" cy="12" r="10" stroke="#0E7C55" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></circle>
+    <path d="M8.801 12A10 10 0 1 1 4 5.335" stroke="#0E7C55" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M9 11l3 3L22 4" stroke="#0E7C55" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(-9, -2)"></path>
+  </g>
+  <text x="60" y="25" font-family="Source Sans Pro, sans-serif" font-size="14" font-weight="700" fill="#0E7C55">Your preferences have been saved successfully.</text>
+  <g transform="translate(564, 8)" opacity="0.6">
+    <path d="M18 6L6 18" stroke="#0E7C55" stroke-width="2.5" stroke-linecap="round" transform="translate(-9, -9)"></path>
+    <path d="M6 6l12 12" stroke="#0E7C55" stroke-width="2.5" stroke-linecap="round" transform="translate(-9, -9)"></path>
+  </g>
+</svg>

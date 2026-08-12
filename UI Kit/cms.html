@@ -1,0 +1,43 @@
+<!-- @dsCard group="Components" name="CMS Blocks" subtitle="Bloomreach content blocks — full-bleed Banner, two-column ImageBlock, TextBlock, and responsive CardGrid" viewport="700x380" -->
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../tokens.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+</head><body style="margin:0;padding:20px;background:#FAFAFA;">
+<div id="root"></div>
+<script>
+(function(){
+  var Banner = window.Banner, CardGrid = window.CardGrid;
+  if (!Banner) { document.getElementById('root').innerHTML='<p style="color:#9E2020;font-size:13px;font-family:sans-serif;padding:8px">⚠ CMS components not in bundle — rebuild _ds_bundle.js</p>'; return; }
+  var e = React.createElement;
+  var lbl = function(t) { return e('p',{style:{margin:'0 0 8px',fontSize:11,fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase',color:'#999',fontFamily:'sans-serif'}},t); };
+
+  var Demo = function() {
+    return e('div',{style:{display:'flex',flexDirection:'column',gap:20}},
+      e('div',null,
+        lbl('Banner'),
+        e(Banner,{
+          title:'Find the right part, fast.',
+          body:'Search 4M+ OEM and alternative parts from trusted suppliers.',
+          ctaLabel:'Browse Catalog'
+        })
+      ),
+      e('div',null,
+        lbl('Card Grid'),
+        e(CardGrid,{
+          columns:3,
+          cards:[
+            {title:'Parts Procurement',text:'Streamline sourcing with AI-powered recommendations.'},
+            {title:'Service Events',text:'Track and resolve equipment issues end-to-end.'},
+            {title:'Analytics','text':'Measure uptime, spend, and supplier performance.'}
+          ]
+        })
+      )
+    );
+  };
+  ReactDOM.createRoot(document.getElementById('root')).render(e(Demo,null));
+})();
+</script></body></html>

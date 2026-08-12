@@ -1,0 +1,37 @@
+<!-- @dsCard group="Components" name="Tabs" subtitle="FolderTabs (page nav) · SegmentedTabs (compact switcher) · PillTabs (multi-select filter)" viewport="560x220" -->
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../tokens.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+</head><body style="margin:0;padding:20px;background:#FAFAFA;">
+<div id="root"></div>
+<script>
+(function(){
+  var FolderTabs = window.FolderTabs, SegmentedTabs = window.SegmentedTabs, PillTabs = window.PillTabs;
+  if (!FolderTabs) { document.getElementById('root').innerHTML='<p style="color:#9E2020;font-size:13px;font-family:sans-serif">⚠ Tabs not in bundle</p>'; return; }
+  var e = React.createElement;
+  var listIcon = e('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round'},e('path',{d:'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01'}));
+  var gridIcon = e('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round'},e('path',{d:'M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z'}));
+  var label = function(txt) { return e('p',{style:{margin:'0 0 6px',fontSize:11,fontWeight:700,letterSpacing:'1px',textTransform:'uppercase',color:'#777',fontFamily:'sans-serif'}},txt); };
+  var Demo = function() {
+    return e('div',{style:{display:'flex',flexDirection:'column',gap:20}},
+      e('div',null,
+        label('Folder Tabs'),
+        e(FolderTabs,{items:[
+          {id:'parts',label:'Parts',count:24},
+          {id:'service',label:'Service Events'},
+          {id:'quotes',label:'Quotes',count:3},
+        ],defaultActiveId:'parts'})
+      ),
+      e('div',{style:{display:'flex',alignItems:'center',gap:24}},
+        e('div',null,label('Segmented'),e(SegmentedTabs,{items:[{id:'list',icon:listIcon},{id:'grid',icon:gridIcon}],defaultActiveId:'list'})),
+        e('div',null,label('Pill'),e(PillTabs,{items:[{id:'all',label:'All'},{id:'oem',label:'OEM'},{id:'alt',label:'Alt'}],defaultActiveId:'oem'}))
+      )
+    );
+  };
+  ReactDOM.createRoot(document.getElementById('root')).render(e(Demo,null));
+})();
+</script></body></html>

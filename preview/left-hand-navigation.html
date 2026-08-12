@@ -1,0 +1,1075 @@
+<!DOCTYPE html><html><head>
+
+
+
+
+  <meta charset="utf-8">
+  <title>Left Hand Navigation</title>
+  <template id="__bundler_thumbnail" data-bg-color="#003763">
+    <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="280" fill="#003763"/>
+      <rect x="0" y="0" width="200" height="48" fill="#004A84"/>
+      <circle cx="28" cy="24" r="11" fill="#ffffff"/>
+      <rect x="48" y="19" width="80" height="10" rx="2" fill="#ffffff" opacity="0.95"/>
+      <rect x="14" y="68"  width="172" height="28" rx="3" fill="#005BA7"/>
+      <circle cx="28" cy="82" r="6" fill="#ffffff"/>
+      <rect x="44" y="78" width="100" height="8" rx="2" fill="#ffffff"/>
+      <rect x="14" y="104" width="172" height="28" rx="3" fill="#ffffff" opacity="0.08"/>
+      <circle cx="28" cy="118" r="6" fill="#ffffff" opacity="0.7"/>
+      <rect x="44" y="114" width="80" height="8" rx="2" fill="#ffffff" opacity="0.7"/>
+      <rect x="14" y="140" width="172" height="28" rx="3" fill="#ffffff" opacity="0.08"/>
+      <circle cx="28" cy="154" r="6" fill="#ffffff" opacity="0.7"/>
+      <rect x="44" y="150" width="110" height="8" rx="2" fill="#ffffff" opacity="0.7"/>
+      <rect x="14" y="176" width="172" height="28" rx="3" fill="#ffffff" opacity="0.08"/>
+      <circle cx="28" cy="190" r="6" fill="#ffffff" opacity="0.7"/>
+      <rect x="44" y="186" width="90" height="8" rx="2" fill="#ffffff" opacity="0.7"/>
+      <rect x="14" y="212" width="172" height="28" rx="3" fill="#ffffff" opacity="0.08"/>
+      <circle cx="28" cy="226" r="6" fill="#ffffff" opacity="0.7"/>
+      <rect x="44" y="222" width="100" height="8" rx="2" fill="#ffffff" opacity="0.7"/>
+      <circle cx="172" cy="258" r="11" fill="#005BA6"/>
+    </svg>
+  </template>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+
+    .section-body{padding:32px 24px;background:var(--ps-sem-bg-canvas);}
+    .section-body.plain{background:var(--ps-sem-bg-surface);padding:24px;}
+
+    .demo-row{display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;}
+    .demo-stack{display:flex;flex-direction:column;gap:8px;}
+    .demo-cap{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ps-fg-tertiary);font-weight:700;}
+
+    /* ---------- Expanded LHN (213px) ---------- */
+    .lhn-expanded{
+      width:199px;
+      background:#003763;
+      display:flex;
+      flex-direction:column;
+      position:relative;
+      font-family:'Source Sans 3','Source Sans Pro',var(--ps-font-sans);
+      color:var(--ps-sem-fg-inverse);
+      border-radius:4px;
+      overflow:hidden;
+      min-height:630px;
+    }
+    .lhn-expanded__header{
+      height:60px;
+      background:#004A84;
+      box-shadow:0 4px 4px rgba(0,0,0,0.25);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:0 0 0 28px;
+      position:relative;
+      z-index:1;
+      cursor:pointer;
+      transition:background 150ms cubic-bezier(0.4,0,0.2,1);
+    }
+    .lhn-expanded__header:hover,
+    .lhn-expanded__header.is-hover{ background:#004A84; }
+    .lhn-expanded__header:hover .lhn-expanded__avatar,
+    .lhn-expanded__header.is-hover .lhn-expanded__avatar{
+      background:#009CF4; color:var(--ps-sem-fg-inverse);
+    }
+    .lhn-expanded__header:hover .lhn-expanded__name,
+    .lhn-expanded__header.is-hover .lhn-expanded__name{
+      font-weight:700;
+    }
+    .lhn-expanded__avatar{
+      width:23px;height:23px;border-radius:50%;
+      background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-brand);
+      transition:background 150ms cubic-bezier(0.4,0,0.2,1), color 150ms cubic-bezier(0.4,0,0.2,1);
+      display:flex;align-items:center;justify-content:center;
+      font-size:12px;font-weight:700;letter-spacing:-.05em;
+    }
+    .lhn-expanded__name{font-size:18px;line-height:1;color:var(--ps-sem-fg-inverse);transition:font-weight 150ms cubic-bezier(0.4,0,0.2,1);}
+
+    .lhn-expanded__list{
+      padding:20px 11px 80px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      flex:1;
+    }
+    .lhn-item{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      height:40px;
+      padding:0 10px;
+      border-radius:3px;
+      cursor:pointer;
+      transition:background 150ms cubic-bezier(0.4,0,0.2,1);
+      color:var(--ps-sem-fg-inverse);
+      font-size:14px;
+      line-height:1;
+      position:relative;
+    }
+    .lhn-item:hover,
+    .lhn-item.is-hover{ background:#005BA7; }
+    .lhn-item.is-active{ background:#005BA7; }
+    .lhn-item .lhn-icon{ width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center; }
+    .lhn-item .lhn-icon svg, .lhn-item .lhn-icon img{ width:18px;height:18px;display:block; }
+    .lhn-item .lhn-chev{ margin-left:auto;opacity:.85;display:flex;align-items:center; }
+    .lhn-item .lhn-chev svg{ width:6px;height:10px; }
+    .lhn-item .lhn-label{ overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+
+    .lhn-item .lhn-back{ width:14px;height:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+    .lhn-item .lhn-back svg{ width:8px;height:14px; }
+
+    /* Back-link variant: full-width dark banner with chevron + parent name */
+    .lhn-item--back{
+      gap:14px;
+      height:48px;
+      padding:0 11px 0 18px;
+      margin:-20px -11px 12px;
+      background:#022039;
+      border-radius:0;
+    }
+    .lhn-item--back:hover,
+    .lhn-item--back.is-hover{ background:#001829; }
+    .lhn-item--back .lhn-back{ width:18px;height:18px; }
+    .lhn-item--back .lhn-back svg{ width:10px;height:14px; }
+    .lhn-item--back .lhn-label{ font-size:14px;font-weight:600; }
+    .lhn-expanded__divider{
+      height:1px;background:var(--ps-sem-action-default);margin:8px 12px 4px;
+    }
+    .lhn-expanded__footer{ padding:0 11px 24px; }
+
+    /* ──────────────────────────────────────────────────────────────────────────
+       Production layout — when the rail is dropped into a real app shell.
+       Apply .lhn-expanded--full to the .lhn-expanded element. The rail then
+       fills the viewport vertically, the item list scrolls inside, and the
+       collapse button stays pinned to the bottom-right (above-the-fold).
+       ────────────────────────────────────────────────────────────────────── */
+    .lhn-expanded--full{
+      height:100dvh;
+      min-height:100dvh;
+      position:sticky;
+      top:0;
+      align-self:flex-start;
+    }
+    .lhn-expanded--full .lhn-expanded__list{
+      flex:1;
+      min-height:0;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      scrollbar-width:thin;
+      scrollbar-color:rgba(255,255,255,.25) transparent;
+    }
+    .lhn-expanded--full .lhn-expanded__list::-webkit-scrollbar{ width:6px; }
+    .lhn-expanded--full .lhn-expanded__list::-webkit-scrollbar-thumb{
+      background:rgba(255,255,255,.2); border-radius:3px;
+    }
+    .lhn-expanded--full .lhn-collapse-btn{
+      position:sticky;
+      bottom:18px;
+      margin:0 12px 18px auto;
+      align-self:flex-end;
+    }
+
+    .lhn-collapse-btn{
+      position:absolute;right:12px;bottom:18px;
+      width:30px;height:30px;border-radius:50%;
+      background:var(--ps-sem-action-default);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+      transition:background 150ms cubic-bezier(0.4,0,0.2,1);
+    }
+    .lhn-collapse-btn:hover{ background:#004A84; }
+
+    /* ---------- Collapsed LHN (70px) ---------- */
+    .lhn-collapsed{
+      width:70px;
+      background:#004A84;
+      display:flex;
+      flex-direction:column;
+      min-height:560px;
+      border-radius:4px;
+      overflow:hidden;
+      position:relative;
+    }
+    .lhn-expand-btn{
+      position:absolute;left:50%;bottom:18px;transform:translateX(-50%);
+      width:30px;height:30px;border-radius:50%;
+      background:var(--ps-sem-action-default);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+      transition:background 150ms cubic-bezier(0.4,0,0.2,1);
+    }
+    .lhn-expand-btn:hover{ background:#004A84; }
+    .lhn-collapsed__profile{
+      width:70px;height:59px;background:#004A84;
+      border-bottom:1px solid #EEEEEE;
+      box-shadow:0 4px 4px rgba(0,0,0,0.25);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+      transition:background 150ms cubic-bezier(0.4,0,0.2,1);
+    }
+    .lhn-collapsed__avatar{
+      width:26px;height:26px;border-radius:50%;
+      background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-brand);
+      display:flex;align-items:center;justify-content:center;
+      font-size:12px;font-weight:700;letter-spacing:-.05em;
+      transition:background 150ms cubic-bezier(0.4,0,0.2,1), color 150ms cubic-bezier(0.4,0,0.2,1);
+    }
+    .lhn-collapsed__profile:hover .lhn-collapsed__avatar,
+    .lhn-collapsed__profile.is-hover .lhn-collapsed__avatar{
+      background:#009CF4; color:var(--ps-sem-fg-inverse);
+    }
+    .lhn-collapsed__back{
+      width:70px;height:42px;background:#022039;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+    }
+    .lhn-collapsed__back:hover{ background:#003763; }
+    .lhn-collapsed__nav{
+      padding:20px 19px 64px;display:flex;flex-direction:column;gap:4px;align-items:center;flex:1;
+    }
+    .nav-icon-btn{
+      width:32px;height:32px;border-radius:2px;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;transition:background 150ms cubic-bezier(0.4,0,0.2,1);
+      color:var(--ps-sem-fg-inverse);
+    }
+    .nav-icon-btn:hover,
+    .nav-icon-btn.is-hover{ background:#005BA7; }
+    .nav-icon-btn.is-active{ background:#005BA7; }
+    .nav-icon-btn svg, .nav-icon-btn img{ width:18px;height:18px;display:block; }
+    .nav-divider{ width:43px;height:1px;background:var(--ps-sem-action-default);margin:4px 0; }
+
+    /* States grid */
+    .states{padding:8px 0;}
+    .state-row{display:grid;grid-template-columns:140px minmax(0,1fr);gap:32px;align-items:flex-start;padding:24px;border-bottom:1px solid #F1F1F1;}
+    .state-row:last-child{border-bottom:0;}
+    .state-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-fg-tertiary);font-weight:700;padding-top:6px;}
+    .state-meta{font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.6;}
+
+    .item-demo{ width:177px;background:#003763;padding:8px;border-radius:4px; }
+
+    /* Variant grid for the 4 rail instances */
+    .rail-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(215px,max-content));
+      gap:32px 24px;
+      align-items:start;
+      justify-content:center;
+    }
+    .rail-card{
+      display:flex;flex-direction:column;gap:12px;align-items:center;
+    }
+    .rail-card__lbl{
+      font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-fg-tertiary);font-weight:700;text-align:center;
+    }
+    .rail-card__lbl em{ font-style:normal;color:var(--ps-fg-primary); }
+
+    code{font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+  </style>
+</head>
+<body style="">
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Left Hand Navigation</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Left Hand Navigation</h1>
+  <p class="intro">Vertical primary navigation rail used across PartsSource PRO surfaces. Renders in two widths — an expanded 199 px state with icon + label, and a collapsed 70 px icon-only rail. Both share the same item structure, active state, and color system. The icons below are the canonical glyph set used by the rail; sub-menus reuse them in the back-link header so users can confirm where they are.</p>
+
+  <!-- Expanded LHN -->
+  <div class="section">
+    <div class="section-head">
+      <h2 style="">Expanded · 200px Wide</h2>
+      <div class="desc">Four canonical instances of the rail. The first shows the top-level destinations with <em>My Lists</em> selected. The other three show what happens when one of the items with sub-navigation (Parts Center, Service Center, Tools) is opened — the parent becomes a back link at the top of the sub-list, and the rail switches to that section's children.</div>
+    </div>
+    <div class="section-body">
+      <div class="rail-grid" id="rail-grid" style="">
+
+        <!-- Rail 1: Top Level · nothing selected -->
+        <div class="rail-card">
+          <div class="lhn-expanded" data-screen-label="LHN Expanded · Top Level (no selection)">
+            <div class="lhn-expanded__header" style="width: 200px;">
+              <div class="lhn-expanded__avatar">DM</div>
+              <div class="lhn-expanded__name">Doug M.</div>
+            </div>
+            <div class="lhn-expanded__list" style="height: 550px; width: 200px">
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/my-lists.svg" alt=""></span>
+                <span class="lhn-label">My Lists</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/my-dashboard.svg" alt=""></span>
+                <span class="lhn-label">My Dashboard</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/asset-uptime.svg" alt=""></span>
+                <span class="lhn-label">Asset Uptime</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/visual-analytics.svg" alt=""></span>
+                <span class="lhn-label">Visual Analytics</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/command-center.svg" alt=""></span>
+                <span class="lhn-label">Command Center</span>
+              </div>
+              <div class="lhn-item" aria-haspopup="true" aria-expanded="false">
+                <span class="lhn-icon"><img src="lhn-icons/parts-center.svg" alt=""></span>
+                <span class="lhn-label">Parts Center</span>
+                <span class="lhn-chev"><svg viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </div>
+              <div class="lhn-item" aria-haspopup="true" aria-expanded="false">
+                <span class="lhn-icon"><img src="lhn-icons/service-center.svg" alt=""></span>
+                <span class="lhn-label">Service Center</span>
+                <span class="lhn-chev"><svg viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </div>
+              <div class="lhn-item" aria-haspopup="true" aria-expanded="false">
+                <span class="lhn-icon"><img src="lhn-icons/tools.svg" alt=""></span>
+                <span class="lhn-label">Tools</span>
+                <span class="lhn-chev"><svg viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/admin.svg" alt=""></span>
+                <span class="lhn-label">Admin</span>
+              </div>
+              <div class="lhn-expanded__divider" style="height: 0.5px; background-color: rgb(0, 74, 132)"></div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/logout.svg" alt=""></span>
+                <span class="lhn-label">Logout</span>
+              </div>
+            </div>
+            <div class="lhn-collapse-btn" title="Collapse navigation" aria-label="Collapse navigation">
+              <svg viewBox="0 0 15 15" fill="#fff" style="width:14px;height:14px;" aria-hidden="true">
+                <path d="M7.44 13.44 1.5 7.5 7.44 1.56l1.06 1.07L4.37 6.75H15v1.5H4.37l4.13 4.12-1.06 1.07Zm-5.94-5.94V0H0v15h1.5V7.5Z"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="rail-card__lbl">Top Level · <em>nothing selected</em></div>
+        </div>
+
+        <!-- Rail 1b: Top Level · My Lists selected -->
+        <div class="rail-card">
+          <div class="lhn-expanded" data-screen-label="LHN Expanded · Top Level">
+            <div class="lhn-expanded__header" style="width: 200px;">
+              <div class="lhn-expanded__avatar">DM</div>
+              <div class="lhn-expanded__name">Doug M.</div>
+            </div>
+            <div class="lhn-expanded__list" style="height: 550px; width: 200px">
+              <div class="lhn-item is-active" aria-current="page">
+                <span class="lhn-icon"><img src="lhn-icons/my-lists.svg" alt=""></span>
+                <span class="lhn-label">My Lists</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/my-dashboard.svg" alt=""></span>
+                <span class="lhn-label">My Dashboard</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/asset-uptime.svg" alt=""></span>
+                <span class="lhn-label">Asset Uptime</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/visual-analytics.svg" alt=""></span>
+                <span class="lhn-label">Visual Analytics</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/command-center.svg" alt=""></span>
+                <span class="lhn-label">Command Center</span>
+              </div>
+              <div class="lhn-item" aria-haspopup="true" aria-expanded="false">
+                <span class="lhn-icon"><img src="lhn-icons/parts-center.svg" alt=""></span>
+                <span class="lhn-label">Parts Center</span>
+                <span class="lhn-chev"><svg viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </div>
+              <div class="lhn-item" aria-haspopup="true" aria-expanded="false">
+                <span class="lhn-icon"><img src="lhn-icons/service-center.svg" alt=""></span>
+                <span class="lhn-label">Service Center</span>
+                <span class="lhn-chev"><svg viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </div>
+              <div class="lhn-item" aria-haspopup="true" aria-expanded="false">
+                <span class="lhn-icon"><img src="lhn-icons/tools.svg" alt=""></span>
+                <span class="lhn-label">Tools</span>
+                <span class="lhn-chev"><svg viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/admin.svg" alt=""></span>
+                <span class="lhn-label">Admin</span>
+              </div>
+              <div class="lhn-expanded__divider" style="background-color: rgb(36, 75, 132); height: 0.5px"></div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/logout.svg" alt=""></span>
+                <span class="lhn-label">Logout</span>
+              </div>
+            </div>
+            <div class="lhn-collapse-btn" title="Collapse navigation" aria-label="Collapse navigation">
+              <svg viewBox="0 0 15 15" fill="#fff" style="width:14px;height:14px;" aria-hidden="true">
+                <path d="M7.44 13.44 1.5 7.5 7.44 1.56l1.06 1.07L4.37 6.75H15v1.5H4.37l4.13 4.12-1.06 1.07Zm-5.94-5.94V0H0v15h1.5V7.5Z"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="rail-card__lbl">Top Level · <em>My Lists selected</em></div>
+        </div>
+
+        <!-- Rail 2: Parts Center sub-menu -->
+        <div class="rail-card">
+          <div class="lhn-expanded" data-screen-label="LHN Expanded · Parts Center">
+            <div class="lhn-expanded__header" style="width: 200px;">
+              <div class="lhn-expanded__avatar">DM</div>
+              <div class="lhn-expanded__name">Doug M.</div>
+            </div>
+            <div class="lhn-expanded__list" style="height: 550px; width: 200px">
+              <div class="lhn-item lhn-item--back" aria-haspopup="true" aria-expanded="true">
+                <span class="lhn-back"><svg viewBox="0 0 8 14" fill="none"><path d="m7 1-6 6 6 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                <span class="lhn-label">Parts Center</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/request-parts-quote.svg" alt=""></span>
+                <span class="lhn-label">Request Parts Quote</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/parts-quotes.svg" alt=""></span>
+                <span class="lhn-label">Parts Quotes</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/approvals.svg" alt=""></span>
+                <span class="lhn-label">Approvals</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/awaiting-po.svg" alt=""></span>
+                <span class="lhn-label">Awaiting PO</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/orders.svg" alt=""></span>
+                <span class="lhn-label">Orders</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/exchanges-returns.svg" alt=""></span>
+                <span class="lhn-label">Exchanges &amp; Returns</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/browsing-history.svg" alt=""></span>
+                <span class="lhn-label">Browsing History</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/buy-it-again.svg" alt=""></span>
+                <span class="lhn-label">Buy It Again</span>
+              </div>
+            </div>
+            <div class="lhn-collapse-btn" title="Collapse navigation" aria-label="Collapse navigation">
+              <svg viewBox="0 0 15 15" fill="#fff" style="width:14px;height:14px;" aria-hidden="true">
+                <path d="M7.44 13.44 1.5 7.5 7.44 1.56l1.06 1.07L4.37 6.75H15v1.5H4.37l4.13 4.12-1.06 1.07Zm-5.94-5.94V0H0v15h1.5V7.5Z"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="rail-card__lbl">Sub-menu · <em>Parts Center</em></div>
+        </div>
+
+        <!-- Rail 3: Service Center sub-menu -->
+        <div class="rail-card">
+          <div class="lhn-expanded" data-screen-label="LHN Expanded · Service Center">
+            <div class="lhn-expanded__header" style="width: 200px;">
+              <div class="lhn-expanded__avatar">DM</div>
+              <div class="lhn-expanded__name">Doug M.</div>
+            </div>
+            <div class="lhn-expanded__list" style="height: 550px; width: 200px">
+              <div class="lhn-item lhn-item--back" aria-haspopup="true" aria-expanded="true">
+                <span class="lhn-back"><svg viewBox="0 0 8 14" fill="none"><path d="m7 1-6 6 6 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                <span class="lhn-label">Service Center</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/request-on-site-service.svg" alt=""></span>
+                <span class="lhn-label">Request On-Site Service</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/request-depot-quote.svg" alt=""></span>
+                <span class="lhn-label">Request Depot Quote</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/find-depot-repairs.svg" alt=""></span>
+                <span class="lhn-label">Depot Repair Services</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/on-site-service.svg" alt=""></span>
+                <span class="lhn-label">On-Site Service</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/service.svg" alt=""></span>
+                <span class="lhn-label">Depot Repairs &amp; Quotes</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/loaners.svg" alt=""></span>
+                <span class="lhn-label">Loaners</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/submit-work-orders.svg" alt=""></span>
+                <span class="lhn-label">Submit Work Orders</span>
+              </div>
+            </div>
+            <div class="lhn-collapse-btn" title="Collapse navigation" aria-label="Collapse navigation">
+              <svg viewBox="0 0 15 15" fill="#fff" style="width:14px;height:14px;" aria-hidden="true">
+                <path d="M7.44 13.44 1.5 7.5 7.44 1.56l1.06 1.07L4.37 6.75H15v1.5H4.37l4.13 4.12-1.06 1.07Zm-5.94-5.94V0H0v15h1.5V7.5Z"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="rail-card__lbl">Sub-menu · <em>Service Center</em></div>
+        </div>
+
+        <!-- Rail 4: Tools sub-menu -->
+        <div class="rail-card" style="width: 215px; height: 630px;">
+          <div class="lhn-expanded" data-screen-label="LHN Expanded · Tools">
+            <div class="lhn-expanded__header" style="width: 200px;">
+              <div class="lhn-expanded__avatar">DM</div>
+              <div class="lhn-expanded__name">Doug M.</div>
+            </div>
+            <div class="lhn-expanded__list" style="height: 550px; width: 200px">
+              <div class="lhn-item lhn-item--back" aria-haspopup="true" aria-expanded="true">
+                <span class="lhn-back"><svg viewBox="0 0 8 14" fill="none"><path d="m7 1-6 6 6 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                <span class="lhn-label">Tools</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/imaging-rewards-prgm.svg" alt=""></span>
+                <span class="lhn-label">Imaging Rewards Prgm</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/biomed-rewards-prgm.svg" alt=""></span>
+                <span class="lhn-label">Biomed Rewards Prgm</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/formulary.svg" alt=""></span>
+                <span class="lhn-label">Formulary</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/admin.svg" alt=""></span>
+                <span class="lhn-label">Admin</span>
+              </div>
+              <div class="lhn-item">
+                <span class="lhn-icon"><img src="lhn-icons/explore-pro.svg" alt=""></span>
+                <span class="lhn-label">Explore Pro</span>
+              </div>
+            </div>
+            <div class="lhn-collapse-btn" title="Collapse navigation" aria-label="Collapse navigation">
+              <svg viewBox="0 0 15 15" fill="#fff" style="width:14px;height:14px;" aria-hidden="true">
+                <path d="M7.44 13.44 1.5 7.5 7.44 1.56l1.06 1.07L4.37 6.75H15v1.5H4.37l4.13 4.12-1.06 1.07Zm-5.94-5.94V0H0v15h1.5V7.5Z"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="rail-card__lbl">Sub-menu · <em>Tools</em></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Collapsed LHN -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Collapsed · 70px Wide</h2>
+      <div class="desc">Compact icon-only rail used when the user has collapsed the navigation. Five canonical instances mirror the expanded variants — default top-level, name-hover, and three sub-menu states (Parts Center, Service Center, Tools). Labels become tooltips on hover/focus.</div>
+    </div>
+    <div class="section-body">
+      <div class="rail-grid">
+
+        <!-- Closed 1: Default -->
+        <div class="rail-card">
+          <div class="lhn-collapsed" data-screen-label="LHN Closed · Default">
+            <div class="lhn-collapsed__profile">
+              <div class="lhn-collapsed__avatar">DM</div>
+            </div>
+            <div class="lhn-collapsed__nav">
+              <div class="nav-icon-btn" title="My Lists" aria-label="My Lists"><img src="lhn-icons/my-lists.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Command Center" aria-label="Command Center"><img src="lhn-icons/command-center.svg" alt=""></div>
+              <div class="nav-icon-btn" title="My Dashboard" aria-label="My Dashboard"><img src="lhn-icons/my-dashboard.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Asset Uptime" aria-label="Asset Uptime"><img src="lhn-icons/asset-uptime.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Visual Analytics" aria-label="Visual Analytics"><img src="lhn-icons/visual-analytics.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Parts Center" aria-label="Parts Center"><img src="lhn-icons/parts-center.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Service Center" aria-label="Service Center"><img src="lhn-icons/service-center.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Tools" aria-label="Tools"><img src="lhn-icons/tools.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Admin" aria-label="Admin"><img src="lhn-icons/admin.svg" alt=""></div>
+              <div class="nav-divider"></div>
+              <div class="nav-icon-btn" title="Logout" aria-label="Logout"><img src="lhn-icons/logout.svg" alt=""></div>
+            </div>
+            <div class="lhn-expand-btn" title="Expand navigation" aria-label="Expand navigation">
+              <svg viewBox="0 0 30 30" fill="none" style="width:30px;height:30px;display:block;" aria-hidden="true">
+                <circle cx="15" cy="15" r="15" transform="rotate(180 15 15)" fill="#005BA6"></circle>
+                <path d="M14.06 9.06L20 15L14.06 20.94L13.0025 19.875L17.1275 15.75L6.5 15.75L6.5 14.25L17.1275 14.25L12.995 10.125L14.06 9.06ZM20 15L20 22.5L21.5 22.5L21.5 7.5L20 7.5L20 15Z" fill="white"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="rail-card__lbl">Default · <em>nothing selected</em></div>
+        </div>
+
+        <!-- Closed 2: Name Select -->
+        <div class="rail-card">
+          <div class="lhn-collapsed" data-screen-label="LHN Closed · Name Select">
+            <div class="lhn-collapsed__profile is-hover">
+              <div class="lhn-collapsed__avatar">DM</div>
+            </div>
+            <div class="lhn-collapsed__nav">
+              <div class="nav-icon-btn" title="My Lists" aria-label="My Lists"><img src="lhn-icons/my-lists.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Command Center" aria-label="Command Center"><img src="lhn-icons/command-center.svg" alt=""></div>
+              <div class="nav-icon-btn" title="My Dashboard" aria-label="My Dashboard"><img src="lhn-icons/my-dashboard.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Asset Uptime" aria-label="Asset Uptime"><img src="lhn-icons/asset-uptime.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Visual Analytics" aria-label="Visual Analytics"><img src="lhn-icons/visual-analytics.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Parts Center" aria-label="Parts Center"><img src="lhn-icons/parts-center.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Service Center" aria-label="Service Center"><img src="lhn-icons/service-center.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Tools" aria-label="Tools"><img src="lhn-icons/tools.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Admin" aria-label="Admin"><img src="lhn-icons/admin.svg" alt=""></div>
+              <div class="nav-divider"></div>
+              <div class="nav-icon-btn" title="Logout" aria-label="Logout"><img src="lhn-icons/logout.svg" alt=""></div>
+            </div>
+            <div class="lhn-expand-btn" title="Expand navigation" aria-label="Expand navigation">
+              <svg viewBox="0 0 30 30" fill="none" style="width:30px;height:30px;display:block;" aria-hidden="true">
+                <circle cx="15" cy="15" r="15" transform="rotate(180 15 15)" fill="#005BA6"></circle>
+                <path d="M14.06 9.06L20 15L14.06 20.94L13.0025 19.875L17.1275 15.75L6.5 15.75L6.5 14.25L17.1275 14.25L12.995 10.125L14.06 9.06ZM20 15L20 22.5L21.5 22.5L21.5 7.5L20 7.5L20 15Z" fill="white"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="rail-card__lbl">Name Select · <em>avatar hovered</em></div>
+        </div>
+
+        <!-- Closed 3: Parts Center sub-menu -->
+        <div class="rail-card">
+          <div class="lhn-collapsed" data-screen-label="LHN Closed · Parts Center">
+            <div class="lhn-collapsed__profile">
+              <div class="lhn-collapsed__avatar">DM</div>
+            </div>
+            <div class="lhn-collapsed__back" title="Back" aria-label="Back to top level">
+              <svg viewBox="0 0 32 32" fill="none" style="width:16px;height:16px;" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4138 16.485L20.4848 23.556L19.0708 24.97L11.2928 17.192C11.1053 17.0045 11 16.7502 11 16.485C11 16.2198 11.1053 15.9655 11.2928 15.778L19.0708 8L20.4848 9.414L13.4138 16.485Z" fill="white"></path>
+              </svg>
+            </div>
+            <div class="lhn-collapsed__nav">
+              <div class="nav-icon-btn" title="Request Parts Quote" aria-label="Request Parts Quote"><img src="lhn-icons/request-parts-quote.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Parts Quotes" aria-label="Parts Quotes"><img src="lhn-icons/parts-quotes.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Approvals" aria-label="Approvals"><img src="lhn-icons/approvals.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Awaiting PO" aria-label="Awaiting PO"><img src="lhn-icons/awaiting-po.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Orders" aria-label="Orders"><img src="lhn-icons/orders.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Exchanges &amp; Returns" aria-label="Exchanges &amp; Returns"><img src="lhn-icons/exchanges-returns.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Browsing History" aria-label="Browsing History"><img src="lhn-icons/browsing-history.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Buy It Again" aria-label="Buy It Again"><img src="lhn-icons/buy-it-again.svg" alt=""></div>
+            </div>
+            <div class="lhn-expand-btn" title="Expand navigation" aria-label="Expand navigation">
+              <svg viewBox="0 0 30 30" fill="none" style="width:30px;height:30px;display:block;" aria-hidden="true">
+                <circle cx="15" cy="15" r="15" transform="rotate(180 15 15)" fill="#005BA6"></circle>
+                <path d="M14.06 9.06L20 15L14.06 20.94L13.0025 19.875L17.1275 15.75L6.5 15.75L6.5 14.25L17.1275 14.25L12.995 10.125L14.06 9.06ZM20 15L20 22.5L21.5 22.5L21.5 7.5L20 7.5L20 15Z" fill="white"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="rail-card__lbl">Parts Center · <em>sub-menu</em></div>
+        </div>
+
+        <!-- Closed 4: Service Center sub-menu -->
+        <div class="rail-card">
+          <div class="lhn-collapsed" data-screen-label="LHN Closed · Service Center">
+            <div class="lhn-collapsed__profile">
+              <div class="lhn-collapsed__avatar">DM</div>
+            </div>
+            <div class="lhn-collapsed__back" title="Back" aria-label="Back to top level">
+              <svg viewBox="0 0 32 32" fill="none" style="width:16px;height:16px;" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4138 16.485L20.4848 23.556L19.0708 24.97L11.2928 17.192C11.1053 17.0045 11 16.7502 11 16.485C11 16.2198 11.1053 15.9655 11.2928 15.778L19.0708 8L20.4848 9.414L13.4138 16.485Z" fill="white"></path>
+              </svg>
+            </div>
+            <div class="lhn-collapsed__nav">
+              <div class="nav-icon-btn" title="Request On-Site Service" aria-label="Request On-Site Service"><img src="lhn-icons/request-on-site-service.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Request Depot Quote" aria-label="Request Depot Quote"><img src="lhn-icons/request-depot-quote.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Find Depot Repairs" aria-label="Find Depot Repairs"><img src="lhn-icons/find-depot-repairs.svg" alt=""></div>
+              <div class="nav-icon-btn" title="On-Site Service" aria-label="On-Site Service"><img src="lhn-icons/on-site-service.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Service" aria-label="Service"><img src="lhn-icons/service.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Loaners" aria-label="Loaners"><img src="lhn-icons/loaners.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Submit Work Orders" aria-label="Submit Work Orders"><img src="lhn-icons/submit-work-orders.svg" alt=""></div>
+            </div>
+            <div class="lhn-expand-btn" title="Expand navigation" aria-label="Expand navigation">
+              <svg viewBox="0 0 30 30" fill="none" style="width:30px;height:30px;display:block;" aria-hidden="true">
+                <circle cx="15" cy="15" r="15" transform="rotate(180 15 15)" fill="#005BA6"></circle>
+                <path d="M14.06 9.06L20 15L14.06 20.94L13.0025 19.875L17.1275 15.75L6.5 15.75L6.5 14.25L17.1275 14.25L12.995 10.125L14.06 9.06ZM20 15L20 22.5L21.5 22.5L21.5 7.5L20 7.5L20 15Z" fill="white"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="rail-card__lbl">Service Center · <em>sub-menu</em></div>
+        </div>
+
+        <!-- Closed 5: Tools sub-menu -->
+        <div class="rail-card">
+          <div class="lhn-collapsed" data-screen-label="LHN Closed · Tools">
+            <div class="lhn-collapsed__profile">
+              <div class="lhn-collapsed__avatar">DM</div>
+            </div>
+            <div class="lhn-collapsed__back" title="Back" aria-label="Back to top level">
+              <svg viewBox="0 0 32 32" fill="none" style="width:16px;height:16px;" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4138 16.485L20.4848 23.556L19.0708 24.97L11.2928 17.192C11.1053 17.0045 11 16.7502 11 16.485C11 16.2198 11.1053 15.9655 11.2928 15.778L19.0708 8L20.4848 9.414L13.4138 16.485Z" fill="white"></path>
+              </svg>
+            </div>
+            <div class="lhn-collapsed__nav">
+              <div class="nav-icon-btn" title="Imaging Rewards Prgm" aria-label="Imaging Rewards Prgm"><img src="lhn-icons/imaging-rewards-prgm.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Biomed Rewards Prgm" aria-label="Biomed Rewards Prgm"><img src="lhn-icons/biomed-rewards-prgm.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Formulary" aria-label="Formulary"><img src="lhn-icons/formulary.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Explore Pro" aria-label="Explore Pro"><img src="lhn-icons/explore-pro.svg" alt=""></div>
+              <div class="nav-icon-btn" title="Admin" aria-label="Admin"><img src="lhn-icons/admin.svg" alt=""></div>
+            </div>
+            <div class="lhn-expand-btn" title="Expand navigation" aria-label="Expand navigation">
+              <svg viewBox="0 0 30 30" fill="none" style="width:30px;height:30px;display:block;" aria-hidden="true">
+                <circle cx="15" cy="15" r="15" transform="rotate(180 15 15)" fill="#005BA6"></circle>
+                <path d="M14.06 9.06L20 15L14.06 20.94L13.0025 19.875L17.1275 15.75L6.5 15.75L6.5 14.25L17.1275 14.25L12.995 10.125L14.06 9.06ZM20 15L20 22.5L21.5 22.5L21.5 7.5L20 7.5L20 15Z" fill="white"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="rail-card__lbl">Tools · <em>sub-menu</em></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Item States -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Item States</h2>
+      <div class="desc">Default, hover, and active treatments shared across both widths. Active uses solid PS Blue (#005BA6) on the dark navy rail; hover uses a subtle white-alpha overlay.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Unselected</div>
+        <div>
+          <div class="item-demo"><div class="lhn-item"><span class="lhn-icon"><img src="lhn-icons/my-lists.svg" alt=""></span><span class="lhn-label">My Lists</span></div></div>
+          <div class="state-meta" style="margin-top:8px;">Transparent on the #003763 rail · 14 px Source Sans white text · 7 px gap between icon and label.</div>
+        </div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Hover</div>
+        <div>
+          <div class="item-demo"><div class="lhn-item is-hover"><span class="lhn-icon"><img src="lhn-icons/my-lists.svg" alt=""></span><span class="lhn-label">My Lists</span></div></div>
+          <div class="state-meta" style="margin-top:8px;">Solid PS Blue (<code>#005BA7</code>) fill — same hex as the selected state, applied on pointer enter with a 150 ms ease.</div>
+        </div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Selected</div>
+        <div>
+          <div class="item-demo"><div class="lhn-item is-active"><span class="lhn-icon"><img src="lhn-icons/command-center.svg" alt=""></span><span class="lhn-label">Command Center</span></div></div>
+          <div class="state-meta" style="margin-top:8px;">Same PS Blue (<code>#005BA7</code>) fill, persistent. Pair with <code>aria-current="page"</code> so screen readers announce the active location.</div>
+        </div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">With Children</div>
+        <div>
+          <div class="item-demo"><div class="lhn-item"><span class="lhn-icon"><img src="lhn-icons/parts-center.svg" alt=""></span><span class="lhn-label">Parts Center</span><span class="lhn-chev"><svg viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div></div>
+          <div class="state-meta" style="margin-top:8px;">Right-aligned chevron signals an inline-expanding sub-menu. Rotates 90° when expanded.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Anatomy -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Anatomy</h2>
+      <div class="desc">Structural breakdown, top to bottom.</div>
+    </div>
+    <div class="section-body plain">
+      <ul style="margin:0;padding-left:20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);">
+        <li><strong>Profile header (60 px):</strong> 23 px white circular avatar with user initials in PS Blue, alongside first name + last initial in 18 px Source Sans white. Background #004A84, drop shadow <code>0 4px 4px rgba(0,0,0,0.25)</code>.</li>
+        <li><strong>Rail body:</strong> #003763 background — slightly darker than the header — separates header from the nav list visually.</li>
+        <li><strong>Nav items (40 px tall):</strong> 11 px outer padding, 10 px inner padding, 7 px gap between 18 px icon and 14 px label. 3 px corner radius. Items with sub-navigation show a right-aligned chevron.</li>
+        <li><strong>Divider:</strong> 1 px PS Blue (#005BA6) inset 12 px on either side — separates utility actions (Logout) from primary navigation.</li>
+        <li><strong>Collapse handle:</strong> 30 px PS Blue circle, bottom-right, holding a left-arrow-with-bar glyph. Toggles to the 70 px collapsed width.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance, keyboard support, and implementation guidance for the navigation rail.</div>
+    </div>
+    <div class="states">
+      <ul style="margin:0;padding:20px 24px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Landmark role:</strong> Wrap the rail in <code>&lt;nav aria-label="Primary navigation"&gt;</code> so screen readers can jump to it directly.</li>
+        <li><strong>Keyboard navigation:</strong> Each item is a <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code> reachable via Tab. Enter / Space activates; Arrow Up / Down can optionally cycle between items in the same group.</li>
+        <li><strong>Active page:</strong> Mark the current location with <code>aria-current="page"</code> — color alone is not sufficient.</li>
+        <li><strong>Sub-navigation:</strong> Items with children must use <code>aria-expanded</code> and <code>aria-controls</code> on the trigger; chevron rotation alone does not meet AT requirements.</li>
+        <li><strong>Color contrast:</strong> White text on #003763 rail measures 11.2 : 1 (passes WCAG AAA). Active state white-on-#005BA6 measures 6.4 : 1 (passes AA Large + AA Normal).</li>
+        <li><strong>Focus indicator:</strong> 2 px <code>#B6D5F0</code> outline with 2 px offset on every focusable item. Never <code>outline: none</code>.</li>
+        <li><strong>Touch targets:</strong> Item rows are 40 px tall × 177 px wide (expanded) or 32 × 32 px (collapsed). Combined with 19 px rail padding, collapsed items meet the 44 × 44 px minimum (WCAG 2.5.5).</li>
+        <li><strong>Icon-only state:</strong> When collapsed, every item must expose its label via <code>aria-label</code> or <code>title</code>; tooltips appear on hover and focus, not hover only.</li>
+        <li><strong>Skip link:</strong> Provide "Skip to main content" at the top of every page so keyboard users can bypass the rail.</li>
+        <li><strong>Production sizing:</strong> In real layouts the rail is dynamic — it stretches to fill the viewport height. Apply <code>.lhn-expanded--full</code> to the <code>.lhn-expanded</code> element to opt in: the rail becomes <code>height:100dvh</code> with <code>position:sticky; top:0</code>, the item list scrolls internally with a thin custom scrollbar, and the collapse / expand circle is pinned <code>position:sticky; bottom:18px</code> so it always sits above the fold regardless of how many items are in the list. The static sub-rails on this page (Parts Center, Service Center, Tools) use a fixed pixel height purely so all four states can be displayed side-by-side as a spec — that height does <strong>not</strong> ship to production.</li>
+      </ul>
+    </div>
+  </div>
+
+
+
+  <!-- Hamburger drawer (Tablet + Mobile) ---------------------------- -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Hamburger Menu · Tablet &amp; Mobile</h2>
+      <div class="desc">On Tablet and Mobile the primary navigation collapses behind a hamburger trigger. Tapping it slides this drawer in from the left and dims the page behind with a 45 % black scrim. The drawer mirrors the desktop LHN&apos;s structure but reorders rows and drops Asset Uptime &amp; Admin for the smaller surface.</div>
+    </div>
+    <div class="section-body flush">
+      <style>
+        /* ── Drawer ───────────────────────────────────────────────── */
+        .ham-drawer{
+          font-family:'Source Sans Pro','Source Sans 3',var(--ps-font-sans);
+          background:#003763;
+          color:var(--ps-sem-fg-inverse);
+          display:flex;
+          flex-direction:column;
+          height:100%;
+          flex-shrink:0;
+        }
+        .ham-drawer--tablet{width:300px;}
+        .ham-drawer--mobile{width:264px;}
+
+        .ham-drawer__header{
+          height:64px;
+          background:#004A84;
+          display:flex;
+          align-items:center;
+          gap:12px;
+          padding:0 18px;
+          flex-shrink:0;
+        }
+        .ham-drawer__avatar{
+          width:36px;height:36px;border-radius:50%;
+          background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-brand);
+          font:700 13px/1 'Source Sans Pro',sans-serif;
+          display:flex;align-items:center;justify-content:center;
+          flex-shrink:0;
+        }
+        .ham-drawer__name{font:700 16px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-inverse);letter-spacing:.005em;}
+
+        .ham-drawer__list{
+          padding:14px 12px 22px;
+          display:flex;flex-direction:column;gap:2px;
+          flex:1;
+        }
+
+        .ham-item{
+          display:flex;align-items:center;gap:14px;
+          height:44px;
+          padding:0 14px;
+          border-radius:6px;
+          color:var(--ps-sem-fg-inverse);
+          font:600 14px/1 'Source Sans Pro',sans-serif;
+          cursor:pointer;
+          position:relative;
+        }
+        .ham-item:hover{background:rgba(255,255,255,.06);}
+        .ham-item.is-active{background:#175FA1;}
+        .ham-item__icon{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+        .ham-item__icon img{width:20px;height:20px;display:block;}
+        .ham-item__label{flex:1;}
+        .ham-item__chev{width:6px;height:10px;color:var(--ps-sem-fg-inverse);flex-shrink:0;}
+
+        .ham-divider{
+          height:1px;
+          background:#175FA1;
+          margin:6px 14px;
+        }
+
+        /* ── Stage (drawer over dimmed top nav) ──────────────────── */
+        .ham-stage{
+          position:relative;
+          background:var(--ps-sem-bg-surface);
+          border:1px solid var(--ps-border-default);
+          border-radius:8px;
+          overflow:hidden;
+          flex-shrink:0;
+        }
+        .ham-stage--tablet{width:768px;height:540px;}
+        .ham-stage--mobile{width:375px;height:520px;}
+        .ham-stage__bg{position:absolute;inset:0;background:var(--ps-sem-bg-canvas);}
+        .ham-stage__bg .tn--rwd{filter:none;}
+        .ham-stage__scrim{position:absolute;left:var(--drawer-w);top:0;bottom:0;right:0;background:rgba(43,43,43,.45);}
+        .ham-stage__drawer{position:absolute;left:0;top:0;bottom:0;box-shadow:6px 0 24px rgba(0,0,0,.15);}
+
+        /* Bottom-right help shield (per screenshot) */
+        .ham-help{
+          position:absolute;right:16px;bottom:16px;
+          width:46px;height:46px;
+          display:flex;align-items:center;justify-content:center;
+          color:var(--ps-sem-fg-inverse);
+          background:var(--ps-sem-action-default);
+          border-radius:50%;
+          box-shadow:0 6px 14px rgba(0,0,0,.22);
+        }
+        .ham-help svg{width:24px;height:24px;}
+
+        /* Side-by-side row */
+        .ham-row{display:flex;gap:32px;align-items:flex-start;padding:24px;flex-wrap:nowrap;overflow-x:auto;}
+
+        .ham-cap{
+          font:600 12px/1 'Source Sans Pro',sans-serif;
+          letter-spacing:.06em;text-transform:uppercase;color:var(--ps-sem-fg-primary);
+          margin:0 0 10px;
+        }
+        .ham-cap em{font-style:normal;color:var(--ps-sem-fg-tertiary);font-weight:400;letter-spacing:0;text-transform:none;}
+      </style>
+
+      <div class="ham-row">
+        <!-- Tablet -->
+        <div>
+          <div class="ham-cap">Tablet · 768 <em>· drawer 300 px wide</em></div>
+          <div class="ham-stage ham-stage--tablet" style="--drawer-w:300px;">
+            <div class="ham-stage__bg"></div>
+            <div class="ham-stage__scrim"></div>
+            <div class="ham-stage__drawer">
+              <div class="ham-drawer ham-drawer--tablet" data-screen-label="Top Nav · Tablet · Drawer Open">
+                <div class="ham-drawer__header">
+                  <div class="ham-drawer__avatar">AW</div>
+                  <div class="ham-drawer__name">Aaron W.</div>
+                </div>
+                <div class="ham-drawer__list">
+                  <div class="ham-item is-active" aria-current="page">
+                    <span class="ham-item__icon"><img src="lhn-icons/my-lists.svg" alt=""></span>
+                    <span class="ham-item__label">My Lists</span>
+                  </div>
+                  <div class="ham-item">
+                    <span class="ham-item__icon"><img src="lhn-icons/command-center.svg" alt=""></span>
+                    <span class="ham-item__label">Command Center</span>
+                  </div>
+                  <div class="ham-item">
+                    <span class="ham-item__icon"><img src="lhn-icons/my-dashboard.svg" alt=""></span>
+                    <span class="ham-item__label">My Dashboard</span>
+                  </div>
+                  <div class="ham-item">
+                    <span class="ham-item__icon"><img src="lhn-icons/visual-analytics.svg" alt=""></span>
+                    <span class="ham-item__label">Visual Analytics</span>
+                  </div>
+                  <div class="ham-item" aria-haspopup="true" aria-expanded="false">
+                    <span class="ham-item__icon"><img src="lhn-icons/parts-center.svg" alt=""></span>
+                    <span class="ham-item__label">Parts Center</span>
+                    <svg class="ham-item__chev" viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </div>
+                  <div class="ham-item" aria-haspopup="true" aria-expanded="false">
+                    <span class="ham-item__icon"><img src="lhn-icons/service-center.svg" alt=""></span>
+                    <span class="ham-item__label">Service Center</span>
+                    <svg class="ham-item__chev" viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </div>
+                  <div class="ham-item" aria-haspopup="true" aria-expanded="false">
+                    <span class="ham-item__icon"><img src="lhn-icons/tools.svg" alt=""></span>
+                    <span class="ham-item__label">Tools</span>
+                    <svg class="ham-item__chev" viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </div>
+                  <div class="ham-divider"></div>
+                  <div class="ham-item">
+                    <span class="ham-item__icon"><img src="lhn-icons/logout.svg" alt=""></span>
+                    <span class="ham-item__label">Logout</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ham-help" aria-label="Help">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2 4 5v6c0 4.97 3.4 8.96 8 10 4.6-1.04 8-5.03 8-10V5l-8-3z" fill="currentColor"/><path d="m8.5 12 2.4 2.4L15.7 9.5" stroke="#005BA6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile -->
+        <div>
+          <div class="ham-cap">Mobile · 375 <em>· drawer 264 px wide</em></div>
+          <div class="ham-stage ham-stage--mobile" style="--drawer-w:264px;">
+            <div class="ham-stage__bg"></div>
+            <div class="ham-stage__scrim"></div>
+            <div class="ham-stage__drawer">
+              <div class="ham-drawer ham-drawer--mobile" data-screen-label="Top Nav · Mobile · Drawer Open">
+                <div class="ham-drawer__header">
+                  <div class="ham-drawer__avatar">AW</div>
+                  <div class="ham-drawer__name">Aaron W.</div>
+                </div>
+                <div class="ham-drawer__list">
+                  <div class="ham-item is-active" aria-current="page">
+                    <span class="ham-item__icon"><img src="lhn-icons/my-lists.svg" alt=""></span>
+                    <span class="ham-item__label">My Lists</span>
+                  </div>
+                  <div class="ham-item">
+                    <span class="ham-item__icon"><img src="lhn-icons/command-center.svg" alt=""></span>
+                    <span class="ham-item__label">Command Center</span>
+                  </div>
+                  <div class="ham-item">
+                    <span class="ham-item__icon"><img src="lhn-icons/my-dashboard.svg" alt=""></span>
+                    <span class="ham-item__label">My Dashboard</span>
+                  </div>
+                  <div class="ham-item">
+                    <span class="ham-item__icon"><img src="lhn-icons/visual-analytics.svg" alt=""></span>
+                    <span class="ham-item__label">Visual Analytics</span>
+                  </div>
+                  <div class="ham-item" aria-haspopup="true" aria-expanded="false">
+                    <span class="ham-item__icon"><img src="lhn-icons/parts-center.svg" alt=""></span>
+                    <span class="ham-item__label">Parts Center</span>
+                    <svg class="ham-item__chev" viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </div>
+                  <div class="ham-item" aria-haspopup="true" aria-expanded="false">
+                    <span class="ham-item__icon"><img src="lhn-icons/service-center.svg" alt=""></span>
+                    <span class="ham-item__label">Service Center</span>
+                    <svg class="ham-item__chev" viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </div>
+                  <div class="ham-item" aria-haspopup="true" aria-expanded="false">
+                    <span class="ham-item__icon"><img src="lhn-icons/tools.svg" alt=""></span>
+                    <span class="ham-item__label">Tools</span>
+                    <svg class="ham-item__chev" viewBox="0 0 6 10" fill="none"><path d="m1 1 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </div>
+                  <div class="ham-divider"></div>
+                  <div class="ham-item">
+                    <span class="ham-item__icon"><img src="lhn-icons/logout.svg" alt=""></span>
+                    <span class="ham-item__label">Logout</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ham-help" aria-label="Help">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2 4 5v6c0 4.97 3.4 8.96 8 10 4.6-1.04 8-5.03 8-10V5l-8-3z" fill="currentColor"/><path d="m8.5 12 2.4 2.4L15.7 9.5" stroke="#005BA6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ul style="margin:8px 32px 24px;padding-left:20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);">
+        <li><strong>Trigger:</strong> the hamburger icon in the top-left of the Tablet/Mobile top bar.</li>
+        <li><strong>Drawer width:</strong> 300&nbsp;px on Tablet, 264&nbsp;px on Mobile. Slides in from the left with a 200&nbsp;ms ease.</li>
+        <li><strong>Header (64&nbsp;px):</strong> PS Blue 700 (<code class="kbd">#004A84</code>) strip with avatar (36&nbsp;px white circle, PS Blue initials) and the user's first name + last initial in 16&nbsp;px bold.</li>
+        <li><strong>Body:</strong> Navy <code class="kbd">#003763</code>. Items are 44&nbsp;px tall with a 20×20&nbsp;px white icon, 14&nbsp;px bold label and a chevron only on parents that drill into a sub-rail.</li>
+        <li><strong>Active state:</strong> <code class="kbd">#175FA1</code> pill behind the row.</li>
+        <li><strong>Order:</strong> My Lists, Command Center, My Dashboard, Visual Analytics, Parts Center&nbsp;›, Service Center&nbsp;›, Tools&nbsp;›, divider, Logout. <em>Asset Uptime</em> and <em>Admin</em> are not in the responsive drawer.</li>
+        <li><strong>Scrim:</strong> the page behind dims to 45&nbsp;% black; tapping the scrim closes the drawer.</li>
+      </ul>
+    </div>
+  </div>
+
+
+</body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

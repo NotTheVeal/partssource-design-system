@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PartsSource Design System — Complete Reference</title>
+  
+  <!-- Bundler thumbnail -->
+  <template id="__bundler_thumbnail" data-bg-color="#005BA6">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect x="480" y="340" width="240" height="120" rx="8" fill="#FFFFFF" opacity="0.2"/>
+      <text x="600" y="410" font-family="sans-serif" font-size="48" font-weight="300" fill="#FFFFFF" text-anchor="middle">PS</text>
+    </svg>
+  </template>
+  
+  <style>
+    /* Fonts */
+    @font-face {
+      font-family: 'Source Sans Pro';
+      src: url('../fonts/SourceSansPro-Light.ttf') format('truetype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Source Sans Pro';
+      src: url('../fonts/SourceSansPro-Regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Source Sans Pro';
+      src: url('../fonts/SourceSansPro-SemiBold.ttf') format('truetype');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Source Sans Pro';
+      src: url('../fonts/SourceSansPro-Bold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Design Tokens */
+    :root {
+      --ps-brand-primary: #005BA6;
+      --ps-brand-blue-2: #004A84;
+      --ps-brand-blue-3: #002F48;
+      --ps-brand-azure: #009CF4;
+      --ps-orange-1: #FF9505;
+      --ps-orange-2: #EC8000;
+      --ps-orange-3: #D27200;
+      --ps-red-1: #D32F2F;
+      --ps-green-1: #17AB78;
+      --ps-gray-0: #FFFFFF;
+      --ps-gray-1: #F5F5F5;
+      --ps-gray-2: #E6E6E6;
+      --ps-gray-3: #DCDCDC;
+      --ps-gray-4: #949494;
+      --ps-gray-5: #4A4A4A;
+      --ps-gray-6: #2B2B2B;
+      --ps-gray-7: #000000;
+      --ps-fg-primary: #2B2B2B;
+      --ps-fg-secondary: #777777;
+      --ps-fg-tertiary: #949494;
+      --ps-border-default: #E6E6E6;
+      --ps-font-sans: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--ps-font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ps-fg-primary);
+      background: #FAFAFA;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      background: #002F48;
+      color: white;
+      overflow-y: auto;
+      padding: 24px 0;
+      z-index: 1000;
+    }
+    nav h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 24px 24px;
+      color: white;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav li a {
+      display: block;
+      padding: 10px 24px;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.15s;
+    }
+    nav li a:hover {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    nav li.category {
+      padding: 16px 24px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Main content */
+    main {
+      margin-left: 280px;
+      padding: 48px 64px 120px;
+      max-width: 1400px;
+    }
+
+    /* Sections */
+    section {
+      margin-bottom: 80px;
+      scroll-margin-top: 32px;
+    }
+    section h2 {
+      font-size: 32px;
+      font-weight: 300;
+      color: #002F48;
+      margin: 0 0 16px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--ps-brand-primary);
+    }
+    section > p {
+      font-size: 16px;
+      color: var(--ps-fg-secondary);
+      margin: 0 0 32px;
+      max-width: 800px;
+    }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      margin: 32px 0;
+    }
+    .card {
+      background: white;
+      border: 1px solid var(--ps-border-default);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #F1F1F1;
+      background: #FAFAFA;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #002F48;
+      margin: 0;
+    }
+    .card-body {
+      padding: 24px;
+    }
+
+    /* Color swatches */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .color-swatch {
+      text-align: center;
+    }
+    .color-box {
+      width: 100%;
+      height: 100px;
+      border-radius: 8px;
+      border: 1px solid #E6E6E6;
+      margin-bottom: 12px;
+    }
+    .color-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #2B2B2B;
+      margin-bottom: 4px;
+    }
+    .color-value {
+      font-size: 12px;
+      font-family: ui-monospace, monospace;
+      color: #777;
+    }
+
+    /* Type specimens */
+    .type-row {
+      padding: 24px 0;
+      border-bottom: 1px solid #F1F1F1;
+      display: grid;
+      grid-template-columns: 120px 1fr 200px;
+      gap: 24px;
+      align-items: baseline;
+    }
+    .type-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #777;
+    }
+    .type-spec {
+      font-size: 12px;
+      font-family: ui-monospace, monospace;
+      color: #777;
+    }
+
+    /* Code blocks */
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: 13px;
+      background: #F5F5F5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--ps-brand-primary);
+    }
+    pre {
+      background: #F8F8F8;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #2B2B2B;
+    }
+
+    /* Component demos */
+    .demo {
+      padding: 40px;
+      background: white;
+      border: 1px solid #E6E6E6;
+      border-radius: 8px;
+      margin: 24px 0;
+    }
+    .demo-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #777;
+      margin-bottom: 16px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 14px;
+    }
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      background: #FAFAFA;
+      border-bottom: 2px solid #E6E6E6;
+      font-weight: 600;
+      color: #002F48;
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #F1F1F1;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <h1>PartsSource<br>Design System</h1>
+    <ul>
+      <li class="category">Foundation</li>
+      <li><a href="#colors">Colors</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#spacing">Spacing</a></li>
+      <li><a href="#radius">Border Radius</a></li>
+      <li><a href="#shadows">Shadows</a></li>
+      <li><a href="#icons">Icons</a></li>
+      
+      <li class="category">Components</li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#inputs">Input Fields</a></li>
+      <li><a href="#selections">Selections</a></li>
+      <li><a href="#badges">Badges</a></li>
+      <li><a href="#cards">Cards</a></li>
+      <li><a href="#alerts">Alerts</a></li>
+      
+      <li class="category">Patterns</li>
+      <li><a href="#states">Interaction States</a></li>
+      <li><a href="#accessibility">Accessibility</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- COLORS -->
+    <section id="colors">
+      <h2>Colors</h2>
+      <p>PartsSource color palette organized by brand colors, semantic colors, and neutral grays.</p>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Brand Colors</h3>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-box" style="background:#005BA6;"></div>
+          <div class="color-name">PS Blue</div>
+          <div class="color-value">#005BA6</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#004A84;"></div>
+          <div class="color-name">Blue 2</div>
+          <div class="color-value">#004A84</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#002F48;"></div>
+          <div class="color-name">Midnight</div>
+          <div class="color-value">#002F48</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#009CF4;"></div>
+          <div class="color-name">Azure</div>
+          <div class="color-value">#009CF4</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Orange Scale</h3>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-box" style="background:#FF9505;"></div>
+          <div class="color-name">Orange 1</div>
+          <div class="color-value">#FF9505</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#EC8000;"></div>
+          <div class="color-name">Orange 2</div>
+          <div class="color-value">#EC8000</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#D27200;"></div>
+          <div class="color-name">Orange 3</div>
+          <div class="color-value">#D27200</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#FFCA82;"></div>
+          <div class="color-name">Orange 4</div>
+          <div class="color-value">#FFCA82</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Semantic Colors</h3>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-box" style="background:#17AB78;"></div>
+          <div class="color-name">Success</div>
+          <div class="color-value">#17AB78</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#D32F2F;"></div>
+          <div class="color-name">Error</div>
+          <div class="color-value">#D32F2F</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#FF9505;"></div>
+          <div class="color-name">Warning</div>
+          <div class="color-value">#FF9505</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#009CF4;"></div>
+          <div class="color-name">Info</div>
+          <div class="color-value">#009CF4</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Gray Scale</h3>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-box" style="background:#FFFFFF;border:1px solid #E6E6E6;"></div>
+          <div class="color-name">White</div>
+          <div class="color-value">#FFFFFF</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#F5F5F5;"></div>
+          <div class="color-name">Grey 1</div>
+          <div class="color-value">#F5F5F5</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#E6E6E6;"></div>
+          <div class="color-name">Grey 2</div>
+          <div class="color-value">#E6E6E6</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#DCDCDC;"></div>
+          <div class="color-name">Grey 3</div>
+          <div class="color-value">#DCDCDC</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#949494;"></div>
+          <div class="color-name">Grey 4</div>
+          <div class="color-value">#949494</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#4A4A4A;"></div>
+          <div class="color-name">Grey 5</div>
+          <div class="color-value">#4A4A4A</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#2B2B2B;"></div>
+          <div class="color-name">Grey 6</div>
+          <div class="color-value">#2B2B2B</div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background:#000000;"></div>
+          <div class="color-name">Black</div>
+          <div class="color-value">#000000</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TYPOGRAPHY -->
+    <section id="typography">
+      <h2>Typography</h2>
+      <p>Source Sans Pro is the primary typeface across all PartsSource products. Light 300 weight for headings, Regular 400 for body text.</p>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Display Scale</h3>
+      <div>
+        <div class="type-row">
+          <div class="type-label">H1</div>
+          <div style="font-size:30px;font-weight:300;line-height:1.2;color:#002F48;">Mission-critical uptime, on-demand</div>
+          <div class="type-spec">30px / 300 / 1.2</div>
+        </div>
+        <div class="type-row">
+          <div class="type-label">H2</div>
+          <div style="font-size:24px;font-weight:300;line-height:1.2;color:#002F48;">Parts, service, and labor</div>
+          <div class="type-spec">24px / 300 / 1.2</div>
+        </div>
+        <div class="type-row">
+          <div class="type-label">H3</div>
+          <div style="font-size:24px;font-weight:400;line-height:1.2;color:#002F48;">Clinical resource management</div>
+          <div class="type-spec">24px / 400 / 1.2</div>
+        </div>
+        <div class="type-row">
+          <div class="type-label">H4</div>
+          <div style="font-size:18px;font-weight:600;line-height:1.2;color:#002F48;">Request a quote</div>
+          <div class="type-spec">18px / 600 / 1.2</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Body Text</h3>
+      <div>
+        <div class="type-row">
+          <div class="type-label">Body</div>
+          <div style="font-size:16px;font-weight:400;line-height:1.5;color:#4A4A4A;">Default body copy. Use for paragraph text, card descriptions, and most in-product prose.</div>
+          <div class="type-spec">16px / 400 / 1.5</div>
+        </div>
+        <div class="type-row">
+          <div class="type-label">Body Bold</div>
+          <div style="font-size:16px;font-weight:700;line-height:1.5;color:#4A4A4A;">Emphasized body copy — bold when it matters.</div>
+          <div class="type-spec">16px / 700 / 1.5</div>
+        </div>
+        <div class="type-row">
+          <div class="type-label">Caption</div>
+          <div style="font-size:12px;font-weight:400;line-height:1.5;color:#777;">Captions, helper text, footnotes, metadata.</div>
+          <div class="type-spec">12px / 400 / 1.5</div>
+        </div>
+        <div class="type-row">
+          <div class="type-label">Label</div>
+          <div style="font-size:12px;font-weight:700;line-height:1.5;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;">PRIMARY ACTION</div>
+          <div class="type-spec">12px / 700 / UPPER</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPACING -->
+    <section id="spacing">
+      <h2>Spacing</h2>
+      <p>4px base unit spacing scale. Use these values for margins, padding, and gaps.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Value</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--ps-space-1</code></td>
+            <td>4px</td>
+            <td>Tightest spacing, icon padding</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-2</code></td>
+            <td>8px</td>
+            <td>Small gaps, compact layouts</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-3</code></td>
+            <td>12px</td>
+            <td>Default gap between inline elements</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-4</code></td>
+            <td>16px</td>
+            <td>Default padding, card spacing</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-6</code></td>
+            <td>24px</td>
+            <td>Section padding, card inner spacing</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-8</code></td>
+            <td>32px</td>
+            <td>Large gaps, section spacing</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-12</code></td>
+            <td>48px</td>
+            <td>Major section breaks</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- BORDER RADIUS -->
+    <section id="radius">
+      <h2>Border Radius</h2>
+      <p>Corner radius tokens for cards, buttons, and UI elements.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Value</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>0</code></td>
+            <td>0px</td>
+            <td>Sharp corners, tables</td>
+          </tr>
+          <tr>
+            <td><code>2</code></td>
+            <td>2px</td>
+            <td>Checkboxes</td>
+          </tr>
+          <tr>
+            <td><code>4</code></td>
+            <td>4px</td>
+            <td>Buttons, inputs, small cards</td>
+          </tr>
+          <tr>
+            <td><code>8</code></td>
+            <td>8px</td>
+            <td>Large cards, modals</td>
+          </tr>
+          <tr>
+            <td><code>12</code></td>
+            <td>12px</td>
+            <td>Container cards, sections</td>
+          </tr>
+          <tr>
+            <td><code>9999</code></td>
+            <td>9999px</td>
+            <td>Pill buttons, badges (full round)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SHADOWS -->
+    <section id="shadows">
+      <h2>Shadows</h2>
+      <p>Elevation system for cards, dropdowns, and modals.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Level</th>
+            <th>Value</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>sm</code></td>
+            <td><code>0 2px 4px rgba(0,47,72,0.08)</code></td>
+            <td>Subtle cards, resting state</td>
+          </tr>
+          <tr>
+            <td><code>md</code></td>
+            <td><code>0 4px 8px rgba(0,47,72,0.12)</code></td>
+            <td>Raised cards, hover state</td>
+          </tr>
+          <tr>
+            <td><code>lg</code></td>
+            <td><code>0 8px 16px rgba(0,47,72,0.16)</code></td>
+            <td>Dropdowns, popovers</td>
+          </tr>
+          <tr>
+            <td><code>xl</code></td>
+            <td><code>0 16px 32px rgba(0,47,72,0.20)</code></td>
+            <td>Modals, dialogs</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ICONS -->
+    <section id="icons">
+      <h2>Icons</h2>
+      <p>Lucide icons at 1.5px stroke weight. 24×24px size for UI, 16×16px for inline icons.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>Stroke</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>24×24px</td>
+            <td>1.5px</td>
+            <td>Buttons, navigation, UI chrome</td>
+          </tr>
+          <tr>
+            <td>16×16px</td>
+            <td>1.5px</td>
+            <td>Inline with text, badges</td>
+          </tr>
+          <tr>
+            <td>32×32px</td>
+            <td>1.5px</td>
+            <td>Large touch targets, featured actions</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top:16px;">Icon library: <a href="https://lucide.dev" style="color:#005BA6;">lucide.dev</a></p>
+    </section>
+
+    <!-- BUTTONS -->
+    <section id="buttons">
+      <h2>Buttons</h2>
+      <p>Six button variants: Primary, Secondary, Tertiary, Ghost, Icon, and Pill. All buttons are 40px height default, 32px small, 50px large.</p>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Primary Button</h3>
+      <div class="demo">
+        <div class="demo-label">Idle (Outline)</div>
+        <button style="height:40px;min-width:145px;padding:0 10px;background:#fff;color:#005BA6;border:2px solid #005BA6;border-radius:4px;font-family:'Source Sans Pro',sans-serif;font-size:14px;font-weight:400;cursor:pointer;">Button Text</button>
+      </div>
+      <div class="demo">
+        <div class="demo-label">Hover (Fill)</div>
+        <button style="height:40px;min-width:145px;padding:0 10px;background:#005BA6;color:#fff;border:2px solid #005BA6;border-radius:4px;font-family:'Source Sans Pro',sans-serif;font-size:14px;font-weight:400;cursor:pointer;">Button Text</button>
+      </div>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Button Sizes</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>Height</th>
+            <th>Min Width</th>
+            <th>Font Size</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Small</td>
+            <td>32px</td>
+            <td>87px</td>
+            <td>10px</td>
+          </tr>
+          <tr>
+            <td>Default</td>
+            <td>40px</td>
+            <td>145px</td>
+            <td>14px</td>
+          </tr>
+          <tr>
+            <td>Large</td>
+            <td>50px</td>
+            <td>325px</td>
+            <td>15px</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Button Variants</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Variant</th>
+            <th>Idle State</th>
+            <th>Hover State</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Primary</strong></td>
+            <td>Blue outline, white bg</td>
+            <td>Blue fill, white text</td>
+            <td>Primary actions (Submit, Save, Continue)</td>
+          </tr>
+          <tr>
+            <td><strong>Secondary</strong></td>
+            <td>Blue fill, white text</td>
+            <td>Darker blue fill</td>
+            <td>Secondary actions (Add to Cart, Filter)</td>
+          </tr>
+          <tr>
+            <td><strong>Tertiary</strong></td>
+            <td>Gray outline, white bg</td>
+            <td>Blue fill, white text</td>
+            <td>Tertiary actions (Cancel, Back)</td>
+          </tr>
+          <tr>
+            <td><strong>Ghost</strong></td>
+            <td>No border, light gray bg</td>
+            <td>Blue bg, white text</td>
+            <td>Inline actions, toolbars</td>
+          </tr>
+          <tr>
+            <td><strong>Pill</strong></td>
+            <td>Orange fill, white text, full round</td>
+            <td>Darker orange</td>
+            <td>CTA buttons (⚠️ Deprecated — use Primary)</td>
+          </tr>
+          <tr>
+            <td><strong>Icon</strong></td>
+            <td>Square 40×40, light gray bg</td>
+            <td>Blue fill</td>
+            <td>Icon-only actions (Close, Menu)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- INPUT FIELDS -->
+    <section id="inputs">
+      <h2>Input Fields</h2>
+      <p>Text inputs with floating labels. 48px standard height, 80px large variant. All inputs use Source Sans Pro 16px.</p>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Input States</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>State</th>
+            <th>Border</th>
+            <th>Shadow</th>
+            <th>Label</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Idle</td>
+            <td>1px solid #949494</td>
+            <td>None</td>
+            <td>Grey, inside field</td>
+          </tr>
+          <tr>
+            <td>Hover</td>
+            <td>1px solid #000</td>
+            <td>None</td>
+            <td>Grey, inside field</td>
+          </tr>
+          <tr>
+            <td>Focus</td>
+            <td>1px solid #005DA6</td>
+            <td>0 0 10px rgba(0,91,166,0.5)</td>
+            <td>Blue 12px, floats to top</td>
+          </tr>
+          <tr>
+            <td>With Value</td>
+            <td>1px solid #949494</td>
+            <td>None</td>
+            <td>Blue 12px, floats to top</td>
+          </tr>
+          <tr>
+            <td>Error</td>
+            <td>1px solid #D32F2F</td>
+            <td>0 0 10px rgba(211,47,47,0.5)</td>
+            <td>Red 12px, floats to top</td>
+          </tr>
+          <tr>
+            <td>Disabled</td>
+            <td>1px solid #DCDCDC</td>
+            <td>None</td>
+            <td>Grey #DCDCDC</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Specifications</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Standard (48px)</th>
+            <th>Large (80px)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Height</td>
+            <td>48px</td>
+            <td>80px</td>
+          </tr>
+          <tr>
+            <td>Width</td>
+            <td>335px (default)</td>
+            <td>335px (default)</td>
+          </tr>
+          <tr>
+            <td>Border Radius</td>
+            <td>3px</td>
+            <td>3px</td>
+          </tr>
+          <tr>
+            <td>Font Size</td>
+            <td>16px</td>
+            <td>16px</td>
+          </tr>
+          <tr>
+            <td>Label (floating)</td>
+            <td>12px bold, top: 5px</td>
+            <td>12px bold, top: 8px</td>
+          </tr>
+          <tr>
+            <td>Padding (with value)</td>
+            <td>22px top, 4px bottom</td>
+            <td>32px top, 8px bottom</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SELECTIONS -->
+    <section id="selections">
+      <h2>Checkboxes & Radio Buttons</h2>
+      <p>24×24px controls with 1.5px stroke. Orange interaction states with blue focus glow.</p>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Checkbox Specifications</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Size</td>
+            <td>24×24px</td>
+          </tr>
+          <tr>
+            <td>Border Radius</td>
+            <td>2px</td>
+          </tr>
+          <tr>
+            <td>Stroke Weight</td>
+            <td>1.5px</td>
+          </tr>
+          <tr>
+            <td>Idle Border</td>
+            <td>#4A4A4A (Grey 1)</td>
+          </tr>
+          <tr>
+            <td>Hover Border</td>
+            <td>#EC8000 (Orange 2)</td>
+          </tr>
+          <tr>
+            <td>Focus Border + Glow</td>
+            <td>#EC8000 + 0 0 10px rgba(0,91,166,0.5)</td>
+          </tr>
+          <tr>
+            <td>Selected Fill</td>
+            <td>#FF9505 (Orange 1)</td>
+          </tr>
+          <tr>
+            <td>Checkmark</td>
+            <td>White, 16×12px SVG</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Radio Button Specifications</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Size</td>
+            <td>24×24px</td>
+          </tr>
+          <tr>
+            <td>Shape</td>
+            <td>Circle (border-radius: 50%)</td>
+          </tr>
+          <tr>
+            <td>Stroke Weight</td>
+            <td>1.5px</td>
+          </tr>
+          <tr>
+            <td>Idle Border</td>
+            <td>#4A4A4A (Grey 1)</td>
+          </tr>
+          <tr>
+            <td>Selected Inner Circle</td>
+            <td>10px diameter, #FF9505 (Orange 1)</td>
+          </tr>
+          <tr>
+            <td>Hover Border</td>
+            <td>#EC8000 (Orange 2)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Usage Guidelines</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Use When</th>
+            <th>Selection Model</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Checkbox</strong></td>
+            <td>Users can select zero, one, or multiple options</td>
+            <td>Multi-select</td>
+          </tr>
+          <tr>
+            <td><strong>Radio Button</strong></td>
+            <td>Users must select exactly one option from mutually exclusive choices</td>
+            <td>Single-select</td>
+          </tr>
+          <tr>
+            <td><strong>Toggle Switch</strong></td>
+            <td>Immediate on/off action with instant feedback</td>
+            <td>Binary (on/off)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- BADGES -->
+    <section id="badges">
+      <h2>Badges</h2>
+      <p>Status indicators and labels. 18px height for standard badges, 24px for pills.</p>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Badge Variants</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Background</th>
+            <th>Text Color</th>
+            <th>Border Radius</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Success</td>
+            <td>#E5F9F2</td>
+            <td>#17AB78</td>
+            <td>4px</td>
+            <td>Completed, Active, Available</td>
+          </tr>
+          <tr>
+            <td>Warning</td>
+            <td>#FFF4E5</td>
+            <td>#996300</td>
+            <td>4px</td>
+            <td>Pending, In Progress</td>
+          </tr>
+          <tr>
+            <td>Error</td>
+            <td>#FFEBEB</td>
+            <td>#D32F2F</td>
+            <td>4px</td>
+            <td>Failed, Unavailable, Error</td>
+          </tr>
+          <tr>
+            <td>Info</td>
+            <td>#D0EDFC</td>
+            <td>#005BA6</td>
+            <td>4px</td>
+            <td>New, Updated, Informational</td>
+          </tr>
+          <tr>
+            <td>Neutral</td>
+            <td>#F1F1F1</td>
+            <td>#2B2B2B</td>
+            <td>4px</td>
+            <td>Default, Draft, Unspecified</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- CARDS -->
+    <section id="cards">
+      <h2>Cards</h2>
+      <p>Container component with border and optional shadow. 8px border radius, 16-24px padding.</p>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Card Specifications</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Default</th>
+            <th>Hover</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Border</td>
+            <td>1px solid #E6E6E6</td>
+            <td>1px solid #005BA6</td>
+          </tr>
+          <tr>
+            <td>Border Radius</td>
+            <td>8px</td>
+            <td>8px</td>
+          </tr>
+          <tr>
+            <td>Shadow</td>
+            <td>0 2px 4px rgba(0,47,72,0.08)</td>
+            <td>0 4px 12px rgba(0,91,166,0.12)</td>
+          </tr>
+          <tr>
+            <td>Padding</td>
+            <td>16-24px (varies by content)</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ALERTS -->
+    <section id="alerts">
+      <h2>Alerts</h2>
+      <p>Inline notification banners and toast notifications. 40px min height for inline, 56px for toast.</p>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Alert Types</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Background</th>
+            <th>Border</th>
+            <th>Icon Color</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Success</td>
+            <td>#E5F9F2</td>
+            <td>3px solid #17AB78 (left)</td>
+            <td>#17AB78</td>
+          </tr>
+          <tr>
+            <td>Info</td>
+            <td>#D0EDFC</td>
+            <td>3px solid #005BA6 (left)</td>
+            <td>#005BA6</td>
+          </tr>
+          <tr>
+            <td>Warning</td>
+            <td>#FFF4E5</td>
+            <td>3px solid #FF9505 (left)</td>
+            <td>#FF9505</td>
+          </tr>
+          <tr>
+            <td>Fail/Error</td>
+            <td>#FFEBEB</td>
+            <td>3px solid #D32F2F (left)</td>
+            <td>#D32F2F</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Alert Specifications</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Inline Banner</th>
+            <th>Toast</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Min Height</td>
+            <td>40px</td>
+            <td>56px</td>
+          </tr>
+          <tr>
+            <td>Padding</td>
+            <td>12px 18px</td>
+            <td>16px 18px</td>
+          </tr>
+          <tr>
+            <td>Border Radius</td>
+            <td>5px</td>
+            <td>8px</td>
+          </tr>
+          <tr>
+            <td>Icon Size</td>
+            <td>24×24px</td>
+            <td>24×24px</td>
+          </tr>
+          <tr>
+            <td>Text Weight</td>
+            <td>700 (bold)</td>
+            <td>600 (semibold)</td>
+          </tr>
+          <tr>
+            <td>Shadow</td>
+            <td>None</td>
+            <td>0 4px 12px rgba(0,0,0,0.15)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- INTERACTION STATES -->
+    <section id="states">
+      <h2>Interaction States</h2>
+      <p>Standard state patterns applied across all interactive components.</p>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">State Definitions</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>State</th>
+            <th>Description</th>
+            <th>Visual Treatment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Idle</strong></td>
+            <td>Default resting state</td>
+            <td>Base colors, no shadow or effects</td>
+          </tr>
+          <tr>
+            <td><strong>Hover</strong></td>
+            <td>Mouse cursor over element</td>
+            <td>Darker color, increased elevation</td>
+          </tr>
+          <tr>
+            <td><strong>Focus</strong></td>
+            <td>Keyboard focus / tab navigation</td>
+            <td>Blue outline or glow (10px blur, 50% opacity)</td>
+          </tr>
+          <tr>
+            <td><strong>Pressed</strong></td>
+            <td>Active click/tap</td>
+            <td>Darkest color, halo effect</td>
+          </tr>
+          <tr>
+            <td><strong>Disabled</strong></td>
+            <td>Not interactive</td>
+            <td>Grey color (#DCDCDC), reduced opacity, no cursor</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Color Progression</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th>Idle</th>
+            <th>Hover</th>
+            <th>Pressed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Primary Blue</td>
+            <td>#005BA6</td>
+            <td>#004A84</td>
+            <td>#002F48</td>
+          </tr>
+          <tr>
+            <td>Orange</td>
+            <td>#FF9505</td>
+            <td>#EC8000</td>
+            <td>#D27200</td>
+          </tr>
+          <tr>
+            <td>Grey</td>
+            <td>#949494</td>
+            <td>#4A4A4A</td>
+            <td>#2B2B2B</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ACCESSIBILITY -->
+    <section id="accessibility">
+      <h2>Accessibility Guidelines</h2>
+      <p>WCAG AA compliance standards for inclusive design.</p>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Core Requirements</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Guideline</th>
+            <th>Standard</th>
+            <th>PartsSource Implementation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Touch Targets</strong></td>
+            <td>44×44px minimum (WCAG 2.5.5)</td>
+            <td>All buttons 40px+ height; inputs 48px+</td>
+          </tr>
+          <tr>
+            <td><strong>Text Contrast</strong></td>
+            <td>4.5:1 body, 3:1 large text</td>
+            <td>Body text #4A4A4A on white = 9.4:1</td>
+          </tr>
+          <tr>
+            <td><strong>Focus Indicators</strong></td>
+            <td>Visible keyboard focus</td>
+            <td>Blue glow 10px blur, 50% opacity</td>
+          </tr>
+          <tr>
+            <td><strong>Line Height</strong></td>
+            <td>1.5 minimum (WCAG 1.4.12)</td>
+            <td>Body text 1.5, headings 1.2</td>
+          </tr>
+          <tr>
+            <td><strong>Font Size</strong></td>
+            <td>16px minimum for body</td>
+            <td>16px body, 12px captions minimum</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Semantic HTML</h3>
+      <ul style="margin:16px 0;padding-left:24px;line-height:1.8;">
+        <li>Use <code>&lt;button&gt;</code> for all clickable actions, not <code>&lt;div&gt;</code> or <code>&lt;span&gt;</code></li>
+        <li>Use proper heading hierarchy (<code>&lt;h1&gt;</code> → <code>&lt;h2&gt;</code> → <code>&lt;h3&gt;</code>)</li>
+        <li>Use <code>&lt;label&gt;</code> with <code>for</code> attribute for all form inputs</li>
+        <li>Use <code>aria-label</code> for icon-only buttons</li>
+        <li>Use <code>aria-describedby</code> to associate error messages with inputs</li>
+        <li>Use <code>disabled</code> attribute for disabled states (not just visual styling)</li>
+      </ul>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Color & Contrast</h3>
+      <ul style="margin:16px 0;padding-left:24px;line-height:1.8;">
+        <li>Never use color alone to convey meaning — pair with icons, text, or patterns</li>
+        <li>Ensure sufficient contrast between text and background (4.5:1 minimum)</li>
+        <li>Test with color blindness simulators</li>
+        <li>Orange CTA buttons are being phased out due to insufficient contrast</li>
+      </ul>
+    </section>
+
+    <!-- CODE REFERENCE -->
+    <section id="code">
+      <h2>Code Reference</h2>
+      <p>CSS variable naming conventions and usage examples.</p>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">CSS Variables</h3>
+<pre><code>/* Brand Colors */
+--ps-brand-primary: #005BA6;
+--ps-brand-blue-2: #004A84;
+--ps-brand-blue-3: #002F48;
+--ps-brand-azure: #009CF4;
+
+/* Oranges */
+--ps-orange-1: #FF9505;
+--ps-orange-2: #EC8000;
+--ps-orange-3: #D27200;
+--ps-orange-4: #FFCA82;
+
+/* Semantic */
+--ps-success: #17AB78;
+--ps-danger: #D32F2F;
+--ps-warning: #FF9505;
+--ps-info: #009CF4;
+
+/* Grays */
+--ps-gray-0: #FFFFFF;
+--ps-gray-5: #4A4A4A;
+--ps-gray-7: #000000;
+
+/* Typography */
+--ps-font-sans: 'Source Sans Pro', sans-serif;
+--ps-font-mono: 'Source Code', monospace;
+
+/* Spacing */
+--ps-space-2: 8px;
+--ps-space-4: 16px;
+--ps-space-6: 24px;
+--ps-space-8: 32px;
+
+/* Border Radius */
+--ps-radius-sm: 4px;
+--ps-radius-md: 8px;
+--ps-radius-full: 9999px;
+
+/* Shadows */
+--ps-shadow-sm: 0 2px 4px rgba(0,47,72,0.08);
+--ps-shadow-md: 0 4px 8px rgba(0,47,72,0.12);
+--ps-shadow-lg: 0 8px 16px rgba(0,47,72,0.16);</code></pre>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Button Example</h3>
+<pre><code>&lt;button style="
+  height: 40px;
+  min-width: 145px;
+  padding: 0 10px;
+  background: white;
+  color: var(--ps-brand-primary);
+  border: 2px solid var(--ps-brand-primary);
+  border-radius: 4px;
+  font-family: var(--ps-font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s;
+"&gt;
+  Button Text
+&lt;/button&gt;</code></pre>
+
+      <h3 style="font-size:20px;font-weight:600;margin:40px 0 16px;">Input Field Example</h3>
+<pre><code>&lt;div class="input-wrap"&gt;
+  &lt;input 
+    type="text" 
+    id="email" 
+    style="
+      width: 335px;
+      height: 48px;
+      padding: 0 10px;
+      font-family: var(--ps-font-sans);
+      font-size: 16px;
+      background: white;
+      border: 1px solid #949494;
+      border-radius: 3px;
+    "
+  /&gt;
+  &lt;label for="email"&gt;Email Address&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+  </main>
+
+  <script>
+    // Smooth scroll for navigation
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

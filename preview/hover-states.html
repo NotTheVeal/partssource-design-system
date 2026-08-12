@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Hover States" subtitle="Comprehensive brand guidelines for all hover states" --><html><head>
+
+
+  <meta charset="utf-8">
+  <title>Hover States</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+
+    .section-body{padding:24px;}
+    
+    h3{font-size:16px;font-weight:600;margin:32px 0 16px;color:var(--ps-sem-fg-secondary);}
+    
+    .state-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+    .state-grid.three-col{grid-template-columns:repeat(3,1fr);}
+    .state-card{background:white;border:1px solid #DCDCDC;border-radius:4px;padding:24px;min-height:180px;display:flex;flex-direction:column;}
+    .state-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--ps-fg-tertiary);margin-bottom:16px;}
+    .state-demo{flex:1;display:flex;align-items:center;justify-content:center;margin-bottom:16px;position:relative;}
+    .state-specs{font-size:13px;line-height:1.8;color:var(--ps-sem-fg-secondary);padding-top:16px;border-top:1px solid #F1F1F1;}
+    .state-specs dt{font-weight:600;color:var(--ps-prim-gray-900);margin-top:8px;font-size:12px;}
+    .state-specs dd{margin:0 0 0 0;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--ps-sem-fg-brand);background:#F5F5F5;padding:3px 6px;border-radius:3px;display:inline-block;}
+    
+    /* Demo swatches */
+    .shadow-swatch{background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#5C5C5C;transition:box-shadow 0.2s;text-align:center;padding:16px;box-sizing:border-box;}
+    
+    code{font-family:'Source Code Pro',monospace;background:#F5F5F5;padding:2px 6px;border-radius:3px;font-size:12px;color:var(--ps-sem-fg-brand);}
+  </style>
+<link id="gfont-Source-Sans-Pro" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;500;600;700&amp;display=swap"></head>
+<body data-cc-id="cc-1" style="cursor: crosshair; font-family: &quot;Source Sans Pro&quot;;">
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Hover States</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+  <h1>Hover States</h1>
+  <p class="intro">Comprehensive hover state specifications for all interactive components. Defines elevation changes, color transitions, and other visual feedback patterns. Use elevation for surfaces (cards, panels); use color/fill changes for controls (buttons, inputs). Standard transition: <code>200ms ease</code> for all hover states.</p>
+
+  <!-- Elevation System -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Elevation</h2>
+      <div class="desc">Box-shadow tokens create depth hierarchy. Use consistently across cards, modals, dropdowns, and tooltips.</div>
+    </div>
+    <div class="section-body">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:24px;">
+        
+        <!-- elevation-0 -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;border-radius:4px;height:120px;box-shadow:none;"></div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--ps-sem-fg-brand);margin-bottom:4px;">elevation-0</div>
+            <div style="font-size:14px;font-weight:600;color:var(--ps-prim-gray-900);margin-bottom:8px;">Flat</div>
+            <div style="font-size:11px;color:#949494;margin-bottom:8px;">none</div>
+            <div style="font-size:12px;color:var(--ps-sem-fg-secondary);line-height:1.5;">No shadow. Used for flush elements on surfaces.</div>
+          </div>
+        </div>
+
+        <!-- elevation-1 -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;border-radius:4px;height:120px;box-shadow:0 1px 3px rgba(0,0,0,0.08);"></div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--ps-sem-fg-brand);margin-bottom:4px;">elevation-1</div>
+            <div style="font-size:14px;font-weight:600;color:var(--ps-prim-gray-900);margin-bottom:8px;">Raised</div>
+            <div style="font-size:11px;color:#949494;margin-bottom:8px;">0 1px 3px rgba(0,0,0,0.08)</div>
+            <div style="font-size:12px;color:var(--ps-sem-fg-secondary);line-height:1.5;">Subtle lift. Default card state, inline dropdowns.</div>
+          </div>
+        </div>
+
+        <!-- elevation-2 -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;border-radius:4px;height:120px;box-shadow:0 4px 12px rgba(0,0,0,0.12);"></div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--ps-sem-fg-brand);margin-bottom:4px;">elevation-2</div>
+            <div style="font-size:14px;font-weight:600;color:var(--ps-prim-gray-900);margin-bottom:8px;">Floating</div>
+            <div style="font-size:11px;color:#949494;margin-bottom:8px;">0 4px 12px rgba(0,0,0,0.12)</div>
+            <div style="font-size:12px;color:var(--ps-sem-fg-secondary);line-height:1.5;">Medium depth. Hovered cards, popovers.</div>
+          </div>
+        </div>
+
+        <!-- elevation-3 -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;border-radius:4px;height:120px;box-shadow:0 8px 24px rgba(0,0,0,0.16);"></div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--ps-sem-fg-brand);margin-bottom:4px;">elevation-3</div>
+            <div style="font-size:14px;font-weight:600;color:var(--ps-prim-gray-900);margin-bottom:8px;">Overlay</div>
+            <div style="font-size:11px;color:#949494;margin-bottom:8px;">0 8px 24px rgba(0,0,0,0.16)</div>
+            <div style="font-size:12px;color:var(--ps-sem-fg-secondary);line-height:1.5;">High depth. Modals, dialogs, drawer panels.</div>
+          </div>
+        </div>
+
+        <!-- elevation-4 -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;border-radius:4px;height:120px;box-shadow:0 12px 48px rgba(0,0,0,0.20);"></div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--ps-sem-fg-brand);margin-bottom:4px;">elevation-4</div>
+            <div style="font-size:14px;font-weight:600;color:var(--ps-prim-gray-900);margin-bottom:8px;">Sticky</div>
+            <div style="font-size:11px;color:#949494;margin-bottom:8px;">0 12px 48px rgba(0,0,0,0.20)</div>
+            <div style="font-size:12px;color:var(--ps-sem-fg-secondary);line-height:1.5;">Highest depth. Sticky nav, floating action buttons.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Buttons Loading -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Buttons — Loading State</h2>
+      <div class="desc">Async operations show a spinner animation. Button is disabled during the operation.</div>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+        <div class="state-card">
+          <div class="state-label">Primary — Loading</div>
+          <div class="state-demo">
+            <button style="width:260px;height:50px;background:#FF9505;color:var(--ps-sem-fg-inverse);border:none;border-radius:4px;position:relative;cursor:wait;" disabled="">
+              <span style="opacity:0;">Primary Button</span>
+              <svg style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);animation:spin 0.8s linear infinite;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10" opacity="0.25"></circle>
+                <path d="M12 2 A10 10 0 0 1 22 12" stroke-linecap="round"></path>
+              </svg>
+            </button>
+            <style>
+              @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+            </style>
+          </div>
+          <dl class="state-specs">
+            <dt>spinner</dt>
+            <dd>20px white, 0.8s rotation</dd>
+            <dt>cursor</dt>
+            <dd>wait</dd>
+            <dt>disabled</dt>
+            <dd>true</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input Error -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Input Fields — Error State</h2>
+      <div class="desc">Validation errors show red border and error message below the field.</div>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+        <div class="state-card">
+          <div class="state-label">Error</div>
+          <div class="state-demo" style="flex-direction:column;align-items:flex-start;">
+            <div style="width:280px;position:relative;border:1.5px solid #D32F2F;border-radius:4px;padding:20px 12px 8px;background:var(--ps-sem-bg-surface);">
+              <input type="text" value="invalid@" style="width:100%;border:none;outline:none;font-size:13px;font-family:var(--ps-font-sans);color:#D32F2F;padding:0;">
+              <label style="position:absolute;top:8px;left:12px;font-size:10px;font-weight:600;color:#D32F2F;">Email</label>
+            </div>
+            <div style="font-size:11px;color:#D32F2F;margin-top:4px;">Please enter a valid email address</div>
+          </div>
+          <dl class="state-specs">
+            <dt>border</dt>
+            <dd>1.5px #D32F2F</dd>
+            <dt>text</dt>
+            <dd>#D32F2F</dd>
+            <dt>message</dt>
+            <dd>11px red, below field</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkboxes -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Checkboxes — Hover &amp; Focus</h2>
+      <div class="desc">Hover darkens border; focus adds blue outline for keyboard navigation.</div>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Hover</div>
+      <div class="state-demo">
+        <div style="width:24px;height:24px;background:var(--ps-sem-bg-surface);border:1.5px solid #4A4A4A;border-radius:2px;"></div>
+      </div>
+      <dl class="state-specs">
+        <dt>border</dt>
+        <dd>1.5px #4A4A4A</dd>
+      </dl>
+    </div>
+    <div class="state-card">
+      <div class="state-label">Focus</div>
+      <div class="state-demo">
+        <div style="width:24px;height:24px;background:var(--ps-sem-bg-surface);border:1.5px solid #949494;border-radius:2px;outline:2px solid #005BA6;outline-offset:2px;"></div>
+      </div>
+      <dl class="state-specs">
+        <dt>outline</dt>
+        <dd>2px #005BA6, 2px offset</dd>
+        <dt>note</dt>
+        <dd style="background:transparent;padding:0;color:var(--ps-sem-fg-secondary);font-family:var(--ps-font-sans);">WCAG AA</dd>
+      </dl>
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Cards -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Cards — Event Cards (Large, 317×221px)</h2>
+      <div class="desc">Primary action cards with icons, titles, descriptions, and footer links. Used for dashboards, feature highlights, and primary navigation.</div>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Default (Rest)</div>
+      <div class="state-demo">
+        <div class="shadow-swatch" style="width:240px;height:160px;">
+          Event Card<br><span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">No shadow at rest</span>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>box-shadow</dt>
+        <dd>none</dd>
+        <dt>border</dt>
+        <dd>1px solid #DCDCDC</dd>
+        <dt>transition</dt>
+        <dd>box-shadow 0.2s ease</dd>
+      </dl>
+    </div>
+    <div class="state-card">
+      <div class="state-label">Hover</div>
+      <div class="state-demo">
+        <div class="shadow-swatch" style="width:240px;height:160px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+          Event Card<br><span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">Lifted on hover</span>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>box-shadow</dt>
+        <dd>0 4px 12px rgba(0,0,0,0.1)</dd>
+        <dt>border</dt>
+        <dd>1px solid #DCDCDC (unchanged)</dd>
+        <dt>Notes</dt>
+        <dd style="background:transparent;color:var(--ps-sem-fg-secondary);padding:0;">4px offset-y, 12px blur, 10% black</dd>
+      </dl>
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Cards -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Cards — Status Cards (Small, 220×73px)</h2>
+      <div class="desc">Compact horizontal cards with thumbnail, title, and metadata. Used for status lists, notifications, mini-cards in sidebars.</div>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Default (Rest)</div>
+      <div class="state-demo">
+        <div class="shadow-swatch" style="width:200px;height:80px;">
+          Status Card<br><span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">No shadow at rest</span>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>box-shadow</dt>
+        <dd>none</dd>
+        <dt>border</dt>
+        <dd>1px solid #DCDCDC</dd>
+      </dl>
+    </div>
+    <div class="state-card">
+      <div class="state-label">Hover</div>
+      <div class="state-demo">
+        <div class="shadow-swatch" style="width:200px;height:80px;box-shadow:0 4px 8px rgba(0,0,0,0.08);">
+          Status Card<br><span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">Subtle lift</span>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>box-shadow</dt>
+        <dd>0 4px 8px rgba(0,0,0,0.08)</dd>
+        <dt>Notes</dt>
+        <dd style="background:transparent;color:var(--ps-sem-fg-secondary);padding:0;">Lighter shadow (8%) for small cards</dd>
+      </dl>
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert Cards -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Cards — Alert Cards (Medium, 220×~127px)</h2>
+      <div class="desc">Variable-height cards with image/icon, title, subtitle, and metadata rows. Used for notifications, action items, alerts.</div>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Default (Rest)</div>
+      <div class="state-demo">
+        <div class="shadow-swatch" style="width:200px;height:120px;">
+          Alert Card<br><span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">No shadow at rest</span>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>box-shadow</dt>
+        <dd>none</dd>
+        <dt>border</dt>
+        <dd>1px solid #DCDCDC</dd>
+      </dl>
+    </div>
+    <div class="state-card">
+      <div class="state-label">Hover</div>
+      <div class="state-demo">
+        <div class="shadow-swatch" style="width:200px;height:120px;box-shadow:0 4px 8px rgba(0,0,0,0.08);">
+          Alert Card<br><span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">Subtle lift</span>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>box-shadow</dt>
+        <dd>0 4px 8px rgba(0,0,0,0.08)</dd>
+        <dt>Notes</dt>
+        <dd style="background:transparent;color:var(--ps-sem-fg-secondary);padding:0;">Same as Status Cards</dd>
+      </dl>
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Elevated Surfaces -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Elevated Surfaces — Modals, Dropdowns, Popovers</h2>
+      <div class="desc">Surfaces that are always elevated above the page. They have a default shadow and lift further on hover (if interactive). Static modals/popovers do not change on hover.</div>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Default (Always Elevated)</div>
+      <div class="state-demo">
+        <div class="shadow-swatch" style="width:180px;height:120px;box-shadow:0 2px 4px rgba(0,0,0,0.06);">
+          Popover / Dropdown<br><span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">Default elevation</span>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>box-shadow</dt>
+        <dd>0 2px 4px rgba(0,0,0,0.06)</dd>
+        <dt>border</dt>
+        <dd>1px solid #DCDCDC</dd>
+        <dt>Use</dt>
+        <dd style="background:transparent;color:var(--ps-sem-fg-secondary);padding:0;">Modals, tooltips, dropdowns</dd>
+      </dl>
+    </div>
+    <div class="state-card">
+      <div class="state-label">Hover (If Interactive)</div>
+      <div class="state-demo">
+        <div class="shadow-swatch" style="width:180px;height:120px;box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+          Interactive Panel<br><span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">Further lift if clickable</span>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>box-shadow</dt>
+        <dd>0 6px 16px rgba(0,0,0,0.12)</dd>
+        <dt>Notes</dt>
+        <dd style="background:transparent;color:var(--ps-sem-fg-secondary);padding:0;">Only if the entire panel is clickable</dd>
+      </dl>
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- List Items -->
+  <div class="section">
+    <div class="section-head">
+      <h2>List Items &amp; Table Rows</h2>
+      <div class="desc">Hover states for list items and table rows use background color changes, not shadows. Keeps the interface clean and prevents visual clutter in dense data views.</div>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Default (Rest)</div>
+      <div class="state-demo">
+        <div class="shadow-swatch" style="width:260px;height:48px;padding:0 16px;justify-content:flex-start;border-radius:0;">
+          <span style="font-size:13px;color:var(--ps-prim-gray-900);">List Item / Table Row</span>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>background</dt>
+        <dd>#FFFFFF (transparent)</dd>
+        <dt>box-shadow</dt>
+        <dd>none</dd>
+      </dl>
+    </div>
+    <div class="state-card">
+      <div class="state-label">Hover</div>
+      <div class="state-demo">
+        <div class="shadow-swatch" style="width:260px;height:48px;padding:0 16px;justify-content:flex-start;background:#F5F5F5;border-radius:0;">
+          <span style="font-size:13px;color:var(--ps-prim-gray-900);">List Item / Table Row</span>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>background</dt>
+        <dd>#F5F5F5 (Grey 6)</dd>
+        <dt>box-shadow</dt>
+        <dd>none</dd>
+        <dt>transition</dt>
+        <dd>background 0.15s ease</dd>
+      </dl>
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Icon Buttons -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Icon Buttons &amp; Small Actions</h2>
+      <div class="desc">Small interactive elements (icon buttons, close buttons, action icons, drag handles) use subtle background fills on hover. No elevation. Matches Arrow button spec (28×28px, 4px radius).</div>
+    </div>
+    <div class="section-body">
+      <div class="state-grid three-col">
+    <div class="state-card">
+      <div class="state-label">Default (Rest)</div>
+      <div class="state-demo">
+        <div style="width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid transparent;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A4A4A" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+          </svg>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>size</dt>
+        <dd>28×28px</dd>
+        <dt>background</dt>
+        <dd>transparent</dd>
+        <dt>border</dt>
+        <dd>1px transparent</dd>
+        <dt>border-radius</dt>
+        <dd>4px</dd>
+      </dl>
+    </div>
+    <div class="state-card">
+      <div class="state-label">Hover</div>
+      <div class="state-demo">
+        <div style="width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;background:var(--ps-sem-bg-muted);border:1px solid transparent;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A4A4A" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+          </svg>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>background</dt>
+        <dd>#F1F1F1 (Grey 5)</dd>
+        <dt>icon color</dt>
+        <dd>unchanged</dd>
+        <dt>note</dt>
+        <dd style="background:transparent;padding:0;color:var(--ps-sem-fg-secondary);font-family:var(--ps-font-sans);">Icon color stays same, only bg changes</dd>
+      </dl>
+    </div>
+    <div class="state-card">
+      <div class="state-label">Active/Pressed</div>
+      <div class="state-demo">
+        <div style="width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;background:#DCDCDC;border:1px solid transparent;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A4A4A" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+          </svg>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>background</dt>
+        <dd>#DCDCDC (Grey 4)</dd>
+        <dt>border-radius</dt>
+        <dd>4px (maintains on press)</dd>
+      </dl>
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Panels -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accordion Panels (Drag Handles)</h2>
+      <div class="desc">Rearrangeable accordion panels on My Dashboard. The six-dot drag handle uses the same hover treatment as icon buttons. Entire panel can receive hover elevation.</div>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Drag Handle — Default</div>
+      <div class="state-demo">
+        <div style="width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;background:transparent;cursor:grab;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#4A4A4A">
+            <circle cx="5" cy="3" r="1.5"></circle>
+            <circle cx="11" cy="3" r="1.5"></circle>
+            <circle cx="5" cy="8" r="1.5"></circle>
+            <circle cx="11" cy="8" r="1.5"></circle>
+            <circle cx="5" cy="13" r="1.5"></circle>
+            <circle cx="11" cy="13" r="1.5"></circle>
+          </svg>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>size</dt>
+        <dd>28×28px</dd>
+        <dt>background</dt>
+        <dd>transparent</dd>
+        <dt>cursor</dt>
+        <dd>grab</dd>
+        <dt>icon</dt>
+        <dd>six dots (grip-vertical)</dd>
+      </dl>
+    </div>
+    <div class="state-card">
+      <div class="state-label">Drag Handle — Hover</div>
+      <div class="state-demo">
+        <div style="width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;background:var(--ps-sem-bg-muted);cursor:grab;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#4A4A4A">
+            <circle cx="5" cy="3" r="1.5"></circle>
+            <circle cx="11" cy="3" r="1.5"></circle>
+            <circle cx="5" cy="8" r="1.5"></circle>
+            <circle cx="11" cy="8" r="1.5"></circle>
+            <circle cx="5" cy="13" r="1.5"></circle>
+            <circle cx="11" cy="13" r="1.5"></circle>
+          </svg>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>background</dt>
+        <dd>#F1F1F1 (Grey 5)</dd>
+        <dt>behavior</dt>
+        <dd style="background:transparent;padding:0;color:var(--ps-sem-fg-secondary);font-family:var(--ps-font-sans);">Same as icon buttons</dd>
+      </dl>
+    </div>
+  </div>
+  
+  <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Accordion Panel — Default</div>
+      <div class="state-demo">
+        <div style="width:280px;padding:16px;background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;border-radius:4px;display:flex;align-items:center;gap:12px;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#949494" style="cursor:grab;flex-shrink:0;">
+            <circle cx="4" cy="3" r="1.5"></circle>
+            <circle cx="4" cy="8" r="1.5"></circle>
+            <circle cx="4" cy="13" r="1.5"></circle>
+            <circle cx="12" cy="3" r="1.5"></circle>
+            <circle cx="12" cy="8" r="1.5"></circle>
+            <circle cx="12" cy="13" r="1.5"></circle>
+          </svg>
+          <div style="flex:1;font-size:13px;font-weight:600;color:var(--ps-prim-gray-900);">Parts &amp; Service Events</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4A4A4A" stroke-width="2" style="flex-shrink:0;">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>background</dt>
+        <dd>#FFFFFF</dd>
+        <dt>border</dt>
+        <dd>1px #DCDCDC</dd>
+        <dt>shadow</dt>
+        <dd>none</dd>
+      </dl>
+    </div>
+    <div class="state-card">
+      <div class="state-label">Accordion Panel — Hover</div>
+      <div class="state-demo">
+        <div style="width:280px;padding:16px;background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;border-radius:4px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#949494" style="cursor:grab;flex-shrink:0;">
+            <circle cx="4" cy="3" r="1.5"></circle>
+            <circle cx="4" cy="8" r="1.5"></circle>
+            <circle cx="4" cy="13" r="1.5"></circle>
+            <circle cx="12" cy="3" r="1.5"></circle>
+            <circle cx="12" cy="8" r="1.5"></circle>
+            <circle cx="12" cy="13" r="1.5"></circle>
+          </svg>
+          <div style="flex:1;font-size:13px;font-weight:600;color:var(--ps-prim-gray-900);">Parts &amp; Service Events</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4A4A4A" stroke-width="2" style="flex-shrink:0;">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>shadow</dt>
+        <dd>0 2px 8px rgba(0,0,0,0.08)</dd>
+        <dt>note</dt>
+        <dd style="background:transparent;padding:0;color:var(--ps-sem-fg-secondary);font-family:var(--ps-font-sans);">Subtle lift, same as small cards</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Dragging (Active)</div>
+      <div class="state-demo">
+        <div style="width:280px;padding:16px;background:var(--ps-sem-bg-surface);border:1px solid #005BA6;border-radius:4px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 24px rgba(0,0,0,0.15);opacity:0.9;cursor:grabbing;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#777" style="flex-shrink:0;">
+            <circle cx="4" cy="3" r="1.5"></circle>
+            <circle cx="4" cy="8" r="1.5"></circle>
+            <circle cx="4" cy="13" r="1.5"></circle>
+            <circle cx="12" cy="3" r="1.5"></circle>
+            <circle cx="12" cy="8" r="1.5"></circle>
+            <circle cx="12" cy="13" r="1.5"></circle>
+          </svg>
+          <div style="flex:1;font-size:13px;font-weight:600;color:var(--ps-prim-gray-900);">Parts &amp; Service Events</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4A4A4A" stroke-width="2" style="flex-shrink:0;">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>border</dt>
+        <dd>1px #005BA6</dd>
+        <dt>shadow</dt>
+        <dd>0 8px 24px rgba(0,0,0,0.15)</dd>
+        <dt>opacity</dt>
+        <dd>0.9</dd>
+        <dt>cursor</dt>
+        <dd>grabbing</dd>
+      </dl>
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Links & Text Actions -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Links &amp; Text Actions</h2>
+      <div class="desc">Inline text links use underlines and/or color changes. No elevation or background fills.</div>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Default (Rest)</div>
+      <div class="state-demo">
+        <a href="#" style="color:var(--ps-sem-fg-brand);text-decoration:none;font-size:14px;" onmouseover="return false;">View Details</a>
+      </div>
+      <dl class="state-specs">
+        <dt>color</dt>
+        <dd>#005BA6 (PS Blue)</dd>
+        <dt>text-decoration</dt>
+        <dd>none</dd>
+      </dl>
+    </div>
+    <div class="state-card">
+      <div class="state-label">Hover</div>
+      <div class="state-demo">
+        <a href="#" style="color:#004A84;text-decoration:underline;font-size:14px;" onmouseover="return false;">View Details</a>
+      </div>
+      <dl class="state-specs">
+        <dt>color</dt>
+        <dd>#004A84 (darker blue)</dd>
+        <dt>text-decoration</dt>
+        <dd>underline</dd>
+      </dl>
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Technical Implementation -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Technical Implementation</h2>
+      <div class="desc">CSS patterns and accessibility requirements for hover states.</div>
+    </div>
+    <div class="section-body">
+    <h3 style="margin:0 0 16px;font-size:16px;font-weight:600;">CSS Base Pattern</h3>
+    <pre style="background:#F5F5F5;padding:16px;border-radius:4px;font-family:'Source Code Pro',monospace;font-size:13px;line-height:1.6;overflow-x:auto;margin:0 0 24px;"><code>/* Card Hover States */
+.card {
+  box-shadow: none;
+  border: 1px solid #DCDCDC;
+  transition: box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.card-large:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card-small:hover,
+.card-medium:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+/* List Item Hover */
+.list-item {
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+.list-item:hover {
+  background: #F5F5F5;
+}
+
+/* Icon Button Hover */
+.icon-btn {
+  background: transparent;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.icon-btn:hover {
+  background: var(--ps-sem-bg-muted);
+}
+
+/* Link Hover */
+a {
+  color: var(--ps-sem-fg-brand);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: #004A84;
+  text-decoration: underline;
+}</code></pre>
+
+    <h3 style="margin:24px 0 16px;font-size:16px;font-weight:600;">Accessibility Requirements</h3>
+    <ul style="margin:0;padding-left:20px;font-size:14px;line-height:1.8;color:var(--ps-sem-fg-secondary);">
+      <li>Always include <code>cursor: pointer</code> for clickable elements</li>
+      <li>Ensure focus states are visible for keyboard navigation (3px outline, 3:1 contrast)</li>
+      <li>Touch targets must be minimum 44×44px for mobile (WCAG 2.1 SC 2.5.5)</li>
+      <li>Hover alone is not sufficient — provide focus and active states</li>
+      <li>Test with <code>@media (hover: none)</code> for touch-only devices</li>
+    </ul>
+      </div>
+    </div>
+  
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance, keyboard support, and implementation guidance for inclusive interactive design.</div>
+    </div>
+    <div class="section-body">
+      <ul style="margin:0;padding:20px 0;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Focus states must match hover:</strong> Every hover effect needs an equivalent focus state for keyboard users</li>
+        <li><strong>Minimum contrast for focus indicators:</strong> 3:1 ratio against adjacent colors (WCAG 2.4.11) — blue outline meets this</li>
+        <li><strong>Touch targets:</strong> Minimum 44×44px clickable area including padding (WCAG 2.5.5)</li>
+        <li><strong>Cursor affordances:</strong> Use <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">cursor: pointer</code> for clickable, <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">cursor: grab</code> for draggable elements</li>
+        <li><strong>Transition timing:</strong> 200ms ease for most hover states — fast enough to feel responsive, slow enough to see</li>
+        <li><strong>Elevation changes:</strong> Cards/surfaces that lift on hover must have same elevation on focus</li>
+        <li><strong>Touch-only devices:</strong> Test with <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">@media (hover: none)</code> — hover-dependent interactions fail on mobile</li>
+        <li><strong>Active/pressed states:</strong> Provide visual feedback for mouse-down events (darker color, inset shadow, scale)</li>
+      </ul>
+    </div>
+  </div>
+
+
+</body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<!-- @dsCard group="Foundation" name="Semantic Colors" subtitle="Success · Danger · Warning · Info (with subtle pairs)" viewport="700x180" --><html><head><meta charset="utf-8"><title>Semantic colors</title>
+<link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;padding:20px 24px;background:var(--ps-sem-bg-surface);font-family:var(--ps-font-sans);}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .sw{display:flex;flex-direction:column;gap:6px;}
+  .pair{display:flex;border-radius:6px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05);height:72px;}
+  .pair>div{flex:1;}
+  .name{font-size:13px;font-weight:600;color:var(--ps-brand-secondary);}
+  .val{font-size:11px;font-family:ui-monospace,Menlo,monospace;color:var(--ps-fg-secondary);}
+</style></head><body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Semantic Colors</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+<div class="grid">
+  <div class="sw"><div class="pair"><div style="background:#17AB78"></div><div style="background:#DCFAEF"></div></div><div class="name">Success</div><div class="val">#17AB78 · #DCFAEF</div></div>
+  <div class="sw"><div class="pair"><div style="background:#FF0000"></div><div style="background:#FACBCB"></div></div><div class="name">Danger</div><div class="val">#FF0000 · #FACBCB</div></div>
+  <div class="sw"><div class="pair"><div style="background:#E3A92D"></div><div style="background:#FFF4D0"></div></div><div class="name">Warning</div><div class="val">#E3A92D · #FFF4D0</div></div>
+  <div class="sw"><div class="pair"><div style="background:#009CF4"></div><div style="background:#B0C6D3"></div></div><div class="name">Info</div><div class="val">#009CF4 · #B0C6D3</div></div>
+</div>
+
+<!-- Accessibility -->
+<div style="margin-top:32px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);">
+  <div style="padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <h2 style="font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-sem-fg-brand);font-weight:700;margin:0;flex-shrink:0;">ACCESSIBILITY &amp; BEST PRACTICES</h2>
+    <div style="font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;">WCAG compliance and implementation guidance for inclusive semantic color usage.</div>
+  </div>
+  <ul style="margin:0;padding:20px 24px 20px 44px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+    <li><strong>Never use color alone</strong> — always pair semantic colors with icons (✓ ✗ ⚠ ⓘ) or descriptive text labels (WCAG 1.4.1)</li>
+    <li><strong>Red/green confusion is the most common deficiency</strong> (8% of men) — Success and Danger must always include distinguishing icons</li>
+    <li><strong>Danger #FF0000 on white</strong> meets 4.0:1 — passes AA for large text only; use darker red (#C8102E) for body-size error messages</li>
+    <li><strong>Warning #E3A92D on white</strong> is 2.6:1 — use only on dark text (e.g., #4A4A4A on #FFF4D0 background) for warning copy</li>
+    <li><strong>Success #17AB78 on white</strong> meets AA at 3.5:1 for large text; pair with darker green (#0F7A55) for body-size success messages</li>
+    <li><strong>Light surface variants</strong> (#DCFAEF, #FACBCB, #FFF4D0) are background fills only — never use them as foreground/text colors</li>
+    <li><strong>Status badges:</strong> Pair colored fills with text labels ("Success", "Error", "Warning") — color-only pills are inaccessible</li>
+    <li><strong>Test with simulators:</strong> Verify status indicators remain distinguishable under protanopia, deuteranopia, and tritanopia simulations</li>
+  </ul>
+</div>
+</body></html>

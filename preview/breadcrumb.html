@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Breadcrumb · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+  .section-body{padding:24px;background:#FAFAFA;}
+
+  /* ── Breadcrumb (1:1 with Figma node 3457:8633 /Sheet) ─────────
+     Per the Figma source:
+       • Source Sans Pro 14 / 18 px line-height
+       • Letter-spacing -0.010em
+       • Parent link color #005BA6 (PS Blue)
+       • Current page color #949494 (Grey 3)
+       • 9 px gap between segments
+       • Separator is a 7 × 10 px chevron in Grey 3
+   */
+  .bc{
+    display:inline-flex;align-items:center;gap:var(--ps-cmp-breadcrumb-gap, 9px);flex-wrap:wrap;
+    font:400 14px/18px 'Source Sans Pro','Source Sans 3',sans-serif;
+    letter-spacing:-0.010em;
+  }
+  .bc__item{
+    color:var(--ps-cmp-breadcrumb-fg-link, #005BA6);text-decoration:none;
+    padding:0;border-radius:2px;
+    transition:color 120ms ease, text-decoration-color 120ms ease;
+  }
+  .bc__item:hover{color:var(--ps-cmp-breadcrumb-fg-link-hover, #004A84);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;}
+  .bc__item:focus-visible{outline:2px solid var(--ps-cmp-breadcrumb-fg-link, #005BA6);outline-offset:2px;}
+  .bc__sep{
+    display:inline-flex;align-items:center;color:var(--ps-cmp-breadcrumb-separator-color, #949494);
+    flex-shrink:0;width:7px;height:10px;
+  }
+  .bc__sep svg{width:100%;height:100%;display:block;}
+  .bc__current{color:var(--ps-cmp-breadcrumb-fg-current, #949494);}
+
+  /* Back-style breadcrumb — left chevron + parent link */
+  .bc__back{display:inline-flex;align-items:center;gap:8px;}
+  .bc__back-arrow{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:7px;height:10px;color:var(--ps-cmp-breadcrumb-fg-link, #005BA6);flex-shrink:0;
+  }
+  .bc__back-arrow svg{width:100%;height:100%;display:block;}
+
+  .stage{padding:24px;background:#fff;border-radius:8px;border:1px solid #F1F1F1;}
+  .stages{display:flex;flex-direction:column;gap:16px;}
+
+  /* Tokens */
+  table.tokens{width:100%;border-collapse:collapse;font-size:13px;}
+  table.tokens th,table.tokens td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.tokens th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.tokens code{background:#F1F1F1;font-family:ui-monospace,Menlo,monospace;font-size:11px;padding:1px 6px;border-radius:3px;}
+
+  /* States demo */
+  .states-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+  .state-card{background:#fff;border:1px solid #F1F1F1;border-radius:8px;overflow:hidden;}
+  .state-card__stage{padding:18px;background:#fff;display:flex;align-items:center;min-height:60px;}
+  .state-card__meta{padding:10px 14px;border-top:1px solid #F1F1F1;font-size:12px;color:#777;background:#FAFAFA;}
+  .state-card__meta b{display:block;color:#002F48;font-size:13px;font-weight:700;margin-bottom:2px;}
+
+  /* Page chrome breadcrumb */
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Breadcrumb</span>
+</nav>
+
+<h1>Breadcrumb</h1>
+<p class="intro">The trail that lives above every detail page. Two canonical patterns sourced from Figma: a <strong>back-style</strong> single-parent breadcrumb (<code>&lt; Back to My Dashboard</code>) for one-level returns, and a <strong>trail-style</strong> chevron-separated path (<code>My Dashboard &gt; Asset Details</code>) for two or more levels. Both are Source Sans Pro 14&nbsp;px with PS Blue parent links and Grey&nbsp;3 grey current segments.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Back-style</h2>
+    <div class="desc">Single-parent return. Use on detail pages reached from one specific list (e.g. asset detail under a dashboard).</div>
+  </div>
+  <div class="section-body">
+    <div class="stage">
+      <nav class="bc" aria-label="Breadcrumb">
+        <a href="#" class="bc__item bc__back">
+          <span class="bc__back-arrow" aria-hidden="true"><svg viewBox="0 0 7 10" fill="none"><path d="M6 1L2 5l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          Back to My Dashboard
+        </a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Trail-style</h2>
+    <div class="desc">Chevron-separated path. Use when there are two or more parent levels.</div>
+  </div>
+  <div class="section-body">
+    <div class="stage">
+      <nav class="bc" aria-label="Breadcrumb">
+        <a href="#" class="bc__item">My Dashboard</a>
+        <span class="bc__sep" aria-hidden="true"><svg viewBox="0 0 7 10" fill="none"><path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="bc__current">Asset Details</span>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>More patterns</h2>
+    <div class="desc">Two-level, three-level, and deep trails.</div>
+  </div>
+  <div class="section-body">
+    <div class="stages">
+      <div class="stage">
+        <nav class="bc" aria-label="Breadcrumb">
+          <a href="#" class="bc__item">Marketplace</a>
+          <span class="bc__sep" aria-hidden="true"><svg viewBox="0 0 7 10" fill="none"><path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="bc__current">Part details</span>
+        </nav>
+      </div>
+      <div class="stage">
+        <nav class="bc" aria-label="Breadcrumb">
+          <a href="#" class="bc__item">Pro</a>
+          <span class="bc__sep" aria-hidden="true"><svg viewBox="0 0 7 10" fill="none"><path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <a href="#" class="bc__item">Asset Uptime</a>
+          <span class="bc__sep" aria-hidden="true"><svg viewBox="0 0 7 10" fill="none"><path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="bc__current">Imaging — Room 314</span>
+        </nav>
+      </div>
+      <div class="stage">
+        <nav class="bc" aria-label="Breadcrumb">
+          <a href="#" class="bc__item">Asset Explorer</a>
+          <span class="bc__sep" aria-hidden="true"><svg viewBox="0 0 7 10" fill="none"><path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <a href="#" class="bc__item">Chatham Memorial Clinic</a>
+          <span class="bc__sep" aria-hidden="true"><svg viewBox="0 0 7 10" fill="none"><path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <a href="#" class="bc__item">Somatom Definition AS • PS000145</a>
+          <span class="bc__sep" aria-hidden="true"><svg viewBox="0 0 7 10" fill="none"><path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="bc__current">Alert</span>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>States</h2>
+    <div class="desc">Parent link, hover, current. Current segment is never interactive.</div>
+  </div>
+  <div class="section-body">
+    <div class="states-grid">
+      <div class="state-card"><div class="state-card__stage"><a href="#" class="bc__item">Asset Explorer</a></div><div class="state-card__meta"><b>Parent · idle</b>#005BA6 · no underline</div></div>
+      <div class="state-card"><div class="state-card__stage"><a href="#" class="bc__item" style="color:#004A84;text-decoration:underline;text-underline-offset:3px;">Asset Explorer</a></div><div class="state-card__meta"><b>Parent · hover</b>#004A84 · underline · 3 px offset</div></div>
+      <div class="state-card"><div class="state-card__stage"><span class="bc__current">Alert</span></div><div class="state-card__meta"><b>Current</b>#949494 · not interactive</div></div>
+      <div class="state-card"><div class="state-card__stage"><span class="bc__sep" aria-hidden="true"><svg viewBox="0 0 7 10" fill="none"><path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="state-card__meta"><b>Separator</b>7 × 10 chevron · #949494</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Tokens</h2>
+    <div class="desc">1-for-1 with the Figma source.</div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <table class="tokens">
+      <thead><tr><th>Token</th><th>Resolves to</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-cmp-breadcrumb-gap</code></td><td><code>--ps-prim-space-3</code> (9 px)</td><td>Gap between every segment</td></tr>
+        <tr><td><code>--ps-cmp-breadcrumb-text</code></td><td><code>--ps-sem-text-body</code></td><td>Source Sans Pro 14 / 18 px</td></tr>
+        <tr><td><code>--ps-cmp-breadcrumb-fg-link</code></td><td><code>--ps-sem-fg-brand</code> (#005BA6)</td><td>Parent link color</td></tr>
+        <tr><td><code>--ps-cmp-breadcrumb-fg-link-hover</code></td><td><code>--ps-sem-action-hover</code> (#004A84)</td><td>Parent link on hover</td></tr>
+        <tr><td><code>--ps-cmp-breadcrumb-fg-current</code></td><td><code>--ps-sem-fg-primary</code></td><td>Current page label</td></tr>
+        <tr><td><code>--ps-cmp-breadcrumb-fg-default</code></td><td><code>--ps-sem-fg-tertiary</code> (#949494)</td><td>Generic tertiary copy in chrome</td></tr>
+        <tr><td><code>--ps-cmp-breadcrumb-separator-color</code></td><td><code>--ps-sem-border-strong</code> (#949494)</td><td>7 × 10 chevron separator</td></tr>
+        <tr><td><code>--ps-cmp-breadcrumb-back-bg-hover</code></td><td><code>--ps-sem-bg-brand-tint</code> (#EFF9FE)</td><td>Hover bg on the leading back-button variant</td></tr>
+        <tr><td><code>--ps-cmp-breadcrumb-back-padding-x</code></td><td><code>--ps-prim-space-3</code></td><td>Back-button padding (x)</td></tr>
+        <tr><td><code>--ps-cmp-breadcrumb-back-padding-y</code></td><td><code>--ps-prim-space-2</code></td><td>Back-button padding (y)</td></tr>
+        <tr><td><code>--ps-cmp-breadcrumb-back-radius</code></td><td><code>--ps-sem-radius-control</code></td><td>Back-button corner radius</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Do &amp; Don't</h2>
+    <div class="desc"></div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;">
+      <div style="padding:16px 20px;border-right:1px solid #F1F1F1;">
+        <div style="font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;color:#0A7850;background:#E5F9F2;padding:8px 12px;border-radius:4px;margin-bottom:12px;display:inline-block;">Do</div>
+        <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#4A4A4A;">
+          <li>Use on detail pages reached from a list.</li>
+          <li>Reflect the user's actual path, not the IA.</li>
+          <li>Truncate long middle segments to "…" when needed.</li>
+          <li>Make every parent a real link.</li>
+        </ul>
+      </div>
+      <div style="padding:16px 20px;">
+        <div style="font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;color:#9E2020;background:#FDECEC;padding:8px 12px;border-radius:4px;margin-bottom:12px;display:inline-block;">Don't</div>
+        <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#4A4A4A;">
+          <li>Add a breadcrumb to top-level pages (no parent).</li>
+          <li>Make the current page a link.</li>
+          <li>Show more than 4 segments — truncate the middle.</li>
+          <li>Use as primary navigation. Use the left rail.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

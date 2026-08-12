@@ -1,0 +1,9 @@
+<svg width="600" height="40" viewBox="0 0 600 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="40" rx="5" fill="#FEF0F0"></rect>
+  <g transform="translate(18, 8)">
+    <circle cx="12" cy="12" r="10" stroke="#E00000" stroke-width="2" fill="none"></circle>
+    <path d="M15 9l-6 6" stroke="#E00000" stroke-width="2" stroke-linecap="round"></path>
+    <path d="M9 9l6 6" stroke="#E00000" stroke-width="2" stroke-linecap="round"></path>
+  </g>
+  <text x="60" y="25" font-family="Source Sans Pro, sans-serif" font-size="14" font-weight="700" fill="#E00000">Part Order #: 64434335 has been Rejected.</text>
+</svg>

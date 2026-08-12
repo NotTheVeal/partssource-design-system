@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Bloomreach CMS Components</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+
+    .component-grid{display:grid;gap:24px;padding:24px;}
+    .component-card{border:1px solid #E6E6E6;border-radius:8px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .component-preview{padding:32px;background:var(--ps-sem-bg-canvas);border-bottom:1px solid #E6E6E6;display:flex;align-items:center;justify-content:center;min-height:200px;}
+    .component-info{padding:20px 24px;}
+    .component-name{font-size:16px;font-weight:600;margin:0 0 8px;color:var(--ps-sem-fg-primary);}
+    .component-desc{font-size:13px;color:var(--ps-sem-fg-tertiary);line-height:1.6;margin:0 0 16px;}
+    .component-props{margin:0;padding:0;list-style:none;}
+    .component-props li{padding:8px 12px;background:#F8F8F8;border-radius:4px;margin-bottom:6px;font-size:12px;font-family:ui-monospace,Menlo,monospace;color:var(--ps-sem-fg-secondary);}
+    .component-props code{color:var(--ps-brand-primary);font-weight:600;}
+
+    .banner-preview{width:100%;max-width:800px;height:93px;background:linear-gradient(135deg, var(--ps-sem-action-default) 0%, #009CF4 100%);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--ps-sem-fg-inverse);font-size:18px;font-weight:600;}
+    
+    .image-block-preview{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:700px;width:100%;}
+    .image-block-preview img{width:100%;height:200px;object-fit:cover;border-radius:4px;background:#E0E0E0;}
+    .image-block-content{display:flex;flex-direction:column;gap:12px;}
+    .image-block-content h3{margin:0;font-size:20px;font-weight:600;color:#002F48;}
+    .image-block-content p{margin:0;font-size:14px;line-height:1.6;color:var(--ps-sem-fg-secondary);}
+    .image-block-content .btn{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 24px;background:var(--ps-brand-primary);color:var(--ps-sem-fg-inverse);border-radius:4px;font-size:14px;font-weight:600;text-decoration:none;border:2px solid var(--ps-brand-primary);transition:all 0.2s;}
+    .image-block-content .btn:hover{background:var(--ps-sem-bg-surface);color:var(--ps-brand-primary);}
+
+    .text-block-preview{max-width:600px;}
+    .text-block-preview h2{margin:0 0 16px;font-size:24px;font-weight:300;color:#002F48;line-height:1.2;}
+    .text-block-preview p{margin:0 0 12px;font-size:16px;line-height:1.6;color:var(--ps-sem-fg-secondary);}
+
+    .card-grid-preview{display:grid;grid-template-columns:repeat(3, 1fr);gap:16px;max-width:800px;}
+    .card-grid-preview .card{border:1px solid #E6E6E6;border-radius:8px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .card-grid-preview .card-img{width:100%;height:120px;background:#E0E0E0;}
+    .card-grid-preview .card-body{padding:16px;}
+    .card-grid-preview .card-title{margin:0 0 8px;font-size:14px;font-weight:600;color:var(--ps-sem-fg-primary);}
+    .card-grid-preview .card-text{margin:0;font-size:12px;color:var(--ps-sem-fg-tertiary);line-height:1.5;}
+  </style>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">CMS Components</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Bloomreach CMS Components</h1>
+  <p class="intro">Content management components for Bloomreach Experience Manager. These components are designed to work seamlessly with the PartsSource design system while providing flexible content authoring capabilities.</p>
+
+  <!-- Banner Component -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Banner</h2>
+      <div class="desc">Full-width hero banner for page headers and promotional content.</div>
+    </div>
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-preview">
+          <div class="banner-preview">
+            Banner Component Preview
+          </div>
+        </div>
+        <div class="component-info">
+          <h3 class="component-name">Banner</h3>
+          <p class="component-desc">Responsive full-width banner with background image support. Use for page heroes, promotional sections, and campaign headers.</p>
+          <ul class="component-props">
+            <li><code>backgroundImage</code>: string — URL to background image</li>
+            <li><code>height</code>: number — Banner height in pixels (default: 93px)</li>
+            <li><code>overlay</code>: boolean — Dark overlay for text readability</li>
+            <li><code>alignment</code>: "left" | "center" | "right" — Content alignment</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Block Component -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Image Block</h2>
+      <div class="desc">Content block with image and text side-by-side. Flexible layout for features, benefits, and storytelling.</div>
+    </div>
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-preview">
+          <div class="image-block-preview">
+            <img src="" alt="Placeholder">
+            <div class="image-block-content">
+              <h3>Mission-critical uptime</h3>
+              <p>Evidence-based procurement for healthcare organizations. Access real-time inventory, verified pricing, and technical specifications.</p>
+              <a href="#" class="btn">Learn More</a>
+            </div>
+          </div>
+        </div>
+        <div class="component-info">
+          <h3 class="component-name">ImageBlock</h3>
+          <p class="component-desc">Two-column layout pairing imagery with rich text content. Supports image placement on left or right, configurable CTA buttons, and responsive stacking on mobile.</p>
+          <ul class="component-props">
+            <li><code>imageUrl</code>: string — URL to feature image</li>
+            <li><code>imageAlt</code>: string — Alt text for accessibility</li>
+            <li><code>imagePosition</code>: "left" | "right" — Image placement (default: "left")</li>
+            <li><code>title</code>: string — Block heading text</li>
+            <li><code>content</code>: string — Rich text body content</li>
+            <li><code>ctaText</code>: string — Call-to-action button label</li>
+            <li><code>ctaUrl</code>: string — CTA destination URL</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Text Block Component -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Text Block</h2>
+      <div class="desc">Rich text content block for long-form prose, policy text, and editorial content.</div>
+    </div>
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-preview">
+          <div class="text-block-preview">
+            <h2>Parts, service, and labor</h2>
+            <p>PartsSource provides comprehensive medical equipment management solutions for healthcare organizations. Our platform connects you with verified suppliers, real-time inventory, and certified service providers.</p>
+            <p>Access technical documentation, maintenance schedules, and warranty information in a single unified dashboard. Make informed procurement decisions backed by data analytics and usage insights.</p>
+          </div>
+        </div>
+        <div class="component-info">
+          <h3 class="component-name">TextBlock</h3>
+          <p class="component-desc">Full-width or constrained text content with rich formatting support. Ideal for policy pages, about sections, and detailed product information.</p>
+          <ul class="component-props">
+            <li><code>content</code>: string — Rich HTML content</li>
+            <li><code>maxWidth</code>: number — Content max-width in pixels (default: 860px)</li>
+            <li><code>alignment</code>: "left" | "center" — Text alignment</li>
+            <li><code>padding</code>: "none" | "sm" | "md" | "lg" — Vertical padding preset</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card Grid Component -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Card Grid</h2>
+      <div class="desc">Responsive grid of content cards for features, services, or product highlights.</div>
+    </div>
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-preview">
+          <div class="card-grid-preview">
+            <div class="card">
+              <div class="card-img"></div>
+              <div class="card-body">
+                <h4 class="card-title">Real-time Inventory</h4>
+                <p class="card-text">Access live stock levels across verified suppliers.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-img"></div>
+              <div class="card-body">
+                <h4 class="card-title">Verified Pricing</h4>
+                <p class="card-text">Transparent pricing from certified vendors.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-img"></div>
+              <div class="card-body">
+                <h4 class="card-title">Technical Specs</h4>
+                <p class="card-text">Complete documentation and service manuals.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="component-info">
+          <h3 class="component-name">CardGrid</h3>
+          <p class="component-desc">Configurable grid layout for showcasing features, benefits, or products. Responsive columns adapt from 3-col desktop to single-column mobile.</p>
+          <ul class="component-props">
+            <li><code>cards</code>: Array — Collection of card objects with image, title, content</li>
+            <li><code>columns</code>: 2 | 3 | 4 — Desktop column count (default: 3)</li>
+            <li><code>gap</code>: "sm" | "md" | "lg" — Spacing between cards</li>
+            <li><code>cardStyle</code>: "outlined" | "elevated" — Card visual style</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance and implementation guidance for CMS components.</div>
+    </div>
+    <div class="component-grid">
+      <ul style="margin:0;padding:0 24px 24px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Semantic HTML:</strong> All components use proper heading hierarchy (&lt;h1&gt; → &lt;h2&gt; → &lt;h3&gt;) for screen reader navigation</li>
+        <li><strong>Image alt text is required:</strong> Content authors must provide descriptive alt text for all images — no decorative images allowed in CMS components</li>
+        <li><strong>Keyboard navigation:</strong> All interactive elements (buttons, links) are keyboard accessible with visible focus states</li>
+        <li><strong>Color contrast:</strong> All text meets WCAG AA standards (4.5:1 for body, 3:1 for large text 18px+)</li>
+        <li><strong>Responsive images:</strong> All image components use <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">srcset</code> for responsive loading and proper sizing</li>
+        <li><strong>Link purpose:</strong> CTA button text must clearly describe destination — avoid generic "Click Here" or "Learn More" without context</li>
+        <li><strong>Touch targets:</strong> All clickable cards and buttons meet 44×44px minimum touch target size (WCAG 2.5.5)</li>
+        <li><strong>Content structure:</strong> Use TextBlock for long-form content; ImageBlock for feature highlights; CardGrid for scannable benefits</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Technical Implementation -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Technical Implementation</h2>
+      <div class="desc">Usage notes and integration guidance for developers.</div>
+    </div>
+    <div class="component-grid">
+      <div style="padding:0 24px 24px;">
+        <h3 style="font-size:14px;font-weight:600;margin:0 0 12px;color:var(--ps-sem-fg-primary);">Component Source</h3>
+        <p style="font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.6;margin:0 0 16px;">All Bloomreach CMS components are available in the <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">@partssource/react-ui-core</code> package. Import from <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">/cms-components</code> path.</p>
+        
+        <h3 style="font-size:14px;font-weight:600;margin:24px 0 12px;color:var(--ps-sem-fg-primary);">Usage Example</h3>
+        <pre style="background:#F8F8F8;padding:16px;border-radius:4px;overflow-x:auto;margin:0 0 16px;"><code style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--ps-sem-fg-primary);">import { ImageBlock } from '@partssource/react-ui-core/cms-components';
+
+&lt;ImageBlock
+  imageUrl="/assets/hero.jpg"
+  imageAlt="Medical equipment warehouse"
+  imagePosition="right"
+  title="Mission-critical uptime, on-demand"
+  content="&lt;p&gt;Access real-time inventory...&lt;/p&gt;"
+  ctaText="Request a Quote"
+  ctaUrl="/quote"
+/&gt;</code></pre>
+
+        <h3 style="font-size:14px;font-weight:600;margin:24px 0 12px;color:var(--ps-sem-fg-primary);">Storybook Documentation</h3>
+        <p style="font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.6;margin:0;">Full component API documentation and interactive examples are available in the PartsSource Storybook at <a href="https://partssourceinc.github.io/react-ui-core" style="color:var(--ps-brand-primary);text-decoration:none;">partssourceinc.github.io/react-ui-core</a></p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

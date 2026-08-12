@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Buttons" subtitle="Default outline → hover fill · Pressed · Disabled · Focus (lg + sm)" viewport="700x720" --><html><head>
+
+
+  <meta charset="utf-8">
+  <title>Buttons</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+
+    .states{padding:8px 0;}
+    .state-row{display:grid;grid-template-columns:140px minmax(0,360px) minmax(220px,1fr);gap:32px;align-items:center;padding:16px 24px;border-bottom:1px solid #F1F1F1;}
+    @media (max-width: 980px){
+      .state-row{grid-template-columns:140px minmax(0,1fr);}
+      .state-row .caption{grid-column:2;margin-top:-4px;}
+    }
+    .state-row:last-child{border-bottom:0;}
+    .state-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-fg-tertiary);font-weight:700;}
+    .btn-cell{display:flex;align-items:center;}
+    .caption{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+    .caption code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--ps-sem-bg-muted);padding:2px 6px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+
+    /* ── Base button ───────────────────────────────── */
+    .btn {
+      font-family: inherit;
+      font-weight: var(--ps-weight-regular);
+      letter-spacing: 0;
+      border-radius: 4px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--ps-duration-fast) var(--ps-ease-standard),
+                  color var(--ps-duration-fast) var(--ps-ease-standard),
+                  border-color var(--ps-duration-fast) var(--ps-ease-standard),
+                  box-shadow var(--ps-duration-fast) var(--ps-ease-standard);
+    }
+    .btn.lg { height: 50px; min-width: 325px; padding: 0 15px; font-size: 15px; }
+    .btn.sm { height: 32px; min-width: 87px; padding: 0 8px; font-size: 10px; border-width: 1px; font-family: 'Source Sans Pro', var(--ps-font-sans); font-weight: 500; }
+
+    /* ── Primary (default = outline, hover = fill) ─── */
+    /* Figma spec: Secondary/LG — 325×50, 4px radius, 2px #005BA6 border, white bg, #005BA6 text, 15px regular */
+    .btn.primary { background:var(--ps-sem-bg-surface);color:var(--ps-brand-primary);border-color:var(--ps-brand-primary); }
+    .btn.primary.hover,.btn.primary:hover { background:var(--ps-brand-primary);color:var(--ps-sem-fg-inverse);border-color:#009CF4; }
+    .btn.primary.pressed,.btn.primary:active { background:#004A84;color:var(--ps-sem-fg-inverse);border-color:#004A84;box-shadow:0 4px 4px rgba(0,0,0,.25); }
+    .btn.primary.focus { background:var(--ps-sem-bg-surface);color:var(--ps-brand-primary);border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(176,198,211,.91); }
+    .btn.primary.disabled,.btn.primary:disabled { background:#DCDCDC;color:var(--ps-sem-fg-tertiary);border-color:var(--ps-sem-fg-tertiary);cursor:not-allowed; }
+
+    /* ── Tertiary / Secondary ghost (sm only) ─── */
+    .btn.tertiary {
+      background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-secondary);border-color:var(--ps-sem-border-default);border-radius:4px;
+      font-weight:500;letter-spacing:0;
+    }
+    .btn.tertiary.hover,.btn.tertiary:hover{ background:var(--ps-brand-primary); color:var(--ps-sem-fg-inverse); border-color:var(--ps-brand-primary); }
+    .btn.tertiary.pressed,.btn.tertiary:active{ background:#004A84; color:var(--ps-sem-fg-inverse); border-color:#004A84; }
+    .btn.tertiary.disabled,.btn.tertiary:disabled{ background:#DCDCDC; color:#949494; border-color:#949494; cursor:not-allowed; }
+
+    /* ── Tertiary LG (pill-shaped grey, 40px) ── */
+    .btn.tert-lg {
+      height:40px; min-width:175px; padding:0 24px;
+      border-radius:9999px;
+      background:var(--ps-sem-bg-muted); color:var(--ps-sem-fg-primary); border:1px solid transparent;
+      font-family:inherit; font-weight:var(--ps-weight-regular);
+      font-size:14px; text-transform:none; letter-spacing:0;
+      display:inline-flex; align-items:center; justify-content:center;
+      cursor:pointer;
+      transition:background var(--ps-duration-fast) var(--ps-ease-standard),
+                 border-color var(--ps-duration-fast) var(--ps-ease-standard),
+                 box-shadow var(--ps-duration-fast) var(--ps-ease-standard);
+    }
+    .btn.tert-lg.hover,.btn.tert-lg:hover{ background:#DCDCDC; }
+    .btn.tert-lg.pressed,.btn.tert-lg:active{ background:#CCCCCC; box-shadow:0 4px 4px rgba(0,0,0,.25); }
+    .btn.tert-lg.focus{ background:var(--ps-sem-bg-muted); border-color:var(--ps-blue-500); box-shadow:0 0 0 3px var(--ps-blue-50); }
+    .btn.tert-lg.disabled,.btn.tert-lg:disabled{ background:var(--ps-sem-bg-muted); color:var(--ps-neutral-400); cursor:not-allowed; }
+
+    /* ── Arrow / back icon button (square, 4px radius on hover/press) ── */
+    .btn.arrow {
+      width:28px; height:28px; border-radius:4px;
+      background:transparent; border:1px solid transparent;
+      display:inline-flex; align-items:center; justify-content:center;
+      cursor:pointer; padding:0;
+      transition:background var(--ps-duration-fast) var(--ps-ease-standard);
+    }
+    .btn.arrow svg{ display:block; }
+    .btn.arrow.hover,.btn.arrow:hover{ background:var(--ps-sem-bg-muted); border-radius:4px; }
+    .btn.arrow.pressed,.btn.arrow:active{ background:#DCDCDC; border-radius:4px; }
+    .btn.arrow.disabled,.btn.arrow:disabled{ background:transparent; cursor:not-allowed; opacity:.5; }
+
+    /* Orange pill (action CTA) — large only */
+    .btn.pill {
+      background:#FF9505;color:var(--ps-sem-fg-inverse);border-radius:100px;border-color:transparent;
+      height:48px;padding:0 32px;
+      font-weight:700;text-transform:uppercase;letter-spacing:0.5px;
+    }
+    .btn.pill.hover,.btn.pill:hover{ background:#EC8000; }
+    .btn.pill.pressed,.btn.pill:active{ background:#D27200; }
+    .btn.pill.disabled,.btn.pill:disabled{ background:#FFCA82;color:var(--ps-sem-fg-inverse);cursor:not-allowed; }
+
+    /* Inline buttons */
+    .btn-inline{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:inherit;font-weight:var(--ps-weight-regular);
+      color:var(--ps-sem-fg-tertiary);text-decoration:none;background:transparent;border:0;cursor:pointer;
+    }
+    .btn-inline:hover{ color:var(--ps-brand-primary); }
+
+    /* Inline — Link (body-size, underlined) */
+    .btn-inline.link{
+      font-size:14px;line-height:20px;padding:0;
+      text-decoration:underline;text-decoration-color:var(--ps-sem-fg-tertiary);text-decoration-thickness:1px;text-underline-offset:4px;
+    }
+    .btn-inline.link:hover{ text-decoration-color:var(--ps-brand-primary); }
+
+    /* Inline — Link (Blue) - Product title style */
+    .btn-inline.link-blue{
+      font-size:16px;font-weight:700;line-height:1.3;padding:0;
+      color:var(--ps-sem-fg-brand);text-decoration:none;
+    }
+    .btn-inline.link-blue:hover{ text-decoration:underline; }
+
+    /* Inline — Tall (48px, uppercase, ghost action) */
+    .btn-inline.tall{
+      height:48px;padding:0 4px;
+      font-size:14px;font-weight:var(--ps-weight-semibold);
+      text-transform:uppercase;letter-spacing:.3px;
+    }
+
+    /* Inline — Directory (body-size with chevron) */
+    .btn-inline.dir{
+      font-size:14px;line-height:20px;padding:0;
+    }
+    .btn-inline.dir svg{ transition:transform var(--ps-duration-fast) var(--ps-ease-standard); }
+    .btn-inline.dir:hover svg{ transform:translateX(2px); }
+    .btn-inline.dir:hover svg path{ stroke:var(--ps-brand-primary); }
+  </style>
+</head>
+<body data-cc-id="cc-1" style="cursor: crosshair; font-family: &quot;Source Sans Pro&quot;;">
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Buttons</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Buttons</h1>
+  <p class="intro">All button variants and their interaction states. The primary button is a 50px blue outline that fills on hover — per current brand direction (orange fails ADA contrast, so it is being retired from CTAs). The orange pill remains documented below for legacy contexts only.</p>
+
+  <!-- Primary Large -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Primary — Large · 50px</h2>
+      <div class="desc">Default button for forms, primary page actions, and modals.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Default</div>
+        <div class="btn-cell"><button class="btn primary lg">Buy Now</button></div>
+        <div class="caption">White fill with PS Blue border and text.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Hover</div>
+        <div class="btn-cell"><button class="btn primary lg hover">Buy Now</button></div>
+        <div class="caption">Fill shifts to PS Blue — <code>#005BA6</code> — border swaps to Blue 4 <code>#009CF4</code>, text to white.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Pressed</div>
+        <div class="btn-cell"><button class="btn primary lg pressed">Buy Now</button></div>
+        <div class="caption">Midnight fill <code>#004A84</code> with a 4px drop shadow — <code>rgba(0,0,0,.25)</code> — on click.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Focus</div>
+        <div class="btn-cell"><button class="btn primary lg focus">Buy Now</button></div>
+        <div class="caption">Default state with a 3px Blue-Gray <code>#B0C6D3</code> focus ring at 91% opacity.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Disabled</div>
+        <div class="btn-cell"><button class="btn primary lg" disabled="">Buy Now</button></div>
+        <div class="caption">Grey 4 fill <code>#DCDCDC</code>, 2px Grey 2 border and label <code>#777777</code>. Cursor becomes <code>not-allowed</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secondary Small -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Secondary — Small · 32px</h2>
+      <div class="desc">Compact neutral ghost action — white fill with a 1 px Grey 4 border. Use in table rows, filter bars, and dense toolbars. Often paired with icons.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Default</div>
+        <div class="btn-cell"><button class="btn tertiary sm">Apply Filter</button></div>
+        <div class="caption">White background, 1 px Grey 4 border — <code>#DCDCDC</code> — with Grey 1 label <code>#4A4A4A</code>. 10px Source Sans Pro Medium. 4 px corner radius.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Hover</div>
+        <div class="btn-cell">
+          <button class="btn tertiary sm hover">Apply Filter</button>
+        </div>
+        <div class="caption">Fills with PS Blue — <code>#005BA6</code> — text turns white, border stays PS Blue.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Pressed</div>
+        <div class="btn-cell">
+          <button class="btn tertiary sm pressed">Apply Filter</button>
+        </div>
+        <div class="caption">Darkens to <code>#004A84</code> on click, white text.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Deactivated</div>
+        <div class="btn-cell">
+          <button class="btn tertiary sm" disabled="">Apply Filter</button>
+        </div>
+        <div class="caption">Grey 4 fill <code>#DCDCDC</code>, Grey 3 border and label <code>#949494</code>. Cursor becomes <code>not-allowed</code>.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">With Icon</div>
+        <div class="btn-cell">
+          <button class="btn tertiary sm">Apply Filter
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:6px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"></path></svg>
+          </button>
+        </div>
+        <div class="caption">Optional trailing icon — typically export, chevron, or action glyph. Icon color matches label.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inline -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Inline Buttons</h2>
+      <div class="desc">Unstyled text actions that sit inline with copy or table cells. Use for navigation links and low-weight "see more" affordances.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Inline — Link</div>
+        <div class="btn-cell"><a class="btn-inline link" href="#">Understand my needs</a></div>
+        <div class="caption">Grey 2 — <code>#777777</code> — with a 1px underline, 4px offset. Use within paragraphs and table cells as a contextual link. 14px body size.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Inline — Link (Blue)</div>
+        <div class="btn-cell"><a class="btn-inline link-blue" href="#">ADULT REUSABLE SPO2 SENSOR</a></div>
+        <div class="caption">PS Blue — <code>#005DA6</code> — no underline default, underline on hover. Use for primary product titles and high-emphasis links. 16px bold.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Inline — Tall</div>
+        <div class="btn-cell"><a class="btn-inline tall" href="#">ALL CATEGORIES</a></div>
+        <div class="caption">48px-tall ghost action — Grey 2 uppercase label, no underline or border. Used in header nav and category rails.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Inline — Directory</div>
+        <div class="btn-cell">
+          <a class="btn-inline dir" href="#">Diagnostic Imaging
+            <svg width="8" height="11" viewBox="0 0 8 11" fill="none" aria-hidden="true"><path d="M1.2 1 6 5.5 1.2 10" stroke="#949494" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </a>
+        </div>
+        <div class="caption">Drill-down row action. Label in Grey 2, right chevron in Grey 3 — <code>#949494</code>. Use in directory lists and category navigation.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tertiary Large -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Tertiary — Large · 40px</h2>
+      <div class="desc">Neutral pill action used for secondary affordances inside cards, filter drawers, and toolbar overflows — never competes with the Primary or Pill. Sentence case, 14px label.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Default</div>
+        <div class="btn-cell"><button class="btn tert-lg">Save for later</button></div>
+        <div class="caption">Grey 5 fill — <code>#F1F1F1</code> — with Grey 1 label. Fully-rounded (pill) radius.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Hover</div>
+        <div class="btn-cell"><button class="btn tert-lg hover">Save for later</button></div>
+        <div class="caption">Background deepens to Grey 4 — <code>#DCDCDC</code>.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Pressed</div>
+        <div class="btn-cell"><button class="btn tert-lg pressed">Save for later</button></div>
+        <div class="caption">Darkens to <code>#CCCCCC</code> and picks up a 4px drop shadow — <code>rgba(0,0,0,.25)</code>.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Focus</div>
+        <div class="btn-cell"><button class="btn tert-lg focus">Save for later</button></div>
+        <div class="caption">Default fill with a 1px PS Blue border and 3px light-blue focus ring.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Disabled</div>
+        <div class="btn-cell"><button class="btn tert-lg" disabled="">Save for later</button></div>
+        <div class="caption">Same grey fill with Grey 3 label. Cursor becomes <code>not-allowed</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Arrow (circular back) -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Arrow — Back · 28px</h2>
+      <div class="desc">Back-navigation affordance. Pairs with breadcrumbs, drawer headers, and detail-page return actions. Transparent at rest; picks up a 4px-radius square background on hover and press.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Default</div>
+        <div class="btn-cell">
+          <button class="btn arrow" aria-label="Back">
+            <svg width="18" height="18" viewBox="0 0 27 28" fill="none" aria-hidden="true">
+              <path d="M13.314 5.24818C13.69 4.87245 14.2993 4.87245 14.6753 5.24818C15.0517 5.62429 15.0517 6.23436 14.6753 6.61046L7.28059 14L14.6753 21.3895C15.0517 21.7657 15.0517 22.3757 14.6753 22.7518C14.2993 23.1276 13.69 23.1276 13.314 22.7518L4.55603 14L13.314 5.24818Z" fill="#4A4A4A"></path>
+              <path d="M22.4441 14.0015C22.4441 14.5385 22.0087 14.9739 21.4717 14.9739L5.90217 14.9739L5.90217 13.0291L21.4717 13.0291C22.0087 13.0291 22.4441 13.4645 22.4441 14.0015Z" fill="#4A4A4A"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="caption">Transparent background with Grey 1 left-arrow glyph. 28×28 hit area — no border or fill at rest.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Hover</div>
+        <div class="btn-cell">
+          <button class="btn arrow hover" aria-label="Back">
+            <svg width="18" height="18" viewBox="0 0 27 28" fill="none" aria-hidden="true">
+              <path d="M13.314 5.24818C13.69 4.87245 14.2993 4.87245 14.6753 5.24818C15.0517 5.62429 15.0517 6.23436 14.6753 6.61046L7.28059 14L14.6753 21.3895C15.0517 21.7657 15.0517 22.3757 14.6753 22.7518C14.2993 23.1276 13.69 23.1276 13.314 22.7518L4.55603 14L13.314 5.24818Z" fill="#4A4A4A"></path>
+              <path d="M22.4441 14.0015C22.4441 14.5385 22.0087 14.9739 21.4717 14.9739L5.90217 14.9739L5.90217 13.0291L21.4717 13.0291C22.0087 13.0291 22.4441 13.4645 22.4441 14.0015Z" fill="#4A4A4A"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="caption">Picks up a Grey 5 fill — <code>#F1F1F1</code> — with a 4px-radius square background.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Pressed</div>
+        <div class="btn-cell">
+          <button class="btn arrow pressed" aria-label="Back">
+            <svg width="18" height="18" viewBox="0 0 27 28" fill="none" aria-hidden="true">
+              <path d="M13.314 5.24818C13.69 4.87245 14.2993 4.87245 14.6753 5.24818C15.0517 5.62429 15.0517 6.23436 14.6753 6.61046L7.28059 14L14.6753 21.3895C15.0517 21.7657 15.0517 22.3757 14.6753 22.7518C14.2993 23.1276 13.69 23.1276 13.314 22.7518L4.55603 14L13.314 5.24818Z" fill="#4A4A4A"></path>
+              <path d="M22.4441 14.0015C22.4441 14.5385 22.0087 14.9739 21.4717 14.9739L5.90217 14.9739L5.90217 13.0291L21.4717 13.0291C22.0087 13.0291 22.4441 13.4645 22.4441 14.0015Z" fill="#4A4A4A"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="caption">Square background deepens to Grey 4 — <code>#DCDCDC</code> — on click. Radius stays 4px.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pill -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Pill — Large · 48px</h2>
+      <div class="desc">Highest-intent action on a page — typically "Add to Cart" or "Propose Quote". Use only one per view. No small size exists.</div>
+    </div>
+    <div style="padding:14px 24px;background:#FFEAEA;border-bottom:1px solid var(--ps-border-default);display:flex;gap:10px;align-items:flex-start;">
+      <span style="color:#FF4242;font-weight:700;flex-shrink:0;font-size:13px;">⚠ Deprecated direction</span>
+      <span style="color:#FF4242;font-size:13px;font-weight:600;line-height:1.4;">Per brand redlines: <em>"Moving away from the orange for CTAs (orange is not ADA compliant)."</em> New work should use the Primary (blue outline) button above.</span>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Normal</div>
+        <div class="btn-cell"><button class="btn pill">Propose Quote</button></div>
+        <div class="caption">Orange 1 fill — <code>#FF9505</code> — with fully rounded ends (24px radius).</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Hover</div>
+        <div class="btn-cell"><button class="btn pill hover">Propose Quote</button></div>
+        <div class="caption">Darkens to Orange 2 — <code>#EC8000</code>.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Pressed</div>
+        <div class="btn-cell"><button class="btn pill pressed">Propose Quote</button></div>
+        <div class="caption">Deepens to Orange 3 — <code>#D27200</code> — on click.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Disabled</div>
+        <div class="btn-cell"><button class="btn pill" disabled="">Propose Quote</button></div>
+        <div class="caption">Tinted Orange 4 — <code>#FFCA82</code>. Cursor becomes <code>not-allowed</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Primary Large - All States -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Primary — Large · 50px — All States</h2>
+      <div class="desc">Complete state set for the primary CTA button including loading state.</div>
+    </div>
+    <div style="padding:14px 24px;background:#FFEAEA;border-bottom:1px solid var(--ps-border-default);display:flex;gap:10px;align-items:flex-start;">
+      <span style="color:#FF4242;font-weight:700;flex-shrink:0;font-size:13px;">⚠ Deprecated direction</span>
+      <span style="color:#FF4242;font-size:13px;font-weight:600;line-height:1.4;">Per brand redlines: <em>"Moving away from the orange for CTAs (orange is not ADA compliant)."</em> New work should use the Primary (blue outline) button above.</span>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Normal</div>
+        <div class="btn-cell"><button class="btn pill" style="border-radius:4px;">Primary Button</button></div>
+        <div class="caption">Orange 1 fill — <code>#FF9505</code> — 325×50, 4px radius.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Hover</div>
+        <div class="btn-cell"><button class="btn pill hover" style="border-radius:4px;">Primary Button</button></div>
+        <div class="caption">Darkens to Orange 2 — <code>#EC8000</code>.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Pressed</div>
+        <div class="btn-cell"><button class="btn pill pressed" style="border-radius:4px;">Primary Button</button></div>
+        <div class="caption">Deepens to Orange 3 — <code>#D27200</code> — on click.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Disabled</div>
+        <div class="btn-cell"><button class="btn pill" style="border-radius:4px;" disabled="">Primary Button</button></div>
+        <div class="caption">Tinted Orange 4 — <code>#FFCA82</code>. Cursor becomes <code>not-allowed</code>.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Loading</div>
+        <div class="btn-cell">
+          <button class="btn pill" style="border-radius:4px;position:relative;cursor:wait;" disabled="">
+            <span style="opacity:0;">Primary Button</span>
+            <svg style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);animation:spin 0.8s linear infinite;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+              <circle cx="12" cy="12" r="10" opacity="0.25"></circle>
+              <path d="M12 2 A10 10 0 0 1 22 12" stroke-linecap="round"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="caption">White spinner replaces text. Button disabled during async operation. Orange background maintained.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance, keyboard support, and implementation guidance for inclusive button design.</div>
+    </div>
+    <div class="states">
+      <ul style="margin:0;padding:20px 24px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Minimum 44×44px touch target</strong> (WCAG 2.5.5) — Small Secondary buttons are 40px height; pad clickable area to 44px minimum</li>
+        <li><strong>Keyboard navigation:</strong> Enter and Space both trigger actions; Tab moves focus; arrow keys navigate segmented button groups</li>
+        <li><strong>Focus indicators:</strong> 2px PS Blue outline with 2px offset meets WCAG 2.4.11 (3:1 contrast against adjacent colors)</li>
+        <li><strong>Use semantic &lt;button&gt; elements</strong> — not divs or spans; ensures proper keyboard support and screen reader announcements</li>
+        <li><strong>Disabled state:</strong> Use <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">disabled</code> attribute so screen readers announce "dimmed" or "unavailable"</li>
+        <li><strong>Icon-only buttons need labels:</strong> Add <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">aria-label</code> for back arrow and square icon buttons</li>
+        <li><strong>Loading state:</strong> Use <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">aria-busy="true"</code> and lock width to prevent layout shift during spinner</li>
+        <li><strong>Contrast ratios:</strong> Orange CTAs (#FF9505) fail WCAG AA — migrating to PS Blue (#005BA6) which meets 5.6:1 on white</li>
+      </ul>
+    </div>
+  </div>
+
+
+
+</body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

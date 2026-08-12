@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Modals, Dialogs & Drawers" subtitle="Modal, Dialog, Drawer, Bottom Sheet — full anatomy, states, tokens, a11y" --><html><head>
+
+
+  <meta charset="utf-8">
+  <title>Modals, Dialogs &amp; Drawers — PartsSource Design System</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 96px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:880px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+
+    .section-body{padding:32px 24px;background:var(--ps-sem-bg-canvas);}
+    .section-body.plain{background:var(--ps-sem-bg-surface);padding:24px;}
+
+    .demo-cap{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ps-fg-tertiary);font-weight:700;margin:0 0 12px;}
+
+    /* ─────────────────────────────────────────
+       Modal stage — page-behind, scrim, modal
+       ───────────────────────────────────────── */
+    .stage{
+      position:relative;
+      width:100%;
+      background:#F4F6F8;
+      border:1px solid var(--ps-border-default);
+      border-radius:8px;
+      overflow:hidden;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .stage--desk{height:720px;background:#F4F6F8 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'><defs><pattern id='g' width='40' height='40' patternUnits='userSpaceOnUse'><path d='M40 0H0V40' fill='none' stroke='%23E5E7EB' stroke-width='1'/></pattern></defs><rect width='100%25' height='100%25' fill='url(%23g)'/></svg>");}
+    .stage__inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform:scale(.78);transform-origin:center center;}
+    .stage--tab{height:560px;}
+    .stage--mob{height:560px;}
+    .scrim{position:absolute;inset:0;background:rgba(0,0,0,.45);}
+
+    /* Modal shell — matches Figma: 5 px radius, 24 32 padding, #fff */
+    .modal{
+      position:relative;
+      background:var(--ps-sem-bg-surface);
+      border-radius:5px;
+      padding:24px 32px;
+      font-family:'Source Sans Pro','Source Sans 3',var(--ps-font-sans);
+      color:var(--ps-prim-gray-900);
+      box-shadow:0 24px 56px rgba(0,0,0,.25);
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+    .modal--desk{width:850px;}
+    .modal--tab{width:600px;}
+    .modal--mob{width:345px;padding:24px 20px;}
+
+    .modal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+    .modal-top__text{flex:1;display:flex;flex-direction:column;gap:8px;}
+    .modal-top h3{
+      margin:0;
+      font-family:'Source Sans Pro',sans-serif;
+      font-weight:300;
+      font-size:30px;
+      line-height:34px;
+      color:#373F41;
+      letter-spacing:0;
+    }
+    .modal-top p{
+      margin:0;
+      font-size:14px;
+      line-height:1.4;
+      color:var(--ps-sem-fg-secondary);
+    }
+    .modal-top__close{
+      flex-shrink:0;
+      width:24px;
+      height:24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      color:var(--ps-sem-fg-tertiary);
+      background:transparent;
+      border:0;
+      border-radius:3px;
+      transition:background 120ms ease, color 120ms ease;
+    }
+    .modal-top__close:hover{background:var(--ps-sem-bg-muted);color:var(--ps-sem-fg-primary);}
+    .modal-top__close svg{width:14px;height:14px;display:block;}
+
+    .modal-divider{height:1px;background:var(--ps-sem-bg-muted);width:100%;margin:0;border:0;}
+
+    .modal-body{display:flex;flex-direction:column;gap:18px;}
+    .modal-list{display:flex;flex-direction:column;gap:18px;}
+
+    /* Line-item row — collapsed (62 px tall, Modal/LineItem/Default in Figma) */
+    .modal-list__row{
+      position:relative;
+      background:var(--ps-sem-bg-canvas);
+      border:1px solid #F1F1F1;
+      border-radius:5px;
+      padding:14px 10px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+    .modal-list__row--hover{background:#F5F5F5;}
+    .modal-list__row--selected,
+    .modal-list__row--action{
+      background:#EFF9FE;
+      border-color:#6AC7FC;
+    }
+
+    .modal-list__head{
+      display:flex;
+      flex-direction:row;
+      align-items:center;
+      gap:0;
+      min-height:34px;
+    }
+    .modal-list__check{
+      flex-shrink:0;
+      width:24px;
+      height:24px;
+      border:1.5px solid #4A4A4A;
+      border-radius:2px;
+      background:var(--ps-sem-bg-surface);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--ps-sem-fg-inverse);
+    }
+    .modal-list__check--hover{border-color:#EC8000;}
+    .modal-list__check--checked{
+      background:#FF9505;
+      border-color:#FF9505;
+    }
+    .modal-list__check--complete{
+      background:transparent;
+      border:0;
+      color:#1F9B5C;
+    }
+    .modal-list__check svg{width:12px;height:12px;display:block;}
+    .modal-list__check--complete{width:auto;height:auto;}
+    .modal-list__check--complete svg{width:22px;height:22px;}
+
+    .modal-list__cells{
+      flex:1;
+      display:flex;
+      flex-direction:row;
+      align-items:stretch;
+      justify-content:space-between;
+      min-width:0;
+      gap:0;
+    }
+    .modal-list__cell{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:4px;
+      min-width:0;
+      flex:0 0 auto;
+      padding:0 18px;
+      border-right:1px solid #F1F1F1;
+    }
+    .modal-list__cell:first-child{padding-left:0;}
+    .modal-list__cell--desc{flex:1 1 auto;min-width:0;}
+    .modal-list__cell-label{
+      font:400 14px/1.2 "Source Sans Pro",sans-serif;
+      color:var(--ps-sem-fg-secondary);
+      white-space:nowrap;
+    }
+    .modal-list__cell-value{
+      font:600 14px/1.2 "Source Sans Pro",sans-serif;
+      color:var(--ps-sem-fg-secondary);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    /* Secondary Small (per buttons.html spec): 32px h, 1px #DCDCDC border, white bg, #4A4A4A text, 10px Source Sans Pro Medium, 4px radius; hover fills with PS Blue. */
+    .modal-list__view{
+      flex-shrink:0;
+      margin-left:14px;
+      height:32px;
+      min-width:87px;
+      padding:0 8px;
+      border:1px solid #DCDCDC;
+      background:var(--ps-sem-bg-surface);
+      color:var(--ps-sem-fg-secondary);
+      border-radius:4px;
+      font:500 10px/1 "Source Sans Pro",sans-serif;
+      letter-spacing:0;
+      text-transform:uppercase;
+      cursor:pointer;
+      align-self:center;
+    }
+    .modal-list__view:hover{background:var(--ps-sem-action-default);color:var(--ps-sem-fg-inverse);border-color:var(--ps-sem-fg-brand);}
+
+    /* Expanded body (when selected) — dropdown + Nudge button */
+    .modal-list__expand{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding-left:46px;
+    }
+    .modal-list__dropdown{
+      height:48px;
+      border:1px solid #CCCCCC;
+      border-radius:5px;
+      background:var(--ps-sem-bg-surface);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 14px;
+      font:14px/1 "Source Sans Pro",sans-serif;
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .modal-list__dropdown svg{width:12px;height:12px;color:#5C5C5C;}
+    .modal-list__expand-actions{display:flex;justify-content:flex-end;}
+    /* Secondary Small — matches buttons.html spec */
+    .modal-list__nudge{
+      height:32px;
+      min-width:87px;
+      padding:0 8px;
+      border:1px solid #DCDCDC;
+      background:var(--ps-sem-bg-surface);
+      color:var(--ps-sem-fg-secondary);
+      border-radius:4px;
+      font:500 10px/1 "Source Sans Pro",sans-serif;
+      letter-spacing:0;
+      text-transform:uppercase;
+      cursor:pointer;
+    }
+    .modal-list__nudge:hover{background:var(--ps-sem-action-default);color:var(--ps-sem-fg-inverse);border-color:var(--ps-sem-fg-brand);}
+    /* Active/filled variant — inverted (PS Blue fill at rest, darker on hover) */
+    .modal-list__nudge--action{background:var(--ps-sem-action-default);color:var(--ps-sem-fg-inverse);border-color:var(--ps-sem-fg-brand);}
+    .modal-list__nudge--action:hover{background:#004A84;border-color:#004A84;}
+    .modal-list__complete-msg{
+      font:14px/1 "Source Sans Pro",sans-serif;
+      color:#1F9B5C;
+      padding-left:6px;
+      font-weight:600;
+    }
+
+    /* Compact fallback used by tablet/mobile/anatomy/states demos */
+    .modal-list__row .modal-list__main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      padding-left:10px;
+    }
+    .modal-list__row:has(> .modal-list__check){
+      flex-direction:row;
+      align-items:center;
+      gap:10px;
+    }
+    .modal-list__title{font-size:14px;font-weight:600;color:var(--ps-sem-fg-primary);line-height:1.3;}
+    .modal-list__meta{font-size:12px;color:var(--ps-sem-fg-tertiary);font-weight:400;}
+
+    /* Pagination footer */
+    .modal-foot{
+      display:flex;
+      flex-direction:row;
+      align-items:center;
+      justify-content:center;
+      padding:14px 10px 4px;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .modal-foot__count{font-size:14px;color:var(--ps-prim-gray-900);}
+    .modal-foot__count b{font-weight:700;}
+    .modal-foot__pager{display:flex;align-items:center;gap:5px;}
+    .pager-btn{
+      min-width:28px;height:28px;
+      display:flex;align-items:center;justify-content:center;
+      border:0;background:transparent;color:var(--ps-sem-fg-secondary);cursor:pointer;
+      border-radius:5px;font-size:14px;font-weight:400;
+      padding:5px 10px;letter-spacing:-.01em;
+      transition:background 120ms ease;
+    }
+    .pager-btn[disabled]{opacity:.4;cursor:not-allowed;}
+    .pager-btn--icon{
+      width:28px;height:28px;padding:0;
+      border:1px solid #F1F1F1;
+      background:var(--ps-sem-bg-surface);
+      color:var(--ps-sem-fg-secondary);
+    }
+    .pager-btn--icon:hover{background:#F8F8F8;}
+    .pager-btn--icon svg{width:11px;height:11px;}
+    .pager-btn--page{color:var(--ps-prim-gray-900);}
+    .pager-btn--page:hover{background:#F8F8F8;}
+    .pager-btn--page.is-active{
+      background:#F0F0F0;
+      color:var(--ps-prim-gray-900);
+    }
+    .modal-foot__show{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ps-prim-gray-900);}
+    .modal-foot__show select{
+      height:30px;border:1px solid #CCCCCC;border-radius:3px;
+      padding:0 8px;font-size:14px;color:#5C5C5C;
+      background:var(--ps-sem-bg-surface);font-family:inherit;cursor:pointer;
+    }
+
+    /* Modal action footer (CTA Modal) */
+    .modal-actions{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:12px;
+      padding-top:8px;
+    }
+    .btn{
+      font-family:inherit;
+      height:40px;
+      padding:0 20px;
+      border-radius:4px;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      letter-spacing:.01em;
+      transition:background 120ms ease, color 120ms ease, border-color 120ms ease;
+      border:1px solid transparent;
+    }
+    /* CTAs — match Figma /Modal/CTA: Secondary SM (white bg, gray border, gray text) + Primary */
+    .btn--primary{background:var(--ps-brand-primary);color:var(--ps-sem-fg-inverse);}
+    .btn--primary:hover{background:#004A84;}
+    .btn--secondary{background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-secondary);border-color:var(--ps-sem-border-default);}
+    .btn--secondary:hover{border-color:#999;color:var(--ps-sem-fg-primary);}
+    .btn--danger{background:#C0392B;color:var(--ps-sem-fg-inverse);}
+    .btn--danger:hover{background:#9E2A1C;}
+    .btn--ghost{background:transparent;color:var(--ps-sem-fg-secondary);}
+    .btn--ghost:hover{background:var(--ps-sem-bg-muted);}
+    /* Orange pill CTA — matches production live modals (Create Note, Save, Remove Item) */
+    .btn--pill{
+      background:#F08A00;color:var(--ps-sem-fg-inverse);border:0;
+      border-radius:999px;height:44px;padding:0 28px;
+      font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:13px;
+    }
+    .btn--pill:hover{background:#D77800;}
+    .btn--pill-amber{background:#F2BC6B;color:var(--ps-sem-fg-inverse);}
+    .btn--pill-amber:hover{background:#E5A94B;}
+    .btn--text{
+      background:transparent;border:0;color:#6B6B6B;
+      font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:13px;
+      padding:0 18px;height:44px;cursor:pointer;
+    }
+    .btn--text:hover{color:var(--ps-sem-fg-primary);}
+
+    /* Floating-label field (Edit Blanket PO pattern) */
+    .ff{
+      border:1px solid #BFBFBF;border-radius:5px;
+      padding:8px 14px 10px;display:flex;flex-direction:column;gap:2px;
+      background:var(--ps-sem-bg-surface);position:relative;
+    }
+    .ff__label{font:600 13px/1.2 "Source Sans Pro",sans-serif;color:var(--ps-sem-fg-brand);}
+    .ff__value{font:400 17px/1.2 "Source Sans Pro",sans-serif;color:var(--ps-sem-fg-primary);}
+    .ff--select::after{
+      content:"";position:absolute;right:14px;top:50%;
+      width:10px;height:10px;border-right:2px solid #5C5C5C;border-bottom:2px solid #5C5C5C;
+      transform:translateY(-70%) rotate(45deg);
+    }
+    .ff-textarea{
+      border:1px solid #BFBFBF;border-radius:5px;padding:12px 14px;
+      min-height:96px;background:var(--ps-sem-bg-surface);font:14px/1.4 "Source Sans Pro",sans-serif;color:var(--ps-sem-fg-tertiary);
+    }
+    .modal-actions--bordered{border-top:1px solid #E5E7EB;padding-top:18px;margin-top:8px;}
+
+    /* Alert (used inside modal body) — matches alerts.html */
+    .modal-alert{
+      display:flex;align-items:center;gap:18px;
+      min-height:40px;padding:12px 18px;
+      border-radius:5px;
+      font:400 14px/1.4 "Source Sans Pro",sans-serif;
+    }
+    .modal-alert b, .modal-alert strong{font-weight:700;}
+    .modal-alert svg{flex-shrink:0;width:24px;height:24px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;}
+    .modal-alert--success{background:#E2F5EE;color:#0E7C55;border:0;}
+    .modal-alert--success svg{stroke:#0E7C55;}
+    .modal-alert--info{background:#EFF9FE;color:var(--ps-sem-fg-brand);border:0;}
+    .modal-alert--info svg{stroke:#005BA6;}
+    .modal-alert--fail{background:#FEF0F0;color:#E00000;border:0;}
+    .modal-alert--fail svg{stroke:#E00000;}
+
+    /* Drawer */
+    .drawer{
+      position:absolute;
+      top:0;
+      bottom:0;
+      right:0;
+      width:480px;
+      background:var(--ps-sem-bg-surface);
+      box-shadow:-10px 0 30px rgba(0,0,0,.18);
+      display:flex;
+      flex-direction:column;
+      font-family:'Source Sans Pro',sans-serif;
+    }
+    .drawer__head{
+      padding:20px 24px;
+      border-bottom:1px solid #F1F1F1;
+      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+    }
+    .drawer__head h3{margin:0;font-size:24px;font-weight:300;color:#373F41;line-height:1.2;letter-spacing:0;}
+    .drawer__body{flex:1;padding:20px 24px;overflow-y:auto;color:var(--ps-sem-fg-primary);font-size:14px;line-height:1.6;}
+    .drawer__actions{padding:16px 24px;border-top:1px solid #F1F1F1;display:flex;justify-content:flex-end;gap:10px;background:var(--ps-sem-bg-canvas);}
+
+    .drawer-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+    .drawer-field label{font-size:12px;font-weight:700;color:var(--ps-sem-fg-primary);letter-spacing:.3px;text-transform:uppercase;}
+    .drawer-field input,.drawer-field textarea,.drawer-field select{
+      font:14px/1.4 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);
+      border:1px solid #CCCCCC;border-radius:3px;padding:8px 12px;
+      background:var(--ps-sem-bg-surface);width:100%;
+    }
+    .drawer-field input:focus,.drawer-field textarea:focus,.drawer-field select:focus{
+      outline:0;border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(0,91,166,.15);
+    }
+    .drawer-field textarea{min-height:96px;resize:vertical;}
+
+    /* Confirm dialog (small) */
+    .confirm{
+      width:440px;
+      background:var(--ps-sem-bg-surface);
+      border-radius:5px;
+      padding:24px 24px 16px;
+      box-shadow:0 24px 56px rgba(0,0,0,.25);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      font-family:'Source Sans Pro',sans-serif;
+    }
+    .confirm__icon{
+      width:48px;height:48px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:#FDECEC;color:#C0392B;
+      align-self:flex-start;
+    }
+    .confirm__icon svg{width:24px;height:24px;}
+    .confirm__icon--info{background:#E5F4FF;color:var(--ps-brand-primary);}
+    .confirm__icon--warn{background:#FFF4E5;color:#C56F00;}
+    .confirm h3{margin:0;font-size:20px;font-weight:700;color:var(--ps-sem-fg-primary);}
+    .confirm p{margin:0;font-size:14px;line-height:1.5;color:var(--ps-sem-fg-secondary);}
+
+    /* Page-behind chrome (faux top nav) */
+    .page-chrome{
+      position:absolute;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      background:var(--ps-sem-bg-surface);
+    }
+    .page-chrome__nav{height:60px;border-bottom:1px solid #E0E0E0;display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;}
+    .page-chrome__logo{width:140px;height:18px;background:linear-gradient(90deg,var(--ps-sem-action-default) 0 40%,#9CC03A 40% 60%,var(--ps-sem-action-default) 60% 100%);border-radius:2px;opacity:.85;}
+    .page-chrome__search{flex:1;max-width:520px;height:30px;background:var(--ps-sem-bg-muted);border-radius:4px;}
+    .page-chrome__cart{width:24px;height:24px;border-radius:4px;background:#E0E0E0;}
+    .page-chrome__hero{height:44px;background:#003763;display:flex;align-items:center;color:var(--ps-sem-fg-inverse);padding:0 24px;font-size:14px;flex-shrink:0;}
+    .page-chrome__content{flex:1;background:#F4F6F8;padding:20px 24px;display:flex;flex-direction:column;gap:10px;}
+    .page-chrome__bar{height:14px;border-radius:3px;background:#E5E7EB;}
+    .page-chrome__bar.w70{width:70%;}
+    .page-chrome__bar.w90{width:90%;}
+    .page-chrome__bar.w50{width:50%;}
+    .page-chrome__bar.w80{width:80%;}
+
+    /* Anatomy */
+    .anatomy{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start;padding:24px;background:var(--ps-sem-bg-surface);}
+    .anatomy-labels{display:flex;flex-direction:column;gap:0;padding:8px 16px 8px 0;border-right:1px dashed #DCDCDC;}
+    .anatomy-label{padding:14px 0;display:flex;flex-direction:column;gap:3px;align-items:flex-end;text-align:right;}
+    .anatomy-label b{color:var(--ps-brand-primary);font-size:13px;font-weight:700;letter-spacing:.3px;}
+    .anatomy-label em{font-style:normal;color:var(--ps-sem-fg-tertiary);font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+    .anatomy-label span{color:var(--ps-sem-fg-secondary);font-size:12px;line-height:1.4;}
+    .anatomy-modal{display:flex;justify-content:center;padding:0 12px;}
+
+    /* States grid */
+    .states-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:20px;}
+    .state-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-default);border-radius:8px;overflow:hidden;}
+    .state-card__stage{padding:18px;background:#F4F6F8;display:flex;align-items:center;justify-content:center;min-height:180px;position:relative;}
+    .state-card__meta{padding:12px 14px;border-top:1px solid var(--ps-border-subtle);}
+    .state-card__meta b{color:var(--ps-sem-fg-primary);font-size:13px;font-weight:700;display:block;margin-bottom:2px;}
+    .state-card__meta span{color:var(--ps-sem-fg-tertiary);font-size:12px;}
+
+    /* Mini modal for states grid */
+    .mini-modal{
+      width:340px;background:var(--ps-sem-bg-surface);border-radius:5px;padding:14px 16px;
+      box-shadow:0 12px 28px rgba(0,0,0,.18);font-family:'Source Sans Pro',sans-serif;
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .mini-modal h4{margin:0;font-size:18px;font-weight:300;color:#373F41;line-height:1.2;}
+    .mini-modal p{margin:0;font-size:12px;color:var(--ps-sem-fg-secondary);line-height:1.4;}
+    .mini-modal__actions{display:flex;justify-content:flex-end;gap:8px;margin-top:6px;}
+    .mini-modal__actions button{height:30px;padding:0 14px;font-size:12px;border-radius:3px;font-weight:700;cursor:pointer;border:1px solid transparent;font-family:inherit;}
+    .mini-modal__actions .b1{background:var(--ps-brand-primary);color:var(--ps-sem-fg-inverse);border-color:var(--ps-brand-primary);}
+    .mini-modal__actions .b2{background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-secondary);border-color:var(--ps-sem-border-strong);}
+
+    /* Token table */
+    .tokens{width:100%;border-collapse:collapse;font-size:12px;}
+    .tokens th, .tokens td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--ps-border-subtle);}
+    .tokens th{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);font-weight:700;background:var(--ps-sem-bg-canvas);}
+    .tokens td code{font-family:var(--ps-font-mono);font-size:11px;color:var(--ps-sem-fg-primary);}
+    .tokens td.label{font-weight:600;color:var(--ps-sem-fg-primary);}
+    .tokens td.swatch{width:42px;}
+    .tokens td.swatch span{display:block;width:24px;height:24px;border-radius:4px;border:1px solid rgba(0,0,0,.08);}
+
+    /* A11y / Do-Don't / Examples */
+    .a11y-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;padding:24px;}
+    .a11y-card{background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;}
+    .a11y-card h4{margin:0 0 8px;font-size:13px;font-weight:700;color:var(--ps-sem-fg-primary);letter-spacing:.3px;display:flex;align-items:center;gap:8px;}
+    .a11y-card h4 svg{width:16px;height:16px;color:var(--ps-brand-primary);}
+    .a11y-card p{margin:0;font-size:13px;line-height:1.5;color:var(--ps-sem-fg-secondary);}
+    .a11y-card code{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-sem-bg-surface);padding:1px 5px;border-radius:3px;border:1px solid #E5E7EB;}
+
+    .dodont{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px;}
+    .dodont__col{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-subtle);border-radius:8px;overflow:hidden;}
+    .dodont__col h4{margin:0;padding:12px 16px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px;}
+    .dodont__col--do h4{background:#E5F9F2;color:#0A7850;}
+    .dodont__col--dont h4{background:#FDECEC;color:#9E2A1C;}
+    .dodont__col ul{list-style:none;margin:0;padding:14px 18px;display:flex;flex-direction:column;gap:10px;}
+    .dodont__col li{font-size:13px;line-height:1.5;color:var(--ps-sem-fg-primary);display:flex;align-items:flex-start;gap:8px;}
+    .dodont__col li::before{
+      content:"";flex-shrink:0;width:6px;height:6px;border-radius:50%;margin-top:8px;
+    }
+    .dodont__col--do li::before{background:#0A7850;}
+    .dodont__col--dont li::before{background:#9E2A1C;}
+
+    /* Usage examples list */
+    .usage{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px;}
+    .usage-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:8px;}
+    .usage-card .tag{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--ps-brand-primary);}
+    .usage-card h4{margin:0;font-size:15px;font-weight:700;color:var(--ps-sem-fg-primary);}
+    .usage-card p{margin:0;font-size:13px;line-height:1.5;color:var(--ps-sem-fg-secondary);}
+
+    code.kbd{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+
+    /* Action drawer pattern */
+    .drawer-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;}
+    .drawer-list li{padding:14px 0;border-bottom:1px solid #F1F1F1;display:flex;justify-content:space-between;align-items:center;}
+    .drawer-list li:last-child{border-bottom:0;}
+    .drawer-list .name{font-size:14px;font-weight:600;color:var(--ps-sem-fg-primary);}
+    .drawer-list .qty{font-size:14px;color:var(--ps-sem-fg-secondary);}
+
+    /* Breakpoints row */
+    .bp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;padding:24px;}
+    .bp-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:14px;}
+    .bp-card .demo{height:260px;background:#F4F6F8;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+    .bp-card .demo .scrim{background:rgba(0,0,0,.45);}
+    .bp-card .label{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;}
+    .bp-card .label b{font-size:13px;font-weight:700;color:var(--ps-sem-fg-primary);}
+    .bp-card .label span{font-size:11px;color:var(--ps-sem-fg-tertiary);font-family:var(--ps-font-mono);}
+
+    /* Bottom sheet (mobile) */
+    .sheet{
+      position:absolute;
+      left:0;right:0;bottom:0;
+      background:var(--ps-sem-bg-surface);
+      border-radius:12px 12px 0 0;
+      padding:8px 20px 20px;
+      display:flex;flex-direction:column;gap:14px;
+      box-shadow:0 -10px 30px rgba(0,0,0,.18);
+      font-family:'Source Sans Pro',sans-serif;
+    }
+    .sheet__grabber{width:36px;height:4px;border-radius:2px;background:#CCCCCC;margin:0 auto 4px;}
+    .sheet h3{margin:0;font-size:20px;font-weight:300;color:#373F41;line-height:1.2;}
+    .sheet p{margin:0;font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.4;}
+    .sheet__actions{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body style="">
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Modals, Dialogs & Drawers</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Modals, Dialogs &amp; Drawers</h1>
+  <p class="intro">Overlays interrupt the page to focus the user on a single decision, task, or piece of content. PartsSource uses four overlay patterns: <b>Modal</b> (multi-step or list-heavy task, dismissable), <b>Dialog</b> (single confirm/destructive prompt), <b>Drawer</b> (side panel for edit / detail flows), and <b>Bottom Sheet</b> (mobile equivalent of a drawer). All share the same chrome — 5 px radius, 24/32 px padding, 30 px Source Sans Light title, 14 px supporting copy, scrim at <code class="kbd">rgba(0,0,0,.45)</code>.</p>
+
+  <!-- ╔═══════════════════════════════════════════╗
+       ║  MODAL BUILDER · live preview + tweaks    ║
+       ╚═══════════════════════════════════════════╝ -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Modal Builder</h2>
+      <div class="desc">Configure a modal interactively. Open the <b>Tweaks</b> panel from the top toolbar to change type, size, copy, buttons, and content. The live preview updates and the generated HTML is copyable at the bottom.</div>
+    </div>
+    <div class="section-body" id="mb-root" style="background:#F4F6F8;min-height:760px;position:relative;">
+      <div style="padding:60px;color:var(--ps-sem-fg-tertiary);text-align:center;font-style:italic;">Loading Modal Builder…</div>
+    </div>
+  </div>
+
+  <style>
+    /* Modal Builder — inline tweak bar at top of container */
+    .mb-tweaks{
+      background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-default);
+      border-radius:8px;padding:18px 20px;margin-bottom:20px;
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px 24px;
+      font-family:var(--ps-font-sans);
+    }
+    .mb-section{
+      grid-column:1 / -1;
+      display:flex;align-items:center;gap:12px;
+      margin:8px 0 -4px;
+      font:700 10px/1 'Source Sans Pro',sans-serif;
+      letter-spacing:1.4px;text-transform:uppercase;color:var(--ps-sem-fg-brand);
+    }
+    .mb-section:first-of-type{margin-top:0;}
+    .mb-section span{flex-shrink:0;}
+    .mb-section::after{
+      content:"";flex:1;height:1px;background:var(--ps-border-default);
+    }
+    .mb-tweak{display:flex;flex-direction:column;gap:6px;}
+    .mb-tweak label.k{font:700 10px/1.2 'Source Sans Pro',sans-serif;letter-spacing:1px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);}
+    .mb-tweak input[type="text"],
+    .mb-tweak textarea,
+    .mb-tweak select{
+      width:100%;height:34px;border:1px solid #CCCCCC;border-radius:4px;
+      padding:0 10px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);background:var(--ps-sem-bg-surface);
+    }
+    .mb-tweak textarea{height:auto;min-height:60px;padding:8px 10px;line-height:1.4;resize:vertical;}
+    .mb-tweak input[type="text"]:focus,
+    .mb-tweak textarea:focus,
+    .mb-tweak select:focus{outline:0;border-color:var(--ps-sem-fg-brand);box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+
+    /* Row Editor */
+    .mb-row-ed{display:flex;flex-direction:column;gap:6px;background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-default);border-radius:6px;padding:10px;}
+    .mb-row-ed__row{display:grid;grid-template-columns:repeat(var(--cols,6),minmax(0,1fr)) 28px;gap:6px;align-items:center;}
+    .mb-row-ed__head{font:700 10px/1.2 'Source Sans Pro',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);padding:0 8px;}
+    .mb-row-ed__row input{
+      width:100%;height:30px;border:1px solid #DCDCDC;border-radius:3px;
+      padding:0 8px;font:13px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);background:var(--ps-sem-bg-surface);
+    }
+    .mb-row-ed__row input:focus{outline:0;border-color:var(--ps-sem-fg-brand);box-shadow:0 0 0 2px rgba(0,91,166,.12);}
+    .mb-row-ed__del{
+      width:28px;height:28px;background:transparent;border:0;color:var(--ps-sem-fg-tertiary);cursor:pointer;
+      border-radius:4px;display:flex;align-items:center;justify-content:center;
+    }
+    .mb-row-ed__del:hover{background:#FDECEC;color:#9E2A1C;}
+    .mb-row-ed__del svg{width:14px;height:14px;}
+    .mb-row-ed__add{
+      align-self:flex-start;margin-top:4px;height:30px;padding:0 14px;
+      border:1px dashed #BFBFBF;background:var(--ps-sem-bg-surface);border-radius:4px;
+      font:600 12px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-brand);cursor:pointer;
+      display:inline-flex;align-items:center;gap:6px;
+    }
+    .mb-row-ed__add:hover{background:#F0F7FD;border-style:solid;border-color:var(--ps-sem-fg-brand);}
+    .mb-seg{display:inline-flex;background:#F4F6F8;border-radius:5px;padding:3px;height:34px;}
+    .mb-seg button{
+      border:0;background:transparent;font:600 13px/1 'Source Sans Pro',sans-serif;
+      color:var(--ps-sem-fg-secondary);padding:0 12px;border-radius:3px;cursor:pointer;flex:1;
+    }
+    .mb-seg button.on{background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-brand);box-shadow:0 1px 2px rgba(0,0,0,.08);}
+    .mb-check{display:flex;align-items:center;gap:8px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);cursor:pointer;height:34px;}
+    .mb-slider{display:flex;align-items:center;gap:10px;height:34px;}
+    .mb-slider input[type=range]{flex:1;}
+    .mb-slider .val{font:600 13px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-brand);min-width:24px;text-align:right;}
+
+    .mb-stage{
+      position:relative;width:100%;min-height:600px;
+      background:var(--ps-sem-bg-surface) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'><defs><pattern id='g' width='40' height='40' patternUnits='userSpaceOnUse'><path d='M40 0H0V40' fill='none' stroke='%23F1F1F1' stroke-width='1'/></pattern></defs><rect width='100%25' height='100%25' fill='url(%23g)'/></svg>");
+      border-radius:8px;border:1px solid var(--ps-border-default);
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+      padding:32px;
+    }
+    .mb-scrim{position:absolute;inset:0;background:rgba(0,0,0,.45);}
+    .mb-codebox{
+      margin-top:24px;background:#1F2933;color:#E5E7EB;border-radius:8px;
+      padding:18px 20px;font:12px/1.6 ui-monospace,Menlo,Consolas,monospace;
+      max-height:280px;overflow:auto;white-space:pre;position:relative;
+    }
+    .mb-copy{position:absolute;top:10px;right:10px;background:#374151;border:0;color:var(--ps-sem-fg-inverse);padding:6px 12px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;}
+    .mb-copy:hover{background:#4B5563;}
+    .mb-copy.copied{background:#0A7850;}
+  </style>
+  <script type="text/babel" data-presets="react">
+
+
+const { useState } = React;
+
+const Seg = ({ value, onChange, options }) =>
+<div className="mb-seg">{options.map((o) =>
+  <button key={o.value} className={value === o.value ? 'on' : ''} onClick={() => onChange(o.value)}>{o.label}</button>
+  )}</div>;
+
+
+// Schema → column labels (must align with DataBody's renderCells order)
+const SCHEMA_COLS = {
+  default: ['Order #', 'Ref #', 'Item #', 'Description', 'Qty', 'Requester'],
+  'default-timer': ['Order #', 'Ref #', 'Item #', 'Description', 'Qty', 'Requester'],
+  nudge: ['Order #', 'Ref #', 'Item #', 'Description', 'Qty', 'Requester'],
+  alt: ['Order #', 'Ref #', 'Item #', 'Description', 'Qty', 'Requester'], // uses Item/PO/Date/Due/Requester from positions 2,1,—,—,5 — still edit raw 6 fields
+  po: ['Order #', 'Ref #', 'Item #', 'Description', 'Qty', 'Requester'] // uses Item/Description/Price from positions 2,3,— — still edit raw 6 fields
+};
+
+function RowEditor({ rows, schema, labels, onChange, onLabelsChange }) {
+  const cols = labels.length;
+  const updateCell = (rowIdx, cellIdx, value) => {
+    const next = rows.map((row, i) => i === rowIdx ? row.map((c, j) => j === cellIdx ? value : c) : row);
+    onChange(next);
+  };
+  const updateLabel = (idx, value) => {
+    onLabelsChange(labels.map((l, i) => i === idx ? value : l));
+  };
+  const deleteRow = (rowIdx) => onChange(rows.filter((_, i) => i !== rowIdx));
+  const addRow = () => {
+    const last = rows[rows.length - 1] || ['', '', '', '', '', ''];
+    const newOrder = !isNaN(parseInt(last[0])) ? String(parseInt(last[0]) + 1) : '';
+    const newRef = !isNaN(parseInt(last[1])) ? String(parseInt(last[1]) + 1) : '';
+    onChange([...rows, [newOrder, newRef, '', '', '1', '']]);
+  };
+  return (
+    <div className="mb-row-ed" style={{ '--cols': cols }}>
+      <div className="mb-row-ed__row">
+        {labels.map((l, i) =>
+        <input key={i} type="text" className="mb-row-ed__label" value={l} onChange={(e) => updateLabel(i, e.target.value)} />
+        )}
+        <div></div>
+      </div>
+      {rows.map((row, rowIdx) =>
+      <div key={rowIdx} className="mb-row-ed__row">
+          {Array.from({ length: cols }).map((_, cellIdx) =>
+        <input key={cellIdx} type="text" value={row[cellIdx] || ''} onChange={(e) => updateCell(rowIdx, cellIdx, e.target.value)} />
+        )}
+          <button className="mb-row-ed__del" onClick={() => deleteRow(rowIdx)} aria-label="Delete row" title="Delete row">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M1 1l12 12M13 1L1 13" /></svg>
+          </button>
+        </div>
+      )}
+      <button className="mb-row-ed__add" onClick={addRow}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14" /></svg>
+        Add row
+      </button>
+    </div>);
+
+}
+
+
+function ModalBuilder() {
+  const [t, setT] = useState({
+    type: "data",
+    size: "desktop",
+    title: "Exchanges Past Due",
+    subtitle: "Select an order line to nudge approver specific individuals.",
+    showSubtitle: true,
+    showDivider: true,
+    rowCount: 4,
+    rowSchema: "default",
+    dataState: "rows",
+    showPagination: true,
+    primaryLabel: "SEND NUDGE",
+    primaryStyle: "pill",
+    secondaryLabel: "Cancel",
+    secondaryStyle: "text",
+    showAlert: false,
+    alertType: "success",
+    alertText: "Requester Has been <b>Nudged</b> for Part Order #: <b>64434335</b>",
+    actionBar: "none",
+    customMode: "prebuilt",
+    columnLabels: ['Order #', 'Ref #', 'Item #', 'Description', 'Qty', 'Requester'],
+    customRows: [
+    ['64434335', '45433232', 'M1134321', 'Service Kit, Accessory ...', '1', 'Earl Grey'],
+    ['64434336', '45433233', 'M1134322', 'Mindray DPM 7 Patient Monitor', '2', 'Dr. Patel'],
+    ['64434337', '45433234', 'M1134323', 'GE Healthcare MAC 5500 ECG', '1', 'Logan Cole'],
+    ['64434338', '45433235', 'M1134324', 'Stryker 3M Power Pro XT IV Pole', '1', 'Anna Schmidt']]
+
+  });
+  const set = (k, v) => setT((s) => ({ ...s, [k]: v }));
+
+  const widths = { desktop: 850, tablet: 600, mobile: 345 };
+  const w = widths[t.size];
+
+  const body = t.type === 'data' ?
+  <DataBody rows={t.rowCount} schema={t.rowSchema} state={t.dataState} size={t.size} showPagination={t.showPagination} customRows={t.customMode === 'custom' ? t.customRows : null} columnLabels={t.customMode === 'custom' ? t.columnLabels : null} /> :
+  t.type === 'informational' ?
+  <InfoBody text={t.subtitle} /> :
+  <ConfirmBody text={t.subtitle} />;
+
+  const primary = t.primaryStyle === 'none' ? null :
+  t.primaryStyle === 'pill' ? <button className="btn btn--pill">{t.primaryLabel}</button> :
+  t.primaryStyle === 'pill-amber' ? <button className="btn btn--pill btn--pill-amber">{t.primaryLabel}</button> :
+  t.primaryStyle === 'danger' ? <button className="btn btn--danger">{t.primaryLabel}</button> :
+  <button className="btn btn--primary">{t.primaryLabel}</button>;
+
+  const secondary = t.secondaryStyle === 'none' ? null :
+  t.secondaryStyle === 'text' ? <button className="btn--text">{t.secondaryLabel}</button> :
+  <button className="btn btn--secondary">{t.secondaryLabel}</button>;
+
+  return (
+    <>
+          <div className="mb-tweaks">
+
+            {t.type === 'data' && t.dataState === 'rows' && <>
+              <div className="mb-section"><span>1 · Row Data</span></div>
+              <div className="mb-tweak"><label className="k">Row Data Source</label>
+                <Seg value={t.customMode} onChange={(v) => set('customMode', v)} options={[
+            { value: 'prebuilt', label: 'Predefined' },
+            { value: 'custom', label: 'Custom' }]
+            } />
+              </div>
+            </>}
+
+            <div className="mb-section"><span>{t.type === 'data' && t.dataState === 'rows' ? '2' : '1'} · Setup</span></div>
+            <div className="mb-tweak"><label className="k">Type</label>
+              <Seg value={t.type} onChange={(v) => set('type', v)} options={[
+          { value: 'data', label: 'Data' },
+          { value: 'informational', label: 'Info' },
+          { value: 'confirm', label: 'Confirm' }]
+          } />
+            </div>
+            <div className="mb-tweak"><label className="k">Size</label>
+              <Seg value={t.size} onChange={(v) => set('size', v)} options={[
+          { value: 'desktop', label: 'Desktop' },
+          { value: 'tablet', label: 'Tablet' },
+          { value: 'mobile', label: 'Mobile' }]
+          } />
+            </div>
+            <div className="mb-tweak"><label className="k">Title</label>
+              <input type="text" value={t.title} onChange={(e) => set('title', e.target.value)} />
+            </div>
+            <div className="mb-tweak"><label className="k">{t.type === 'data' ? 'Subtitle' : 'Body'}</label>
+              {t.type === 'data' ?
+          <input type="text" value={t.subtitle} onChange={(e) => set('subtitle', e.target.value)} /> :
+          <textarea value={t.subtitle} onChange={(e) => set('subtitle', e.target.value)} />}
+            </div>
+            <div className="mb-tweak" style={{ gap: "1px" }}><label className="k">Options</label>
+              {t.type === 'data' && <label className="mb-check"><input type="checkbox" checked={t.showSubtitle} onChange={(e) => set('showSubtitle', e.target.checked)} />Show subtitle</label>}
+              <label className="mb-check"><input type="checkbox" checked={t.showDivider} onChange={(e) => set('showDivider', e.target.checked)} />Divider under title</label>
+            </div>
+
+            {t.type === 'data' && <>
+              <div className="mb-section"><span>{t.dataState === 'rows' ? '3' : '2'} · Body</span></div>
+              <div className="mb-tweak"><label className="k">List State</label>
+                <select value={t.dataState} onChange={(e) => set('dataState', e.target.value)}>
+                  <option value="rows">Rows · default</option>
+                  <option value="count-pill">Count Pill · "2 Items" prefix</option>
+                  <option value="checkboxes">Checkbox States · Empty/Hover/Checked/Complete</option>
+                  <option value="empty">Empty State</option>
+                </select>
+              </div>
+              <div className="mb-tweak"><label className="k">Row Schema</label>
+                <select value={t.rowSchema} onChange={(e) => set('rowSchema', e.target.value)}>
+                  <option value="default">Order · Ref · Item · Desc · Qty · Requester</option>
+                  <option value="default-timer">Default + ⏱ Timer banner</option>
+                  <option value="alt">Item · PO · Date Created · Due Date · Requester</option>
+                  <option value="nudge">Default columns + Nudge button</option>
+                  <option value="po">Item · Description · Total Price · PO Input</option>
+                </select>
+              </div>
+              {t.dataState === 'rows' && t.customMode === 'prebuilt' &&
+          <div className="mb-tweak"><label className="k">Rows</label>
+                <div className="mb-slider">
+                  <input type="range" min="1" max="10" step="1" value={t.rowCount} onChange={(e) => set('rowCount', +e.target.value)} />
+                  <span className="val">{t.rowCount}</span>
+                </div>
+              </div>
+          }
+              <div className="mb-tweak"><label className="k">Pagination</label>
+                <Seg value={t.showPagination ? 'on' : 'off'} onChange={(v) => set('showPagination', v === 'on')} options={[
+            { value: 'on', label: 'Show' },
+            { value: 'off', label: 'Hide' }]
+            } />
+              </div>
+              {t.dataState === 'rows' && t.customMode === 'custom' &&
+          <div className="mb-tweak" style={{ gridColumn: '1 / -1' }}>
+                <label className="k">Row Data <span style={{ textTransform: 'none', color: 'var(--ps-sem-fg-tertiary)', letterSpacing: 0, fontWeight: 400, marginLeft: 6 }}>· edit inline · add or delete rows</span></label>
+                <RowEditor rows={t.customRows} schema={t.rowSchema} labels={t.columnLabels} onChange={(v) => set('customRows', v)} onLabelsChange={(v) => set('columnLabels', v)} />
+              </div>
+          }
+            </>}
+
+            {t.type === 'data' && <>
+              <div className="mb-section"><span>{t.dataState === 'rows' ? '4' : '3'} · Alert</span></div>
+              <div className="mb-tweak" style={{ gridColumn: '1 / -1' }}>
+                <label className="mb-check" style={{ marginBottom: 4 }}><input type="checkbox" checked={t.showAlert} onChange={(e) => set('showAlert', e.target.checked)} /><span style={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', fontSize: 10, color: 'var(--ps-sem-fg-tertiary)' }}>Show inline alert</span></label>
+                {t.showAlert &&
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(220px, max-content) 1fr', gap: '14px 24px', marginTop: 8 }}>
+                    <div className="mb-tweak"><label className="k">Alert Type</label>
+                      <Seg value={t.alertType} onChange={(v) => set('alertType', v)} options={[
+                { value: 'success', label: 'Success' },
+                { value: 'info', label: 'Info' },
+                { value: 'fail', label: 'Error' }]
+                } />
+                    </div>
+                    <div className="mb-tweak"><label className="k">Alert Text</label>
+                      <input type="text" value={t.alertText} onChange={(e) => set('alertText', e.target.value)} />
+                    </div>
+                  </div>
+            }
+              </div>
+            </>}
+            <div className="mb-section"><span>{t.type === 'data' ? t.dataState === 'rows' ? '5' : '4' : '2'} · Actions</span></div>
+            <div className="mb-tweak"><label className="k">Primary CTA Label</label>
+              <input type="text" value={t.primaryLabel} onChange={(e) => set('primaryLabel', e.target.value)} />
+            </div>
+            <div className="mb-tweak"><label className="k">Primary CTA Style</label>
+              <select value={t.primaryStyle} onChange={(e) => set('primaryStyle', e.target.value)}>
+                <option value="pill">Orange Pill (Default)</option>
+                <option value="pill-amber">Amber Pill (Soft)</option>
+                <option value="primary">PS Blue Solid</option>
+                <option value="danger">Danger Red</option>
+                <option value="none">— None —</option>
+              </select>
+            </div>
+            <div className="mb-tweak"><label className="k">Secondary CTA Label</label>
+              <input type="text" value={t.secondaryLabel} onChange={(e) => set('secondaryLabel', e.target.value)} />
+            </div>
+            <div className="mb-tweak"><label className="k">Secondary CTA Style</label>
+              <select value={t.secondaryStyle} onChange={(e) => set('secondaryStyle', e.target.value)}>
+                <option value="text">Text Link</option>
+                <option value="secondary">Outlined</option>
+                <option value="none">— None —</option>
+              </select>
+            </div>
+            <div className="mb-tweak"><label className="k">Action Bar (replaces CTAs)</label>
+              <select value={t.actionBar} onChange={(e) => set('actionBar', e.target.value)}>
+                <option value="none">— None (use CTAs above) —</option>
+                <option value="bar1">Bar 1 · Load More + Reject + Approve</option>
+                <option value="bar2">Bar 2 · Load More + Reject + Purchase</option>
+                <option value="bar3">Bar 3 · Reject + Purchase (outlined)</option>
+                <option value="bar4">Bar 4 · Close pill (top border)</option>
+                <option value="noCta">No CTA · hide all buttons</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div className="mb-stage">
+            <div className="mb-scrim"></div>
+            <div className="modal" style={{ width: w + 'px', maxWidth: '100%', padding: t.size === 'mobile' ? '24px 20px' : '24px 32px' }}>
+              <div className="modal-top">
+                {t.type === 'data' ?
+            <div className="modal-top__text">
+                      <h3 style={{ fontSize: t.size === 'mobile' ? 22 : 30, lineHeight: t.size === 'mobile' ? '26px' : '34px' }}>{t.title}</h3>
+                      {t.showSubtitle && t.subtitle && <p>{t.subtitle}</p>}
+                    </div> :
+            <h3 style={{ fontSize: t.size === 'mobile' ? 22 : 30, lineHeight: t.size === 'mobile' ? '26px' : '34px' }}>{t.title}</h3>
+            }
+                <button className="modal-top__close" aria-label="Close">
+                  <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M1 1l12 12M13 1L1 13" /></svg>
+                </button>
+              </div>
+              {t.showDivider && <hr className="modal-divider" />}
+              {t.type === 'data' && t.showAlert &&
+          <div className={`modal-alert modal-alert--${t.alertType}`}>
+                  {t.alertType === 'success' && <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335" /><path d="m9 11 3 3L22 4" /></svg>}
+                  {t.alertType === 'info' && <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>}
+                  {t.alertType === 'fail' && <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" /></svg>}
+                  <span dangerouslySetInnerHTML={{ __html: t.alertText }} />
+                </div>
+          }
+              {body}
+              {t.actionBar === 'noCta' ? null :
+          t.actionBar !== 'none' ? <ActionBar variant={t.actionBar} /> :
+          (primary || secondary) &&
+          <div className="modal-actions modal-actions--bordered" style={{ justifyContent: 'flex-end', gap: 8, alignItems: 'center' }}>
+                    {secondary}
+                    {primary}
+                  </div>
+          }
+            </div>
+          </div>
+          <CodeBox t={t} w={w} />
+        </>);
+
+}
+
+function ActionBar({ variant }) {
+  const rejectBtn = <button style={{ background: 'none', border: 0, color: '#949494', font: "700 14px/1 'Source Sans Pro',sans-serif", textTransform: 'uppercase', letterSpacing: '.04em', cursor: 'pointer', padding: '0 14px', height: 48 }}>REJECT</button>;
+  const loadMore = <button style={{ background: 'none', border: 0, color: '#009CF4', font: "400 16px/1 'Source Sans Pro',sans-serif", letterSpacing: '-0.01em', cursor: 'pointer', padding: 0 }}>Load More</button>;
+  const pillBtn = (label) => <button style={{ background: '#F2BC6B', border: 0, color: 'var(--ps-sem-bg-surface)', font: "700 14px/1 'Source Sans Pro',sans-serif", textTransform: 'uppercase', letterSpacing: '.04em', cursor: 'pointer', height: 32, padding: '0 14px', borderRadius: 16 }}>{label}</button>;
+  const closeBtn = <button style={{ background: '#FF9505', border: 0, color: 'var(--ps-sem-bg-surface)', font: "700 14px/1 'Source Sans Pro',sans-serif", textTransform: 'uppercase', letterSpacing: '.04em', cursor: 'pointer', height: 48, padding: '0 24px', borderRadius: 24 }}>CLOSE</button>;
+  if (variant === 'bar1') return (
+    <div style={{ background: 'var(--ps-sem-bg-canvas)', borderRadius: 5, padding: '8px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {loadMore}<div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>{rejectBtn}{pillBtn('APPROVE')}</div>
+        </div>);
+
+  if (variant === 'bar2') return (
+    <div style={{ background: 'var(--ps-sem-bg-canvas)', borderRadius: 5, padding: '8px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {loadMore}<div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>{rejectBtn}{pillBtn('PURCHASE')}</div>
+        </div>);
+
+  if (variant === 'bar3') return (
+    <div style={{ border: '1px solid #F1F1F1', padding: '8px 7px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10 }}>
+          {rejectBtn}{pillBtn('PURCHASE')}
+        </div>);
+
+  if (variant === 'bar4') return (
+    <div style={{ borderTop: '1px solid #F1F1F1', paddingTop: 14, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+          {closeBtn}
+        </div>);
+
+  return null;
+}
+
+function DataBody({ rows, schema, state, size, showPagination, customRows, columnLabels }) {
+  const labels = columnLabels || ['Order #', 'Ref #', 'Item #', 'Description', 'Qty', 'Requester'];
+  const sampleRow = ['64434335', '45433232', 'M1134321', 'Service Kit, Accessory ...', '1', 'Earl Grey'];
+  const defaultCells = (r) => <>
+        <span className="modal-list__cell"><span className="modal-list__cell-label">{labels[0]}:</span><span className="modal-list__cell-value">{r[0]}</span></span>
+        <span className="modal-list__cell"><span className="modal-list__cell-label">{labels[1]}:</span><span className="modal-list__cell-value">{r[1]}</span></span>
+        <span className="modal-list__cell"><span className="modal-list__cell-label">{labels[2]}:</span><span className="modal-list__cell-value">{r[2]}</span></span>
+        <span className="modal-list__cell modal-list__cell--desc"><span className="modal-list__cell-label">{labels[3]}:</span><span className="modal-list__cell-value">{r[3]}</span></span>
+        <span className="modal-list__cell"><span className="modal-list__cell-label">{labels[4]}:</span><span className="modal-list__cell-value">{r[4]}</span></span>
+        <span className="modal-list__cell"><span className="modal-list__cell-label">{labels[5]}:</span><span className="modal-list__cell-value">{r[5]}</span></span>
+      </>;
+  const countPill = <span style={{ display: 'inline-block', background: '#EFF9FE', border: '1px solid #6AC7FC', color: 'var(--ps-sem-action-default)', font: "600 12px/1 'Source Sans Pro',sans-serif", padding: '6px 10px', borderRadius: 3, alignSelf: 'center', marginRight: 14, flexShrink: 0 }}>2 Items</span>;
+
+  if (state === 'count-pill') {
+    return (
+      <div className="modal-body">
+            <div className="modal-list">
+              {Array.from({ length: rows }).map((_, i) =>
+          <div key={i} className="modal-list__row">
+                  <div className="modal-list__head">
+                    {countPill}
+                    <div className="modal-list__cells">{defaultCells(sampleRow)}</div>
+                    <button className="modal-list__view">View Details</button>
+                  </div>
+                </div>
+          )}
+            </div>
+          </div>);
+
+  }
+  if (state === 'checkboxes') {
+    const checkStates = [
+    { label: 'Empty', el: <div className="modal-list__check"></div> },
+    { label: 'Hover', el: <div className="modal-list__check" style={{ borderColor: '#EC8000' }}></div> },
+    { label: 'Checked', el: <div className="modal-list__check modal-list__check--checked" style={{ background: '#F08A00', borderColor: '#F08A00' }}><svg viewBox="0 0 12 10" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 5 4 8 11 1" /></svg></div> },
+    { label: 'Complete', el: <div className="modal-list__check modal-list__check--complete"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg></div> }];
+
+    return (
+      <div className="modal-body">
+            <div className="modal-list">
+              {checkStates.map((cs, i) =>
+          <div key={i} className={`modal-list__row${cs.label === 'Hover' ? ' modal-list__row--hover' : ''}${cs.label === 'Checked' ? ' modal-list__row--selected' : ''}`}>
+                  <div className="modal-list__head">
+                    <div style={{ alignSelf: 'center', marginRight: 14, flexShrink: 0 }}>{cs.el}</div>
+                    <div className="modal-list__cells">{defaultCells(sampleRow)}</div>
+                    <button className="modal-list__view">View Details</button>
+                  </div>
+                </div>
+          )}
+            </div>
+          </div>);
+
+  }
+  if (state === 'empty') {
+    return (
+      <div className="modal-body">
+            <div style={{ background: 'var(--ps-sem-bg-canvas)', border: '1px solid var(--ps-sem-bg-muted)', borderRadius: 5, padding: '40px 24px', textAlign: 'center' }}>
+              <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#D0EDFC', margin: '0 auto 14px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#009CF4' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0 0-9h-1.8A7 7 0 1 0 4 14.9" /><path d="M12 12v9" /><path d="m8 17 4-4 4 4" /></svg>
+              </div>
+              <div style={{ font: "300 18px/1 'Source Sans Pro',sans-serif", color: 'var(--ps-prim-gray-900)', marginBottom: 14 }}>You have no more Returns!</div>
+              <div style={{ font: "14px/1 'Source Sans Pro',sans-serif", color: 'var(--ps-prim-gray-900)' }}>You are all done! There are no Loaner left to return.</div>
+            </div>
+          </div>);
+
+  }
+  if (state === 'timer') {
+    return (
+      <div className="modal-body">
+            <div style={{ background: '#FFF6F0', border: '1px solid #F1C7A0', borderRadius: 5, padding: '10px 14px', font: "14px/1 'Source Sans Pro',sans-serif", color: '#9A4D00', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+              <b>00:05:20</b> remaining to act
+            </div>
+          </div>);
+
+  }
+  const sample = customRows && customRows.length > 0 ? customRows : [
+  ['64434335', '45433232', 'M1134321', 'Service Kit, Accessory ...', '1', 'Earl Grey'],
+  ['64434336', '45433233', 'M1134322', 'Mindray DPM 7 Patient Monitor', '2', 'Dr. Patel'],
+  ['64434337', '45433234', 'M1134323', 'GE Healthcare MAC 5500 ECG', '1', 'Logan Cole'],
+  ['64434338', '45433235', 'M1134324', 'Stryker 3M Power Pro XT IV Pole', '1', 'Anna Schmidt'],
+  ['64434339', '45433236', 'M1134325', 'Welch Allyn 5200 Vital Signs Monitor', '3', 'Earl Grey'],
+  ['64434340', '45433237', 'M1134326', 'Medtronic LifePak 15 Defibrillator', '1', 'Dr. Patel'],
+  ['64434341', '45433238', 'M1134327', 'Carestream DRX-Revolution Nano', '1', 'Logan Cole'],
+  ['64434342', '45433239', 'M1134328', 'Hill-Rom Centrella Smart+ Bed', '2', 'Anna Schmidt'],
+  ['64434343', '45433240', 'M1134329', 'Philips IntelliVue MX450', '1', 'Earl Grey'],
+  ['64434344', '45433241', 'M1134330', 'Drager Evita V300 Ventilator', '1', 'Dr. Patel']];
+
+  const dates = ['1/22/2027', '2/15/2027', '3/03/2027', '4/12/2027', '5/01/2027', '5/18/2027', '6/02/2027', '6/22/2027', '7/04/2027', '7/29/2027'];
+  const renderCells = (r, i) => {
+    if (schema === 'alt') {
+      const all = [
+      ['Item #:', r[2]],
+      ['PO #:', r[1]],
+      ['Date Created:', dates[i]],
+      ['Due Date:', dates[(i + 2) % dates.length]],
+      ['Requester:', r[5]]];
+
+      const visible = size === 'mobile' ? [all[0], all[3]] : size === 'tablet' ? [all[0], all[2], all[3], all[4]] : all;
+      return <>{visible.map(([label, value], idx) =>
+        <span key={idx} className="modal-list__cell"><span className="modal-list__cell-label">{label}</span><span className="modal-list__cell-value">{value}</span></span>
+        )}</>;
+    }
+    if (schema === 'po') {
+      const all = [
+      ['Item #:', r[2]],
+      ['Description:', r[3], 'desc'],
+      ['Total Price:', '$' + (420.23 + i * 110.5).toFixed(2)]];
+
+      const visible = size === 'mobile' ? [all[1]] : all;
+      return <>{visible.map(([label, value, kind], idx) =>
+        <span key={idx} className={`modal-list__cell${kind === 'desc' ? ' modal-list__cell--desc' : ''}`}><span className="modal-list__cell-label">{label}</span><span className="modal-list__cell-value">{value}</span></span>
+        )}</>;
+    }
+    const all = [
+    [(labels[0] || 'Order #') + ':', r[0]],
+    [(labels[1] || 'Ref #') + ':', r[1]],
+    [(labels[2] || 'Item #') + ':', r[2]],
+    [(labels[3] || 'Description') + ':', r[3], 'desc'],
+    [(labels[4] || 'Qty') + ':', r[4]],
+    [(labels[5] || 'Requester') + ':', r[5]]];
+
+    const visible = size === 'mobile' ?
+    [all[0], all[5]] // Mobile: Order # + Requester (+ CTA)
+    : size === 'tablet' ?
+    [all[0], all[1], all[3], all[5]] // Tablet: drops Item # and Qty
+    : all; // Desktop: all 6
+    return <>{visible.map(([label, value, kind], idx) =>
+      <span key={idx} className={`modal-list__cell${kind === 'desc' ? ' modal-list__cell--desc' : ''}`}><span className="modal-list__cell-label">{label}</span><span className="modal-list__cell-value">{value}</span></span>
+      )}</>;
+  };
+  const renderAction = (i) => {
+    if (schema === 'nudge') return <button className="modal-list__view" style={{ textTransform: 'none', fontWeight: 600, fontSize: 13 }}>Nudge</button>;
+    if (schema === 'po') return null;
+    return <button className="modal-list__view">View Details</button>;
+  };
+  const renderPoInput = (i) => schema === 'po' &&
+  <div className="modal-list__expand" style={{ paddingLeft: 0, flexDirection: 'row', alignItems: 'stretch', gap: 10 }}>
+          <input placeholder="Enter PO #" style={{ flex: 1, height: 40, border: '1px solid #BFBFBF', borderRadius: 5, padding: '0 14px', font: "14px/1 'Source Sans Pro',sans-serif" }} />
+          <button className="modal-list__nudge modal-list__nudge--action">Submit</button>
+        </div>;
+
+  return (
+    <div className="modal-body">
+          <div className="modal-list">
+            {sample.slice(0, rows).map((r, i) =>
+        <div key={i} className={`modal-list__row${i === 0 && schema !== 'po' && schema !== 'default-timer' ? ' modal-list__row--selected' : ''}`} style={{ padding: schema === 'default-timer' ? '0' : undefined }}>
+                {schema === 'default-timer' &&
+          <div style={{ background: '#FDEBEB', borderRadius: '4px 4px 0 0', padding: '4px 14px', font: "700 14px/1.04 'Source Sans Pro',sans-serif", color: 'var(--ps-sem-fg-secondary)', display: 'flex', alignItems: 'center', gap: 4, height: 27 }}>
+                    <svg width="10" height="12" viewBox="0 0 10 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 1h4" /><path d="M5 1v2" /><circle cx="5" cy="7" r="4" /><path d="M5 5v2l1.5 1" /></svg>
+                    <span style={{ fontWeight: "600" }}>00:05:20</span>
+                  </div>
+          }
+                <div className="modal-list__head" style={schema === 'default-timer' ? { padding: '14px' } : undefined}>
+                  <div className="modal-list__cells">{renderCells(r, i)}</div>
+                  {renderAction(i)}
+                </div>
+                {renderPoInput(i)}
+              </div>
+        )}
+          </div>
+          {showPagination &&
+      <div className="modal-foot">
+              <div className="modal-foot__pager">
+                <button className="pager-btn pager-btn--icon" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5" /><path d="M12 19l-7-7 7-7" /></svg></button>
+                <button className="pager-btn pager-btn--page is-active">1</button>
+                <button className="pager-btn pager-btn--page">2</button>
+                <button className="pager-btn pager-btn--page">3</button>
+                <button className="pager-btn pager-btn--icon" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="M12 5l7 7-7 7" /></svg></button>
+              </div>
+            </div>
+      }
+        </div>);
+
+}
+
+function InfoBody({ text }) {
+  return <p style={{ margin: 0, font: "400 20px/1.5 'Source Sans Pro',sans-serif", color: 'var(--ps-sem-fg-primary)' }}>{text}</p>;
+}
+function ConfirmBody({ text }) {
+  return <p style={{ margin: 0, font: "400 16px/1.5 'Source Sans Pro',sans-serif", color: 'var(--ps-sem-fg-secondary)' }}>{text}</p>;
+}
+
+function CodeBox({ t, w }) {
+  const [copied, setCopied] = useState(false);
+  const html = generateHTML(t, w);
+  return (
+    <div className="mb-codebox">
+          <button className={`mb-copy${copied ? ' copied' : ''}`} onClick={() => {
+        navigator.clipboard.writeText(html);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1600);
+      }}>{copied ? 'Copied ✓' : 'Copy HTML'}</button>
+          {html}
+        </div>);
+
+}
+
+function generateHTML(t, w) {
+  const pad = t.size === 'mobile' ? '24px 20px' : '24px 32px';
+  const titleSize = t.size === 'mobile' ? 22 : 30;
+  const titleLine = t.size === 'mobile' ? 26 : 34;
+  const top = t.type === 'data' ?
+  `  <div class="modal-top">\n    <div class="modal-top__text">\n      <h3>${t.title}</h3>\n${t.subtitle ? `      <p>${t.subtitle}</p>\n` : ''}    </div>\n    <button class="modal-top__close" aria-label="Close">…</button>\n  </div>` :
+  `  <div class="modal-top">\n    <h3>${t.title}</h3>\n    <button class="modal-top__close" aria-label="Close">…</button>\n  </div>`;
+  const body = t.type === 'data' ?
+  `  <div class="modal-body">\n    <!-- ${t.rowCount} line item rows -->\n  </div>` :
+  `  <p>${t.subtitle}</p>`;
+  const primaryHtml = t.primaryStyle === 'none' ? '' :
+  t.primaryStyle === 'pill' ? `<button class="btn btn--pill">${t.primaryLabel}</button>` :
+  t.primaryStyle === 'pill-amber' ? `<button class="btn btn--pill btn--pill-amber">${t.primaryLabel}</button>` :
+  t.primaryStyle === 'danger' ? `<button class="btn btn--danger">${t.primaryLabel}</button>` :
+  `<button class="btn btn--primary">${t.primaryLabel}</button>`;
+  const secondaryHtml = t.secondaryStyle === 'none' ? '' :
+  t.secondaryStyle === 'text' ? `<button class="btn--text">${t.secondaryLabel}</button>` :
+  `<button class="btn btn--secondary">${t.secondaryLabel}</button>`;
+  const actions = primaryHtml || secondaryHtml ?
+  `  <div class="modal-actions modal-actions--bordered">\n    ${secondaryHtml}\n    ${primaryHtml}\n  </div>` :
+  '';
+  return `<div class="modal" style="width:${w}px;padding:${pad};">\n${top}\n${t.showDivider ? '  <hr class="modal-divider">\n' : ''}${body}\n${actions}\n</div>`;
+}
+
+const root = ReactDOM.createRoot(document.getElementById('mb-root'));
+root.render(<ModalBuilder />);
+</script>
+
+  <!-- Default Desktop Modal ─────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Data Modals · Desktop</h2>
+      <div class="desc">Data modal — "select from a list" pattern (850 × 666). Title + subtitle, divider, scrollable body with pipe-separated rows, footer with pagination and Show selector. Used for batch nudges, bulk approvals, and "select a record" flows.</div>
+    </div>
+    <div class="section-body">
+      <div class="stage stage--desk">
+        <div class="page-chrome">
+          <div class="page-chrome__nav">
+            <div class="page-chrome__logo"></div>
+            <div class="page-chrome__search"></div>
+            <div class="page-chrome__cart"></div>
+          </div>
+          <div class="page-chrome__hero">Exchanges Past Due</div>
+          <div class="page-chrome__content">
+            <div class="page-chrome__bar w90"></div>
+            <div class="page-chrome__bar w70"></div>
+            <div class="page-chrome__bar w80"></div>
+            <div class="page-chrome__bar w50"></div>
+          </div>
+        </div>
+        <div class="scrim"></div>
+        <div class="modal modal--desk" style="transform:scale(.82);transform-origin:center;">
+          <div class="modal-top">
+            <div class="modal-top__text">
+              <h3>Exchanges Past Due</h3>
+              <p>Select an order line to nudge approver specific individuals.</p>
+            </div>
+            <button class="modal-top__close" aria-label="Close">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"></path></svg>
+            </button>
+          </div>
+          <hr class="modal-divider">
+          <div class="modal-body">
+            <div class="modal-list">
+              <div class="modal-list__row">
+                <div class="modal-list__head">
+                  <div class="modal-list__cells">
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Order #:</span><span class="modal-list__cell-value">64434335</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Ref #:</span><span class="modal-list__cell-value">45433232</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Item #:</span><span class="modal-list__cell-value">M1134321</span></span>
+                    <span class="modal-list__cell modal-list__cell--desc"><span class="modal-list__cell-label">Description:</span><span class="modal-list__cell-value">Service Kit, Accessory ...</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Qty:</span><span class="modal-list__cell-value">1</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Requester:</span><span class="modal-list__cell-value">Earl Grey</span></span>
+                  </div>
+                  <button class="modal-list__view">View Details</button>
+                </div>
+              </div>
+              <div class="modal-list__row">
+                <div class="modal-list__head">
+                  <div class="modal-list__cells">
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Order #:</span><span class="modal-list__cell-value">64434335</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Ref #:</span><span class="modal-list__cell-value">45433232</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Item #:</span><span class="modal-list__cell-value">M1134321</span></span>
+                    <span class="modal-list__cell modal-list__cell--desc"><span class="modal-list__cell-label">Description:</span><span class="modal-list__cell-value">Service Kit, Accessory ...</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Qty:</span><span class="modal-list__cell-value">1</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Requester:</span><span class="modal-list__cell-value">Earl Grey</span></span>
+                  </div>
+                  <button class="modal-list__view">View Details</button>
+                </div>
+              </div>
+              <div class="modal-list__row">
+                <div class="modal-list__head">
+                  <div class="modal-list__cells">
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Order #:</span><span class="modal-list__cell-value">64434335</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Ref #:</span><span class="modal-list__cell-value">45433232</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Item #:</span><span class="modal-list__cell-value">M1134321</span></span>
+                    <span class="modal-list__cell modal-list__cell--desc"><span class="modal-list__cell-label">Description:</span><span class="modal-list__cell-value">Service Kit, Accessory ...</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Qty:</span><span class="modal-list__cell-value">1</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Requester:</span><span class="modal-list__cell-value">Earl Grey</span></span>
+                  </div>
+                  <button class="modal-list__view">View Details</button>
+                </div>
+              </div>
+              <div class="modal-list__row">
+                <div class="modal-list__head">
+                  <div class="modal-list__cells">
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Order #:</span><span class="modal-list__cell-value">64434335</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Ref #:</span><span class="modal-list__cell-value">45433232</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Item #:</span><span class="modal-list__cell-value">M1134321</span></span>
+                    <span class="modal-list__cell modal-list__cell--desc"><span class="modal-list__cell-label">Description:</span><span class="modal-list__cell-value">Service Kit, Accessory ...</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Qty:</span><span class="modal-list__cell-value">1</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Requester:</span><span class="modal-list__cell-value">Earl Grey</span></span>
+                  </div>
+                  <button class="modal-list__view">View Details</button>
+                </div>
+              </div>
+              <div class="modal-list__row">
+                <div class="modal-list__head">
+                  <div class="modal-list__cells">
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Order #:</span><span class="modal-list__cell-value">64434335</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Ref #:</span><span class="modal-list__cell-value">45433232</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Item #:</span><span class="modal-list__cell-value">M1134321</span></span>
+                    <span class="modal-list__cell modal-list__cell--desc"><span class="modal-list__cell-label">Description:</span><span class="modal-list__cell-value">Service Kit, Accessory ...</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Qty:</span><span class="modal-list__cell-value">1</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Requester:</span><span class="modal-list__cell-value">Earl Grey</span></span>
+                  </div>
+                  <button class="modal-list__view">View Details</button>
+                </div>
+              </div>
+              <div class="modal-list__row">
+                <div class="modal-list__head">
+                  <div class="modal-list__cells">
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Order #:</span><span class="modal-list__cell-value">64434335</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Ref #:</span><span class="modal-list__cell-value">45433232</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Item #:</span><span class="modal-list__cell-value">M1134321</span></span>
+                    <span class="modal-list__cell modal-list__cell--desc"><span class="modal-list__cell-label">Description:</span><span class="modal-list__cell-value">Service Kit, Accessory ...</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Qty:</span><span class="modal-list__cell-value">1</span></span>
+                    <span class="modal-list__cell"><span class="modal-list__cell-label">Requester:</span><span class="modal-list__cell-value">Earl Grey</span></span>
+                  </div>
+                  <button class="modal-list__view">View Details</button>
+                </div>
+              </div>
+            </div>
+            <div class="modal-foot">
+              <div class="modal-foot__pager">
+                <button class="pager-btn pager-btn--icon" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button>
+                <button class="pager-btn pager-btn--page is-active">1</button>
+                <button class="pager-btn pager-btn--page">2</button>
+                <button class="pager-btn pager-btn--page">3</button>
+                <button class="pager-btn pager-btn--icon" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal · Desktop · Informational ───────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Informational Modals · Desktop</h2>
+      <div class="desc">Informational modal — no list, no form, just a title and a paragraph explaining a system state with a clear next-action pair. Width sized to copy (~720 px). Title 30 px Source Sans Light, body 20 px regular, dismiss link on the left, primary orange pill on the right. Used for session timeouts, credit holds, system advisories.</div>
+    </div>
+    <div class="section-body">
+      <div class="stage stage--desk" style="height:560px;">
+        <div class="page-chrome">
+          <div class="page-chrome__nav"><div class="page-chrome__logo"></div><div class="page-chrome__search"></div><div class="page-chrome__cart"></div></div>
+          <div class="page-chrome__hero">Order Details · #677800</div>
+          <div class="page-chrome__content">
+            <div class="page-chrome__bar w90"></div>
+            <div class="page-chrome__bar w70"></div>
+            <div class="page-chrome__bar w80"></div>
+            <div class="page-chrome__bar w50"></div>
+          </div>
+        </div>
+        <div class="scrim"></div>
+        <div class="modal" style="transform:scale(.78);transform-origin:center;width:720px;padding:32px 40px;">
+          <div class="modal-top">
+            <h3>Your Session Has Timed Out</h3>
+            <button class="modal-top__close" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"></path></svg></button>
+          </div>
+          <p style="margin:0;font:400 20px/1.5 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);">An over-limit credit hold is currently in place for your organization. Orders can be submitted and will be held for processing until the credit hold has been lifted. Lorem ipsum dolor sit amet.</p>
+          <div class="modal-actions modal-actions--bordered" style="justify-content:flex-end;gap:8px;align-items:center;">
+            <button class="btn--text">CONTINUE TO HOME PAGE</button>
+            <button class="btn--pill">CONTACT REP</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Production Examples ────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Live Examples</h2>
+      <div class="desc">Captured from the production app. Each pattern uses the same shell (white card, 5 px radius, 30 px light title) but swaps body content and CTA treatment by job-to-be-done. Primary CTAs use the brand-orange <code class="kbd">btn--pill</code>, secondary is plain text.</div>
+    </div>
+    <div class="section-body" style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;">
+
+      <!-- 1. Research Notes -->
+      <div class="bp-card">
+        <div class="demo" style="height:300px;">
+          <div class="scrim"></div>
+          <div class="modal modal--tab" style="transform:scale(.78);transform-origin:center;width:540px;">
+            <div class="modal-top">
+              <h3>Research Notes</h3>
+              <button class="modal-top__close" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"></path></svg></button>
+            </div>
+            <div class="ff-textarea">Note</div>
+            <div class="modal-actions" style="justify-content:flex-end;gap:8px;align-items:center;">
+              <button class="btn--text">CANCEL</button>
+              <button class="btn--pill btn--pill-amber">CREATE NOTE</button>
+            </div>
+          </div>
+        </div>
+        <div class="label"><b>Notes &amp; comments</b><span>Single-field capture · amber pill = soft action</span></div>
+      </div>
+
+      <!-- 2. Remove from Queue -->
+      <div class="bp-card">
+        <div class="demo" style="height:420px;">
+          <div class="scrim"></div>
+          <div class="modal modal--tab" style="transform:scale(.72);transform-origin:center;width:560px;">
+            <div class="modal-top">
+              <h3>Remove from Queue</h3>
+              <button class="modal-top__close" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"></path></svg></button>
+            </div>
+            <p style="margin:0;font-size:14px;color:var(--ps-sem-fg-primary);line-height:1.55;">Removing this item from the Queue may affect the sold price and/or shipping charges. Determine if the change required can be managed in the current status (ie. cost on PO); if not, contact the Account Manager to determine if cancelling the PO is the best option.</p>
+            <p style="margin:0;font-size:14px;color:var(--ps-sem-fg-primary);line-height:1.55;">If you wish to continue cancelling this PO, please select a reason code and provide a detailed reason below</p>
+            <div class="ff ff--select"><span class="ff__value" style="color:var(--ps-sem-fg-tertiary);padding-right:24px;">Return to Sourcing Reasoning</span></div>
+            <div class="ff-textarea">Detail Explanation</div>
+            <div class="modal-actions modal-actions--bordered" style="justify-content:flex-end;gap:8px;align-items:center;">
+              <button class="btn--text">CANCEL</button>
+              <button class="btn--pill">REMOVE ITEM</button>
+            </div>
+          </div>
+        </div>
+        <div class="label"><b>Destructive w/ reason</b><span>Body copy + reason dropdown + orange pill</span></div>
+      </div>
+
+      <!-- 3. Edit Blanket PO -->
+      <div class="bp-card">
+        <div class="demo" style="height:380px;">
+          <div class="scrim"></div>
+          <div class="modal modal--tab" style="transform:scale(.78);transform-origin:center;width:560px;">
+            <div class="modal-top">
+              <h3>Edit Blanket PO</h3>
+              <button class="modal-top__close" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"></path></svg></button>
+            </div>
+            <div class="ff ff--select"><span class="ff__label">Facility</span><span class="ff__value">Chatham Cancer Center</span></div>
+            <div class="ff"><span class="ff__label">Blanket PO</span><span class="ff__value">34534535235</span></div>
+            <div class="modal-actions modal-actions--bordered" style="justify-content:flex-end;gap:8px;align-items:center;">
+              <button class="btn--text">CANCEL</button>
+              <button class="btn--pill">SAVE</button>
+            </div>
+          </div>
+        </div>
+        <div class="label"><b>Edit form</b><span>Floating blue labels · primary save</span></div>
+      </div>
+
+      <!-- 4. Status History -->
+      <div class="bp-card">
+        <div class="demo" style="height:340px;">
+          <div class="scrim"></div>
+          <div class="modal modal--tab" style="transform:scale(.78);transform-origin:center;width:580px;">
+            <div class="modal-top">
+              <h3>Status History</h3>
+              <button class="modal-top__close" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"></path></svg></button>
+            </div>
+            <table style="border-collapse:collapse;width:100%;font:14px/1.3 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);">
+              <thead>
+                <tr style="border-bottom:1px solid #E5E7EB;">
+                  <th style="text-align:left;font-weight:700;padding:10px 12px;">Old Status</th>
+                  <th style="text-align:left;font-weight:700;padding:10px 12px;">New Status</th>
+                  <th style="text-align:left;font-weight:700;padding:10px 12px;">Changed By</th>
+                  <th style="text-align:left;font-weight:700;padding:10px 12px;">Date Changed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid #F1F1F1;"><td style="padding:10px 12px;">Requested</td><td style="padding:10px 12px;">Requested</td><td style="padding:10px 12px;">LASSO (CE)</td><td style="padding:10px 12px;">02/03/25 8:32 AM</td></tr>
+                <tr style="border-bottom:1px solid #F1F1F1;"><td style="padding:10px 12px;">Requested</td><td style="padding:10px 12px;">Sourcing</td><td style="padding:10px 12px;">SKOPPARAPU</td><td style="padding:10px 12px;">02/02/26 1:44 PM</td></tr>
+              </tbody>
+            </table>
+            <div class="modal-foot" style="border-top:none;padding-top:6px;">
+              <div class="modal-foot__count"><b>1-2</b> of 2</div>
+              <div class="modal-foot__pager">
+                <button class="pager-btn" disabled="">‹</button>
+                <button class="pager-btn pager-btn--page is-active">1</button>
+                <button class="pager-btn" disabled="">›</button>
+              </div>
+              <div class="modal-foot__show"><span>Show</span><select><option>25</option></select></div>
+            </div>
+          </div>
+        </div>
+        <div class="label"><b>Read-only history</b><span>Title only · table + pagination · no actions</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Informational Modals · Tablet & Mobile ─── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Informational Modals · Tablet &amp; Mobile</h2>
+      <div class="desc">Same informational pattern at narrower frames. Tablet (600 px) keeps title 30 px and body 18 px. Mobile (345 px) drops title to 22 px and stacks the two CTAs vertically, primary on top.</div>
+    </div>
+    <div class="bp-grid">
+      <div class="bp-card">
+        <div class="demo">
+          <div class="scrim"></div>
+          <div class="modal modal--tab" style="transform:scale(.62);transform-origin:center;width:600px;">
+            <div class="modal-top">
+              <h3>Your Session Has Timed Out</h3>
+              <button class="modal-top__close" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"></path></svg></button>
+            </div>
+            <p style="margin:0;font:400 18px/1.5 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);">An over-limit credit hold is currently in place for your organization. Orders can be submitted and will be held for processing until the credit hold has been lifted.</p>
+            <div class="modal-actions modal-actions--bordered" style="justify-content:flex-end;gap:8px;align-items:center;">
+              <button class="btn--text">CONTINUE TO HOME PAGE</button>
+              <button class="btn--pill">CONTACT REP</button>
+            </div>
+          </div>
+        </div>
+        <div class="label"><b>Tablet</b><span>600 × 360 · same layout</span></div>
+      </div>
+      <div class="bp-card">
+        <div class="demo">
+          <div class="scrim"></div>
+          <div class="modal modal--mob" style="transform:scale(.7);transform-origin:center;">
+            <div class="modal-top">
+              <h3 style="font-size:22px;line-height:26px;">Your Session Has Timed Out</h3>
+              <button class="modal-top__close" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"></path></svg></button>
+            </div>
+            <p style="margin:0;font:400 16px/1.5 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);">An over-limit credit hold is in place. Orders will be held until the hold lifts.</p>
+            <div class="modal-actions modal-actions--bordered" style="flex-direction:column;align-items:stretch;gap:10px;">
+              <button class="btn--pill" style="width:100%;">CONTACT REP</button>
+              <button class="btn--text" style="height:36px;padding:0;">CONTINUE TO HOME PAGE</button>
+            </div>
+          </div>
+        </div>
+        <div class="label"><b>Mobile</b><span>345 × auto · stacked CTAs</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- States ────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>States</h2>
+      <div class="desc">Modal body can host inline alerts that persist across the open lifetime (success, error, info). The container itself doesn’t change state — loading happens on the action button, not the container.</div>
+    </div>
+    <div class="section-body">
+      <div class="states-grid">
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-modal">
+              <h4>Confirm shipping</h4>
+              <p>1 line item selected for nudge.</p>
+              <div class="mini-modal__actions"><button class="b2">Cancel</button><button class="b1">Send</button></div>
+            </div>
+          </div>
+          <div class="state-card__meta"><b>Default</b><span>No alert</span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-modal">
+              <h4>Confirm shipping</h4>
+              <div class="modal-alert modal-alert--success"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg><span>Nudge sent to 1 approver.</span></div>
+              <div class="mini-modal__actions"><button class="b2">Close</button></div>
+            </div>
+          </div>
+          <div class="state-card__meta"><b>Success alert</b><span>Inline after action</span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-modal">
+              <h4>Confirm shipping</h4>
+              <div class="modal-alert modal-alert--fail"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg><span>Could not send nudge — try again.</span></div>
+              <div class="mini-modal__actions"><button class="b2">Cancel</button><button class="b1">Retry</button></div>
+            </div>
+          </div>
+          <div class="state-card__meta"><b>Error alert</b><span>Action retains primary CTA</span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-modal">
+              <h4>Confirm shipping</h4>
+              <div class="modal-alert modal-alert--info"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span>You can nudge this approver again in 24 hours.</span></div>
+              <div class="mini-modal__actions"><button class="b2">Close</button></div>
+            </div>
+          </div>
+          <div class="state-card__meta"><b>Info alert</b><span>Rate-limit / context</span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-modal">
+              <h4>Confirm shipping</h4>
+              <p>Sending nudge…</p>
+              <div class="mini-modal__actions"><button class="b2">Cancel</button><button class="b1" disabled="" style="opacity:.6;display:inline-flex;align-items:center;gap:6px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" width="12" height="12" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 11-6.219-8.56"></path></svg>Sending</button></div>
+            </div>
+          </div>
+          <div class="state-card__meta"><b>Loading</b><span>Spinner inside primary CTA</span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-modal">
+              <h4>Confirm shipping</h4>
+              <p>1 line item selected for nudge.</p>
+              <div class="mini-modal__actions"><button class="b2">Cancel</button><button class="b1" style="opacity:.45;cursor:not-allowed;">Send</button></div>
+            </div>
+          </div>
+          <div class="state-card__meta"><b>Disabled</b><span>No selection · CTA dimmed</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A11y ──────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility</h2>
+      <div class="desc">Modals are interruptions — they must be obvious, keyboard-operable, and announce themselves clearly to assistive tech.</div>
+    </div>
+    <div class="a11y-grid">
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="12" height="10" rx="1"></rect><path d="M5 7h6M5 10h4"></path></svg>Roles &amp; ARIA</h4>
+        <p>Container is <code>role="dialog"</code> (or <code>alertdialog</code> for destructive confirms) with <code>aria-modal="true"</code>. Title element gets <code>aria-labelledby</code>; subtitle gets <code>aria-describedby</code>.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="12" height="8" rx="1"></rect><path d="M5 7l3 2 3-2"></path></svg>Focus management</h4>
+        <p>On open, move focus to the first actionable element inside the dialog — not the close button. On close, restore focus to the trigger that opened the modal. Trap Tab/Shift+Tab inside the dialog while open.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"></circle><path d="M8 5v3l2 2"></path></svg>Keyboard</h4>
+        <p><code>Esc</code> always closes. <code>Enter</code> triggers the primary CTA when focus is in the dialog body. Pagination supports <code>← →</code>. Bottom sheet supports swipe-down to dismiss; provide an equivalent close button for keyboard users.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8c2-4 8-4 10 0M3 8c2 4 8 4 10 0"></path><circle cx="8" cy="8" r="2"></circle></svg>Contrast</h4>
+        <p>Title <code>#373F41</code> on <code>#FFF</code> = 10.6:1. Subtitle <code>#4A4A4A</code> = 8.6:1. Primary CTA <code>#005BA6 / #FFF</code> = 7.4:1. All pass AAA for normal text.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2h12v12H2z"></path><path d="M2 6h12M6 2v12"></path></svg>Scroll containment</h4>
+        <p>Lock <code>body</code> scroll when modal opens. The modal body itself is the only scrollable region. Drawer also locks page scroll; bottom sheet does <i>not</i> — the page can scroll behind it because content is glanceable.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"></circle><path d="M8 4v4M8 11h.01"></path></svg>Hit targets</h4>
+        <p>Close button is 24×24 visual but 40×40 effective hit area on touch. Pager buttons are 28×28 visual / 40×40 effective. Never put two interactive elements closer than 8 px on touch surfaces.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Do / Don't ────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Do &amp; Don’t</h2>
+      <div class="desc">The most common modal mistakes — and what to do instead.</div>
+    </div>
+    <div class="dodont">
+      <div class="dodont__col dodont__col--do">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="2 8 6 12 14 4"></polyline></svg>Do</h4>
+        <ul>
+          <li>Use a modal when the user must finish or cancel before continuing.</li>
+          <li>Lead with a verb in the title — “Send nudge,” “Delete list” — not “Are you sure?”</li>
+          <li>Put the primary action on the right and label it with what it does (“Send Nudge”), not “OK”.</li>
+          <li>Match scrim color to overlay type: <code class="kbd">.45</code> for modals, <code class="kbd">.32</code> for drawers and sheets.</li>
+          <li>Allow <code class="kbd">Esc</code>, scrim-click, and the close icon to all dismiss the modal.</li>
+        </ul>
+      </div>
+      <div class="dodont__col dodont__col--dont">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M3 3l10 10M13 3L3 13"></path></svg>Don’t</h4>
+        <ul>
+          <li>Stack modals. If a modal opens a modal, redesign the flow — use steps or a drawer.</li>
+          <li>Use a modal for marketing announcements or non-blocking info — that’s a Toast or Banner.</li>
+          <li>Use a modal for long forms — a Drawer keeps the user oriented in the page they came from.</li>
+          <li>Disable the close button to force a decision. Always give the user a way out (even if it’s “Cancel”).</li>
+          <li>Auto-dismiss a modal after a timer. Modals are user-driven; toasts are time-driven.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage / when to use what ───────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>When to use what</h2>
+      <div class="desc">Picking the right overlay is the most important decision — everything else follows from it.</div>
+    </div>
+    <div class="usage">
+      <div class="usage-card">
+        <span class="tag">Modal</span>
+        <h4>Multi-row selection, batch action</h4>
+        <p>User picks one or more items from a list, then commits an action. <i>e.g.</i> “Select orders to nudge,” “Choose facilities to add to list.”</p>
+      </div>
+      <div class="usage-card">
+        <span class="tag">Dialog</span>
+        <h4>Single yes/no decision</h4>
+        <p>Confirm destructive action, confirm submit, confirm leave-without-saving. No inputs, no choices beyond the two action buttons.</p>
+      </div>
+      <div class="usage-card">
+        <span class="tag">Drawer</span>
+        <h4>Edit or inspect a single record</h4>
+        <p>User edits a record while staying oriented in the list they came from. <i>e.g.</i> Edit asset, view PO detail, edit a saved list’s metadata.</p>
+      </div>
+      <div class="usage-card">
+        <span class="tag">Bottom sheet</span>
+        <h4>Mobile contextual action</h4>
+        <p>Mobile-only equivalent of a drawer for quick choices that don’t warrant taking over the whole screen. Always glanceable in &lt;3 actions.</p>
+      </div>
+      <div class="usage-card">
+        <span class="tag">Toast (not here)</span>
+        <h4>System feedback, non-blocking</h4>
+        <p>The user did a thing and we’re telling them it worked. Goes in the Alerts &amp; Toasts page — never use a modal for this.</p>
+      </div>
+      <div class="usage-card">
+        <span class="tag">Popover (not here)</span>
+        <h4>Inline contextual help</h4>
+        <p>Anchored to a trigger, dismisses on outside click. Lives in the Tooltips &amp; Popovers page — not a modal.</p>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes spin{to{transform:rotate(360deg);}}
+  </style>
+
+
+</body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

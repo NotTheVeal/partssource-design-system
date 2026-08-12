@@ -1,0 +1,37 @@
+<!-- @dsCard group="Components" name="Badge" subtitle="StatusBadge (4px radius, status tones) and ListTypeBadge (pill, catalog categories)" viewport="560x180" -->
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../tokens.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+</head><body style="margin:0;padding:20px;background:#FAFAFA;">
+<div id="root"></div>
+<script>
+(function(){
+  var StatusBadge = window.StatusBadge, ListTypeBadge = window.ListTypeBadge;
+  if (!StatusBadge) { document.getElementById('root').innerHTML='<p style="color:#9E2020;font-size:13px;font-family:sans-serif">⚠ Badge not in bundle</p>'; return; }
+  var e = React.createElement;
+  var row = function(children) { return e('div',{style:{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}},children); };
+  var Demo = function() {
+    return e('div',{style:{display:'flex',flexDirection:'column',gap:16}},
+      e('p',{style:{margin:'0 0 4px',fontSize:11,fontWeight:700,letterSpacing:'1px',textTransform:'uppercase',color:'#777',fontFamily:'sans-serif'}},'Status'),
+      row([
+        e(StatusBadge,{key:'n',tone:'neutral'},'Neutral'),
+        e(StatusBadge,{key:'i',tone:'info'},'Info'),
+        e(StatusBadge,{key:'s',tone:'success'},'Success'),
+        e(StatusBadge,{key:'w',tone:'warning'},'Warning'),
+        e(StatusBadge,{key:'c',tone:'critical'},'Critical'),
+      ]),
+      e('p',{style:{margin:'0 0 4px',fontSize:11,fontWeight:700,letterSpacing:'1px',textTransform:'uppercase',color:'#777',fontFamily:'sans-serif'}},'List Type'),
+      row([
+        e(ListTypeBadge,{key:'sh',tone:'shopping'},'Shopping List'),
+        e(ListTypeBadge,{key:'pm',tone:'preventative'},'PM List'),
+        e(ListTypeBadge,{key:'re',tone:'restocking'},'Restocking'),
+      ])
+    );
+  };
+  ReactDOM.createRoot(document.getElementById('root')).render(e(Demo,null));
+})();
+</script></body></html>

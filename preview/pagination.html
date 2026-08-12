@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pagination · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+  .section-body{padding:24px;background:#FAFAFA;}
+
+  /* ── Pagination ─────────────────────────────────────────────── */
+  .pg{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;
+    font:14px/1 'Source Sans Pro',sans-serif;color:#2B2B2B;
+    background:#fff;padding:16px 18px;border:1px solid #F1F1F1;border-radius:6px;
+  }
+  .pg__count{color:#2B2B2B;}
+  .pg__count b{font-weight:700;}
+  .pg__pager{display:flex;align-items:center;gap:4px;}
+  .pg-btn{
+    min-width:32px;height:32px;padding:0 8px;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:transparent;color:#2B2B2B;border:0;border-radius:5px;
+    font:14px/1 'Source Sans Pro',sans-serif;font-weight:400;cursor:pointer;
+    transition:background 120ms;
+  }
+  .pg-btn:hover:not([disabled]):not(.is-active){background:#F4F6F8;}
+  .pg-btn[disabled]{opacity:.4;cursor:not-allowed;}
+  .pg-btn.is-active{background:#005BA6;color:#fff;font-weight:700;}
+  .pg-btn--icon{border:1px solid #E6E6E6;background:#fff;}
+  .pg-btn--icon:hover:not([disabled]){background:#F4F6F8;}
+  .pg-btn--icon svg{width:11px;height:11px;}
+  .pg__ellipsis{padding:0 4px;color:#949494;}
+
+  .pg__show{display:flex;align-items:center;gap:8px;}
+  .pg__show select{
+    height:32px;border:1px solid #CCCCCC;border-radius:4px;
+    padding:0 10px;font:14px/1 'Source Sans Pro',sans-serif;color:#2B2B2B;
+    background:#fff;cursor:pointer;outline:none;
+  }
+  .pg__show select:focus{border-color:#005BA6;box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+
+  /* Compact variant */
+  .pg--compact{padding:8px 12px;}
+  .pg--compact .pg__count{font-size:13px;color:#777;}
+
+  /* States grid */
+  .states-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+  .state-card{background:#fff;border:1px solid #F1F1F1;border-radius:8px;overflow:hidden;}
+  .state-card__stage{padding:18px;background:#FAFAFA;display:flex;align-items:center;justify-content:center;min-height:80px;}
+  .state-card__meta{padding:10px 14px;border-top:1px solid #F1F1F1;font-size:12px;color:#777;}
+  .state-card__meta b{display:block;color:#002F48;font-size:13px;font-weight:700;margin-bottom:2px;}
+
+  /* Tokens */
+  table.tokens{width:100%;border-collapse:collapse;font-size:13px;}
+  table.tokens th,table.tokens td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.tokens th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.tokens code{background:#F1F1F1;font-family:ui-monospace,Menlo,monospace;font-size:11px;padding:1px 6px;border-radius:3px;}
+
+  /* Breadcrumb */
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Pagination</span>
+</nav>
+
+<h1>Pagination</h1>
+<p class="intro">Navigate large data sets one page at a time. Used in tables, search results, and any list with more than ~25 items. Always paired with a result count and page-size selector so users can opt into infinite scroll behavior or dense views.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Default</h2>
+    <div class="desc">Result count, page controls, and page-size picker on one row.</div>
+  </div>
+  <div class="section-body">
+    <div class="pg">
+      <span class="pg__count"><b>1–10</b> of <b>234</b> results</span>
+      <nav class="pg__pager" aria-label="Pagination">
+        <button class="pg-btn pg-btn--icon" aria-label="Previous page"><svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L2.5 5.5 7 10"/></svg></button>
+        <button class="pg-btn is-active" aria-current="page">1</button>
+        <button class="pg-btn">2</button>
+        <button class="pg-btn">3</button>
+        <button class="pg-btn">4</button>
+        <button class="pg-btn">5</button>
+        <span class="pg__ellipsis">…</span>
+        <button class="pg-btn">24</button>
+        <button class="pg-btn pg-btn--icon" aria-label="Next page"><svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 1l4.5 4.5L4 10"/></svg></button>
+      </nav>
+      <div class="pg__show">
+        <span>Show:</span>
+        <select aria-label="Items per page"><option>10</option><option>25</option><option>50</option><option>100</option></select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Middle of range</h2>
+    <div class="desc">Two ellipses appear when the current page is far from both ends.</div>
+  </div>
+  <div class="section-body">
+    <div class="pg">
+      <span class="pg__count"><b>121–130</b> of <b>234</b> results</span>
+      <nav class="pg__pager" aria-label="Pagination">
+        <button class="pg-btn pg-btn--icon" aria-label="Previous page"><svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L2.5 5.5 7 10"/></svg></button>
+        <button class="pg-btn">1</button>
+        <span class="pg__ellipsis">…</span>
+        <button class="pg-btn">12</button>
+        <button class="pg-btn is-active" aria-current="page">13</button>
+        <button class="pg-btn">14</button>
+        <span class="pg__ellipsis">…</span>
+        <button class="pg-btn">24</button>
+        <button class="pg-btn pg-btn--icon" aria-label="Next page"><svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 1l4.5 4.5L4 10"/></svg></button>
+      </nav>
+      <div class="pg__show">
+        <span>Show:</span>
+        <select aria-label="Items per page"><option>10</option><option>25</option><option>50</option><option>100</option></select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Edges</h2>
+    <div class="desc">Previous disabled on page 1; next disabled on last.</div>
+  </div>
+  <div class="section-body">
+    <div class="pg pg--compact">
+      <nav class="pg__pager" aria-label="Pagination" style="margin:0 auto;">
+        <button class="pg-btn pg-btn--icon" disabled aria-label="Previous page"><svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L2.5 5.5 7 10"/></svg></button>
+        <button class="pg-btn is-active" aria-current="page">1</button>
+        <button class="pg-btn">2</button>
+        <button class="pg-btn">3</button>
+        <button class="pg-btn pg-btn--icon" aria-label="Next page"><svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 1l4.5 4.5L4 10"/></svg></button>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>States</h2>
+    <div class="desc">Idle, hover, active, disabled.</div>
+  </div>
+  <div class="section-body">
+    <div class="states-grid">
+      <div class="state-card"><div class="state-card__stage"><button class="pg-btn">7</button></div><div class="state-card__meta"><b>Idle</b>Transparent · grey 1 text</div></div>
+      <div class="state-card"><div class="state-card__stage"><button class="pg-btn" style="background:#F4F6F8;">7</button></div><div class="state-card__meta"><b>Hover</b>Light grey fill</div></div>
+      <div class="state-card"><div class="state-card__stage"><button class="pg-btn is-active" aria-current="page">7</button></div><div class="state-card__meta"><b>Active</b>PS Blue fill · bold white</div></div>
+      <div class="state-card"><div class="state-card__stage"><button class="pg-btn" disabled>7</button></div><div class="state-card__meta"><b>Disabled</b>40% opacity</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Tokens</h2>
+    <div class="desc"></div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <table class="tokens">
+      <thead><tr><th>Property</th><th>Token / value</th></tr></thead>
+      <tbody>
+        <tr><td>Button size</td><td>32 × 32 min · 5 px radius</td></tr>
+        <tr><td>Font</td><td>Source Sans Pro 14 · 400 idle · 700 active</td></tr>
+        <tr><td>Active fill</td><td><code>#005BA6</code> · white text</td></tr>
+        <tr><td>Hover fill</td><td><code>#F4F6F8</code></td></tr>
+        <tr><td>Icon button</td><td>1 px <code>#E6E6E6</code> border · white bg</td></tr>
+        <tr><td>Ellipsis</td><td><code>#949494</code> · not focusable</td></tr>
+        <tr><td>Gap between buttons</td><td>4 px</td></tr>
+        <tr><td>Page-size options</td><td>10 · 25 · 50 · 100</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>

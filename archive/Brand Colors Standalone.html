@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Brand" name="Brand Colors" --><html><head>
+  <meta charset="utf-8">
+  <title>PartsSource Brand Colors</title>
+  
+  <template id="__bundler_thumbnail" data-bg-color="#FAFAFA">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#FAFAFA"/>
+      <g transform="translate(600, 400)">
+        <circle cx="-120" cy="0" r="60" fill="#005BA6"/>
+        <circle cx="0" cy="0" r="60" fill="#FF9505"/>
+        <circle cx="120" cy="0" r="60" fill="#17AB78"/>
+      </g>
+    </svg>
+  </template>
+  <style>
+    /* Design Tokens */
+    :root {
+      --ps-brand-primary: #005BA6;
+      --ps-fg-primary: #2B2B2B;
+      --ps-fg-secondary: #4A4A4A;
+      --ps-border-default: #E6E6E6;
+      --ps-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --ps-text-primary: #2B2B2B;
+      --ps-text-secondary: #777777;
+    }
+    
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:#fff;color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:#fff;}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:#FAFAFA;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+
+    .section-body{padding:24px;}
+
+    .row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
+    .sw{border:1px solid #E6E6E6;border-radius:8px;overflow:hidden;background:#fff;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;}
+    .sw:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,47,72,.12);border-color:#D0D7DE;}
+    .sw:active{transform:translateY(0);}
+    .chip{height:150px;display:flex;align-items:flex-end;padding:14px 16px;position:relative;}
+    .chip.outlined{box-shadow:inset 0 0 0 1px #DCDCDC;}
+    .chip .badge{font-size:12px;letter-spacing:.5px;padding:4px 9px;border-radius:4px;background:rgba(0,0,0,.22);color:#fff;text-transform:uppercase;font-weight:600;backdrop-filter:blur(2px);font-family:ui-monospace,Menlo,monospace;}
+    .chip.light .badge{background:rgba(0,0,0,.08);color:#2B2B2B;}
+    .lbl{padding:16px 18px 18px;border-top:1px solid #F1F1F1;}
+    .name{font-weight:600;color:var(--ps-text-primary);font-size:16px;line-height:1.25;}
+    .hex{color:var(--ps-text-secondary);font-size:14px;letter-spacing:.5px;margin-top:6px;font-family:ui-monospace,Menlo,monospace;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+    .copyhint{margin-left:auto;font-size:11px;color:#B0B0B0;letter-spacing:.5px;opacity:0;transition:opacity .12s;font-family:var(--ps-font-sans);text-transform:none;}
+    .sw:hover .copyhint{opacity:1;}
+    .sw.copied{border-color:#17AB78;box-shadow:0 0 0 2px rgba(23,171,120,.25);}
+    .sw.copied .copyhint{opacity:1;color:#17AB78;}
+
+    hr{border:0;border-top:1px solid #EEE;margin:36px 0;}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:24px;}
+    .modal.open{display:flex;}
+    .card{background:#fff;border-radius:10px;width:min(860px,100%);max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.35);}
+    .card-chip{height:320px;display:flex;align-items:flex-end;padding:24px 28px;position:relative;}
+    .card-chip .close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);border:0;color:inherit;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+    .card-chip .close:hover{background:rgba(255,255,255,.35);}
+    .card-chip.light .close{background:rgba(0,0,0,.08);color:#2B2B2B;}
+    .card-chip.light .close:hover{background:rgba(0,0,0,.15);}
+    .card-title{font-size:28px;font-weight:700;line-height:1.1;}
+    .card-body{padding:24px 28px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;background:#FAFAFA;}
+    .meta-block{}
+    .meta-label{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:#949494;font-weight:600;margin-bottom:6px;}
+    .meta-val{font-family:ui-monospace,Menlo,monospace;font-size:16px;color:#2B2B2B;background:#fff;border:1px solid #E6E6E6;border-radius:6px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:border-color .12s;}
+    .meta-val:hover{border-color:#005BA6;}
+    .meta-val .c{font-size:10px;color:#949494;letter-spacing:.5px;text-transform:uppercase;}
+    .usage{padding:0 28px 28px;background:#FAFAFA;}
+    .usage-head{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:#949494;font-weight:600;margin-bottom:10px;}
+    .usage-text{font-size:14px;color:#2B2B2B;line-height:1.6;}
+
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(12px);background:#002F48;color:#fff;padding:10px 18px;border-radius:6px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;z-index:200;}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  </style>
+</head>
+<body>
+
+  <h1>Brand Colors</h1>
+  <p class="intro">The PartsSource palette, organized by hue family. Click any swatch to copy its hex, or double-click to see full color details and usage guidance.</p>
+
+  <div id="sections"><div class="section"><div class="section-head"><h2>Primary</h2><div class="desc">The signature PartsSource blue. Used for product names, footer, links, breadcrumbs, and focused/pressed input states.</div></div><div class="section-body"><div class="row">
+        <div class="sw" data-hex="#005BA6" data-name="PS Blue" data-usage="Primary brand color. Links, breadcrumbs, focused input outlines, key section titles, and product names.">
+          <div class="chip" style="background:#005BA6;color:#fff;">
+            <span class="badge">#005BA6</span>
+          </div>
+          <div class="lbl">
+            <div class="name">PS Blue</div>
+            <div class="hex">#005BA6<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div></div></div></div><div class="section"><div class="section-head"><h2>Blues</h2><div class="desc">Darker shades for headings and hover states; Azure for informational highlights.</div></div><div class="section-body"><div class="row">
+        <div class="sw" data-hex="#004A84" data-name="Blue 2" data-usage="Hover / pressed state for PS Blue. Use for button hover on blue fills.">
+          <div class="chip" style="background:#004A84;color:#fff;">
+            <span class="badge">#004A84</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Blue 2</div>
+            <div class="hex">#004A84<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#002F48" data-name="Blue 3" data-usage="Darkest blue. Reserved for display headings and deep navigation surfaces.">
+          <div class="chip" style="background:#002F48;color:#fff;">
+            <span class="badge">#002F48</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Blue 3</div>
+            <div class="hex">#002F48<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#009CF4" data-name="Azure Blue" data-usage="Informational highlights, link color on dark surfaces, info alert accents.">
+          <div class="chip" style="background:#009CF4;color:#fff;">
+            <span class="badge">#009CF4</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Azure Blue</div>
+            <div class="hex">#009CF4<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#B0C6D3" data-name="Light Blue" data-usage="Info alert background, subtle highlight tints, table row selection.">
+          <div class="chip" style="background:#B0C6D3;color:#fff;">
+            <span class="badge">#B0C6D3</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Light Blue</div>
+            <div class="hex">#B0C6D3<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div></div></div></div><div class="section"><div class="section-head"><h2>Oranges</h2><div class="desc">Primary CTA ramp. Orange 1 is the default button fill; 2 &amp; 3 are hover/pressed; 4 &amp; 5 are light tints for backgrounds and highlights.</div></div><div class="section-body"><div class="row">
+        <div class="sw" data-hex="#FF9505" data-name="Orange 1" data-usage="Default CTA fill. Primary buttons, &quot;Add to cart&quot;, key action chips.">
+          <div class="chip" style="background:#FF9505;color:#fff;">
+            <span class="badge">#FF9505</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Orange 1</div>
+            <div class="hex">#FF9505<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#EC8000" data-name="Orange 2" data-usage="Hover state for primary orange buttons.">
+          <div class="chip" style="background:#EC8000;color:#fff;">
+            <span class="badge">#EC8000</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Orange 2</div>
+            <div class="hex">#EC8000<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#D27200" data-name="Orange 3" data-usage="Pressed / active state for primary orange buttons.">
+          <div class="chip" style="background:#D27200;color:#fff;">
+            <span class="badge">#D27200</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Orange 3</div>
+            <div class="hex">#D27200<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#FFCA82" data-name="Orange 4" data-usage="Highlighted backgrounds, promotional banners, hover tints on orange rows.">
+          <div class="chip light" style="background:#FFCA82;color:#2B2B2B;">
+            <span class="badge">#FFCA82</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Orange 4</div>
+            <div class="hex">#FFCA82<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#FFE4C0" data-name="Orange 5" data-usage="Subtle orange tint for backgrounds, selected chip backgrounds.">
+          <div class="chip light" style="background:#FFE4C0;color:#2B2B2B;">
+            <span class="badge">#FFE4C0</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Orange 5</div>
+            <div class="hex">#FFE4C0<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div></div></div></div><div class="section"><div class="section-head"><h2>Greens</h2><div class="desc">Success states, positive deltas, and in-stock indicators.</div></div><div class="section-body"><div class="row">
+        <div class="sw" data-hex="#17AB78" data-name="Green 1" data-usage="Success messages, confirmed states, positive KPI deltas, in-stock indicators.">
+          <div class="chip" style="background:#17AB78;color:#fff;">
+            <span class="badge">#17AB78</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Green 1</div>
+            <div class="hex">#17AB78<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#8BD5BC" data-name="Green 2" data-usage="Success alert backgrounds, soft positive accents.">
+          <div class="chip light" style="background:#8BD5BC;color:#2B2B2B;">
+            <span class="badge">#8BD5BC</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Green 2</div>
+            <div class="hex">#8BD5BC<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div></div></div></div><div class="section"><div class="section-head"><h2>Reds</h2><div class="desc">Errors, destructive actions, and negative deltas.</div></div><div class="section-body"><div class="row">
+        <div class="sw" data-hex="#FF0000" data-name="Red" data-usage="Errors, destructive actions, negative KPI deltas, validation text.">
+          <div class="chip" style="background:#FF0000;color:#fff;">
+            <span class="badge">#FF0000</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Red</div>
+            <div class="hex">#FF0000<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#FACBCB" data-name="Light Red" data-usage="Error alert backgrounds, field error highlights.">
+          <div class="chip light" style="background:#FACBCB;color:#2B2B2B;">
+            <span class="badge">#FACBCB</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Light Red</div>
+            <div class="hex">#FACBCB<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div></div></div></div><div class="section"><div class="section-head"><h2>Neutrals</h2><div class="desc">Text, borders, surfaces, and disabled states. Black for headings; Grey 1 for body copy; Grey 5–7 for backgrounds.</div></div><div class="section-body"><div class="row">
+        <div class="sw" data-hex="#000000" data-name="Black" data-usage="Display headings and chart axis labels only.">
+          <div class="chip" style="background:#000000;color:#fff;">
+            <span class="badge">#000000</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Black</div>
+            <div class="hex">#000000<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#4A4A4A" data-name="Grey 1" data-usage="Default body text color.">
+          <div class="chip" style="background:#4A4A4A;color:#fff;">
+            <span class="badge">#4A4A4A</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Grey 1</div>
+            <div class="hex">#4A4A4A<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#777777" data-name="Grey 2" data-usage="Secondary text, metadata, captions.">
+          <div class="chip" style="background:#777777;color:#fff;">
+            <span class="badge">#777777</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Grey 2</div>
+            <div class="hex">#777777<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#949494" data-name="Grey 3" data-usage="Placeholder text, hint text, disabled icons.">
+          <div class="chip" style="background:#949494;color:#fff;">
+            <span class="badge">#949494</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Grey 3</div>
+            <div class="hex">#949494<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#CCCCCC" data-name="Grey 4" data-usage="Disabled borders, inactive chrome.">
+          <div class="chip light" style="background:#CCCCCC;color:#2B2B2B;">
+            <span class="badge">#CCCCCC</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Grey 4</div>
+            <div class="hex">#CCCCCC<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#DCDCDC" data-name="Grey 5" data-usage="Default borders, dividers, card outlines.">
+          <div class="chip light" style="background:#DCDCDC;color:#2B2B2B;">
+            <span class="badge">#DCDCDC</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Grey 5</div>
+            <div class="hex">#DCDCDC<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#F1F1F1" data-name="Grey 6" data-usage="Subtle surface fills, table stripe rows.">
+          <div class="chip light" style="background:#F1F1F1;color:#2B2B2B;">
+            <span class="badge">#F1F1F1</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Grey 6</div>
+            <div class="hex">#F1F1F1<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#FAFAFA" data-name="Grey 7" data-usage="Page background, muted container backgrounds.">
+          <div class="chip light" style="background:#FAFAFA;color:#2B2B2B;">
+            <span class="badge">#FAFAFA</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Grey 7</div>
+            <div class="hex">#FAFAFA<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#FFFFFF" data-name="White" data-usage="Card and surface background default.">
+          <div class="chip light outlined" style="background:#FFFFFF;color:#2B2B2B;">
+            <span class="badge">#FFFFFF</span>
+          </div>
+          <div class="lbl">
+            <div class="name">White</div>
+            <div class="hex">#FFFFFF<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div></div></div></div><div class="section"><div class="section-head"><h2>Data Visualization</h2><div class="desc">Reserved palette for charts, dashboards, and comparison states. 9-swatch set — keep series within this group for consistency across analytics surfaces.</div></div><div class="section-body"><div class="row">
+        <div class="sw" data-hex="#000000" data-name="Headers" data-usage="Chart titles and axis labels in data viz contexts.">
+          <div class="chip" style="background:#000000;color:#fff;">
+            <span class="badge">#000000</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Headers</div>
+            <div class="hex">#000000<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#005BA6" data-name="Neutral 01" data-usage="Primary series color for charts and dashboards.">
+          <div class="chip" style="background:#005BA6;color:#fff;">
+            <span class="badge">#005BA6</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Neutral 01</div>
+            <div class="hex">#005BA6<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#009CF4" data-name="Neutral Accent 01" data-usage="Secondary series / accent series in charts.">
+          <div class="chip" style="background:#009CF4;color:#fff;">
+            <span class="badge">#009CF4</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Neutral Accent 01</div>
+            <div class="hex">#009CF4<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#17AB78" data-name="Positive Expression" data-usage="Positive values, upward trends, gains.">
+          <div class="chip" style="background:#17AB78;color:#fff;">
+            <span class="badge">#17AB78</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Positive Expression</div>
+            <div class="hex">#17AB78<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#FF0000" data-name="Negative Expression" data-usage="Negative values, downward trends, losses.">
+          <div class="chip" style="background:#FF0000;color:#fff;">
+            <span class="badge">#FF0000</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Negative Expression</div>
+            <div class="hex">#FF0000<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#ACACAC" data-name="Neutral 02" data-usage="Tertiary / muted series and disabled legend items.">
+          <div class="chip" style="background:#ACACAC;color:#fff;">
+            <span class="badge">#ACACAC</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Neutral 02</div>
+            <div class="hex">#ACACAC<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#777777" data-name="Neutral 03" data-usage="Axis ticks, reference lines, deep grid lines.">
+          <div class="chip" style="background:#777777;color:#fff;">
+            <span class="badge">#777777</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Neutral 03</div>
+            <div class="hex">#777777<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#DCDCDC" data-name="Comparison 01" data-usage="Light grid lines and alternating band fills.">
+          <div class="chip light" style="background:#DCDCDC;color:#2B2B2B;">
+            <span class="badge">#DCDCDC</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Comparison 01</div>
+            <div class="hex">#DCDCDC<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#B0C6D3" data-name="Comparison 02" data-usage="Cool comparison backdrop for overlay charts.">
+          <div class="chip" style="background:#B0C6D3;color:#fff;">
+            <span class="badge">#B0C6D3</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Comparison 02</div>
+            <div class="hex">#B0C6D3<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div></div></div></div><div class="section"><div class="section-head"><h2>Formulary Score</h2><div class="desc">Score pills and status indicators — from Best (green) to Poor (red). Used on product detail and formulary compliance surfaces.</div></div><div class="section-body"><div class="row">
+        <div class="sw" data-hex="#29A10F" data-name="Best" data-usage="&quot;Best&quot; formulary score pill.">
+          <div class="chip" style="background:#29A10F;color:#fff;">
+            <span class="badge">#29A10F</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Best</div>
+            <div class="hex">#29A10F<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#03C700" data-name="Very Good" data-usage="&quot;Very Good&quot; formulary score pill.">
+          <div class="chip" style="background:#03C700;color:#fff;">
+            <span class="badge">#03C700</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Very Good</div>
+            <div class="hex">#03C700<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#E9E022" data-name="Moderate" data-usage="&quot;Moderate&quot; formulary score pill.">
+          <div class="chip light" style="background:#E9E022;color:#2B2B2B;">
+            <span class="badge">#E9E022</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Moderate</div>
+            <div class="hex">#E9E022<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#F58B00" data-name="Fair" data-usage="&quot;Fair&quot; formulary score pill.">
+          <div class="chip" style="background:#F58B00;color:#fff;">
+            <span class="badge">#F58B00</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Fair</div>
+            <div class="hex">#F58B00<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#DE3700" data-name="Poor" data-usage="&quot;Poor&quot; formulary score pill.">
+          <div class="chip" style="background:#DE3700;color:#fff;">
+            <span class="badge">#DE3700</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Poor</div>
+            <div class="hex">#DE3700<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div></div></div></div><div class="section"><div class="section-head"><h2>Plus+ Rewards</h2><div class="desc">PartsSource Plus+ program accents. Used only inside Plus+ branded surfaces.</div></div><div class="section-body"><div class="row">
+        <div class="sw" data-hex="#03D0BF" data-name="Plus Teal" data-usage="Plus+ accent fill, reward badges, program CTA highlights.">
+          <div class="chip" style="background:#03D0BF;color:#fff;">
+            <span class="badge">#03D0BF</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Plus Teal</div>
+            <div class="hex">#03D0BF<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>
+        <div class="sw" data-hex="#005BB7" data-name="Plus Blue" data-usage="Plus+ primary brand blue (slightly brighter than PS Blue).">
+          <div class="chip" style="background:#005BB7;color:#fff;">
+            <span class="badge">#005BB7</span>
+          </div>
+          <div class="lbl">
+            <div class="name">Plus Blue</div>
+            <div class="hex">#005BB7<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div></div></div></div></div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="card" id="card"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  // --- Data ---
+  const groups = [
+    {
+      name: 'Primary',
+      sub: 'The signature PartsSource blue. Used for product names, footer, links, breadcrumbs, and focused/pressed input states.',
+      colors: [
+        { name:'PS Blue', hex:'#005BA6', usage:'Primary brand color. Links, breadcrumbs, focused input outlines, key section titles, and product names.' },
+      ]
+    },
+    {
+      name: 'Blues',
+      sub: 'Darker shades for headings and hover states; Azure for informational highlights.',
+      colors: [
+        { name:'Blue 2',     hex:'#004A84', usage:'Hover / pressed state for PS Blue. Use for button hover on blue fills.' },
+        { name:'Blue 3',     hex:'#002F48', usage:'Darkest blue. Reserved for display headings and deep navigation surfaces.' },
+        { name:'Azure Blue', hex:'#009CF4', usage:'Informational highlights, link color on dark surfaces, info alert accents.' },
+        { name:'Light Blue', hex:'#B0C6D3', usage:'Info alert background, subtle highlight tints, table row selection.' },
+      ]
+    },
+    {
+      name: 'Oranges',
+      sub: 'Primary CTA ramp. Orange 1 is the default button fill; 2 & 3 are hover/pressed; 4 & 5 are light tints for backgrounds and highlights.',
+      colors: [
+        { name:'Orange 1', hex:'#FF9505', usage:'Default CTA fill. Primary buttons, "Add to cart", key action chips.' },
+        { name:'Orange 2', hex:'#EC8000', usage:'Hover state for primary orange buttons.' },
+        { name:'Orange 3', hex:'#D27200', usage:'Pressed / active state for primary orange buttons.' },
+        { name:'Orange 4', hex:'#FFCA82', usage:'Highlighted backgrounds, promotional banners, hover tints on orange rows.' },
+        { name:'Orange 5', hex:'#FFE4C0', usage:'Subtle orange tint for backgrounds, selected chip backgrounds.' },
+      ]
+    },
+    {
+      name: 'Greens',
+      sub: 'Success states, positive deltas, and in-stock indicators.',
+      colors: [
+        { name:'Green 1', hex:'#17AB78', usage:'Success messages, confirmed states, positive KPI deltas, in-stock indicators.' },
+        { name:'Green 2', hex:'#8BD5BC', usage:'Success alert backgrounds, soft positive accents.' },
+      ]
+    },
+    {
+      name: 'Reds',
+      sub: 'Errors, destructive actions, and negative deltas.',
+      colors: [
+        { name:'Red',       hex:'#FF0000', usage:'Errors, destructive actions, negative KPI deltas, validation text.' },
+        { name:'Light Red', hex:'#FACBCB', usage:'Error alert backgrounds, field error highlights.' },
+      ]
+    },
+    {
+      name: 'Neutrals',
+      sub: 'Text, borders, surfaces, and disabled states. Black for headings; Grey 1 for body copy; Grey 5–7 for backgrounds.',
+      colors: [
+        { name:'Black',  hex:'#000000', usage:'Display headings and chart axis labels only.' },
+        { name:'Grey 1', hex:'#4A4A4A', usage:'Default body text color.' },
+        { name:'Grey 2', hex:'#777777', usage:'Secondary text, metadata, captions.' },
+        { name:'Grey 3', hex:'#949494', usage:'Placeholder text, hint text, disabled icons.' },
+        { name:'Grey 4', hex:'#CCCCCC', usage:'Disabled borders, inactive chrome.' },
+        { name:'Grey 5', hex:'#DCDCDC', usage:'Default borders, dividers, card outlines.' },
+        { name:'Grey 6', hex:'#F1F1F1', usage:'Subtle surface fills, table stripe rows.' },
+        { name:'Grey 7', hex:'#FAFAFA', usage:'Page background, muted container backgrounds.' },
+        { name:'White',  hex:'#FFFFFF', usage:'Card and surface background default.' },
+      ]
+    },
+    {
+      name: 'Data Visualization',
+      sub: 'Reserved palette for charts, dashboards, and comparison states. 9-swatch set — keep series within this group for consistency across analytics surfaces.',
+      colors: [
+        { name:'Headers',             hex:'#000000', usage:'Chart titles and axis labels in data viz contexts.' },
+        { name:'Neutral 01',          hex:'#005BA6', usage:'Primary series color for charts and dashboards.' },
+        { name:'Neutral Accent 01',   hex:'#009CF4', usage:'Secondary series / accent series in charts.' },
+        { name:'Positive Expression', hex:'#17AB78', usage:'Positive values, upward trends, gains.' },
+        { name:'Negative Expression', hex:'#FF0000', usage:'Negative values, downward trends, losses.' },
+        { name:'Neutral 02',          hex:'#ACACAC', usage:'Tertiary / muted series and disabled legend items.' },
+        { name:'Neutral 03',          hex:'#777777', usage:'Axis ticks, reference lines, deep grid lines.' },
+        { name:'Comparison 01',       hex:'#DCDCDC', usage:'Light grid lines and alternating band fills.' },
+        { name:'Comparison 02',       hex:'#B0C6D3', usage:'Cool comparison backdrop for overlay charts.' },
+      ]
+    },
+    {
+      name: 'Formulary Score',
+      sub: 'Score pills and status indicators — from Best (green) to Poor (red). Used on product detail and formulary compliance surfaces.',
+      colors: [
+        { name:'Best',      hex:'#29A10F', usage:'"Best" formulary score pill.' },
+        { name:'Very Good', hex:'#03C700', usage:'"Very Good" formulary score pill.' },
+        { name:'Moderate',  hex:'#E9E022', usage:'"Moderate" formulary score pill.' },
+        { name:'Fair',      hex:'#F58B00', usage:'"Fair" formulary score pill.' },
+        { name:'Poor',      hex:'#DE3700', usage:'"Poor" formulary score pill.' },
+      ]
+    },
+    {
+      name: 'Plus+ Rewards',
+      sub: 'PartsSource Plus+ program accents. Used only inside Plus+ branded surfaces.',
+      colors: [
+        { name:'Plus Teal', hex:'#03D0BF', usage:'Plus+ accent fill, reward badges, program CTA highlights.' },
+        { name:'Plus Blue', hex:'#005BB7', usage:'Plus+ primary brand blue (slightly brighter than PS Blue).' },
+      ]
+    },
+  ];
+
+  // --- Helpers ---
+  const hexToRgb = h => {
+    const n = parseInt(h.slice(1), 16);
+    return [(n>>16)&255, (n>>8)&255, n&255];
+  };
+  const rgbToHsl = (r,g,b) => {
+    r/=255; g/=255; b/=255;
+    const max=Math.max(r,g,b), min=Math.min(r,g,b);
+    let h=0, s=0, l=(max+min)/2;
+    if (max!==min) {
+      const d=max-min;
+      s = l>0.5 ? d/(2-max-min) : d/(max+min);
+      switch(max){
+        case r: h=(g-b)/d+(g<b?6:0); break;
+        case g: h=(b-r)/d+2; break;
+        case b: h=(r-g)/d+4; break;
+      }
+      h*=60;
+    }
+    return [Math.round(h), Math.round(s*100), Math.round(l*100)];
+  };
+  const luminance = hex => {
+    const [r,g,b] = hexToRgb(hex).map(c => {
+      c /= 255;
+      return c <= 0.03928 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4);
+    });
+    return 0.2126*r + 0.7152*g + 0.0722*b;
+  };
+  const isLight = hex => luminance(hex) > 0.55;
+
+  // --- Render grid ---
+  const sectionsEl = document.getElementById('sections');
+  let html = '';
+  for (const g of groups){
+    html += `<div class="section"><div class="section-head"><h2>${g.name}</h2><div class="desc">${g.sub}</div></div><div class="section-body"><div class="row">`;
+    for (const c of g.colors){
+      const light = isLight(c.hex);
+      const outlined = c.hex.toUpperCase() === '#FFFFFF';
+      html += `
+        <div class="sw" data-hex="${c.hex}" data-name="${c.name}" data-usage="${c.usage.replace(/"/g,'&quot;')}">
+          <div class="chip${light?' light':''}${outlined?' outlined':''}" style="background:${c.hex};color:${light?'#2B2B2B':'#fff'};">
+            <span class="badge">${c.hex}</span>
+          </div>
+          <div class="lbl">
+            <div class="name">${c.name}</div>
+            <div class="hex">${c.hex}<span class="copyhint">Click to copy</span></div>
+          </div>
+        </div>`;
+    }
+    html += `</div></div></div>`;
+  }
+  sectionsEl.innerHTML = html;
+
+  // --- Interactions ---
+  const toast = document.getElementById('toast');
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(()=>toast.classList.remove('show'), 1200);
+  }
+
+  // Single click → copy hex. Double click → open detail modal.
+  sectionsEl.addEventListener('click', e => {
+    const sw = e.target.closest('.sw');
+    if (!sw) return;
+    const hex = sw.dataset.hex;
+    navigator.clipboard?.writeText(hex);
+    sw.classList.add('copied');
+    setTimeout(()=>sw.classList.remove('copied'), 600);
+    showToast(`Copied ${hex}`);
+  });
+  sectionsEl.addEventListener('dblclick', e => {
+    const sw = e.target.closest('.sw');
+    if (!sw) return;
+    openModal(sw.dataset.hex, sw.dataset.name, sw.dataset.usage);
+  });
+
+  // --- Modal ---
+  const modal = document.getElementById('modal');
+  const card = document.getElementById('card');
+  function openModal(hex, name, usage){
+    const [r,g,b] = hexToRgb(hex);
+    const [h,s,l] = rgbToHsl(r,g,b);
+    const light = isLight(hex);
+    const outlined = hex.toUpperCase() === '#FFFFFF';
+    card.innerHTML = `
+      <div class="card-chip${light?' light':''}${outlined?' outlined':''}" style="background:${hex};color:${light?'#2B2B2B':'#fff'};box-shadow:${outlined?'inset 0 0 0 1px #DCDCDC':'none'}">
+        <button class="close" aria-label="Close">✕</button>
+        <div>
+          <div style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;opacity:.75;margin-bottom:8px;">Brand Color</div>
+          <div class="card-title">${name}</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="meta-block">
+          <div class="meta-label">Hex</div>
+          <div class="meta-val" data-copy="${hex}">${hex}<span class="c">copy</span></div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">RGB</div>
+          <div class="meta-val" data-copy="rgb(${r}, ${g}, ${b})">rgb(${r}, ${g}, ${b})<span class="c">copy</span></div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">HSL</div>
+          <div class="meta-val" data-copy="hsl(${h}, ${s}%, ${l}%)">hsl(${h}, ${s}%, ${l}%)<span class="c">copy</span></div>
+        </div>
+      </div>
+      <div class="usage">
+        <div class="usage-head">Usage</div>
+        <div class="usage-text">${usage}</div>
+      </div>
+    `;
+    modal.classList.add('open');
+    card.querySelector('.close').onclick = closeModal;
+    card.querySelectorAll('.meta-val').forEach(el=>{
+      el.onclick = () => {
+        navigator.clipboard?.writeText(el.dataset.copy);
+        showToast(`Copied ${el.dataset.copy}`);
+      };
+    });
+  }
+  function closeModal(){ modal.classList.remove('open'); }
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+
+<!-- Accessibility -->
+<div style="margin:40px;padding:24px;border:1px solid #DCDCDC;border-radius:12px;background:#fff;">
+  <h2 style="font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;margin:0 0 4px;">Accessibility &amp; Best Practices</h2>
+  <p style="font-size:13px;color:#5C5C5C;margin:0 0 16px;">WCAG compliance and implementation guidance for inclusive color usage.</p>
+  <ul style="margin:0;padding-left:20px;line-height:1.8;font-size:13px;color:#4A4A4A;">
+    <li><strong>Never use color alone to convey meaning</strong> — always pair with text, icons, or patterns (WCAG 1.4.1)</li>
+    <li><strong>Contrast ratios:</strong> Text on colored backgrounds must meet 4.5:1 (small text) or 3:1 (large 18px+/14px+ bold)</li>
+    <li><strong>UI component contrast:</strong> Interactive elements (buttons, inputs) need 3:1 contrast against adjacent colors (WCAG 1.4.11)</li>
+    <li><strong>Orange CTAs are deprecated</strong> — not ADA compliant; use blue outline buttons for primary actions</li>
+    <li><strong>Test with color blindness simulators</strong> — red/green confusion is most common (8% of men)</li>
+    <li><strong>Status colors:</strong> Success (green), error (red), warning (orange), info (blue) must be paired with icons and labels</li>
+    <li><strong>Link color:</strong> PS Blue (#005BA6) meets WCAG AA on white; underline on hover provides additional affordance</li>
+  </ul>
+</div>
+
+
+
+</body>
+</html>

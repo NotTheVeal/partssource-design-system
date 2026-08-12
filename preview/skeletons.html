@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Skeletons · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+  .section-body{padding:24px;background:#FAFAFA;}
+
+  /* ── Skeleton primitive ─────────────────────────────────────── */
+  .sk{
+    display:inline-block;
+    background:linear-gradient(90deg, var(--ps-cmp-skeleton-bg, #F1F1F1) 0%, var(--ps-cmp-skeleton-shimmer, #E5E7EB) 50%, var(--ps-cmp-skeleton-bg, #F1F1F1) 100%);
+    background-size:200% 100%;
+    animation:sk var(--ps-cmp-skeleton-shimmer-duration, 1.4s) ease-in-out infinite;
+    border-radius:var(--ps-cmp-skeleton-radius, 3px);
+    vertical-align:middle;
+  }
+  @keyframes sk{
+    0%{background-position:0% 0;}
+    100%{background-position:-200% 0;}
+  }
+  @media(prefers-reduced-motion: reduce){
+    .sk{animation:none;background:var(--ps-cmp-skeleton-bg, #F1F1F1);}
+  }
+
+  /* Shape variants */
+  .sk--text{height:14px;width:100%;border-radius:3px;}
+  .sk--title{height:22px;width:60%;border-radius:4px;}
+  .sk--bar{height:18px;}
+  .sk--block{height:120px;width:100%;border-radius:6px;}
+  .sk--circle{border-radius:50%;}
+  .sk--button{height:40px;width:140px;border-radius:4px;}
+  .sk--input{height:48px;width:100%;border-radius:3px;}
+
+  /* Composite previews */
+  .card-skel{
+    background:#fff;border:1px solid #E6E6E6;border-radius:8px;
+    padding:18px;display:flex;flex-direction:column;gap:12px;
+    width:320px;
+  }
+  .card-skel .row{display:flex;gap:12px;align-items:center;}
+  .card-skel .meta{flex:1;display:flex;flex-direction:column;gap:8px;}
+
+  .row-skel{
+    background:#fff;border:1px solid #E6E6E6;border-radius:6px;
+    padding:14px 18px;display:flex;align-items:center;gap:18px;
+  }
+
+  .table-skel{
+    background:#fff;border:1px solid #E6E6E6;border-radius:6px;
+    overflow:hidden;
+  }
+  .table-skel .tr{
+    display:grid;grid-template-columns:32px 2fr 1fr 1fr 1fr;
+    gap:18px;align-items:center;
+    padding:14px 18px;border-bottom:1px solid #F1F1F1;
+  }
+  .table-skel .tr:last-child{border-bottom:0;}
+  .table-skel .tr--head{background:#F4F6F8;}
+
+  .form-skel{
+    background:#fff;border:1px solid #E6E6E6;border-radius:8px;
+    padding:24px;display:flex;flex-direction:column;gap:18px;
+    max-width:420px;
+  }
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:880px){.grid-2{grid-template-columns:1fr;}}
+
+  /* Spinner (companion to skeleton) */
+  .spinner{
+    width:24px;height:24px;border-radius:50%;
+    border:2.5px solid #E6E6E6;border-top-color:#005BA6;
+    animation:spin 0.8s linear infinite;
+  }
+  .spinner--lg{width:40px;height:40px;border-width:3px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @media(prefers-reduced-motion: reduce){
+    .spinner{animation-duration:2.5s;}
+  }
+
+  /* Breadcrumb */
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+
+  table.tokens{width:100%;border-collapse:collapse;font-size:13px;}
+  table.tokens th,table.tokens td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.tokens th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.tokens code{background:#F1F1F1;font-family:ui-monospace,Menlo,monospace;font-size:11px;padding:1px 6px;border-radius:3px;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Skeletons</span>
+</nav>
+
+<h1>Skeletons &amp; Loading</h1>
+<p class="intro">Placeholder shapes that mirror the layout of content being fetched. Use skeletons when the wait is &gt; 300&nbsp;ms; use a centered spinner only when the destination layout can't be predicted. Both honor <code>prefers-reduced-motion</code>.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Primitives</h2>
+    <div class="desc">Six shapes compose every skeleton.</div>
+  </div>
+  <div class="section-body">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:18px;">
+      <div><span class="sk sk--text" style="width:90%"></span><div style="font-size:11px;color:#777;margin-top:8px;font-family:ui-monospace,Menlo,monospace;">sk--text · 14 × 100%</div></div>
+      <div><span class="sk sk--title"></span><div style="font-size:11px;color:#777;margin-top:8px;font-family:ui-monospace,Menlo,monospace;">sk--title · 22 × 60%</div></div>
+      <div><span class="sk sk--bar" style="width:50%"></span><div style="font-size:11px;color:#777;margin-top:8px;font-family:ui-monospace,Menlo,monospace;">sk--bar · 18 × custom</div></div>
+      <div><span class="sk sk--circle" style="width:40px;height:40px;"></span><div style="font-size:11px;color:#777;margin-top:8px;font-family:ui-monospace,Menlo,monospace;">sk--circle · n × n</div></div>
+      <div><span class="sk sk--button"></span><div style="font-size:11px;color:#777;margin-top:8px;font-family:ui-monospace,Menlo,monospace;">sk--button · 40 × 140</div></div>
+      <div><span class="sk sk--block"></span><div style="font-size:11px;color:#777;margin-top:8px;font-family:ui-monospace,Menlo,monospace;">sk--block · 120 × 100%</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Card skeleton</h2>
+    <div class="desc">Mirrors the EventCard / StatusCard layout while data loads.</div>
+  </div>
+  <div class="section-body">
+    <div style="display:flex;gap:18px;flex-wrap:wrap;">
+      <div class="card-skel">
+        <div class="row">
+          <span class="sk sk--circle" style="width:46px;height:46px;"></span>
+          <div class="meta">
+            <span class="sk sk--title" style="width:70%;"></span>
+            <span class="sk sk--text" style="width:50%;height:12px;"></span>
+          </div>
+        </div>
+        <span class="sk sk--text" style="width:90%;"></span>
+        <span class="sk sk--text" style="width:65%;"></span>
+        <span class="sk sk--text" style="width:80%;"></span>
+      </div>
+      <div class="card-skel">
+        <div class="row">
+          <span class="sk sk--circle" style="width:46px;height:46px;"></span>
+          <div class="meta">
+            <span class="sk sk--title" style="width:55%;"></span>
+            <span class="sk sk--text" style="width:40%;height:12px;"></span>
+          </div>
+        </div>
+        <span class="sk sk--block" style="height:80px;"></span>
+        <span class="sk sk--text" style="width:75%;"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Table skeleton</h2>
+    <div class="desc">Match the column count of the real table; use 5 rows by default.</div>
+  </div>
+  <div class="section-body">
+    <div class="table-skel">
+      <div class="tr tr--head">
+        <span class="sk sk--text" style="width:16px;height:16px;border-radius:2px;"></span>
+        <span class="sk sk--text" style="width:60%;height:11px;"></span>
+        <span class="sk sk--text" style="width:50%;height:11px;"></span>
+        <span class="sk sk--text" style="width:40%;height:11px;"></span>
+        <span class="sk sk--text" style="width:30%;height:11px;"></span>
+      </div>
+      <div class="tr"><span class="sk sk--text" style="width:16px;height:16px;border-radius:2px;"></span><span class="sk sk--text" style="width:75%"></span><span class="sk sk--text" style="width:60%"></span><span class="sk sk--text" style="width:40%"></span><span class="sk sk--text" style="width:50%"></span></div>
+      <div class="tr"><span class="sk sk--text" style="width:16px;height:16px;border-radius:2px;"></span><span class="sk sk--text" style="width:85%"></span><span class="sk sk--text" style="width:55%"></span><span class="sk sk--text" style="width:35%"></span><span class="sk sk--text" style="width:60%"></span></div>
+      <div class="tr"><span class="sk sk--text" style="width:16px;height:16px;border-radius:2px;"></span><span class="sk sk--text" style="width:65%"></span><span class="sk sk--text" style="width:70%"></span><span class="sk sk--text" style="width:45%"></span><span class="sk sk--text" style="width:40%"></span></div>
+      <div class="tr"><span class="sk sk--text" style="width:16px;height:16px;border-radius:2px;"></span><span class="sk sk--text" style="width:80%"></span><span class="sk sk--text" style="width:50%"></span><span class="sk sk--text" style="width:30%"></span><span class="sk sk--text" style="width:55%"></span></div>
+      <div class="tr"><span class="sk sk--text" style="width:16px;height:16px;border-radius:2px;"></span><span class="sk sk--text" style="width:70%"></span><span class="sk sk--text" style="width:65%"></span><span class="sk sk--text" style="width:50%"></span><span class="sk sk--text" style="width:45%"></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Form skeleton</h2>
+    <div class="desc">Match the field count and stacking of the actual form.</div>
+  </div>
+  <div class="section-body">
+    <div class="form-skel">
+      <span class="sk sk--title" style="width:50%;"></span>
+      <span class="sk sk--input"></span>
+      <span class="sk sk--input"></span>
+      <span class="sk sk--input"></span>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <span class="sk sk--button" style="width:100px;"></span>
+        <span class="sk sk--button" style="width:120px;"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Spinner (when layout is unknown)</h2>
+    <div class="desc">Use when the response shape is uncertain — search-in-flight inside an input, async menus, full-page loads.</div>
+  </div>
+  <div class="section-body">
+    <div style="display:flex;gap:48px;align-items:center;justify-content:center;padding:32px;">
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+        <div class="spinner"></div>
+        <code style="font-size:11px;">24 · default</code>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+        <div class="spinner spinner--lg"></div>
+        <code style="font-size:11px;">40 · large</code>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+        <button style="height:40px;padding:0 18px;border-radius:4px;border:2px solid #005BA6;background:#005BA6;color:#fff;font:600 14px/1 'Source Sans Pro',sans-serif;cursor:wait;display:inline-flex;align-items:center;gap:8px;" disabled>
+          <div class="spinner" style="width:16px;height:16px;border-width:2px;border-color:rgba(255,255,255,.4);border-top-color:#fff;"></div>
+          Saving…
+        </button>
+        <code style="font-size:11px;">inline 16 · button</code>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Tokens</h2>
+    <div class="desc"></div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <table class="tokens">
+      <thead><tr><th>Property</th><th>Token / value</th></tr></thead>
+      <tbody>
+        <tr><td>Base color</td><td><code>#F1F1F1</code> (matches subtle borders)</td></tr>
+        <tr><td>Shimmer color</td><td><code>#E5E7EB</code> at 50% gradient stop</td></tr>
+        <tr><td>Animation</td><td>1.4 s · ease-in-out · infinite</td></tr>
+        <tr><td>Reduced motion</td><td>Animation off · static <code>#F1F1F1</code></td></tr>
+        <tr><td>Border-radius</td><td>3 px (text/bar) · 6 px (block) · 50% (circle)</td></tr>
+        <tr><td>Spinner stroke</td><td>2.5 px · <code>#005BA6</code> on <code>#E6E6E6</code> track</td></tr>
+        <tr><td>Spinner duration</td><td>0.8 s · 2.5 s on reduce-motion</td></tr>
+        <tr><td>aria-busy</td><td>Set on the container while loading</td></tr>
+        <tr><td>aria-live</td><td>Polite update when content resolves</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html><html><head>
+
+
+  <meta charset="utf-8">
+  <title>Selections</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+  .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+  .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+
+  .section-body{padding:24px;}
+
+  .state-row{
+    display:grid;
+    grid-template-columns:120px 280px 1fr;
+    gap:24px;
+    align-items:center;
+    padding:16px 0;
+    border-bottom:1px solid #F1F1F1;
+  }
+  .state-row:last-child{border-bottom:none;}
+  .state-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--ps-fg-tertiary);}
+  .rb-cell{display:flex;align-items:center;gap:12px;}
+  /* Figma node 4393:45192: 20×20 (not 24×24). */
+  .rb{
+    width:20px;height:20px;
+    background:var(--ps-sem-bg-surface);
+    border:1.5px solid #4A4A4A;
+    border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    position:relative;
+  }
+  .rb.selected::before{
+    content:'';
+    width:8px;height:8px;
+    background:#FF9505;
+    border-radius:50%;
+  }
+  .txt{font-size:13px;color:var(--ps-prim-gray-900);font-family:var(--ps-font-sans);}
+  .caption{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+  .caption code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#F5F5F5;padding:2px 6px;border-radius:3px;color:var(--ps-sem-fg-brand);}
+</style>
+<link id="gfont-Source-Sans-Pro" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;500;600;700&amp;display=swap"></head>
+<body data-cc-id="cc-1" style="cursor: crosshair; font-family: &quot;Source Sans Pro&quot;;">
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Selections</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+  <h1>Selections</h1>
+  <p class="intro">Checkboxes and Radio Buttons for form selections. Both use 24×24 inputs with 1.5px stroke. Minimum 44×44px touch target (including label) for mobile accessibility.</p>
+
+  <!-- When to Use -->
+  <div class="section">
+    <div class="section-head">
+      <h2>When to Use</h2>
+      <div class="desc">Selection model guidance for choosing between checkboxes, radio buttons, and toggle switches.</div>
+    </div>
+    <div class="section-body">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="border-bottom:2px solid #E0E0E0;">
+            <th style="text-align:left;padding:12px;font-weight:600;">Component</th>
+            <th style="text-align:left;padding:12px;font-weight:600;">Use When</th>
+            <th style="text-align:left;padding:12px;font-weight:600;">Selection Model</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #F1F1F1;">
+            <td style="padding:12px;"><strong>Checkbox</strong></td>
+            <td style="padding:12px;">Users can select <strong>zero, one, or multiple</strong> options from a list. Each option is independent.</td>
+            <td style="padding:12px;">Multi-select</td>
+          </tr>
+          <tr style="border-bottom:1px solid #F1F1F1;">
+            <td style="padding:12px;"><strong>Radio Button</strong></td>
+            <td style="padding:12px;">Users must select <strong>exactly one</strong> option from mutually exclusive choices. Cannot be deselected once selected (unless form is reset).</td>
+            <td style="padding:12px;">Single-select</td>
+          </tr>
+          <tr>
+            <td style="padding:12px;"><strong>Toggle Switch</strong></td>
+            <td style="padding:12px;">Immediate on/off action with <strong>instant feedback</strong>. Changes take effect immediately without a "Save" button.</td>
+            <td style="padding:12px;">Binary (on/off)</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:16px;padding:16px;background:var(--ps-sem-bg-surface);border-radius:4px;border:1px solid #E0E0E0;">
+        <div style="font-weight:600;margin-bottom:8px;color:#996300;">⚠️ Common Mistakes:</div>
+        <ul style="margin:0;padding-left:20px;line-height:1.8;color:#5C5C5C;">
+          <li>Don't use checkboxes when only one selection is allowed → Use radio buttons</li>
+          <li>Don't use radio buttons when users need to select multiple items → Use checkboxes</li>
+          <li>If there are &gt;5 radio options, consider using a dropdown instead</li>
+          <li>If users should be able to select zero options, use checkboxes or add "None" to radio groups</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkboxes Unselected -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Checkboxes — Unselected States</h2>
+      <div class="desc">24×24px checkbox with 2px corner radius. Orange hover/focus/pressed states with blue glow for keyboard navigation.</div>
+    </div>
+    <div class="section-body">
+
+    <div class="state-row">
+      <div class="state-lbl">Idle</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:var(--ps-sem-bg-surface);border:1.5px solid #4A4A4A;border-radius:2px;display:inline-flex;"></span>
+        <span class="txt">Include compatible parts</span>
+      </div>
+      <div class="caption">Grey 1 stroke — <code>#4A4A4A</code>. 2 px corner radius.</div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Hover</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:var(--ps-sem-bg-surface);border:1.5px solid #EC8000;border-radius:2px;display:inline-flex;"></span>
+        <span class="txt">Include compatible parts</span>
+      </div>
+      <div class="caption">Orange 2 stroke — <code>#EC8000</code></div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Focused</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:var(--ps-sem-bg-surface);border:1.5px solid #EC8000;border-radius:2px;display:inline-flex;box-shadow:0 0 10px 5px rgba(0,91,166,0.5);"></span>
+        <span class="txt">Include compatible parts</span>
+      </div>
+      <div class="caption">Orange 2 stroke + blue glow — <code>0 0 10px 5px rgba(0,91,166,0.5)</code></div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Pressed</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:var(--ps-sem-bg-surface);border:1.5px solid #D27200;border-radius:2px;display:inline-flex;box-shadow:0 0 0 4px #FFCA82;"></span>
+        <span class="txt">Include compatible parts</span>
+      </div>
+      <div class="caption">Orange 3 stroke — <code>#D27200</code>. Orange 4 halo — <code>#FFCA82</code></div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Disabled</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:var(--ps-sem-bg-surface);border:1.5px solid #CCCCCC;border-radius:2px;display:inline-flex;"></span>
+        <span class="txt" style="color:#949494;">Include compatible parts</span>
+      </div>
+      <div class="caption">Grey 4 stroke — <code>#CCCCCC</code>. Label text Grey 3.</div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Disabled Focused</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:var(--ps-sem-bg-surface);border:1.5px solid #CCCCCC;border-radius:2px;display:inline-flex;box-shadow:0 0 0 4px #F1F1F1;"></span>
+        <span class="txt" style="color:#949494;">Include compatible parts</span>
+      </div>
+      <div class="caption">Grey 4 stroke — <code>#CCCCCC</code>. Grey 6 halo — <code>#F1F1F1</code></div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Checkboxes Selected -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Checkboxes — Selected States</h2>
+      <div class="desc">Orange fill with white checkmark. Hover/focus/pressed follow same pattern as unselected states.</div>
+    </div>
+    <div class="section-body">
+
+    <div class="state-row">
+      <div class="state-lbl">Idle</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:#FF9505;border:1.5px solid #FF9505;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"></path>
+          </svg>
+        </span>
+        <span class="txt">Include compatible parts</span>
+      </div>
+      <div class="caption">Orange 1 fill — <code>#FF9505</code>. White checkmark.</div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Hover</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:#EC8000;border:1.5px solid #EC8000;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"></path>
+          </svg>
+        </span>
+        <span class="txt">Include compatible parts</span>
+      </div>
+      <div class="caption">Orange 2 fill — <code>#EC8000</code>. White checkmark.</div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Focused</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:#EC8000;border:1.5px solid #EC8000;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 0 10px 5px rgba(0,91,166,0.5);">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"></path>
+          </svg>
+        </span>
+        <span class="txt">Include compatible parts</span>
+      </div>
+      <div class="caption">Orange 2 fill + blue glow — <code>0 0 10px 5px rgba(0,91,166,0.5)</code></div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Pressed</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:#D27200;border:1.5px solid #D27200;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px #FFCA82;">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"></path>
+          </svg>
+        </span>
+        <span class="txt">Include compatible parts</span>
+      </div>
+      <div class="caption">Orange 3 fill — <code>#D27200</code>. Orange 4 halo — <code>#FFCA82</code></div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Disabled</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:#CCCCCC;border:1.5px solid #CCCCCC;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"></path>
+          </svg>
+        </span>
+        <span class="txt" style="color:#949494;">Include compatible parts</span>
+      </div>
+      <div class="caption">Grey 4 fill — <code>#CCCCCC</code>. White checkmark.</div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Disabled Focused</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:#CCCCCC;border:1.5px solid #CCCCCC;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px #F1F1F1;">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"></path>
+          </svg>
+        </span>
+        <span class="txt" style="color:#949494;">Include compatible parts</span>
+      </div>
+      <div class="caption">Grey 4 fill — <code>#CCCCCC</code>. Grey 6 halo — <code>#F1F1F1</code></div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Checkboxes Indeterminate -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Checkboxes — Indeterminate State</h2>
+      <div class="desc">White dash indicates partial selection. Used in nested lists and "Select All" patterns when some children are selected.</div>
+    </div>
+    <div class="section-body">
+
+    <div class="state-row">
+      <div class="state-lbl">Indeterminate</div>
+      <div class="rb-cell">
+        <span style="width:24px;height:24px;background:#FF9505;border:1.5px solid #FF9505;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;">
+          <svg width="12" height="2" viewBox="0 0 12 2" fill="none">
+            <rect width="12" height="2" fill="#fff"></rect>
+          </svg>
+        </span>
+        <span class="txt">Select All</span>
+      </div>
+      <div class="caption">Orange 1 fill — <code>#FF9505</code>. White dash indicates partial selection (some children selected).</div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Use Case</div>
+      <div class="rb-cell" style="flex-direction:column;align-items:flex-start;gap:8px;">
+        <span style="width:24px;height:24px;background:#FF9505;border:1.5px solid #FF9505;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;">
+          <svg width="12" height="2" viewBox="0 0 12 2" fill="none">
+            <rect width="12" height="2" fill="#fff"></rect>
+          </svg>
+        </span>
+        <div style="margin-left:36px;display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="width:24px;height:24px;background:#FF9505;border:1.5px solid #FF9505;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"></path>
+              </svg>
+            </span>
+            <span class="txt" style="font-size:12px;">Option A</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="width:24px;height:24px;background:var(--ps-sem-bg-surface);border:1.5px solid #4A4A4A;border-radius:2px;display:inline-flex;"></span>
+            <span class="txt" style="font-size:12px;">Option B</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="width:24px;height:24px;background:#FF9505;border:1.5px solid #FF9505;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"></path>
+              </svg>
+            </span>
+            <span class="txt" style="font-size:12px;">Option C</span>
+          </div>
+        </div>
+      </div>
+      <div class="caption">Parent shows dash when 2 of 3 children are selected. Used in nested lists and "Select All" patterns.</div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Checkboxes Error -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Checkboxes — Error State</h2>
+      <div class="desc">Red border with error message 11px below checkbox. Used for required field validation.</div>
+    </div>
+    <div class="section-body">
+
+    <div class="state-row">
+      <div class="state-lbl">Error</div>
+      <div class="rb-cell" style="flex-direction:column;align-items:flex-start;gap:8px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="width:24px;height:24px;background:var(--ps-sem-bg-surface);border:1.5px solid #D32F2F;border-radius:2px;display:inline-flex;"></span>
+          <span class="txt">I agree to the Terms &amp; Conditions</span>
+        </div>
+        <div style="font-size:11px;color:#D32F2F;margin-left:36px;">You must agree to continue</div>
+      </div>
+      <div class="caption">Red border — <code>#D32F2F</code>. Error message 11px below checkbox.</div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Radio Buttons Unselected -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Radio Buttons — Unselected States</h2>
+      <div class="desc">24×24px circular control. Orange hover/focus/pressed states with blue glow for keyboard navigation.</div>
+    </div>
+    <div class="section-body">
+
+    <div class="state-row">
+      <div class="state-lbl">Idle</div>
+      <div class="rb-cell">
+        <span class="rb" style="border-color:var(--ps-sem-fg-secondary);"></span>
+        <span class="txt">Option A</span>
+      </div>
+      <div class="caption">Grey 1 outer ring — <code>#4A4A4A</code> stroke</div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Hover</div>
+      <div class="rb-cell">
+        <span class="rb" style="border-color:#EC8000;"></span>
+        <span class="txt">Option A</span>
+      </div>
+      <div class="caption">Orange 2 outer ring — <code>#EC8000</code> stroke</div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Focused</div>
+      <div class="rb-cell">
+        <span class="rb" style="border-color:#EC8000;box-shadow:0 0 10px 5px rgba(0,91,166,0.5);"></span>
+        <span class="txt">Option A</span>
+      </div>
+      <div class="caption">Orange 2 stroke + blue glow — <code>0 0 10px 5px rgba(0,91,166,0.5)</code></div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Pressed</div>
+      <div class="rb-cell">
+        <span class="rb" style="border-color:#D27200;box-shadow:0 0 0 4px #FFCA82;"></span>
+        <span class="txt">Option A</span>
+      </div>
+      <div class="caption">Orange 3 stroke — <code>#D27200</code>. Orange 4 halo — <code>#FFCA82</code></div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Disabled</div>
+      <div class="rb-cell">
+        <span class="rb" style="border-color:var(--ps-sem-border-strong);"></span>
+        <span class="txt" style="color:#949494;">Option A</span>
+      </div>
+      <div class="caption">Grey 4 stroke — <code>#CCCCCC</code>. Label text Grey 3.</div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Disabled Focused</div>
+      <div class="rb-cell">
+        <span class="rb" style="border-color:var(--ps-sem-border-strong);box-shadow:0 0 0 4px #F1F1F1;"></span>
+        <span class="txt" style="color:#949494;">Option A</span>
+      </div>
+      <div class="caption">Grey 4 stroke — <code>#CCCCCC</code>. Grey 6 halo — <code>#F1F1F1</code></div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Radio Buttons Selected -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Radio Buttons — Selected States</h2>
+      <div class="desc">10px inner circle indicates selection. Outer ring and inner circle match color for each state.</div>
+    </div>
+    <div class="section-body">
+
+    <div class="state-row">
+      <div class="state-lbl">Idle</div>
+      <div class="rb-cell">
+        <span class="rb selected" style="border-color:var(--ps-sem-fg-secondary);"></span>
+        <span class="txt">Option A</span>
+      </div>
+      <div class="caption">Grey 1 outer ring — <code>#4A4A4A</code>. Orange 1 inner circle — <code>#FF9505</code></div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Hover</div>
+      <div class="rb-cell">
+        <span class="rb" style="border-color:#EC8000;">
+          <span style="width:8px;height:8px;background:#EC8000;border-radius:50%;"></span>
+        </span>
+        <span class="txt">Option A</span>
+      </div>
+      <div class="caption">Orange 2 outer ring — <code>#EC8000</code>. Orange 2 inner circle — <code>#EC8000</code></div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Focused</div>
+      <div class="rb-cell">
+        <span class="rb" style="border-color:#EC8000;box-shadow:0 0 10px 5px rgba(0,91,166,0.5);">
+          <span style="width:8px;height:8px;background:#EC8000;border-radius:50%;"></span>
+        </span>
+        <span class="txt">Option A</span>
+      </div>
+      <div class="caption">Orange 2 ring + inner circle. Blue glow — <code>0 0 10px 5px rgba(0,91,166,0.5)</code></div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Pressed</div>
+      <div class="rb-cell">
+        <span class="rb" style="border-color:#D27200;box-shadow:0 0 0 4px #FFCA82;">
+          <span style="width:8px;height:8px;background:#D27200;border-radius:50%;"></span>
+        </span>
+        <span class="txt">Option A</span>
+      </div>
+      <div class="caption">Orange 3 ring + inner circle — <code>#D27200</code>. Orange 4 halo — <code>#FFCA82</code></div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Disabled</div>
+      <div class="rb-cell">
+        <span class="rb" style="border-color:var(--ps-sem-border-strong);">
+          <span style="width:8px;height:8px;background:#CCCCCC;border-radius:50%;"></span>
+        </span>
+        <span class="txt" style="color:#949494;">Option A</span>
+      </div>
+      <div class="caption">Grey 4 ring + inner circle — <code>#CCCCCC</code>. Label text Grey 3.</div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-lbl">Disabled Focused</div>
+      <div class="rb-cell">
+        <span class="rb" style="border-color:var(--ps-sem-border-strong);box-shadow:0 0 0 4px #F1F1F1;">
+          <span style="width:8px;height:8px;background:#CCCCCC;border-radius:50%;"></span>
+        </span>
+        <span class="txt" style="color:#949494;">Option A</span>
+      </div>
+      <div class="caption">Grey 4 ring + inner circle — <code>#CCCCCC</code>. Grey 6 halo — <code>#F1F1F1</code></div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance, keyboard support, and implementation guidance for inclusive form design.</div>
+    </div>
+    <div class="section-body">
+      <ul style="margin:0;padding-left:20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Minimum 44×44px touch target</strong> (WCAG 2.5.5) — make entire label + control clickable; 24×24 control with 10px padding each side hits target</li>
+        <li><strong>Keyboard navigation:</strong> Tab moves focus between controls; Space toggles checkboxes; Arrow keys navigate within radio groups</li>
+        <li><strong>Focus indicators:</strong> 0 0 10px PS Blue glow (50% opacity) + 2px offset = 3:1 contrast against white (WCAG 2.4.11)</li>
+        <li><strong>Group with &lt;fieldset&gt; + &lt;legend&gt;</strong> — screen readers announce the group label before each option</li>
+        <li><strong>Checkboxes = multi-select, radios = single-select</strong> — never use radios when users can pick multiple, or vice versa</li>
+        <li><strong>Labels must be explicit:</strong> "Enable notifications" not "Notifications" — context-free labels confuse screen reader users</li>
+        <li><strong>Vertical stacking preferred:</strong> 8px minimum gap between rows; horizontal layouts make scanning harder and increase tap errors</li>
+        <li><strong>Default selections:</strong> Pre-check only when it matches 80%+ of user intent; incorrect defaults cause submission errors</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Real-World Examples -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Real-World Examples</h2>
+      <div class="desc">Practical implementations showing checkboxes for multi-select filters and radio buttons for single-select payment methods.</div>
+    </div>
+    <div class="section-body">
+      <h3 style="font-size:14px;font-weight:600;margin:0 0 12px;color:var(--ps-prim-gray-900);">✅ Good: Checkboxes for Filters</h3>
+      <div style="padding:16px;background:#F8F8F8;border-radius:4px;margin-bottom:20px;">
+        <div style="font-weight:600;font-size:13px;margin-bottom:12px;">Filter by Brand</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="width:24px;height:24px;background:#FF9505;border:1.5px solid #FF9505;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"></path>
+              </svg>
+            </span>
+            <span class="txt">Caterpillar</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="width:24px;height:24px;background:var(--ps-sem-bg-surface);border:1.5px solid #4A4A4A;border-radius:2px;display:inline-flex;"></span>
+            <span class="txt">John Deere</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="width:24px;height:24px;background:#FF9505;border:1.5px solid #FF9505;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"></path>
+              </svg>
+            </span>
+            <span class="txt">Komatsu</span>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:#5C5C5C;">Users can select multiple brands to filter results.</div>
+      </div>
+
+      <h3 style="font-size:14px;font-weight:600;margin:0 0 12px;color:var(--ps-prim-gray-900);">✅ Good: Radio Buttons for Payment Method</h3>
+      <div style="padding:16px;background:#F8F8F8;border-radius:4px;">
+        <div style="font-weight:600;font-size:13px;margin-bottom:12px;">Select Payment Method</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span class="rb selected" style="border-color:var(--ps-sem-fg-secondary);"></span>
+            <span class="txt">Credit Card</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span class="rb" style="border-color:var(--ps-sem-fg-secondary);"></span>
+            <span class="txt">Purchase Order</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span class="rb" style="border-color:var(--ps-sem-fg-secondary);"></span>
+            <span class="txt">Wire Transfer</span>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:#5C5C5C;">Users can only select ONE payment method — mutually exclusive.</div>
+      </div>
+    </div>
+  </div>
+
+
+</body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

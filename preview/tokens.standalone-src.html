@@ -1,0 +1,2310 @@
+<!DOCTYPE html><html lang="en"><head>
+
+
+  <meta charset="utf-8">
+  <title>Tokens — PartsSource Design System</title>
+  <template id="__bundler_thumbnail" data-bg-color="#F5F7FA">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#F5F7FA"/>
+      <g transform="translate(360 220)">
+        <rect x="0"   y="0"   width="160" height="160" rx="14" fill="#005BA6"/>
+        <rect x="160" y="0"   width="160" height="160" rx="14" fill="#33A0FF"/>
+        <rect x="320" y="0"   width="160" height="160" rx="14" fill="#0F2A44"/>
+        <rect x="0"   y="160" width="160" height="160" rx="14" fill="#E84C3D"/>
+        <rect x="160" y="160" width="160" height="160" rx="14" fill="#27AE60"/>
+        <rect x="320" y="160" width="160" height="160" rx="14" fill="#F2C94C"/>
+      </g>
+      <text x="600" y="600" text-anchor="middle"
+            font-family="-apple-system, system-ui, sans-serif"
+            font-size="42" font-weight="600" fill="#0F2A44">Design Tokens</text>
+      <text x="600" y="650" text-anchor="middle"
+            font-family="-apple-system, system-ui, sans-serif"
+            font-size="22" font-weight="400" fill="#005BA6"
+            letter-spacing="2">PARTSSOURCE DESIGN SYSTEM</text>
+    </svg>
+  </template>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      padding:32px 40px 96px;
+      font-family:var(--ps-sem-font-body);
+      background:var(--ps-sem-bg-surface);
+      color:var(--ps-sem-fg-primary);
+      font-size:15px;
+    }
+    a{color:inherit;text-decoration:none;}
+    a:hover, a:focus, a:active{text-decoration:none;}
+
+    /* Breadcrumb */
+    .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 var(--ps-sem-font-body);color:var(--ps-sem-fg-tertiary);}
+    .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease;}
+    .ps-breadcrumb__back:hover{background:var(--ps-sem-bg-brand-tint);}
+    .ps-breadcrumb__sep{color:var(--ps-sem-border-strong);}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+
+    h1{font-size:34px;font-weight:300;margin:0 0 10px;color:var(--ps-sem-fg-brand-dark);letter-spacing:-.3px;}
+    .intro{font-size:15px;color:var(--ps-sem-fg-secondary);margin:0 0 32px;max-width:880px;line-height:1.65;}
+
+    /* Pill explainer at top */
+    .levels{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+      margin:0 0 48px;
+      counter-reset:lvl;
+    }
+    .level-card{
+      position:relative;
+      background:var(--ps-sem-bg-canvas);
+      border:1px solid var(--ps-sem-border-subtle);
+      border-radius:8px;
+      padding:22px 22px 20px;
+    }
+    .level-card::before{
+      counter-increment:lvl;
+      content:"Level " counter(lvl);
+      position:absolute;top:18px;right:20px;
+      font:700 10px/1 var(--ps-sem-font-body);
+      letter-spacing:1.4px;text-transform:uppercase;
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .level-card h3{
+      margin:0 0 6px;font-size:18px;font-weight:600;
+      color:var(--ps-sem-fg-brand-dark);
+    }
+    .level-card p{
+      margin:0 0 14px;font-size:13px;line-height:1.55;
+      color:var(--ps-sem-fg-secondary);
+    }
+    .level-card code{
+      display:block;font-family:var(--ps-sem-font-mono);font-size:11.5px;line-height:1.7;
+      background:var(--ps-sem-bg-muted);padding:8px 10px;border-radius:4px;
+      color:var(--ps-sem-fg-primary);white-space:pre;overflow-x:auto;
+    }
+
+    /* Each big section */
+    .group{
+      margin-bottom:48px;border:1px solid var(--ps-sem-border-subtle);
+      border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);
+    }
+    .group-head{
+      padding:18px 24px;border-bottom:1px solid var(--ps-sem-border-subtle);
+      background:var(--ps-sem-bg-canvas);
+      display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    }
+    .group-head h2{
+      margin:0;font:700 12px/1 var(--ps-sem-font-body);
+      letter-spacing:1.8px;text-transform:uppercase;color:var(--ps-sem-fg-brand);
+    }
+    .group-head .desc{font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.5;max-width:560px;}
+
+    /* Level header strip inside groups */
+    .lv-strip{
+      padding:14px 24px;background:var(--ps-sem-bg-surface);
+      border-bottom:1px solid var(--ps-sem-border-subtle);
+      display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    }
+    .lv-pill{
+      display:inline-flex;align-items:center;gap:8px;
+      font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.2px;text-transform:uppercase;
+      padding:6px 10px;border-radius:99px;
+      background:var(--ps-sem-bg-brand-tint);color:var(--ps-sem-fg-brand);
+    }
+    .lv-pill .num{
+      width:18px;height:18px;border-radius:50%;background:var(--ps-sem-fg-brand);color:#fff;
+      display:flex;align-items:center;justify-content:center;font-size:11px;
+    }
+    .lv-strip .lv-text{font-size:13px;color:var(--ps-sem-fg-secondary);}
+    .lv-strip code{font-family:var(--ps-sem-font-mono);font-size:11.5px;background:var(--ps-sem-bg-muted);padding:2px 6px;border-radius:3px;}
+
+    /* === Token tables === */
+    .ttable{width:100%;border-collapse:collapse;font-size:13px;background:var(--ps-sem-bg-surface);}
+    .ttable th{
+      text-align:left;padding:10px 16px;
+      background:var(--ps-sem-bg-canvas);color:var(--ps-sem-fg-tertiary);
+      font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.2px;text-transform:uppercase;
+      border-bottom:1px solid var(--ps-sem-border-default);
+    }
+    .ttable td{
+      padding:10px 16px;border-bottom:1px solid var(--ps-sem-border-default);
+      vertical-align:middle;
+    }
+    .ttable tr:last-child td{border-bottom:0;}
+    .ttable code{font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-primary);}
+    .ttable code.ref{color:var(--ps-sem-fg-brand);}
+    .ttable code.val{color:var(--ps-sem-fg-tertiary);}
+    .swatch{display:inline-block;width:28px;height:28px;border-radius:4px;border:1px solid var(--ps-sem-border-subtle);vertical-align:middle;}
+    .swatch.lg{width:36px;height:36px;}
+    .arrow{display:inline-block;color:var(--ps-sem-fg-tertiary);font-family:var(--ps-sem-font-mono);font-size:13px;padding:0 8px;}
+
+    /* Color ramps */
+    .ramps{padding:24px;display:grid;gap:24px;}
+    .ramp{display:grid;grid-template-columns:120px 1fr;align-items:center;gap:16px;}
+    .ramp .ramp-head{
+      font:700 11px/1.3 var(--ps-sem-font-body);letter-spacing:1px;text-transform:uppercase;
+      color:var(--ps-sem-fg-secondary);
+    }
+    .ramp .ramp-head span{display:block;color:var(--ps-sem-fg-tertiary);font-weight:600;margin-top:4px;font-size:11px;letter-spacing:.4px;text-transform:none;}
+    .chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:0;border:1px solid var(--ps-sem-border-subtle);border-radius:6px;overflow:hidden;}
+    .chip{
+      aspect-ratio:1.4 / 1;display:flex;flex-direction:column;justify-content:space-between;
+      padding:8px 10px;
+      font:600 10px/1 var(--ps-sem-font-mono);
+    }
+    .chip .step{font-size:11px;font-weight:700;font-family:var(--ps-sem-font-body);letter-spacing:.4px;}
+    .chip .hex{font-size:10.5px;}
+
+    /* Spacing visual */
+    .scale-list{padding:24px;display:flex;flex-direction:column;gap:8px;}
+    .scale-row{display:grid;grid-template-columns:140px 80px 1fr;align-items:center;gap:14px;font-size:13px;}
+    .scale-row code{font-family:var(--ps-sem-font-mono);font-size:12px;}
+    .scale-bar{height:16px;background:var(--ps-sem-bg-brand-tint);border-radius:3px;border:1px solid var(--ps-sem-border-subtle);}
+
+    /* Radius visual */
+    .radius-grid{padding:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;}
+    .radius-cell{
+      background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);
+      padding:14px;display:flex;flex-direction:column;align-items:center;gap:10px;border-radius:8px;
+    }
+    .radius-box{
+      width:72px;height:72px;background:var(--ps-sem-bg-brand);
+    }
+    .radius-cell code{font-family:var(--ps-sem-font-mono);font-size:11.5px;color:var(--ps-sem-fg-primary);}
+    .radius-cell span{font-size:11px;color:var(--ps-sem-fg-tertiary);}
+
+    /* Shadow visual */
+    .shadow-grid{padding:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;background:var(--ps-sem-bg-canvas);}
+    .shadow-cell{display:flex;flex-direction:column;align-items:center;gap:10px;}
+    .shadow-box{width:120px;height:80px;background:#fff;border-radius:6px;}
+    .shadow-cell code{font-family:var(--ps-sem-font-mono);font-size:11.5px;color:var(--ps-sem-fg-primary);}
+    .shadow-cell span{font-size:11px;color:var(--ps-sem-fg-tertiary);}
+
+    /* Type specimens */
+    .type-list{padding:24px;display:flex;flex-direction:column;gap:18px;}
+    .type-row{
+      display:grid;grid-template-columns:200px 1fr;align-items:center;gap:24px;
+      padding:14px 0;border-bottom:1px solid var(--ps-sem-border-default);
+    }
+    .type-row:last-child{border-bottom:0;}
+    .type-meta{font-size:12px;color:var(--ps-sem-fg-tertiary);}
+    .type-meta code{font-family:var(--ps-sem-font-mono);font-size:11.5px;color:var(--ps-sem-fg-primary);}
+    .type-sample{color:var(--ps-sem-fg-primary);}
+
+    /* Motion / Opacity / Border cards */
+    .motion-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-sem-border-subtle);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px;cursor:default;}
+    .motion-card__track{position:relative;height:14px;background:var(--ps-sem-bg-muted);border-radius:7px;overflow:hidden;}
+    .motion-card__dot{position:absolute;left:0;top:1px;width:12px;height:12px;border-radius:50%;background:var(--ps-sem-action-default);transform:translateX(0);}
+    .motion-card:hover .motion-card__dot{transform:translateX(calc(100% + 130px));}
+    .motion-card__meta code{display:block;font-family:var(--ps-sem-font-mono);font-size:11.5px;color:var(--ps-sem-fg-primary);}
+    .motion-card__meta span{font-size:11px;color:var(--ps-sem-fg-tertiary);}
+
+    .opacity-card,.border-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-sem-border-subtle);border-radius:8px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;}
+    .opacity-chip{width:56px;height:56px;border-radius:6px;background:var(--ps-sem-action-default);}
+    .opacity-card code,.border-card code{font-family:var(--ps-sem-font-mono);font-size:11.5px;color:var(--ps-sem-fg-primary);}
+    .opacity-card span,.border-card span{font-size:11px;color:var(--ps-sem-fg-tertiary);}
+    .border-chip{width:56px;height:56px;border-radius:6px;background:var(--ps-sem-bg-surface);border-style:solid;border-color:var(--ps-sem-fg-brand);}
+
+    /* Component anatomy section */
+    .comp-grid{padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+    @media (max-width:880px){.comp-grid{grid-template-columns:1fr;}}
+    .comp-tile{
+      background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);
+      border-radius:8px;padding:20px;
+    }
+    .comp-tile h4{
+      margin:0 0 4px;font-size:15px;font-weight:700;color:var(--ps-sem-fg-brand-dark);
+    }
+    .comp-tile .ctitle{
+      font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.2px;text-transform:uppercase;
+      color:var(--ps-sem-fg-tertiary);margin-bottom:14px;
+    }
+    .comp-preview{
+      margin:14px 0 16px;padding:18px;background:var(--ps-sem-bg-surface);
+      border:1px solid var(--ps-sem-border-subtle);border-radius:6px;
+      display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;min-height:80px;
+    }
+    .tref{
+      font-family:var(--ps-sem-font-mono);font-size:11px;line-height:1.6;
+      background:var(--ps-prim-blue-900);color:#E5E7EB;
+      padding:12px 14px;border-radius:6px;
+      overflow-x:auto;white-space:pre;
+    }
+    .tref .k{color:#7BD3F7;}
+    .tref .v{color:#A7E5BB;}
+    .tref .c{color:#7A8AA0;}
+
+    /* Reusable demo controls */
+    .demo-btn{
+      font-family:var(--ps-sem-font-body);height:40px;padding:0 20px;
+      border-radius:var(--ps-cmp-button-primary-radius);
+      font-size:14px;font-weight:700;cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;
+      border:2px solid var(--ps-cmp-button-primary-border);
+      background:var(--ps-cmp-button-primary-bg-default);color:var(--ps-cmp-button-primary-fg-default);
+      transition:background .12s ease, color .12s ease, border-color .12s ease;
+    }
+    .demo-btn:hover{
+      background:var(--ps-cmp-button-primary-bg-hover);
+      color:var(--ps-cmp-button-primary-fg-hover);
+      border-color:var(--ps-cmp-button-primary-border-hover);
+    }
+    .demo-btn:active{
+      background:var(--ps-cmp-button-primary-bg-pressed);
+      color:var(--ps-cmp-button-primary-fg-hover);
+      border-color:var(--ps-cmp-button-primary-bg-pressed);
+    }
+    .demo-btn--secondary{
+      background:var(--ps-cmp-button-secondary-bg-default);color:var(--ps-cmp-button-secondary-fg-default);
+      border-color:var(--ps-cmp-button-secondary-border);
+    }
+    .demo-btn--tertiary{
+      background:var(--ps-cmp-button-tertiary-bg-default);color:var(--ps-cmp-button-tertiary-fg-default);
+      border:1px solid var(--ps-cmp-button-tertiary-border);font-weight:500;
+    }
+    .demo-btn--pill{
+      background:var(--ps-cmp-button-pill-bg-default);color:var(--ps-cmp-button-pill-fg-default);
+      border:0;border-radius:var(--ps-cmp-button-pill-radius);
+      height:var(--ps-cmp-button-pill-height);
+      padding:0 var(--ps-cmp-button-pill-padding-x);
+      text-transform:uppercase;
+      font-size:var(--ps-cmp-button-pill-text);
+      font-weight:var(--ps-cmp-button-pill-weight);
+      letter-spacing:var(--ps-cmp-button-pill-tracking);
+    }
+    .demo-btn--pill:hover{background:var(--ps-cmp-button-pill-bg-hover);}
+    .demo-btn--pill:active{background:var(--ps-cmp-button-pill-bg-pressed);}
+
+    /* Secondary — grey outline square, fills PS Blue on hover */
+    .demo-btn--secondary{
+      background:var(--ps-cmp-button-secondary-bg-default);
+      color:var(--ps-cmp-button-secondary-fg-default);
+      border:1px solid var(--ps-cmp-button-secondary-border);
+      height:40px;padding:0 20px;font-size:14px;
+      font-weight:var(--ps-cmp-button-secondary-weight);
+      border-radius:var(--ps-cmp-button-secondary-radius);
+      cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+      transition:background .12s ease, color .12s ease, border-color .12s ease;
+    }
+    .demo-btn--secondary:hover{
+      background:var(--ps-cmp-button-secondary-bg-hover);
+      color:var(--ps-cmp-button-secondary-fg-hover);
+      border-color:var(--ps-cmp-button-secondary-border-hover);
+    }
+    .demo-btn--secondary:active{
+      background:var(--ps-cmp-button-secondary-bg-pressed);
+      color:var(--ps-cmp-button-secondary-fg-hover);
+      border-color:var(--ps-cmp-button-secondary-bg-pressed);
+    }
+
+    /* Tertiary — grey pill */
+    .demo-btn--tertiary{
+      background:var(--ps-cmp-button-tertiary-bg-default);
+      color:var(--ps-cmp-button-tertiary-fg-default);
+      border:1px solid var(--ps-cmp-button-tertiary-border);
+      height:var(--ps-cmp-button-tertiary-height);
+      padding:0 var(--ps-cmp-button-tertiary-padding-x);
+      border-radius:var(--ps-cmp-button-tertiary-radius);
+      font-size:14px;font-weight:var(--ps-cmp-button-tertiary-weight);
+      cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+      transition:background .12s ease;
+    }
+    .demo-btn--tertiary:hover{background:var(--ps-cmp-button-tertiary-bg-hover);}
+    .demo-btn--tertiary:active{background:var(--ps-cmp-button-tertiary-bg-pressed);box-shadow:0 4px 4px rgba(0,0,0,.25);}
+
+    /* Real-spec status badge — 12 px / 700 / 4 px / 1 px border */
+    .demo-badge{
+      display:inline-flex;align-items:center;
+      gap:var(--ps-cmp-badge-gap);
+      padding:var(--ps-cmp-badge-padding-y) var(--ps-cmp-badge-padding-x);
+      border:var(--ps-cmp-badge-border-width) solid transparent;
+      border-radius:var(--ps-cmp-badge-radius);
+      font-size:var(--ps-cmp-badge-text);font-weight:var(--ps-cmp-badge-weight);
+      letter-spacing:var(--ps-cmp-badge-tracking);
+      text-transform:var(--ps-cmp-badge-transform);
+      line-height:1;
+    }
+    .demo-badge--neutral{background:var(--ps-cmp-badge-neutral-bg);color:var(--ps-cmp-badge-neutral-fg);border-color:var(--ps-cmp-badge-neutral-border);}
+    .demo-badge--success{background:var(--ps-cmp-badge-success-bg);color:var(--ps-cmp-badge-success-fg);border-color:var(--ps-cmp-badge-success-border);}
+    .demo-badge--warning{background:var(--ps-cmp-badge-warning-bg);color:var(--ps-cmp-badge-warning-fg);border-color:var(--ps-cmp-badge-warning-border);}
+    .demo-badge--danger{background:var(--ps-cmp-badge-danger-bg);color:var(--ps-cmp-badge-danger-fg);border-color:var(--ps-cmp-badge-danger-border);}
+    .demo-badge--info{background:var(--ps-cmp-badge-info-bg);color:var(--ps-cmp-badge-info-fg);border-color:var(--ps-cmp-badge-info-border);}
+    /* Real PartsSource floating-label input — sourced from preview/inputs.html */
+    .demo-input-wrap{
+      position:relative;width:100%;max-width:335px;height:var(--ps-cmp-input-height-sm);
+    }
+    .demo-input-wrap input{
+      width:100%;height:100%;
+      padding:0 var(--ps-cmp-input-padding-x);
+      font-family:var(--ps-cmp-input-font);
+      font-size:var(--ps-cmp-input-text-size);
+      line-height:100%;
+      color:var(--ps-cmp-input-fg);
+      background:var(--ps-cmp-input-bg);
+      border:var(--ps-cmp-input-border-width) solid var(--ps-cmp-input-border-default);
+      border-radius:var(--ps-cmp-input-radius);
+      outline:0;transition:all .2s;
+    }
+    .demo-input-wrap input::placeholder{color:var(--ps-cmp-input-placeholder);}
+    .demo-input-wrap input:hover{border-color:var(--ps-cmp-input-border-hover);}
+    .demo-input-wrap input:focus,
+    .demo-input-wrap.has-value input{
+      padding-top:22px;padding-bottom:4px;
+    }
+    .demo-input-wrap input:focus{
+      border-color:var(--ps-cmp-input-border-focus);
+      box-shadow:var(--ps-cmp-input-focus-ring);
+    }
+    .demo-input-wrap label{
+      position:absolute;left:var(--ps-cmp-input-padding-x);top:0;height:100%;
+      display:flex;align-items:center;
+      font-family:var(--ps-cmp-input-font);
+      font-size:var(--ps-cmp-input-label-size-rest);
+      font-weight:var(--ps-cmp-input-label-weight-rest);
+      color:var(--ps-cmp-input-label-color-rest);
+      pointer-events:none;transition:all .2s;
+    }
+    .demo-input-wrap input:focus + label,
+    .demo-input-wrap.has-value label{
+      top:5px;height:22px;align-items:flex-start;
+      font-size:var(--ps-cmp-input-label-size-active);
+      font-weight:var(--ps-cmp-input-label-weight-active);
+      color:var(--ps-cmp-input-label-color-active);
+    }
+    .demo-card{
+      background:var(--ps-cmp-card-bg);color:var(--ps-cmp-card-fg);
+      border:1px solid var(--ps-cmp-card-border);border-radius:var(--ps-cmp-card-radius);
+      padding:var(--ps-cmp-card-padding);box-shadow:var(--ps-cmp-card-shadow-default);
+      width:100%;
+    }
+    .demo-card h5{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ps-sem-fg-brand-dark);}
+    .demo-card p{margin:0;font-size:13px;color:var(--ps-sem-fg-secondary);}
+
+    /* Small status card — mirrors preview/cards.html .status-card */
+    .demo-card-sm{
+      width:220px;
+      background:var(--ps-cmp-card-sm-bg);
+      border:1px solid var(--ps-cmp-card-sm-border);
+      border-radius:var(--ps-cmp-card-sm-radius);
+      padding:var(--ps-cmp-card-sm-padding);
+      display:flex;gap:var(--ps-cmp-card-sm-gap);align-items:center;
+      box-shadow:var(--ps-sem-elevation-flat);
+      transition:box-shadow .2s ease;
+    }
+    .demo-card-sm.is-hover,
+    .demo-card-sm:hover{box-shadow:var(--ps-cmp-card-sm-shadow-hover);}
+    .demo-card-sm__img{
+      width:var(--ps-cmp-card-sm-image-size);height:var(--ps-cmp-card-sm-image-size);
+      background:var(--ps-cmp-card-sm-image-bg);
+      border-radius:var(--ps-cmp-card-sm-image-radius);
+      flex-shrink:0;
+    }
+    .demo-card-sm__content{flex:1;min-width:0;}
+    .demo-card-sm__title{
+      font-size:var(--ps-cmp-card-sm-title-size);
+      font-weight:var(--ps-cmp-card-sm-title-weight);
+      color:var(--ps-cmp-card-sm-title-fg);
+      line-height:1;margin-bottom:4px;
+    }
+    .demo-card-sm__meta{
+      font-size:var(--ps-cmp-card-sm-meta-size);
+      color:var(--ps-cmp-card-sm-meta-fg);
+      line-height:1.48;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .demo-state-label{
+      font:700 9px/1 var(--ps-sem-font-body);letter-spacing:1.4px;text-transform:uppercase;
+      color:var(--ps-sem-fg-tertiary);margin-bottom:8px;text-align:center;
+    }
+    /* ============ Extended component demos ============ */
+    .demo-alert{
+      display:flex;align-items:center;gap:var(--ps-cmp-alert-gap);
+      min-height:var(--ps-cmp-alert-min-height);
+      padding:var(--ps-cmp-alert-padding-y) var(--ps-cmp-alert-padding-x);
+      border-radius:var(--ps-cmp-alert-radius);
+      font-size:var(--ps-cmp-alert-text-size);line-height:18px;
+    }
+    .demo-alert > svg{flex-shrink:0;width:24px;height:24px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+    .demo-alert__msg{flex:1;}
+    .demo-alert__close{
+      flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+      background:transparent;border:0;cursor:pointer;color:inherit;
+      opacity:var(--ps-cmp-alert-close-opacity);transition:opacity .15s ease;padding:0;
+    }
+    .demo-alert__close:hover{opacity:var(--ps-cmp-alert-close-opacity-hover);}
+    .demo-alert__close svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+    .demo-alert--success{background:var(--ps-cmp-alert-success-bg);color:var(--ps-cmp-alert-success-fg);}
+    .demo-alert--info   {background:var(--ps-cmp-alert-info-bg);   color:var(--ps-cmp-alert-info-fg);}
+    .demo-alert--warning{background:var(--ps-cmp-alert-warning-bg);color:var(--ps-cmp-alert-warning-fg);}
+    .demo-alert--danger {background:var(--ps-cmp-alert-danger-bg); color:var(--ps-cmp-alert-danger-fg);}
+
+    .demo-toast{
+      display:flex;align-items:center;gap:var(--ps-cmp-toast-gap);
+      min-height:var(--ps-cmp-toast-min-height);
+      padding:var(--ps-cmp-toast-padding-y) var(--ps-cmp-toast-padding-x);
+      border-radius:var(--ps-cmp-toast-radius);
+      box-shadow:var(--ps-cmp-toast-shadow);
+      font-size:var(--ps-cmp-toast-text-size);line-height:18px;
+    }
+    .demo-toast > svg{flex-shrink:0;width:24px;height:24px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+    .demo-toast__msg{flex:1;}
+    .demo-toast__close{
+      flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+      background:transparent;border:0;cursor:pointer;color:inherit;opacity:.6;padding:0;
+    }
+    .demo-toast__close:hover{opacity:1;}
+    .demo-toast__close svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+    .demo-toast--success{background:var(--ps-cmp-toast-success-bg);color:var(--ps-cmp-toast-success-fg);}
+    .demo-toast--info   {background:var(--ps-cmp-toast-info-bg);   color:var(--ps-cmp-toast-info-fg);}
+    .demo-toast--danger {background:var(--ps-cmp-toast-danger-bg); color:var(--ps-cmp-toast-danger-fg);}
+
+    /* Tabs · Underline — folder-tab pattern with top indicator + side borders on active */
+    .demo-tabs-ul{display:flex;align-items:stretch;border-bottom:1px solid var(--ps-cmp-tab-ul-rail-color);}
+    .demo-tab-ul{
+      position:relative;display:inline-flex;align-items:center;gap:var(--ps-cmp-tab-ul-gap);
+      height:var(--ps-cmp-tab-ul-height);padding:0 var(--ps-cmp-tab-ul-padding-x);
+      font-size:var(--ps-cmp-tab-ul-text);line-height:var(--ps-cmp-tab-ul-line-height);
+      font-weight:var(--ps-cmp-tab-ul-weight);
+      color:var(--ps-cmp-tab-ul-fg-default);
+      background:var(--ps-cmp-tab-ul-bg);
+      border:1px solid transparent;border-bottom:0;
+      border-top-width:var(--ps-cmp-tab-ul-indicator-height);
+      cursor:pointer;font-family:inherit;
+    }
+    .demo-tab-ul:hover{color:var(--ps-cmp-tab-ul-fg-hover);}
+    .demo-tab-ul.is-active{
+      color:var(--ps-cmp-tab-ul-fg-active);
+      border-top-color:var(--ps-cmp-tab-ul-indicator-color);
+      border-left-color:var(--ps-cmp-tab-ul-active-border);
+      border-right-color:var(--ps-cmp-tab-ul-active-border);
+      margin-bottom:-1px;                 /* overlap the rail */
+    }
+    .demo-tab-ul[disabled]{color:var(--ps-cmp-tab-ul-fg-disabled);cursor:not-allowed;}
+
+    /* Tabs · Segmented */
+    .demo-tabs-seg{
+      display:inline-flex;background:var(--ps-cmp-tab-seg-track-bg);
+      border-radius:var(--ps-cmp-tab-seg-track-radius);
+      padding:var(--ps-cmp-tab-seg-track-padding);height:var(--ps-cmp-tab-seg-height);
+    }
+    .demo-tab-seg{
+      border:0;background:transparent;
+      font-size:var(--ps-cmp-tab-seg-text);font-weight:var(--ps-cmp-tab-seg-weight);
+      color:var(--ps-cmp-tab-seg-fg-default);padding:0 var(--ps-cmp-tab-seg-padding-x);
+      border-radius:var(--ps-cmp-tab-seg-radius);cursor:pointer;
+      display:inline-flex;align-items:center;gap:6px;
+    }
+    .demo-tab-seg:hover{color:var(--ps-cmp-tab-seg-fg-hover);}
+    .demo-tab-seg.is-active{
+      color:var(--ps-cmp-tab-seg-fg-active);
+      background:var(--ps-cmp-tab-seg-bg-active);
+      box-shadow:var(--ps-cmp-tab-seg-shadow-active);
+    }
+
+    /* Tabs · Pill */
+    .demo-tabs-pill{display:flex;gap:8px;flex-wrap:wrap;}
+    .demo-tab-pill{
+      display:inline-flex;align-items:center;gap:6px;
+      height:var(--ps-cmp-tab-pill-height);padding:0 var(--ps-cmp-tab-pill-padding-x);
+      border-radius:var(--ps-cmp-tab-pill-radius);
+      border:1px solid var(--ps-cmp-tab-pill-border-default);
+      background:var(--ps-cmp-tab-pill-bg-default);color:var(--ps-cmp-tab-pill-fg-default);
+      font-size:14px;cursor:pointer;font-family:inherit;
+    }
+    .demo-tab-pill:hover{border-color:var(--ps-cmp-tab-pill-border-hover);color:var(--ps-cmp-tab-pill-fg-hover);}
+    .demo-tab-pill.is-active{
+      background:var(--ps-cmp-tab-pill-bg-active);
+      border-color:var(--ps-cmp-tab-pill-bg-active);
+      color:var(--ps-cmp-tab-pill-fg-active);
+    }
+    .demo-tab-count{
+      min-width:var(--ps-cmp-tab-count-height);height:var(--ps-cmp-tab-count-height);
+      padding:0 6px;border-radius:var(--ps-cmp-tab-count-radius);
+      background:var(--ps-cmp-tab-count-bg-default);color:var(--ps-cmp-tab-count-fg-default);
+      font-size:12px;font-weight:700;line-height:1;
+      display:inline-flex;align-items:center;justify-content:center;
+    }
+    .demo-tab-ul.is-active .demo-tab-count{
+      background:var(--ps-cmp-tab-count-bg-active);color:var(--ps-cmp-tab-count-fg-active);
+    }
+    .demo-tab-pill.is-active .demo-tab-count{
+      background:var(--ps-cmp-tab-pill-count-bg-active);
+      color:var(--ps-cmp-tab-pill-count-fg-active);
+    }
+
+    /* Checkbox · Radio */
+    .demo-check, .demo-radio{
+      width:var(--ps-cmp-checkbox-size);height:var(--ps-cmp-checkbox-size);
+      background:var(--ps-cmp-checkbox-bg-default);
+      border:var(--ps-cmp-checkbox-border-width) solid var(--ps-cmp-checkbox-border-default);
+      border-radius:var(--ps-cmp-checkbox-radius);
+      display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+      color:var(--ps-cmp-checkbox-check-fg);
+    }
+    .demo-radio{border-radius:50%;}
+    .demo-check.is-checked,.demo-check--checked{
+      background:var(--ps-cmp-checkbox-bg-selected);
+      border-color:var(--ps-cmp-checkbox-bg-selected);
+    }
+    .demo-radio.is-checked{
+      border-color:var(--ps-cmp-radio-border-selected);
+    }
+    .demo-radio.is-checked::before{
+      content:"";width:var(--ps-cmp-radio-dot-size);height:var(--ps-cmp-radio-dot-size);
+      background:var(--ps-cmp-radio-dot-color);border-radius:50%;
+    }
+    .demo-select-row{display:inline-flex;align-items:center;gap:12px;}
+    .demo-select-row span.txt{font-size:13px;color:var(--ps-cmp-checkbox-label-fg);}
+
+    /* Filter chip */
+    .demo-chip{
+      display:inline-flex;align-items:center;gap:var(--ps-cmp-filter-chip-gap);
+      height:var(--ps-cmp-filter-chip-height);padding:0 var(--ps-cmp-filter-chip-padding-x);
+      background:var(--ps-cmp-filter-chip-bg);color:var(--ps-cmp-filter-chip-fg);
+      border-radius:var(--ps-cmp-filter-chip-radius);
+      font-size:15px;line-height:1;
+    }
+    .demo-chip .k{font-weight:700;}
+    .demo-chip .x{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:14px;height:14px;cursor:pointer;color:var(--ps-cmp-filter-chip-x-fg);
+      font-size:14px;line-height:1;
+    }
+    .demo-chip .x:hover{color:var(--ps-cmp-filter-chip-x-fg-hover);}
+
+    /* Stepper */
+    .demo-stepper{display:flex;align-items:center;gap:0;width:100%;}
+    .demo-step{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto;}
+    .demo-step__dot{
+      width:var(--ps-cmp-stepper-dot-size);height:var(--ps-cmp-stepper-dot-size);
+      border-radius:50%;display:flex;align-items:center;justify-content:center;
+      font-size:12px;font-weight:700;
+      border:var(--ps-cmp-stepper-dot-border-width) solid transparent;
+    }
+    .demo-step--done .demo-step__dot{
+      background:var(--ps-cmp-stepper-dot-bg-completed);
+      color:var(--ps-cmp-stepper-dot-fg-completed);
+      border-color:var(--ps-cmp-stepper-dot-bg-completed);
+    }
+    .demo-step--current .demo-step__dot{
+      background:var(--ps-cmp-stepper-dot-bg-current);
+      color:var(--ps-cmp-stepper-dot-fg-current);
+      border-color:var(--ps-cmp-stepper-dot-border-current);
+    }
+    .demo-step--pending .demo-step__dot{
+      background:var(--ps-cmp-stepper-dot-bg-pending);
+      color:var(--ps-cmp-stepper-dot-fg-pending);
+      border-color:var(--ps-cmp-stepper-dot-border-pending);
+    }
+    .demo-step__label{
+      font-size:var(--ps-cmp-stepper-label-text);
+      color:var(--ps-cmp-stepper-label-fg-pending);white-space:nowrap;
+    }
+    .demo-step--done .demo-step__label,
+    .demo-step--current .demo-step__label{color:var(--ps-cmp-stepper-label-fg-active);}
+    .demo-step__line{
+      flex:1;height:var(--ps-cmp-stepper-line-thickness);align-self:flex-start;margin-top:11px;
+      background:var(--ps-cmp-stepper-line-color-pending);min-width:30px;
+    }
+    .demo-step__line.is-done{background:var(--ps-cmp-stepper-line-color-done);}
+
+    /* Tooltip */
+    .demo-tooltip{
+      position:relative;display:inline-flex;
+    }
+    .demo-tooltip__bubble{
+      background:var(--ps-cmp-tooltip-bg);color:var(--ps-cmp-tooltip-fg);
+      padding:var(--ps-cmp-tooltip-padding-y) var(--ps-cmp-tooltip-padding-x);
+      border-radius:var(--ps-cmp-tooltip-radius);
+      font-size:var(--ps-cmp-tooltip-text);font-weight:var(--ps-cmp-tooltip-weight);
+      box-shadow:var(--ps-cmp-tooltip-shadow);white-space:nowrap;
+    }
+
+    /* Dark-mode demo card */
+    [data-theme="dark"] .dm-demo,
+    .dm-demo[data-theme="dark"]{
+      background:var(--ps-sem-bg-canvas);color:var(--ps-sem-fg-primary);
+    }
+
+    /* ============ Newly added components ============ */
+
+    /* Dropdown menu */
+    .demo-dropdown{
+      background:var(--ps-cmp-dropdown-bg);color:var(--ps-cmp-dropdown-fg);
+      border:1px solid var(--ps-cmp-dropdown-border);
+      border-radius:var(--ps-cmp-dropdown-radius);
+      box-shadow:var(--ps-cmp-dropdown-shadow);
+      padding:var(--ps-cmp-dropdown-padding-y) 0;
+      min-width:var(--ps-cmp-dropdown-min-width);
+    }
+    .demo-dropdown__item{
+      display:flex;align-items:center;gap:10px;
+      padding:var(--ps-cmp-dropdown-item-padding-y) var(--ps-cmp-dropdown-item-padding-x);
+      font-size:var(--ps-cmp-dropdown-item-text);color:var(--ps-cmp-dropdown-item-fg);
+      cursor:pointer;
+    }
+    .demo-dropdown__item:hover{background:var(--ps-cmp-dropdown-item-bg-hover);}
+    .demo-dropdown__item.is-selected{background:var(--ps-cmp-dropdown-item-bg-selected);color:var(--ps-cmp-dropdown-item-fg-selected);font-weight:600;}
+    .demo-dropdown__divider{
+      height:1px;background:var(--ps-cmp-dropdown-divider-color);
+      margin:var(--ps-cmp-dropdown-divider-margin-y) 0;
+    }
+
+    /* Pagination */
+    .demo-pagination{display:inline-flex;align-items:center;gap:var(--ps-cmp-pagination-gap);}
+    .demo-pagination__item{
+      min-width:var(--ps-cmp-pagination-item-size);height:var(--ps-cmp-pagination-item-size);
+      padding:0 6px;
+      border:1px solid var(--ps-cmp-pagination-border);
+      border-radius:var(--ps-cmp-pagination-item-radius);
+      background:var(--ps-cmp-pagination-item-bg-default);
+      color:var(--ps-cmp-pagination-item-fg-default);
+      font-size:var(--ps-cmp-pagination-item-text);
+      font-weight:var(--ps-cmp-pagination-item-weight);
+      display:inline-flex;align-items:center;justify-content:center;
+      cursor:pointer;font-family:inherit;
+    }
+    .demo-pagination__item:hover{background:var(--ps-cmp-pagination-item-bg-hover);color:var(--ps-cmp-pagination-item-fg-hover);}
+    .demo-pagination__item.is-current{
+      background:var(--ps-cmp-pagination-item-bg-current);
+      color:var(--ps-cmp-pagination-item-fg-current);
+    }
+    .demo-pagination__item[disabled]{color:var(--ps-cmp-pagination-item-fg-disabled);cursor:not-allowed;}
+    .demo-pagination__ellipsis{color:var(--ps-cmp-pagination-ellipsis-fg);padding:0 4px;}
+
+    /* Avatar */
+    .demo-avatar{
+      border-radius:var(--ps-cmp-avatar-radius);
+      background:var(--ps-cmp-avatar-bg);color:var(--ps-cmp-avatar-fg);
+      font-weight:var(--ps-cmp-avatar-weight);font-family:var(--ps-sem-font-body);
+      display:inline-flex;align-items:center;justify-content:center;
+      position:relative;
+    }
+    .demo-avatar--xs{width:var(--ps-cmp-avatar-size-xs);height:var(--ps-cmp-avatar-size-xs);font-size:10px;}
+    .demo-avatar--sm{width:var(--ps-cmp-avatar-size-sm);height:var(--ps-cmp-avatar-size-sm);font-size:12px;}
+    .demo-avatar--md{width:var(--ps-cmp-avatar-size-md);height:var(--ps-cmp-avatar-size-md);font-size:14px;}
+    .demo-avatar--lg{width:var(--ps-cmp-avatar-size-lg);height:var(--ps-cmp-avatar-size-lg);font-size:20px;}
+    .demo-avatar--xl{width:var(--ps-cmp-avatar-size-xl);height:var(--ps-cmp-avatar-size-xl);font-size:26px;}
+    .demo-avatar-stack{display:inline-flex;}
+    .demo-avatar-stack .demo-avatar{
+      box-shadow:0 0 0 var(--ps-cmp-avatar-border-width) var(--ps-cmp-avatar-border);
+    }
+    .demo-avatar-stack .demo-avatar + .demo-avatar{margin-left:-10px;}
+    .demo-avatar__status{
+      position:absolute;bottom:0;right:0;
+      width:var(--ps-cmp-avatar-status-dot-size);height:var(--ps-cmp-avatar-status-dot-size);
+      border-radius:50%;box-shadow:0 0 0 2px var(--ps-cmp-avatar-status-ring);
+    }
+
+    /* Breadcrumb */
+    .demo-breadcrumb{
+      display:flex;align-items:center;gap:var(--ps-cmp-breadcrumb-gap);
+      font-size:var(--ps-cmp-breadcrumb-text);color:var(--ps-cmp-breadcrumb-fg-default);
+    }
+    .demo-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-cmp-breadcrumb-fg-link);text-decoration:none;font-weight:600;
+      padding:var(--ps-cmp-breadcrumb-back-padding-y) var(--ps-cmp-breadcrumb-back-padding-x) var(--ps-cmp-breadcrumb-back-padding-y) 6px;
+      border-radius:var(--ps-cmp-breadcrumb-back-radius);
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .demo-breadcrumb__back:hover{background:var(--ps-cmp-breadcrumb-back-bg-hover);color:var(--ps-cmp-breadcrumb-fg-link-hover);}
+    .demo-breadcrumb__sep{color:var(--ps-cmp-breadcrumb-separator-color);font-weight:300;}
+    .demo-breadcrumb__current{color:var(--ps-cmp-breadcrumb-fg-current);font-weight:600;}
+
+    /* Switch / Toggle */
+    .demo-switch{
+      position:relative;display:inline-block;cursor:pointer;
+      width:var(--ps-cmp-switch-track-width);height:var(--ps-cmp-switch-track-height);
+    }
+    .demo-switch__track{
+      position:absolute;inset:0;
+      background:var(--ps-cmp-switch-track-bg-off);
+      border-radius:var(--ps-cmp-switch-track-radius);
+      transition:var(--ps-cmp-switch-motion);
+    }
+    .demo-switch__thumb{
+      position:absolute;top:var(--ps-cmp-switch-thumb-offset);left:var(--ps-cmp-switch-thumb-offset);
+      width:var(--ps-cmp-switch-thumb-size);height:var(--ps-cmp-switch-thumb-size);
+      background:var(--ps-cmp-switch-thumb-bg);
+      border-radius:50%;
+      box-shadow:var(--ps-cmp-switch-thumb-shadow);
+      transition:var(--ps-cmp-switch-motion);
+    }
+    .demo-switch.is-on .demo-switch__track{background:var(--ps-cmp-switch-track-bg-on);}
+    .demo-switch.is-on .demo-switch__thumb{transform:translateX(var(--ps-cmp-switch-thumb-translate));}
+    .demo-switch-row{display:inline-flex;align-items:center;gap:var(--ps-cmp-switch-label-gap);}
+    .demo-switch-row .txt{font-size:14px;color:var(--ps-sem-fg-primary);}
+
+    /* Skeleton — uses the shimmer keyframe */
+    @keyframes ps-skeleton-shimmer{
+      0%   {background-position:-200% 0;}
+      100% {background-position:200% 0;}
+    }
+    .demo-skeleton{
+      border-radius:var(--ps-cmp-skeleton-radius);
+      background:linear-gradient(90deg,
+        var(--ps-cmp-skeleton-bg) 0%,
+        var(--ps-cmp-skeleton-shimmer-highlight) 50%,
+        var(--ps-cmp-skeleton-bg) 100%);
+      background-size:200% 100%;
+      animation:ps-skeleton-shimmer var(--ps-cmp-skeleton-shimmer-duration) linear infinite;
+    }
+    .demo-skeleton--text{height:var(--ps-cmp-skeleton-height-text);}
+    .demo-skeleton--heading{height:var(--ps-cmp-skeleton-height-heading);}
+    .demo-skeleton--button{height:var(--ps-cmp-skeleton-height-button);width:120px;}
+    .demo-skeleton--avatar{width:40px;height:40px;border-radius:50%;}
+
+    /* Spinner */
+    @keyframes ps-spin{to{transform:rotate(360deg);}}
+    .demo-spinner{
+      display:inline-block;border-radius:50%;
+      width:var(--ps-cmp-spinner-size-md);height:var(--ps-cmp-spinner-size-md);
+      border:var(--ps-cmp-spinner-stroke-width) solid var(--ps-cmp-spinner-track-color);
+      border-top-color:var(--ps-cmp-spinner-accent-color);
+      animation:ps-spin var(--ps-cmp-spinner-duration) linear infinite;
+    }
+    .demo-spinner--sm{width:var(--ps-cmp-spinner-size-sm);height:var(--ps-cmp-spinner-size-sm);}
+    .demo-spinner--lg{width:var(--ps-cmp-spinner-size-lg);height:var(--ps-cmp-spinner-size-lg);}
+
+    /* Progress bar */
+    .demo-progress{
+      width:100%;height:var(--ps-cmp-progress-height);
+      background:var(--ps-cmp-progress-track-bg);
+      border-radius:var(--ps-cmp-progress-radius);overflow:hidden;
+    }
+    .demo-progress__fill{
+      height:100%;background:var(--ps-cmp-progress-fill-bg);
+      border-radius:inherit;transition:var(--ps-cmp-progress-motion);
+    }
+    .demo-progress__fill--success{background:var(--ps-cmp-progress-fill-success);}
+    .demo-progress__fill--warning{background:var(--ps-cmp-progress-fill-warning);}
+    .demo-progress__fill--danger{background:var(--ps-cmp-progress-fill-danger);}
+
+    /* Empty state */
+    .demo-empty{
+      display:flex;flex-direction:column;align-items:center;text-align:center;
+      padding:var(--ps-cmp-empty-padding-y) var(--ps-cmp-empty-padding-x);
+      gap:var(--ps-cmp-empty-gap);
+    }
+    .demo-empty__icon{
+      width:var(--ps-cmp-empty-icon-width);
+      height:var(--ps-cmp-empty-icon-height);
+      flex-shrink:0;display:block;
+    }
+    .demo-empty__title{
+      font-size:var(--ps-cmp-empty-title-size);
+      font-weight:var(--ps-cmp-empty-title-weight);
+      color:var(--ps-cmp-empty-title-fg);
+      margin:0 0 var(--ps-cmp-empty-title-gap);
+    }
+    .demo-empty__body{
+      font-size:var(--ps-cmp-empty-body-size);color:var(--ps-cmp-empty-body-fg);
+      max-width:var(--ps-cmp-empty-body-max-width);line-height:1.55;margin:0;
+    }
+  </style>
+</head>
+<body style="">
+
+  <nav class="ps-breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Tokens</span>
+  </nav>
+
+  <h1>Token Sheet</h1>
+  <p class="intro">PartsSource design tokens follow a strict three-level architecture. <b>Primitives</b> hold raw values; <b>semantic</b> tokens describe intent and reference primitives; <b>component</b> tokens reference semantic tokens. Components never reach past the semantic layer — change a primitive once and the change cascades cleanly through both layers above it.</p>
+
+  <!-- Top-level explainer -->
+  <div class="levels">
+    <div class="level-card">
+      <h3>Primitive</h3>
+      <p>The raw palette. Holds the only hex codes, px values, font family strings and durations in the system. Nothing references anything else.</p>
+<code><span style="color:var(--ps-sem-fg-tertiary);">--ps-prim-blue-500:</span> #005BA6;
+<span style="color:var(--ps-sem-fg-tertiary);">--ps-prim-space-4:</span>   16px;</code>
+    </div>
+    <div class="level-card">
+      <h3>Semantic</h3>
+      <p>Describes intent. A semantic token says <i>what something is for</i> — text, surface, success, focus. References primitives only.</p>
+<code><span style="color:var(--ps-sem-fg-tertiary);">--ps-sem-fg-primary:</span>
+   var(<span style="color:var(--ps-sem-fg-brand);">--ps-prim-gray-800</span>);</code>
+    </div>
+    <div class="level-card">
+      <h3>Component</h3>
+      <p>Component-property contracts. Reads from semantic tokens only. The button doesn't know about <code>#005BA6</code> — it asks for action-default.</p>
+<code><span style="color:var(--ps-sem-fg-tertiary);">--ps-cmp-button-primary-bg-default:</span>
+   var(<span style="color:var(--ps-sem-fg-brand);">--ps-sem-action-default</span>);</code>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SECTION · COLOR
+       ============================================ -->
+  <section class="group" id="color">
+    <div class="group-head">
+      <h2>Color</h2>
+      <div class="desc">Every color in the system originates here as a primitive ramp. Semantic colors give those values purpose; component colors pin them to specific UI properties.</div>
+    </div>
+
+    <!-- Level 1 — Primitive ramps -->
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text">Raw color ramps · prefix <code>--ps-prim-{ramp}-{step}</code></span>
+    </div>
+    <div class="ramps">
+
+      <div class="ramp">
+        <div class="ramp-head">Blue<span>brand · interactive · link</span></div>
+        <div class="chips">
+          <div class="chip" style="background:var(--ps-prim-blue-50);color:#2B2B2B;"><span class="step">50</span><span class="hex">#EFF9FE</span></div>
+          <div class="chip" style="background:var(--ps-prim-blue-100);color:#2B2B2B;"><span class="step">100</span><span class="hex">#D0EDFC</span></div>
+          <div class="chip" style="background:var(--ps-prim-blue-200);color:#2B2B2B;"><span class="step">200</span><span class="hex">#B0C6D3</span></div>
+          <div class="chip" style="background:var(--ps-prim-blue-300);color:#fff;"><span class="step">300</span><span class="hex">#6AC7FC</span></div>
+          <div class="chip" style="background:var(--ps-prim-blue-400);color:#fff;"><span class="step">400</span><span class="hex">#009CF4</span></div>
+          <div class="chip" style="background:var(--ps-prim-blue-500);color:#fff;"><span class="step">500 · brand</span><span class="hex">#005BA6</span></div>
+          <div class="chip" style="background:var(--ps-prim-blue-600);color:#fff;"><span class="step">600</span><span class="hex">#004A84</span></div>
+          <div class="chip" style="background:var(--ps-prim-blue-700);color:#fff;"><span class="step">700</span><span class="hex">#003763</span></div>
+          <div class="chip" style="background:var(--ps-prim-blue-800);color:#fff;"><span class="step">800 · midnight</span><span class="hex">#002F48</span></div>
+          <div class="chip" style="background:var(--ps-prim-blue-900);color:#fff;"><span class="step">900</span><span class="hex">#001D2E</span></div>
+        </div>
+      </div>
+
+      <div class="ramp">
+        <div class="ramp-head">Gray<span>text · borders · surfaces</span></div>
+        <div class="chips">
+          <div class="chip" style="background:var(--ps-prim-gray-0);color:#2B2B2B;border-right:1px solid var(--ps-sem-border-subtle);"><span class="step">0</span><span class="hex">#FFFFFF</span></div>
+          <div class="chip" style="background:var(--ps-prim-gray-50);color:#2B2B2B;"><span class="step">50</span><span class="hex">#FAFAFA</span></div>
+          <div class="chip" style="background:var(--ps-prim-gray-100);color:#2B2B2B;"><span class="step">100</span><span class="hex">#F5F5F5</span></div>
+          <div class="chip" style="background:var(--ps-prim-gray-150);color:#2B2B2B;"><span class="step">150</span><span class="hex">#F1F1F1</span></div>
+          <div class="chip" style="background:var(--ps-prim-gray-200);color:#2B2B2B;"><span class="step">200</span><span class="hex">#E6E6E6</span></div>
+          <div class="chip" style="background:var(--ps-prim-gray-300);color:#2B2B2B;"><span class="step">300</span><span class="hex">#DCDCDC</span></div>
+          <div class="chip" style="background:var(--ps-prim-gray-400);color:#2B2B2B;"><span class="step">400</span><span class="hex">#CCCCCC</span></div>
+          <div class="chip" style="background:var(--ps-prim-gray-500);color:#fff;"><span class="step">500</span><span class="hex">#949494</span></div>
+          <div class="chip" style="background:var(--ps-prim-gray-600);color:#fff;"><span class="step">600</span><span class="hex">#777777</span></div>
+          <div class="chip" style="background:var(--ps-prim-gray-700);color:#fff;"><span class="step">700</span><span class="hex">#4A4A4A</span></div>
+          <div class="chip" style="background:var(--ps-prim-gray-800);color:#fff;"><span class="step">800</span><span class="hex">#2B2B2B</span></div>
+          <div class="chip" style="background:var(--ps-prim-gray-900);color:#fff;"><span class="step">900</span><span class="hex">#000000</span></div>
+        </div>
+      </div>
+
+      <div class="ramp">
+        <div class="ramp-head">Orange<span>promo CTA only</span></div>
+        <div class="chips">
+          <div class="chip" style="background:var(--ps-prim-orange-50);color:#2B2B2B;"><span class="step">50</span><span class="hex">#FFF4E5</span></div>
+          <div class="chip" style="background:var(--ps-prim-orange-100);color:#2B2B2B;"><span class="step">100</span><span class="hex">#FFEACC</span></div>
+          <div class="chip" style="background:var(--ps-prim-orange-400);color:#fff;"><span class="step">400</span><span class="hex">#FF9505</span></div>
+          <div class="chip" style="background:var(--ps-prim-orange-500);color:#fff;"><span class="step">500</span><span class="hex">#E68604</span></div>
+          <div class="chip" style="background:var(--ps-prim-orange-600);color:#fff;"><span class="step">600</span><span class="hex">#C56F00</span></div>
+        </div>
+      </div>
+
+      <div class="ramp">
+        <div class="ramp-head">Red<span>danger · error</span></div>
+        <div class="chips">
+          <div class="chip" style="background:var(--ps-prim-red-50);color:#2B2B2B;"><span class="step">50</span><span class="hex">#FFEBEB</span></div>
+          <div class="chip" style="background:var(--ps-prim-red-100);color:#2B2B2B;"><span class="step">100</span><span class="hex">#FDECEC</span></div>
+          <div class="chip" style="background:var(--ps-prim-red-400);color:#fff;"><span class="step">400</span><span class="hex">#D14343</span></div>
+          <div class="chip" style="background:var(--ps-prim-red-500);color:#fff;"><span class="step">500</span><span class="hex">#B83535</span></div>
+          <div class="chip" style="background:var(--ps-prim-red-600);color:#fff;"><span class="step">600</span><span class="hex">#9E2020</span></div>
+        </div>
+      </div>
+
+      <div class="ramp">
+        <div class="ramp-head">Green<span>success · operational</span></div>
+        <div class="chips">
+          <div class="chip" style="background:var(--ps-prim-green-50);color:#2B2B2B;"><span class="step">50</span><span class="hex">#E5F9F2</span></div>
+          <div class="chip" style="background:var(--ps-prim-green-100);color:#2B2B2B;"><span class="step">100</span><span class="hex">#B8E6D5</span></div>
+          <div class="chip" style="background:var(--ps-prim-green-400);color:#fff;"><span class="step">400</span><span class="hex">#17AB78</span></div>
+          <div class="chip" style="background:var(--ps-prim-green-500);color:#fff;"><span class="step">500</span><span class="hex">#0E9563</span></div>
+          <div class="chip" style="background:var(--ps-prim-green-600);color:#fff;"><span class="step">600</span><span class="hex">#0A7850</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Level 2 — Semantic colors -->
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">2</span>Semantic</span>
+      <span class="lv-text">Color by intent · prefix <code>--ps-sem-{role}-{variant}</code></span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th style="width:42px;"></th><th>Token</th><th>References</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-fg-primary);"></span></td><td><code>--ps-sem-fg-primary</code></td><td><code class="ref">--ps-prim-gray-800</code></td><td>Body copy</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-fg-secondary);"></span></td><td><code>--ps-sem-fg-secondary</code></td><td><code class="ref">--ps-prim-gray-700</code></td><td>Supporting text</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-fg-tertiary);"></span></td><td><code>--ps-sem-fg-tertiary</code></td><td><code class="ref">--ps-prim-gray-600</code></td><td>Meta · hint · placeholder</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-fg-brand);"></span></td><td><code>--ps-sem-fg-brand</code></td><td><code class="ref">--ps-prim-blue-500</code></td><td>Brand-anchored text &amp; icons</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-fg-brand-dark);"></span></td><td><code>--ps-sem-fg-brand-dark</code></td><td><code class="ref">--ps-prim-blue-800</code></td><td>Headings (signature Midnight)</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-bg-canvas);"></span></td><td><code>--ps-sem-bg-canvas</code></td><td><code class="ref">--ps-prim-gray-50</code></td><td>App background</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-bg-surface);"></span></td><td><code>--ps-sem-bg-surface</code></td><td><code class="ref">--ps-prim-gray-0</code></td><td>Cards · sheets · inputs</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-bg-brand-tint);"></span></td><td><code>--ps-sem-bg-brand-tint</code></td><td><code class="ref">--ps-prim-blue-50</code></td><td>Selected row · hovered chip</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-border-default);"></span></td><td><code>--ps-sem-border-default</code></td><td><code class="ref">--ps-prim-gray-300</code></td><td>The 1 px neutral rule</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-success-solid);"></span></td><td><code>--ps-sem-success-solid</code></td><td><code class="ref">--ps-prim-green-400</code></td><td>Success state · operational</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-warning-solid);"></span></td><td><code>--ps-sem-warning-solid</code></td><td><code class="ref">--ps-prim-orange-400</code></td><td>Warning state</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-danger-solid);"></span></td><td><code>--ps-sem-danger-solid</code></td><td><code class="ref">--ps-prim-red-400</code></td><td>Danger · destructive</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-info-solid);"></span></td><td><code>--ps-sem-info-solid</code></td><td><code class="ref">--ps-prim-blue-400</code></td><td>Info · accent cyan</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-action-default);"></span></td><td><code>--ps-sem-action-default</code></td><td><code class="ref">--ps-prim-blue-500</code></td><td>Interactive default</td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-sem-action-hover);"></span></td><td><code>--ps-sem-action-hover</code></td><td><code class="ref">--ps-prim-blue-600</code></td><td>Interactive hover</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Level 3 — Component colors (sample) -->
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">3</span>Component</span>
+      <span class="lv-text">Per-component contracts · prefix <code>--ps-cmp-{component}-{property}</code></span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th style="width:42px;"></th><th>Component token</th><th>References</th><th>Resolves to</th></tr></thead>
+      <tbody>
+        <tr><td><span class="swatch" style="background:var(--ps-cmp-button-primary-bg-hover);"></span></td><td><code>--ps-cmp-button-primary-bg-hover</code></td><td><code class="ref">--ps-sem-action-default</code></td><td><code class="val">#005BA6</code></td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-cmp-button-primary-bg-pressed);"></span></td><td><code>--ps-cmp-button-primary-bg-pressed</code></td><td><code class="ref">--ps-sem-action-hover</code></td><td><code class="val">#004A84</code></td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-cmp-button-pill-bg-default);"></span></td><td><code>--ps-cmp-button-pill-bg-default</code></td><td><code class="ref">--ps-sem-promo-solid</code></td><td><code class="val">#FF9505</code></td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-cmp-input-border-focus);"></span></td><td><code>--ps-cmp-input-border-focus</code></td><td><code class="ref">--ps-sem-border-brand</code></td><td><code class="val">#005BA6</code></td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-cmp-card-border);"></span></td><td><code>--ps-cmp-card-border</code></td><td><code class="ref">--ps-sem-border-default</code></td><td><code class="val">#DCDCDC</code></td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-cmp-badge-success-bg);"></span></td><td><code>--ps-cmp-badge-success-bg</code></td><td><code class="ref">--ps-sem-success-bg</code></td><td><code class="val">#E5F9F2</code></td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-cmp-table-row-bg-selected);"></span></td><td><code>--ps-cmp-table-row-bg-selected</code></td><td><code class="ref">--ps-sem-bg-brand-tint</code></td><td><code class="val">#EFF9FE</code></td></tr>
+        <tr><td><span class="swatch" style="background:var(--ps-cmp-sheet-title-color);"></span></td><td><code>--ps-cmp-sheet-title-color</code></td><td><code class="ref">--ps-sem-fg-brand</code></td><td><code class="val">#005BA6</code></td></tr>
+      </tbody>
+    </table>
+
+  </section>
+
+  <!-- ============================================
+       SECTION · TYPOGRAPHY
+       ============================================ -->
+  <section class="group" id="type">
+    <div class="group-head">
+      <h2>Typography</h2>
+      <div class="desc">Source Sans Pro is the primary family across every surface. Headings carry a signature Light 300 weight; body and UI text are 400/600.</div>
+    </div>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text">Family · weight · size · line-height — atomic typographic values</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-prim-font-source-sans</code></td><td style="font-family:var(--ps-prim-font-source-sans);font-size:15px;">Source Sans Pro</td></tr>
+        <tr><td><code>--ps-prim-font-metronic</code></td><td style="font-family:var(--ps-prim-font-metronic);font-size:15px;">Metronic Pro · display</td></tr>
+        <tr><td><code>--ps-prim-font-source-code</code></td><td style="font-family:var(--ps-prim-font-source-code);font-size:14px;">Source Code · monospace</td></tr>
+        <tr><td><code>--ps-prim-weight-light</code></td><td style="font-weight:300;">300 — headings</td></tr>
+        <tr><td><code>--ps-prim-weight-regular</code></td><td style="font-weight:400;">400 — body</td></tr>
+        <tr><td><code>--ps-prim-weight-semibold</code></td><td style="font-weight:600;">600 — emphasis</td></tr>
+        <tr><td><code>--ps-prim-weight-bold</code></td><td style="font-weight:700;">700 — strong</td></tr>
+        <tr><td><code>--ps-prim-size-36 / 30 / 24 / 18 / 16 / 14 / 12 / 11</code></td><td><code class="val">px</code> — the eight-step scale</td></tr>
+      </tbody>
+    </table>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">2</span>Semantic</span>
+      <span class="lv-text">Text roles · prefix <code>--ps-sem-text-{role}</code> · <code>--ps-sem-weight-{role}</code></span>
+    </div>
+    <div class="type-list">
+      <div class="type-row">
+        <div class="type-meta"><code>--ps-sem-text-display-xl</code><br><code class="val">36 / 300 / Source Sans</code></div>
+        <div class="type-sample" style="font-size:var(--ps-sem-text-display-xl);font-weight:var(--ps-sem-weight-heading);color:var(--ps-sem-fg-brand-dark);line-height:1.1;">Ensuring healthcare is always on</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><code>--ps-sem-text-display-lg</code><br><code class="val">30 / 300</code></div>
+        <div class="type-sample" style="font-size:var(--ps-sem-text-display-lg);font-weight:var(--ps-sem-weight-heading);color:var(--ps-sem-fg-brand-dark);line-height:1.15;">Clinical resource management</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><code>--ps-sem-text-display-md</code><br><code class="val">24 / 300</code></div>
+        <div class="type-sample" style="font-size:var(--ps-sem-text-display-md);font-weight:var(--ps-sem-weight-heading);color:var(--ps-sem-fg-brand-dark);line-height:1.2;">Asset uptime, every shift</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><code>--ps-sem-text-heading</code><br><code class="val">18 / 600</code></div>
+        <div class="type-sample" style="font-size:var(--ps-sem-text-heading);font-weight:var(--ps-sem-weight-emphasis);color:var(--ps-sem-fg-brand-dark);line-height:1.3;">Section heading — semibold</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><code>--ps-sem-text-body-lg</code><br><code class="val">16 / 400</code></div>
+        <div class="type-sample" style="font-size:var(--ps-sem-text-body-lg);line-height:1.55;">Body lg paragraph copy. Source Sans Pro at 16 px regular sits comfortably for marketing pages.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><code>--ps-sem-text-body</code><br><code class="val">14 / 400</code></div>
+        <div class="type-sample" style="font-size:var(--ps-sem-text-body);line-height:1.55;">Default UI body. Used across forms, tables, and dense data surfaces.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><code>--ps-sem-text-caption</code><br><code class="val">12 / 400</code></div>
+        <div class="type-sample" style="font-size:var(--ps-sem-text-caption);color:var(--ps-sem-fg-tertiary);">Captions, hints, table meta — 12 px tertiary text.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><code>--ps-sem-text-micro</code><br><code class="val">11 / 700 · uppercase</code></div>
+        <div class="type-sample" style="font-size:var(--ps-sem-text-micro);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--ps-sem-fg-brand);">Overline label · section tag</div>
+      </div>
+    </div>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">3</span>Component</span>
+      <span class="lv-text">Component typographic contracts</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th><th>Resolves to</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-cmp-sheet-title-size</code></td><td><code class="ref">--ps-sem-text-display-lg</code></td><td><code class="val">30 px</code></td></tr>
+        <tr><td><code>--ps-cmp-sheet-title-weight</code></td><td><code class="ref">--ps-sem-weight-heading</code></td><td><code class="val">300</code></td></tr>
+        <tr><td><code>--ps-cmp-badge-text</code></td><td><code class="ref">--ps-sem-text-micro</code></td><td><code class="val">11 px</code></td></tr>
+        <tr><td><code>--ps-cmp-badge-weight</code></td><td><code class="ref">--ps-sem-weight-strong</code></td><td><code class="val">700</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================================
+       SECTION · SPACING
+       ============================================ -->
+  <section class="group" id="space">
+    <div class="group-head">
+      <h2>Spacing</h2>
+      <div class="desc">4 px base unit. Primitives are pure numeric steps; semantic tokens describe inset (padding) and stack (vertical gap) roles.</div>
+    </div>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text"><code>--ps-prim-space-{n}</code> where n × 4 = pixels</span>
+    </div>
+    <div class="scale-list">
+      <div class="scale-row"><code>--ps-prim-space-1</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">4 px</span><div class="scale-bar" style="width:4px;"></div></div>
+      <div class="scale-row"><code>--ps-prim-space-2</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">8 px</span><div class="scale-bar" style="width:8px;"></div></div>
+      <div class="scale-row"><code>--ps-prim-space-3</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">12 px</span><div class="scale-bar" style="width:12px;"></div></div>
+      <div class="scale-row"><code>--ps-prim-space-4</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">16 px</span><div class="scale-bar" style="width:16px;"></div></div>
+      <div class="scale-row"><code>--ps-prim-space-5</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">20 px</span><div class="scale-bar" style="width:20px;"></div></div>
+      <div class="scale-row"><code>--ps-prim-space-6</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">24 px</span><div class="scale-bar" style="width:24px;"></div></div>
+      <div class="scale-row"><code>--ps-prim-space-7</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">28 px</span><div class="scale-bar" style="width:28px;"></div></div>
+      <div class="scale-row"><code>--ps-prim-space-8</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">32 px</span><div class="scale-bar" style="width:32px;"></div></div>
+      <div class="scale-row"><code>--ps-prim-space-10</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">40 px</span><div class="scale-bar" style="width:40px;"></div></div>
+      <div class="scale-row"><code>--ps-prim-space-12</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">48 px</span><div class="scale-bar" style="width:48px;"></div></div>
+      <div class="scale-row"><code>--ps-prim-space-16</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">64 px</span><div class="scale-bar" style="width:64px;"></div></div>
+      <div class="scale-row"><code>--ps-prim-space-24</code><span style="font-family:var(--ps-sem-font-mono);font-size:12px;color:var(--ps-sem-fg-tertiary);">96 px</span><div class="scale-bar" style="width:96px;"></div></div>
+    </div>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">2</span>Semantic</span>
+      <span class="lv-text">Inset (padding) &amp; stack (gap) roles</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-sem-space-inset-xs</code></td><td><code class="ref">--ps-prim-space-2</code> · 8 px</td><td>Badge / chip padding</td></tr>
+        <tr><td><code>--ps-sem-space-inset-sm</code></td><td><code class="ref">--ps-prim-space-3</code> · 12 px</td><td>Input padding-x</td></tr>
+        <tr><td><code>--ps-sem-space-inset-md</code></td><td><code class="ref">--ps-prim-space-5</code> · 20 px</td><td>Card padding</td></tr>
+        <tr><td><code>--ps-sem-space-inset-lg</code></td><td><code class="ref">--ps-prim-space-7</code> · 28 px</td><td>Sheet / modal padding</td></tr>
+        <tr><td><code>--ps-sem-space-stack-sm</code></td><td><code class="ref">--ps-prim-space-2</code> · 8 px</td><td>Tight vertical gap</td></tr>
+        <tr><td><code>--ps-sem-space-stack-md</code></td><td><code class="ref">--ps-prim-space-4</code> · 16 px</td><td>Default form gap</td></tr>
+        <tr><td><code>--ps-sem-space-stack-lg</code></td><td><code class="ref">--ps-prim-space-6</code> · 24 px</td><td>Section gap</td></tr>
+        <tr><td><code>--ps-sem-space-stack-xl</code></td><td><code class="ref">--ps-prim-space-12</code> · 48 px</td><td>Page-section rhythm</td></tr>
+      </tbody>
+    </table>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">3</span>Component</span>
+      <span class="lv-text">Per-component spacing</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th><th>Resolves to</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-cmp-card-padding</code></td><td><code class="ref">--ps-sem-space-inset-md</code></td><td><code class="val">20 px</code></td></tr>
+        <tr><td><code>--ps-cmp-sheet-padding</code></td><td><code class="ref">--ps-sem-space-inset-lg</code></td><td><code class="val">28 px</code></td></tr>
+        <tr><td><code>--ps-cmp-input-padding-x</code></td><td><code class="ref">--ps-sem-space-inset-sm</code></td><td><code class="val">12 px</code></td></tr>
+        <tr><td><code>--ps-cmp-input-padding-y</code></td><td><code class="ref">--ps-sem-space-stack-sm</code></td><td><code class="val">8 px</code></td></tr>
+        <tr><td><code>--ps-cmp-badge-padding-x</code></td><td><code class="ref">--ps-sem-space-inset-xs</code></td><td><code class="val">8 px</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================================
+       SECTION · RADIUS
+       ============================================ -->
+  <section class="group" id="radius">
+    <div class="group-head">
+      <h2>Radius</h2>
+      <div class="desc">4 px is the system default. Pill (20 px) for promo CTAs and badges; modal (8 px) for overlays; full for circular avatars and dots.</div>
+    </div>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text">Raw radius values</span>
+    </div>
+    <div class="radius-grid">
+      <div class="radius-cell"><div class="radius-box" style="border-radius:0;"></div><code>--ps-prim-radius-0</code><span>0 px · sharp</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:var(--ps-prim-radius-2);"></div><code>--ps-prim-radius-2</code><span>2 px</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:var(--ps-prim-radius-4);"></div><code>--ps-prim-radius-4</code><span>4 px · default</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:var(--ps-prim-radius-6);"></div><code>--ps-prim-radius-6</code><span>6 px</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:var(--ps-prim-radius-8);"></div><code>--ps-prim-radius-8</code><span>8 px</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:var(--ps-prim-radius-12);"></div><code>--ps-prim-radius-12</code><span>12 px</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:var(--ps-prim-radius-20);"></div><code>--ps-prim-radius-20</code><span>20 px · pill</span></div>
+      <div class="radius-cell"><div class="radius-box" style="border-radius:var(--ps-prim-radius-full);"></div><code>--ps-prim-radius-full</code><span>full · circle</span></div>
+    </div>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">2</span>Semantic</span>
+      <span class="lv-text">Radius by role</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-sem-radius-control</code></td><td><code class="ref">--ps-prim-radius-4</code></td><td>Buttons · inputs · badges (default)</td></tr>
+        <tr><td><code>--ps-sem-radius-surface</code></td><td><code class="ref">--ps-prim-radius-6</code></td><td>Cards · sheets</td></tr>
+        <tr><td><code>--ps-sem-radius-modal</code></td><td><code class="ref">--ps-prim-radius-8</code></td><td>Modals · popovers</td></tr>
+        <tr><td><code>--ps-sem-radius-pill</code></td><td><code class="ref">--ps-prim-radius-20</code></td><td>Promo pills · status badges</td></tr>
+        <tr><td><code>--ps-sem-radius-circle</code></td><td><code class="ref">--ps-prim-radius-full</code></td><td>Avatars · dots</td></tr>
+      </tbody>
+    </table>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">3</span>Component</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th><th>Resolves to</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-cmp-button-primary-radius</code></td><td><code class="ref">--ps-sem-radius-control</code></td><td><code class="val">4 px</code></td></tr>
+        <tr><td><code>--ps-cmp-button-pill-radius</code></td><td><code class="ref">--ps-sem-radius-pill</code></td><td><code class="val">20 px</code></td></tr>
+        <tr><td><code>--ps-cmp-card-radius</code></td><td><code class="ref">--ps-sem-radius-surface</code></td><td><code class="val">6 px</code></td></tr>
+        <tr><td><code>--ps-cmp-modal-radius</code></td><td><code class="ref">--ps-sem-radius-modal</code></td><td><code class="val">8 px</code></td></tr>
+        <tr><td><code>--ps-cmp-badge-radius</code></td><td><code class="ref">--ps-sem-radius-pill</code></td><td><code class="val">20 px</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================================
+       SECTION · ELEVATION
+       ============================================ -->
+  <section class="group" id="shadow">
+    <div class="group-head">
+      <h2>Elevation</h2>
+      <div class="desc">All shadows are Midnight-tinted <code>rgba(0,47,72,α)</code> — never neutral black. Use them sparingly; PartsSource is a quiet, flat-leaning system.</div>
+    </div>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+    </div>
+    <div class="shadow-grid">
+      <div class="shadow-cell"><div class="shadow-box" style="box-shadow:var(--ps-prim-shadow-sm);"></div><code>--ps-prim-shadow-sm</code><span>0 1 4 · 0.08</span></div>
+      <div class="shadow-cell"><div class="shadow-box" style="box-shadow:var(--ps-prim-shadow-md);"></div><code>--ps-prim-shadow-md</code><span>0 2 10 · 0.10</span></div>
+      <div class="shadow-cell"><div class="shadow-box" style="box-shadow:var(--ps-prim-shadow-lg);"></div><code>--ps-prim-shadow-lg</code><span>0 6 20 · 0.18</span></div>
+      <div class="shadow-cell"><div class="shadow-box" style="box-shadow:var(--ps-prim-shadow-xl);"></div><code>--ps-prim-shadow-xl</code><span>0 16 32 · 0.20</span></div>
+    </div>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">2</span>Semantic</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-sem-elevation-flat</code></td><td>none</td><td>No shadow</td></tr>
+        <tr><td><code>--ps-sem-elevation-rest</code></td><td><code class="ref">--ps-prim-shadow-sm</code></td><td>Resting card · subtle</td></tr>
+        <tr><td><code>--ps-sem-elevation-raised</code></td><td><code class="ref">--ps-prim-shadow-md</code></td><td>Default card</td></tr>
+        <tr><td><code>--ps-sem-elevation-overlay</code></td><td><code class="ref">--ps-prim-shadow-lg</code></td><td>Hover · dropdown · popover</td></tr>
+        <tr><td><code>--ps-sem-elevation-modal</code></td><td><code class="ref">--ps-prim-shadow-xl</code></td><td>Modal · sheet</td></tr>
+      </tbody>
+    </table>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">3</span>Component</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-cmp-card-shadow-default</code></td><td><code class="ref">--ps-sem-elevation-raised</code></td></tr>
+        <tr><td><code>--ps-cmp-card-shadow-hover</code></td><td><code class="ref">--ps-sem-elevation-overlay</code></td></tr>
+        <tr><td><code>--ps-cmp-modal-shadow</code></td><td><code class="ref">--ps-sem-elevation-modal</code></td></tr>
+        <tr><td><code>--ps-cmp-sheet-shadow</code></td><td><code class="ref">--ps-sem-elevation-modal</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================================
+       SECTION · MOTION, OPACITY, BORDER, FOCUS
+       ============================================ -->
+  <section class="group" id="motion-opacity">
+    <div class="group-head">
+      <h2>Motion · Opacity · Borders · Focus</h2>
+      <div class="desc">The remaining foundation primitives — timing functions for transitions, opacity steps for scrims and disabled states, border widths, and the focus-ring contract every interactive component inherits.</div>
+    </div>
+
+    <!-- ── Motion ───────────────────────────────── -->
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text">Motion · <code>--ps-prim-duration-*</code> + <code>--ps-prim-ease-*</code> — hover over any tile to see the curve.</span>
+    </div>
+    <div style="padding:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;background:var(--ps-sem-bg-canvas);">
+
+      <div class="motion-card">
+        <div class="motion-card__track"><div class="motion-card__dot" style="transition: transform var(--ps-prim-duration-instant) linear;"></div></div>
+        <div class="motion-card__meta"><code>--ps-prim-duration-instant</code><span>0 ms — no animation</span></div>
+      </div>
+      <div class="motion-card">
+        <div class="motion-card__track"><div class="motion-card__dot" style="transition: transform var(--ps-prim-duration-fast) var(--ps-prim-ease-standard);"></div></div>
+        <div class="motion-card__meta"><code>--ps-prim-duration-fast</code><span>150 ms — hover, focus, micro</span></div>
+      </div>
+      <div class="motion-card">
+        <div class="motion-card__track"><div class="motion-card__dot" style="transition: transform var(--ps-prim-duration-normal) var(--ps-prim-ease-emphasis);"></div></div>
+        <div class="motion-card__meta"><code>--ps-prim-duration-normal</code><span>240 ms — sheet, modal enter</span></div>
+      </div>
+      <div class="motion-card">
+        <div class="motion-card__track"><div class="motion-card__dot" style="transition: transform var(--ps-prim-duration-slow) var(--ps-prim-ease-out);"></div></div>
+        <div class="motion-card__meta"><code>--ps-prim-duration-slow</code><span>400 ms — page-level</span></div>
+      </div>
+    </div>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text">Easing curves · <code>--ps-prim-ease-*</code></span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th style="width:48px;"></th><th>Token</th><th>Value</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><svg width="40" height="20" viewBox="0 0 100 50"><path d="M0,50 C40,50 60,0 100,0" fill="none" stroke="var(--ps-sem-fg-brand)" stroke-width="2"/></svg></td><td><code>--ps-prim-ease-standard</code></td><td><code class="val">cubic-bezier(.4, 0, .2, 1)</code></td><td>Default transition for buttons, inputs, links</td></tr>
+        <tr><td><svg width="40" height="20" viewBox="0 0 100 50"><path d="M0,50 C20,50 50,0 100,0" fill="none" stroke="var(--ps-sem-fg-brand)" stroke-width="2"/></svg></td><td><code>--ps-prim-ease-out</code></td><td><code class="val">cubic-bezier(0, 0, .2, 1)</code></td><td>Enters that decelerate — fade-in, slide-in</td></tr>
+        <tr><td><svg width="40" height="20" viewBox="0 0 100 50"><path d="M0,50 C32,52 0,0 100,0" fill="none" stroke="var(--ps-sem-fg-brand)" stroke-width="2"/></svg></td><td><code>--ps-prim-ease-emphasis</code></td><td><code class="val">cubic-bezier(.32, .72, 0, 1)</code></td><td>Sheet / modal — quick lead-in, soft settle</td></tr>
+      </tbody>
+    </table>
+
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">2</span>Semantic</span>
+      <span class="lv-text">Motion presets — duration + easing paired by role</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-sem-motion-control</code></td><td><code class="ref">duration-fast</code> · <code class="ref">ease-standard</code></td><td>Buttons · inputs · toggles · hover</td></tr>
+        <tr><td><code>--ps-sem-motion-overlay</code></td><td><code class="ref">duration-normal</code> · <code class="ref">ease-emphasis</code></td><td>Sheet · modal · drawer enter/exit</td></tr>
+        <tr><td><code>--ps-sem-motion-page</code></td><td><code class="ref">duration-slow</code> · <code class="ref">ease-out</code></td><td>Route changes, hero reveals</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ── Opacity ──────────────────────────────── -->
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text">Opacity · <code>--ps-prim-opacity-*</code></span>
+    </div>
+    <div style="padding:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;background:var(--ps-sem-bg-canvas);">
+      <div class="opacity-card"><div class="opacity-chip" style="opacity:var(--ps-prim-opacity-0);"></div><code>opacity-0</code><span>0 · invisible</span></div>
+      <div class="opacity-card"><div class="opacity-chip" style="opacity:var(--ps-prim-opacity-40);"></div><code>opacity-40</code><span>0.40 · disabled fg</span></div>
+      <div class="opacity-card"><div class="opacity-chip" style="opacity:var(--ps-prim-opacity-50);"></div><code>opacity-50</code><span>0.50 · scrim</span></div>
+      <div class="opacity-card"><div class="opacity-chip" style="opacity:var(--ps-prim-opacity-75);"></div><code>opacity-75</code><span>0.75 · hover dim</span></div>
+      <div class="opacity-card"><div class="opacity-chip" style="opacity:var(--ps-prim-opacity-100);"></div><code>opacity-100</code><span>1 · default</span></div>
+    </div>
+
+    <!-- ── Border widths ────────────────────────── -->
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text">Border width · <code>--ps-prim-border-*</code></span>
+    </div>
+    <div style="padding:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;background:var(--ps-sem-bg-canvas);">
+      <div class="border-card"><div class="border-chip" style="border-width:0;background:var(--ps-sem-bg-muted);"></div><code>border-0</code><span>0 · seamless</span></div>
+      <div class="border-card"><div class="border-chip" style="border-width:var(--ps-prim-border-1);"></div><code>border-1</code><span>1 px · default rule</span></div>
+      <div class="border-card"><div class="border-chip" style="border-width:var(--ps-prim-border-2);"></div><code>border-2</code><span>2 px · primary button</span></div>
+      <div class="border-card"><div class="border-chip" style="border-width:var(--ps-prim-border-3);"></div><code>border-3</code><span>3 px · banner accent</span></div>
+    </div>
+
+    <!-- ── Focus ring ───────────────────────────── -->
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">2</span>Semantic</span>
+      <span class="lv-text">Focus ring · <code>--ps-sem-focus-ring</code> · every interactive component reads from this token</span>
+    </div>
+    <div style="padding:32px 24px;background:var(--ps-sem-bg-canvas);display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <button style="height:40px;padding:0 20px;border-radius:4px;border:2px solid var(--ps-sem-action-default);background:#fff;color:var(--ps-sem-fg-brand);font-weight:700;box-shadow:var(--ps-sem-focus-ring);font-family:inherit;">Focused button</button>
+        <span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">on button</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <input style="height:36px;padding:0 12px;border:1px solid var(--ps-sem-border-strong);border-radius:3px;font-family:inherit;font-size:14px;box-shadow:var(--ps-sem-focus-ring);outline:0;" value="Focused input"/>
+        <span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">on input</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <span style="display:inline-block;width:24px;height:24px;border:1.5px solid var(--ps-sem-border-strong);border-radius:2px;background:#fff;box-shadow:var(--ps-sem-focus-ring);"></span>
+        <span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">on checkbox</span>
+      </div>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>Value</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-sem-focus-ring</code></td><td><code class="val">0 0 0 3px var(--ps-prim-blue-200)</code></td><td>Always 3 px, always blue-200. Never removed.</td></tr>
+      </tbody>
+    </table>
+
+  </section>
+
+  <!-- ============================================
+       SECTION · LAYOUT FOUNDATIONS
+       Z-index · Breakpoints · Icon sizes · Container widths
+       ============================================ -->
+  <section class="group" id="layout-foundations">
+    <div class="group-head">
+      <h2>Layout foundations</h2>
+      <div class="desc">Z-index scale, breakpoints, icon sizes, and container widths. Hard-coded values used to live in every page; now they're tokens.</div>
+    </div>
+
+    <!-- ── Z-index ─────────────────────────────── -->
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text"><code>--ps-prim-z-{n}</code> · raw integers</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-prim-z-0</code></td><td><code class="val">0</code></td></tr>
+        <tr><td><code>--ps-prim-z-10</code></td><td><code class="val">10</code></td></tr>
+        <tr><td><code>--ps-prim-z-100</code></td><td><code class="val">100</code></td></tr>
+        <tr><td><code>--ps-prim-z-200</code></td><td><code class="val">200</code></td></tr>
+        <tr><td><code>--ps-prim-z-1000</code></td><td><code class="val">1000</code></td></tr>
+        <tr><td><code>--ps-prim-z-1100</code></td><td><code class="val">1100</code></td></tr>
+        <tr><td><code>--ps-prim-z-1200</code></td><td><code class="val">1200</code></td></tr>
+        <tr><td><code>--ps-prim-z-1300</code></td><td><code class="val">1300</code></td></tr>
+        <tr><td><code>--ps-prim-z-1400</code></td><td><code class="val">1400</code></td></tr>
+      </tbody>
+    </table>
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">2</span>Semantic</span>
+      <span class="lv-text">Layer roles — never pick a raw integer for a popover</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-sem-z-base</code></td><td><code class="ref">--ps-prim-z-0</code></td><td>Default flow</td></tr>
+        <tr><td><code>--ps-sem-z-raised</code></td><td><code class="ref">--ps-prim-z-10</code></td><td>Cards · lifted elements</td></tr>
+        <tr><td><code>--ps-sem-z-dropdown</code></td><td><code class="ref">--ps-prim-z-100</code></td><td>Select menu · context menu</td></tr>
+        <tr><td><code>--ps-sem-z-sticky</code></td><td><code class="ref">--ps-prim-z-200</code></td><td>Top nav · sticky headers</td></tr>
+        <tr><td><code>--ps-sem-z-overlay</code></td><td><code class="ref">--ps-prim-z-1000</code></td><td>Scrim under modal/sheet</td></tr>
+        <tr><td><code>--ps-sem-z-modal</code></td><td><code class="ref">--ps-prim-z-1100</code></td><td>Modal dialog</td></tr>
+        <tr><td><code>--ps-sem-z-sheet</code></td><td><code class="ref">--ps-prim-z-1100</code></td><td>Side sheet · drawer</td></tr>
+        <tr><td><code>--ps-sem-z-popover</code></td><td><code class="ref">--ps-prim-z-1200</code></td><td>Popovers anchored to modal content</td></tr>
+        <tr><td><code>--ps-sem-z-toast</code></td><td><code class="ref">--ps-prim-z-1300</code></td><td>Toast notification</td></tr>
+        <tr><td><code>--ps-sem-z-tooltip</code></td><td><code class="ref">--ps-prim-z-1400</code></td><td>Tooltip — always on top</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Visual stack -->
+    <div style="padding: 24px; background: var(--ps-sem-bg-canvas);">
+      <div style="position:relative;height:280px;max-width:520px;margin:0 auto;">
+        <!-- base -->
+        <div style="position:absolute;left:0;top:0;width:300px;height:60px;background:var(--ps-sem-bg-surface);border:1px solid var(--ps-sem-border-default);border-radius:6px;display:flex;align-items:center;padding:0 16px;font:600 13px/1 var(--ps-sem-font-body);color:var(--ps-sem-fg-secondary);">z-base · 0</div>
+        <!-- raised -->
+        <div style="position:absolute;left:30px;top:30px;width:300px;height:60px;background:var(--ps-sem-bg-surface);border:1px solid var(--ps-sem-border-default);border-radius:6px;box-shadow:var(--ps-sem-elevation-rest);display:flex;align-items:center;padding:0 16px;font:600 13px/1 var(--ps-sem-font-body);color:var(--ps-sem-fg-secondary);">z-raised · 10</div>
+        <!-- sticky -->
+        <div style="position:absolute;left:60px;top:60px;width:300px;height:60px;background:var(--ps-sem-bg-surface);border:1px solid var(--ps-sem-border-default);border-radius:6px;box-shadow:var(--ps-sem-elevation-raised);display:flex;align-items:center;padding:0 16px;font:600 13px/1 var(--ps-sem-font-body);color:var(--ps-sem-fg-primary);">z-sticky · 200</div>
+        <!-- modal -->
+        <div style="position:absolute;left:90px;top:90px;width:300px;height:60px;background:var(--ps-sem-bg-surface);border:1px solid var(--ps-sem-border-default);border-radius:6px;box-shadow:var(--ps-sem-elevation-modal);display:flex;align-items:center;padding:0 16px;font:600 13px/1 var(--ps-sem-font-body);color:var(--ps-sem-fg-primary);">z-modal · 1100</div>
+        <!-- toast -->
+        <div style="position:absolute;left:120px;top:120px;width:300px;height:60px;background:var(--ps-cmp-toast-success-bg);border-radius:8px;box-shadow:var(--ps-cmp-toast-shadow);display:flex;align-items:center;padding:0 16px;font:600 13px/1 var(--ps-sem-font-body);color:var(--ps-cmp-toast-success-fg);">z-toast · 1300</div>
+        <!-- tooltip -->
+        <div style="position:absolute;left:150px;top:150px;background:var(--ps-cmp-tooltip-bg);color:var(--ps-cmp-tooltip-fg);padding:6px 10px;border-radius:4px;font:700 12px/1 var(--ps-sem-font-body);box-shadow:var(--ps-cmp-tooltip-shadow);">z-tooltip · 1400 — always on top</div>
+      </div>
+    </div>
+
+    <!-- ── Breakpoints ─────────────────────────── -->
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text">Breakpoint widths · <code>--ps-prim-bp-{n}</code></span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>Width</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-prim-bp-0</code></td><td><code class="val">0</code></td><td>Mobile floor</td></tr>
+        <tr><td><code>--ps-prim-bp-600</code></td><td><code class="val">600px</code></td><td>Tablet portrait</td></tr>
+        <tr><td><code>--ps-prim-bp-768</code></td><td><code class="val">768px</code></td><td>Tablet landscape</td></tr>
+        <tr><td><code>--ps-prim-bp-1024</code></td><td><code class="val">1024px</code></td><td>Desktop</td></tr>
+        <tr><td><code>--ps-prim-bp-1280</code></td><td><code class="val">1280px</code></td><td>Marketing max</td></tr>
+        <tr><td><code>--ps-prim-bp-1440</code></td><td><code class="val">1440px</code></td><td>Top-nav frame</td></tr>
+      </tbody>
+    </table>
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">2</span>Semantic</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th><th>Range</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-sem-bp-mobile</code></td><td><code class="ref">--ps-prim-bp-0</code></td><td>&lt; 600 — phones</td></tr>
+        <tr><td><code>--ps-sem-bp-tablet-portrait</code></td><td><code class="ref">--ps-prim-bp-600</code></td><td>600 – 767</td></tr>
+        <tr><td><code>--ps-sem-bp-tablet</code></td><td><code class="ref">--ps-prim-bp-768</code></td><td>768 – 1023</td></tr>
+        <tr><td><code>--ps-sem-bp-desktop</code></td><td><code class="ref">--ps-prim-bp-1024</code></td><td>1024 +</td></tr>
+        <tr><td><code>--ps-sem-bp-desktop-wide</code></td><td><code class="ref">--ps-prim-bp-1280</code></td><td>Marketing max content</td></tr>
+        <tr><td><code>--ps-sem-bp-desktop-max</code></td><td><code class="ref">--ps-prim-bp-1440</code></td><td>Top-nav outer frame</td></tr>
+      </tbody>
+    </table>
+    <div style="padding:18px 24px;font-size:12px;color:var(--ps-sem-fg-tertiary);background:var(--ps-sem-bg-canvas);border-top:1px solid var(--ps-sem-border-subtle);font-family:var(--ps-sem-font-mono);">@media (min-width: <span style="color:var(--ps-sem-fg-brand);">var(--ps-sem-bp-tablet)</span>) { /* tablet+ */ }</div>
+
+    <!-- ── Icon sizes ──────────────────────────── -->
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text">Six-step icon scale · <code>--ps-prim-icon-{n}</code> · Lucide icons at 1.5 px stroke</span>
+    </div>
+    <div style="padding:24px;display:flex;align-items:flex-end;gap:32px;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ps-sem-fg-brand);"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="M3.3 7 12 12l8.7-5"></path><path d="M12 22V12"></path></svg>
+        <code style="font-family:var(--ps-sem-font-mono);font-size:11px;">12</code>
+        <span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">xs · inline</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ps-sem-fg-brand);"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="M3.3 7 12 12l8.7-5"></path><path d="M12 22V12"></path></svg>
+        <code style="font-family:var(--ps-sem-font-mono);font-size:11px;">16</code>
+        <span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">sm</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ps-sem-fg-brand);"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="M3.3 7 12 12l8.7-5"></path><path d="M12 22V12"></path></svg>
+        <code style="font-family:var(--ps-sem-font-mono);font-size:11px;">20</code>
+        <span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">md · default</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ps-sem-fg-brand);"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="M3.3 7 12 12l8.7-5"></path><path d="M12 22V12"></path></svg>
+        <code style="font-family:var(--ps-sem-font-mono);font-size:11px;">24</code>
+        <span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">lg · alerts</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ps-sem-fg-brand);"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="M3.3 7 12 12l8.7-5"></path><path d="M12 22V12"></path></svg>
+        <code style="font-family:var(--ps-sem-font-mono);font-size:11px;">32</code>
+        <span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">xl</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ps-sem-fg-brand);"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="M3.3 7 12 12l8.7-5"></path><path d="M12 22V12"></path></svg>
+        <code style="font-family:var(--ps-sem-font-mono);font-size:11px;">48</code>
+        <span style="font-size:11px;color:var(--ps-sem-fg-tertiary);">2xl · empty</span>
+      </div>
+    </div>
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">2</span>Semantic</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-sem-icon-xs</code></td><td><code class="ref">--ps-prim-icon-12</code></td><td>Inline with body text</td></tr>
+        <tr><td><code>--ps-sem-icon-sm</code></td><td><code class="ref">--ps-prim-icon-16</code></td><td>Compact UI · close ×</td></tr>
+        <tr><td><code>--ps-sem-icon-md</code></td><td><code class="ref">--ps-prim-icon-20</code></td><td>Default</td></tr>
+        <tr><td><code>--ps-sem-icon-lg</code></td><td><code class="ref">--ps-prim-icon-24</code></td><td>Alert · header · primary CTA</td></tr>
+        <tr><td><code>--ps-sem-icon-xl</code></td><td><code class="ref">--ps-prim-icon-32</code></td><td>Feature row</td></tr>
+        <tr><td><code>--ps-sem-icon-2xl</code></td><td><code class="ref">--ps-prim-icon-48</code></td><td>Empty state · hero</td></tr>
+        <tr><td><code>--ps-sem-icon-stroke</code></td><td><code class="val">1.5px</code></td><td>System-wide stroke weight</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ── Container widths ────────────────────── -->
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">1</span>Primitive</span>
+      <span class="lv-text">Raw max-width values · <code>--ps-prim-container-{n}</code></span>
+    </div>
+    <div style="padding:24px;display:flex;flex-direction:column;gap:6px;">
+      <div style="display:grid;grid-template-columns:200px 60px 1fr;align-items:center;gap:10px;font-size:12px;">
+        <code style="font-family:var(--ps-sem-font-mono);">--ps-prim-container-360</code><span style="color:var(--ps-sem-fg-tertiary);">360</span>
+        <div style="height: 10px; background: var(--ps-prim-orange-400); border-radius: 2px; width: 25%; background-color: rgb(239, 249, 254)"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 60px 1fr;align-items:center;gap:10px;font-size:12px;">
+        <code style="font-family:var(--ps-sem-font-mono);">--ps-prim-container-400</code><span style="color:var(--ps-sem-fg-tertiary);">400</span>
+        <div style="height:10px;background:var(--ps-sem-bg-brand-tint);border-radius:2px;width:28%;"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 60px 1fr;align-items:center;gap:10px;font-size:12px;">
+        <code style="font-family:var(--ps-sem-font-mono);">--ps-prim-container-450</code><span style="color:var(--ps-sem-fg-tertiary);">450</span>
+        <div style="height:10px;background:var(--ps-sem-bg-brand-tint);border-radius:2px;width:31%;"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 60px 1fr;align-items:center;gap:10px;font-size:12px;">
+        <code style="font-family:var(--ps-sem-font-mono);">--ps-prim-container-550</code><span style="color:var(--ps-sem-fg-tertiary);">550</span>
+        <div style="height:10px;background:var(--ps-sem-bg-brand-tint);border-radius:2px;width:38%;"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 60px 1fr;align-items:center;gap:10px;font-size:12px;">
+        <code style="font-family:var(--ps-sem-font-mono);">--ps-prim-container-600</code><span style="color:var(--ps-sem-fg-tertiary);">600</span>
+        <div style="height:10px;background:var(--ps-sem-bg-brand-tint);border-radius:2px;width:42%;"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 60px 1fr;align-items:center;gap:10px;font-size:12px;">
+        <code style="font-family:var(--ps-sem-font-mono);">--ps-prim-container-760</code><span style="color:var(--ps-sem-fg-tertiary);">760</span>
+        <div style="height:10px;background:var(--ps-sem-bg-brand-tint);border-radius:2px;width:53%;"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 60px 1fr;align-items:center;gap:10px;font-size:12px;">
+        <code style="font-family:var(--ps-sem-font-mono);">--ps-prim-container-800</code><span style="color:var(--ps-sem-fg-tertiary);">800</span>
+        <div style="height:10px;background:var(--ps-sem-bg-brand-tint);border-radius:2px;width:56%;"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 60px 1fr;align-items:center;gap:10px;font-size:12px;">
+        <code style="font-family:var(--ps-sem-font-mono);">--ps-prim-container-1280</code><span style="color:var(--ps-sem-fg-tertiary);">1280</span>
+        <div style="height:10px;background:var(--ps-sem-bg-brand-tint);border-radius:2px;width:89%;"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 60px 1fr;align-items:center;gap:10px;font-size:12px;">
+        <code style="font-family:var(--ps-sem-font-mono);">--ps-prim-container-1440</code><span style="color:var(--ps-sem-fg-tertiary);">1440</span>
+        <div style="height:10px;background:var(--ps-sem-bg-brand-tint);border-radius:2px;width:100%;"></div>
+      </div>
+    </div>
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">2</span>Semantic</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-sem-container-mobile</code></td><td><code class="ref">--ps-prim-container-360</code></td><td>Phone viewport floor</td></tr>
+        <tr><td><code>--ps-sem-container-fluid</code></td><td><code class="val">100%</code></td><td>Edge-to-edge (mobile sheet/modal)</td></tr>
+        <tr><td><code>--ps-sem-container-narrow</code></td><td><code class="ref">--ps-prim-container-760</code></td><td>Article / long-form text</td></tr>
+        <tr><td><code>--ps-sem-container-marketing</code></td><td><code class="ref">--ps-prim-container-1280</code></td><td>Hero · catalog row max</td></tr>
+        <tr><td><code>--ps-sem-container-shell</code></td><td><code class="ref">--ps-prim-container-1440</code></td><td>Top-nav outer frame</td></tr>
+        <tr><td><code>--ps-sem-container-sheet-mobile</code></td><td><code class="val">100%</code></td><td>Side sheet · &lt; 600 (full-screen)</td></tr>
+        <tr><td><code>--ps-sem-container-sheet-tablet</code></td><td><code class="ref">--ps-prim-container-450</code></td><td>Side sheet · 768–1023</td></tr>
+        <tr><td><code>--ps-sem-container-sheet-desktop</code></td><td><code class="ref">--ps-prim-container-550</code></td><td>Side sheet · ≥1024</td></tr>
+        <tr><td><code>--ps-sem-container-modal-sm</code></td><td><code class="ref">--ps-prim-container-400</code></td><td>Confirm dialog</td></tr>
+        <tr><td><code>--ps-sem-container-modal-md</code></td><td><code class="ref">--ps-prim-container-600</code></td><td>Standard modal</td></tr>
+        <tr><td><code>--ps-sem-container-modal-lg</code></td><td><code class="ref">--ps-prim-container-800</code></td><td>Form modal</td></tr>
+      </tbody>
+    </table>
+    <div class="lv-strip">
+      <span class="lv-pill"><span class="num">3</span>Component</span>
+      <span class="lv-text">Components pin to semantic container widths</span>
+    </div>
+    <table class="ttable">
+      <thead><tr><th>Token</th><th>References</th></tr></thead>
+      <tbody>
+        <tr><td><code>--ps-cmp-sheet-width-desktop</code></td><td><code class="ref">--ps-sem-container-sheet-desktop</code></td></tr>
+        <tr><td><code>--ps-cmp-sheet-width-tablet</code></td><td><code class="ref">--ps-sem-container-sheet-tablet</code></td></tr>
+        <tr><td><code>--ps-cmp-modal-width-sm</code></td><td><code class="ref">--ps-sem-container-modal-sm</code></td></tr>
+        <tr><td><code>--ps-cmp-modal-width-md</code></td><td><code class="ref">--ps-sem-container-modal-md</code></td></tr>
+        <tr><td><code>--ps-cmp-modal-width-lg</code></td><td><code class="ref">--ps-sem-container-modal-lg</code></td></tr>
+        <tr><td><code>--ps-cmp-topnav-max-width</code></td><td><code class="ref">--ps-sem-container-shell</code></td></tr>
+        <tr><td><code>--ps-cmp-modal-z-index</code></td><td><code class="ref">--ps-sem-z-modal</code></td></tr>
+        <tr><td><code>--ps-cmp-sheet-z-index</code></td><td><code class="ref">--ps-sem-z-sheet</code></td></tr>
+        <tr><td><code>--ps-cmp-tooltip-z-index</code></td><td><code class="ref">--ps-sem-z-tooltip</code></td></tr>
+        <tr><td><code>--ps-cmp-topnav-z-index</code></td><td><code class="ref">--ps-sem-z-sticky</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================================
+       SECTION · COMPONENT EXAMPLES
+       ============================================ -->
+  <section class="group" id="components">
+    <div class="group-head">
+      <h2>Component tokens in context</h2>
+      <div class="desc">Each tile renders live from <code>--ps-cmp-*</code> tokens only. The JSON beneath each shows the full reference chain: component → semantic → primitive.</div>
+    </div>
+
+    <div class="comp-grid">
+
+      <div class="comp-tile">
+        <div class="ctitle" style="display:flex;align-items:center;gap:10px;">
+          Button · Primary
+          <span style="font:700 9px/1 var(--ps-sem-font-body);letter-spacing:1.4px;text-transform:uppercase;padding:3px 8px;background:var(--ps-prim-orange-50);color:var(--ps-prim-orange-600);border-radius:99px;">● Future</span>
+        </div>
+        <h4>button.primary</h4>
+        <div class="comp-preview"><button class="demo-btn">Save changes</button></div>
+<div class="tref"><span class="c">// solid PS Blue fill · darkens on hover/press</span>
+<span class="c">// Future brand direction — moving away from orange CTAs.</span>
+<span class="k">button-primary-bg-default</span> = <span class="v">--ps-sem-action-default</span> = <span class="v">#005BA6</span>
+<span class="k">button-primary-bg-hover</span>   = <span class="v">--ps-sem-action-hover</span>   = <span class="v">#004A84</span>
+<span class="k">button-primary-bg-pressed</span> = <span class="v">--ps-sem-action-pressed</span> = <span class="v">#003763</span>
+<span class="k">button-primary-fg-default</span> = <span class="v">--ps-sem-fg-inverse</span>     = <span class="v">#FFFFFF</span>
+<span class="k">button-primary-border</span>     = <span class="v">--ps-sem-action-default</span>
+<span class="k">button-primary-radius</span>     = <span class="v">--ps-sem-radius-control</span> = <span class="v">4px</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Button · Pill (promo)</div>
+        <h4>button.pill</h4>
+        <div class="comp-preview"><button class="demo-btn--pill">Become a PRO member</button></div>
+<div class="tref"><span class="c">// 48 × auto · 32 px pad-x · uppercase 700</span>
+<span class="k">button-pill-bg-default</span> = <span class="v">--ps-sem-promo-solid</span>   = <span class="v">#FF9505</span>
+<span class="k">button-pill-bg-hover</span>   = <span class="v">--ps-sem-promo-hover</span>   = <span class="v">#EC8000</span>
+<span class="k">button-pill-bg-pressed</span> = <span class="v">--ps-sem-promo-pressed</span> = <span class="v">#D27200</span>
+<span class="k">button-pill-radius</span>     = <span class="v">--ps-prim-radius-full</span>  = <span class="v">9999px</span>
+<span class="k">button-pill-weight</span>     = <span class="v">--ps-sem-weight-strong</span> = <span class="v">700</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Input · Floating label</div>
+        <h4>input.text</h4>
+        <div class="comp-preview" style="flex-direction:column;align-items:stretch;gap:14px;">
+          <div class="demo-input-wrap"><input type="text" id="tok-input-rest"><label for="tok-input-rest">Asset serial</label></div>
+          <div class="demo-input-wrap has-value"><input type="text" id="tok-input-filled" value="SPP-XT-449821"><label for="tok-input-filled">Asset serial</label></div>
+        </div>
+<div class="tref"><span class="c">// 335 × 48 px · 1 px #949494 border · 3 px radius</span>
+<span class="k">input-height-sm</span>          = <span class="v">48px</span>   <span class="c">(direct primitive — sizing)</span>
+<span class="k">input-border-default</span>     = <span class="v">--ps-prim-gray-500</span>     = <span class="v">#949494</span>
+<span class="k">input-border-hover</span>       = <span class="v">--ps-prim-gray-900</span>     = <span class="v">#000000</span>
+<span class="k">input-border-focus</span>       = <span class="v">--ps-sem-border-brand</span>
+                       = <span class="v">--ps-prim-blue-500</span>      = <span class="v">#005BA6</span>
+<span class="k">input-radius</span>             = <span class="v">--ps-prim-radius-3</span>      = <span class="v">3px</span>
+<span class="k">input-padding-x</span>          = <span class="v">10px</span>   <span class="c">(direct — tight to spec)</span>
+<span class="k">input-text-size</span>          = <span class="v">--ps-sem-text-body-lg</span>  = <span class="v">16px</span>
+<span class="k">input-focus-ring</span>         = <span class="v">0 0 10px rgba(0,91,166,.5)</span>
+
+<span class="c">// floating label</span>
+<span class="k">input-label-color-rest</span>   = <span class="v">--ps-prim-gray-700</span>     = <span class="v">#4A4A4A</span>
+<span class="k">input-label-color-active</span> = <span class="v">--ps-sem-fg-brand</span>      = <span class="v">#005BA6</span>
+<span class="k">input-label-size-rest</span>    = <span class="v">16px</span> · <span class="k">size-active</span> = <span class="v">12px / 700</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Card · Small (status)</div>
+        <h4>card.sm</h4>
+        <div class="comp-preview" style="background:var(--ps-sem-bg-canvas);flex-direction:column;gap:18px;">
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div class="demo-state-label">Default</div>
+            <div class="demo-card-sm">
+              <div class="demo-card-sm__img"></div>
+              <div class="demo-card-sm__content">
+                <div class="demo-card-sm__title">Asset Health Status</div>
+                <div class="demo-card-sm__meta">Uptime: 99.2%<br>Last Service: 03/10/2025</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div class="demo-state-label">Hover</div>
+            <div class="demo-card-sm is-hover">
+              <div class="demo-card-sm__img"></div>
+              <div class="demo-card-sm__content">
+                <div class="demo-card-sm__title">Asset Health Status</div>
+                <div class="demo-card-sm__meta">Uptime: 99.2%<br>Last Service: 03/10/2025</div>
+              </div>
+            </div>
+          </div>
+        </div>
+<div class="tref"><span class="c">// 220 × 73 · outline only at rest, shadow on hover</span>
+<span class="k">card-sm-bg</span>           = <span class="v">--ps-sem-bg-surface</span>     = <span class="v">#FFFFFF</span>
+<span class="k">card-sm-border</span>       = <span class="v">--ps-sem-border-default</span> = <span class="v">#DCDCDC</span>
+<span class="k">card-sm-radius</span>       = <span class="v">--ps-sem-radius-control</span> = <span class="v">4px</span>
+<span class="k">card-sm-padding</span>      = <span class="v">14px</span>   <span class="c">(spec one-off)</span>
+<span class="k">card-shadow-default</span>  = <span class="v">--ps-sem-elevation-flat</span>   = <span class="v">none</span>
+<span class="k">card-sm-shadow-hover</span> = <span class="v">--ps-sem-elevation-raised</span> = <span class="v">0 2 10 / .10</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Badge · Status</div>
+        <h4>badge.{status}</h4>
+        <div class="comp-preview" style="gap:8px;">
+          <span class="demo-badge demo-badge--neutral">Not Shipped</span>
+          <span class="demo-badge demo-badge--info">In Transit</span>
+          <span class="demo-badge demo-badge--success">Delivered</span>
+          <span class="demo-badge demo-badge--warning">Urgent</span>
+          <span class="demo-badge demo-badge--danger">Critical</span>
+        </div>
+<div class="tref"><span class="c">// 4 px radius · 12 px / 700 · sentence case · 1 px border</span>
+<span class="k">badge-radius</span>     = <span class="v">--ps-sem-radius-control</span> = <span class="v">4px</span>
+<span class="k">badge-text</span>       = <span class="v">--ps-sem-text-caption</span> = <span class="v">12px</span>
+<span class="k">badge-weight</span>     = <span class="v">--ps-sem-weight-strong</span> = <span class="v">700</span>
+<span class="k">badge-transform</span>  = <span class="v">none</span>      <span class="c">// not uppercase</span>
+
+<span class="c">// status variants pair bg + fg + border (1 px)</span>
+<span class="k">badge-success</span>    = bg <span class="v">--ps-sem-success-bg</span>   #E5F9F2
+                  fg <span class="v">--ps-sem-success-fg</span>   #0A7850
+                  br <span class="v">--ps-sem-success-border</span> #B8E6D5
+<span class="k">badge-info</span>       = bg <span class="v">--ps-sem-info-bg</span>      fg <span class="v">--ps-sem-info-fg</span>
+<span class="k">badge-warning</span>    = bg <span class="v">--ps-sem-warning-bg</span>   fg <span class="v">--ps-sem-warning-fg</span>
+<span class="k">badge-danger</span>     = bg <span class="v">--ps-sem-danger-bg</span>    fg <span class="v">--ps-sem-danger-fg</span>
+<span class="k">badge-neutral</span>    = bg <span class="v">--ps-prim-gray-200</span>    fg <span class="v">--ps-prim-gray-700</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Button · Secondary &amp; Tertiary</div>
+        <h4>button.secondary · button.tertiary</h4>
+        <div class="comp-preview" style="gap:14px;">
+          <button class="demo-btn--secondary">Cancel</button>
+          <button class="demo-btn--tertiary">Save for later</button>
+        </div>
+<div class="tref"><span class="c">// secondary — GREY OUTLINE square, fills PS Blue on hover</span>
+<span class="k">button-secondary-bg-default</span> = <span class="v">--ps-sem-bg-surface</span>     = <span class="v">#FFFFFF</span>
+<span class="k">button-secondary-bg-hover</span>   = <span class="v">--ps-sem-action-default</span> = <span class="v">#005BA6</span>
+<span class="k">button-secondary-bg-pressed</span> = <span class="v">--ps-sem-action-hover</span>   = <span class="v">#004A84</span>
+<span class="k">button-secondary-fg-default</span> = <span class="v">--ps-sem-fg-secondary</span>   = <span class="v">#4A4A4A</span>
+<span class="k">button-secondary-border</span>     = <span class="v">--ps-sem-border-default</span>  = <span class="v">#DCDCDC</span>
+<span class="k">button-secondary-weight</span>     = <span class="v">--ps-prim-weight-medium</span>  = <span class="v">500</span>
+
+<span class="c">// tertiary — GREY PILL (40 × auto · radius:full · sentence case)</span>
+<span class="k">button-tertiary-bg-default</span> = <span class="v">--ps-prim-gray-150</span>      = <span class="v">#F1F1F1</span>
+<span class="k">button-tertiary-bg-hover</span>   = <span class="v">--ps-prim-gray-300</span>      = <span class="v">#DCDCDC</span>
+<span class="k">button-tertiary-bg-pressed</span> = <span class="v">--ps-prim-gray-400</span>      = <span class="v">#CCCCCC</span>
+<span class="k">button-tertiary-fg-default</span> = <span class="v">--ps-sem-fg-primary</span>     = <span class="v">#2B2B2B</span>
+<span class="k">button-tertiary-radius</span>     = <span class="v">--ps-prim-radius-full</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION · EXTENDED COMPONENTS
+       ============================================ -->
+  <section class="group" id="components-extended">
+    <div class="group-head">
+      <h2>Extended components</h2>
+      <div class="desc">Feedback, navigation, selections, filters, steppers and tooltips — all rendered live from <code>--ps-cmp-*</code> tokens that cascade through semantic tokens to primitives.</div>
+    </div>
+
+    <div class="comp-grid">
+
+      <div class="comp-tile">
+        <div class="ctitle">Alert (inline)</div>
+        <h4>alert.{status}</h4>
+        <div class="comp-preview" style="flex-direction:column;align-items:stretch;gap:10px;">
+          <div class="demo-alert demo-alert--success">
+            <svg viewBox="0 0 24 24"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+            <span class="demo-alert__msg">Order placed. Shipping in 1–2 business days.</span>
+            <button class="demo-alert__close" aria-label="Dismiss"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+          </div>
+          <div class="demo-alert demo-alert--info">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+            <span class="demo-alert__msg">Stryker is now accepting orders again.</span>
+            <button class="demo-alert__close" aria-label="Dismiss"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+          </div>
+          <div class="demo-alert demo-alert--warning">
+            <svg viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+            <span class="demo-alert__msg">Tracking is delayed for this carrier.</span>
+            <button class="demo-alert__close" aria-label="Dismiss"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+          </div>
+          <div class="demo-alert demo-alert--danger">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>
+            <span class="demo-alert__msg">Unable to load asset detail. Try again.</span>
+            <button class="demo-alert__close" aria-label="Dismiss"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+          </div>
+        </div>
+<div class="tref"><span class="c">// 40 px min · 5 px radius · Lucide 24 px icons</span>
+<span class="k">alert-radius</span>      = <span class="v">5px</span>
+<span class="k">alert-success-bg</span>  = <span class="v">--ps-prim-green-150</span>  = <span class="v">#E2F5EE</span>
+<span class="k">alert-success-fg</span>  = <span class="v">--ps-prim-green-700</span>  = <span class="v">#0E7C55</span>
+<span class="k">alert-danger-bg</span>   = <span class="v">--ps-prim-red-150</span>    = <span class="v">#FEF0F0</span>
+<span class="k">alert-danger-fg</span>   = <span class="v">--ps-prim-red-700</span>    = <span class="v">#E00000</span>
+<span class="k">alert-info-bg</span>     = <span class="v">--ps-prim-blue-50</span>    fg <span class="v">--ps-sem-fg-brand</span>
+<span class="k">alert-warning-bg</span>  = <span class="v">--ps-prim-orange-50</span>  fg <span class="v">--ps-prim-amber-700</span>
+<span class="c">// Icons: circle-check / info / triangle-alert / circle-x · close: x</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Toast</div>
+        <h4>toast.{status}</h4>
+        <div class="comp-preview" style="flex-direction:column;align-items:stretch;gap:10px;background:var(--ps-sem-bg-canvas);">
+          <div class="demo-toast demo-toast--success">
+            <svg viewBox="0 0 24 24"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+            <span class="demo-toast__msg">Saved · "ICU 4-West" filter set</span>
+            <button class="demo-toast__close" aria-label="Dismiss"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+          </div>
+          <div class="demo-toast demo-toast--info">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+            <span class="demo-toast__msg">3 orders are awaiting your approval.</span>
+            <button class="demo-toast__close" aria-label="Dismiss"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+          </div>
+          <div class="demo-toast demo-toast--danger">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>
+            <span class="demo-toast__msg">Couldn't reach the catalog service.</span>
+            <button class="demo-toast__close" aria-label="Dismiss"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+          </div>
+        </div>
+<div class="tref"><span class="c">// 56 px min · 8 px radius · soft shadow + hairline inset border</span>
+<span class="k">toast-radius</span>     = <span class="v">--ps-sem-radius-modal</span>   = <span class="v">8px</span>
+<span class="k">toast-min-height</span> = <span class="v">56px</span>
+<span class="k">toast-shadow</span>     = <span class="v">0 4 12 / .15 + inset hairline</span>
+<span class="k">toast-*-bg/fg</span>     = same palette as alert.{status}
+<span class="c">// Same Lucide icon set as alerts</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Tabs · Underline (default)</div>
+        <h4>tabs.underline</h4>
+        <div class="comp-preview" style="align-items:flex-end;padding:24px 0 0;">
+          <div class="demo-tabs-ul" style="width:100%;padding-left:24px;">
+            <button class="demo-tab-ul">Awaiting Quote <span class="demo-tab-count">0</span></button>
+            <button class="demo-tab-ul is-active">Quoted <span class="demo-tab-count">11</span></button>
+          </div>
+        </div>
+<div class="tref"><span class="c">// "folder tab" pattern — 3 px PS Blue strip on TOP</span>
+<span class="c">// + 1 px #E0E0E0 side borders on active, bold both states</span>
+<span class="k">tab-ul-height</span>            = <span class="v">38px</span>
+<span class="k">tab-ul-weight</span>            = <span class="v">--ps-sem-weight-strong</span> = <span class="v">700</span>
+<span class="k">tab-ul-rail-color</span>        = <span class="v">#E0E0E0</span>
+<span class="k">tab-ul-active-border</span>     = <span class="v">#E0E0E0</span>
+<span class="k">tab-ul-indicator-color</span>   = <span class="v">--ps-sem-action-default</span> = <span class="v">#005BA6</span>
+<span class="k">tab-ul-indicator-height</span>  = <span class="v">3px</span>
+<span class="k">tab-ul-indicator-position</span>= <span class="v">top</span>
+<span class="k">tab-count-bg</span>             = <span class="v">--ps-prim-gray-300</span> <span class="c">(same in both states)</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Tabs · Segmented</div>
+        <h4>tabs.segmented</h4>
+        <div class="comp-preview">
+          <div class="demo-tabs-seg">
+            <button class="demo-tab-seg is-active">Day</button>
+            <button class="demo-tab-seg">Week</button>
+            <button class="demo-tab-seg">Month</button>
+          </div>
+        </div>
+<div class="tref"><span class="k">tab-seg-track-bg</span>    = <span class="v">#F4F6F8</span>
+<span class="k">tab-seg-bg-active</span>   = <span class="v">--ps-sem-action-default</span> = <span class="v">#005BA6</span>
+<span class="k">tab-seg-fg-active</span>   = <span class="v">--ps-sem-fg-inverse</span>     = <span class="v">#FFFFFF</span>
+<span class="k">tab-seg-height</span>      = <span class="v">34px</span>
+<span class="k">tab-seg-shadow-active</span>= <span class="v">0 1 2 / .08</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Tabs · Pill</div>
+        <h4>tabs.pill</h4>
+        <div class="comp-preview" style="gap:8px;">
+          <button class="demo-tab-pill is-active">All <span class="demo-tab-count">42</span></button>
+          <button class="demo-tab-pill">Open <span class="demo-tab-count">7</span></button>
+          <button class="demo-tab-pill">Closed</button>
+        </div>
+<div class="tref"><span class="c">// 30 px height · 14 px pad-x · fully rounded · spec-exact</span>
+<span class="k">tab-pill-bg-default</span>     = <span class="v">--ps-sem-bg-surface</span>     = <span class="v">#FFFFFF</span>
+<span class="k">tab-pill-bg-active</span>      = <span class="v">--ps-sem-action-default</span> = <span class="v">#005BA6</span>
+<span class="k">tab-pill-border-default</span> = <span class="v">--ps-prim-gray-400</span>     = <span class="v">#CCCCCC</span>
+<span class="k">tab-pill-border-hover</span>   = <span class="v">--ps-sem-action-default</span>
+<span class="k">tab-pill-fg-default</span>     = <span class="v">--ps-sem-fg-primary</span>     = <span class="v">#2B2B2B</span>
+<span class="k">tab-pill-fg-hover</span>       = <span class="v">--ps-sem-action-default</span>
+<span class="k">tab-pill-fg-active</span>      = <span class="v">--ps-sem-fg-inverse</span>     = <span class="v">#FFFFFF</span>
+<span class="k">tab-pill-radius</span>         = <span class="v">--ps-prim-radius-full</span>
+<span class="c">// count badge — distinct from underline tabs</span>
+<span class="k">tab-count-bg</span>            = <span class="v">--ps-prim-gray-300</span>     <span class="c">(inactive)</span>
+<span class="k">tab-pill-count-bg-active</span>= <span class="v">rgba(255,255,255,0.25)</span>
+<span class="k">tab-pill-count-fg-active</span>= <span class="v">--ps-sem-fg-inverse</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Checkbox · Selection</div>
+        <h4>checkbox</h4>
+        <div class="comp-preview" style="flex-direction:column;align-items:flex-start;gap:12px;">
+          <div class="demo-select-row">
+            <span class="demo-check"></span><span class="txt">Include compatible parts</span>
+          </div>
+          <div class="demo-select-row">
+            <span class="demo-check is-checked">
+              <svg width="14" height="11" viewBox="0 0 16 12" fill="none"><path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="currentColor"></path></svg>
+            </span><span class="txt">In-network only</span>
+          </div>
+        </div>
+<div class="tref"><span class="c">// orange accent — distinct from button (blue)</span>
+<span class="k">checkbox-size</span>            = <span class="v">24px</span>
+<span class="k">checkbox-radius</span>          = <span class="v">--ps-prim-radius-2</span> = <span class="v">2px</span>
+<span class="k">checkbox-bg-selected</span>     = <span class="v">--ps-prim-orange-400</span> = <span class="v">#FF9505</span>
+<span class="k">checkbox-bg-hover</span>        = <span class="v">--ps-prim-orange-500</span> = <span class="v">#EC8000</span>
+<span class="k">checkbox-bg-pressed</span>      = <span class="v">--ps-prim-orange-600</span> = <span class="v">#D27200</span>
+<span class="k">checkbox-border-default</span>  = <span class="v">--ps-prim-gray-700</span>   = <span class="v">#4A4A4A</span>
+<span class="k">checkbox-focus-ring</span>      = <span class="v">0 0 10px 5px rgba(0,91,166,.5)</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Radio · Single-select</div>
+        <h4>radio</h4>
+        <div class="comp-preview" style="flex-direction:column;align-items:flex-start;gap:12px;">
+          <div class="demo-select-row"><span class="demo-radio"></span><span class="txt">Ground · 5–7 days</span></div>
+          <div class="demo-select-row"><span class="demo-radio is-checked" style="border-width: 1.5px; background-color: rgb(255, 149, 7)"></span><span class="txt">Expedited · 2 days</span></div>
+          <div class="demo-select-row"><span class="demo-radio"></span><span class="txt">Overnight</span></div>
+        </div>
+<div class="tref"><span class="k">radio-size</span>           = <span class="v">24px</span> · <span class="k">dot</span> = <span class="v">10px</span>
+<span class="k">radio-border-default</span>  = <span class="v">--ps-prim-gray-700</span>  = <span class="v">#4A4A4A</span>
+<span class="k">radio-border-selected</span> = <span class="v">--ps-prim-orange-600</span> = <span class="v">#D27200</span>  <span class="c">// dark orange ring</span>
+<span class="k">radio-dot-color</span>       = <span class="v">--ps-prim-orange-400</span> = <span class="v">#FF9505</span>  <span class="c">// bright orange fill</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Filter chip</div>
+        <h4>filter.chip</h4>
+        <div class="comp-preview" style="flex-wrap:wrap;gap:10px;">
+          <span class="demo-chip"><span class="k">Brand:</span> <span class="v">GE Healthcare</span><span class="x">×</span></span>
+          <span class="demo-chip"><span class="k">Status:</span> <span class="v">In stock</span><span class="x">×</span></span>
+          <span class="demo-chip"><span class="k">Type:</span> <span class="v">OEM</span><span class="x">×</span></span>
+        </div>
+<div class="tref"><span class="k">filter-chip-bg</span>     = <span class="v">--ps-prim-blue-100</span> = <span class="v">#D0EDFC</span>
+<span class="k">filter-chip-fg</span>     = <span class="v">--ps-sem-fg-primary</span>
+<span class="k">filter-chip-height</span> = <span class="v">23px</span> · <span class="k">padding-x</span> = <span class="v">11px</span>
+<span class="k">filter-chip-radius</span> = <span class="v">--ps-prim-radius-full</span>
+<span class="k">filter-chip-x-hover</span>= <span class="v">--ps-sem-action-default</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Stepper</div>
+        <h4>stepper</h4>
+        <div class="comp-preview" style="background:var(--ps-sem-bg-canvas);">
+          <div class="demo-stepper">
+            <div class="demo-step demo-step--done">
+              <div class="demo-step__dot">
+                <svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1 5 4 8 11 1" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+              </div>
+              <div class="demo-step__label">Cart</div>
+            </div>
+            <div class="demo-step__line is-done"></div>
+            <div class="demo-step demo-step--current"><div class="demo-step__dot">2</div><div class="demo-step__label">Shipping</div></div>
+            <div class="demo-step__line"></div>
+            <div class="demo-step demo-step--pending"><div class="demo-step__dot">3</div><div class="demo-step__label">Payment</div></div>
+            <div class="demo-step__line"></div>
+            <div class="demo-step demo-step--pending"><div class="demo-step__dot">4</div><div class="demo-step__label">Review</div></div>
+          </div>
+        </div>
+<div class="tref"><span class="k">stepper-dot-bg-completed</span> = <span class="v">--ps-sem-action-default</span>
+<span class="k">stepper-dot-border-current</span> = <span class="v">--ps-sem-action-default</span>
+<span class="k">stepper-dot-border-pending</span> = <span class="v">--ps-sem-border-strong</span>
+<span class="k">stepper-line-color-done</span>    = <span class="v">--ps-sem-action-default</span>
+<span class="k">stepper-line-color-pending</span> = <span class="v">--ps-sem-border-default</span>
+<span class="k">stepper-dot-size</span>           = <span class="v">24px</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Tooltip</div>
+        <h4>tooltip</h4>
+        <div class="comp-preview" style="background:var(--ps-sem-bg-canvas);">
+          <span class="demo-tooltip"><span class="demo-tooltip__bubble">Asset uptime: 30-day rolling</span></span>
+        </div>
+<div class="tref"><span class="k">tooltip-bg</span>       = <span class="v">--ps-prim-blue-800</span> = <span class="v">#002F48</span>
+<span class="k">tooltip-fg</span>       = <span class="v">--ps-sem-fg-inverse</span>
+<span class="k">tooltip-text</span>     = <span class="v">--ps-sem-text-caption</span> = <span class="v">12px</span>
+<span class="k">tooltip-radius</span>   = <span class="v">--ps-sem-radius-control</span> = <span class="v">4px</span>
+<span class="k">tooltip-shadow</span>   = <span class="v">--ps-sem-elevation-overlay</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Dropdown menu</div>
+        <h4>dropdown</h4>
+        <div class="comp-preview" style="background:var(--ps-sem-bg-canvas);align-items:flex-start;">
+          <div class="demo-dropdown">
+            <div class="demo-dropdown__item">View details</div>
+            <div class="demo-dropdown__item is-selected">Edit asset</div>
+            <div class="demo-dropdown__item">Duplicate</div>
+            <div class="demo-dropdown__divider"></div>
+            <div class="demo-dropdown__item" style="color:var(--ps-sem-danger-fg);">Archive</div>
+          </div>
+        </div>
+<div class="tref"><span class="k">dropdown-bg</span>            = <span class="v">--ps-sem-bg-surface</span>
+<span class="k">dropdown-shadow</span>        = <span class="v">--ps-sem-elevation-overlay</span>
+<span class="k">dropdown-item-bg-selected</span>= <span class="v">--ps-prim-blue-100</span>     = <span class="v">#D0EDFC</span>
+<span class="k">dropdown-item-bg-hover</span>   = <span class="v">--ps-sem-bg-subtle</span>
+<span class="k">dropdown-min-width</span>      = <span class="v">180px</span>
+<span class="k">dropdown-z-index</span>        = <span class="v">--ps-sem-z-dropdown</span> = <span class="v">100</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Pagination</div>
+        <h4>pagination</h4>
+        <div class="comp-preview">
+          <div class="demo-pagination">
+            <button class="demo-pagination__item" disabled="">‹</button>
+            <button class="demo-pagination__item">1</button>
+            <button class="demo-pagination__item is-current">2</button>
+            <button class="demo-pagination__item">3</button>
+            <span class="demo-pagination__ellipsis">…</span>
+            <button class="demo-pagination__item">12</button>
+            <button class="demo-pagination__item">›</button>
+          </div>
+        </div>
+<div class="tref"><span class="k">pagination-item-size</span>       = <span class="v">32px</span>
+<span class="k">pagination-item-bg-current</span> = <span class="v">--ps-sem-action-default</span>
+<span class="k">pagination-item-fg-current</span> = <span class="v">--ps-sem-fg-inverse</span>
+<span class="k">pagination-item-bg-hover</span>   = <span class="v">--ps-sem-bg-subtle</span>
+<span class="k">pagination-item-fg-hover</span>   = <span class="v">--ps-sem-action-default</span>
+<span class="k">pagination-gap</span>            = <span class="v">--ps-prim-space-1</span> = <span class="v">4px</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Avatar</div>
+        <h4>avatar</h4>
+        <div class="comp-preview" style="flex-direction:column;gap:16px;">
+          <div style="display:flex;align-items:flex-end;gap:14px;">
+            <span class="demo-avatar demo-avatar--xs">AS</span>
+            <span class="demo-avatar demo-avatar--sm">AS</span>
+            <span class="demo-avatar demo-avatar--md">AS</span>
+            <span class="demo-avatar demo-avatar--lg">AS</span>
+            <span class="demo-avatar demo-avatar--xl">AS<span class="demo-avatar__status" style="background:var(--ps-sem-success-solid);"></span></span>
+          </div>
+          <div class="demo-avatar-stack">
+            <span class="demo-avatar demo-avatar--md">AS</span>
+            <span class="demo-avatar demo-avatar--md" style="background:var(--ps-prim-green-100);color:var(--ps-sem-success-fg);">DP</span>
+            <span class="demo-avatar demo-avatar--md" style="background:var(--ps-prim-orange-100);color:var(--ps-sem-warning-fg);">LC</span>
+            <span class="demo-avatar demo-avatar--md" style="background:var(--ps-prim-gray-200);color:var(--ps-sem-fg-secondary);font-size:12px;">+5</span>
+          </div>
+        </div>
+<div class="tref"><span class="k">avatar-size-xs/sm/md/lg/xl</span> = <span class="v">24 · 32 · 40 · 56 · 72px</span>
+<span class="k">avatar-radius</span>             = <span class="v">--ps-prim-radius-full</span>
+<span class="k">avatar-bg</span>                 = <span class="v">--ps-prim-blue-100</span> = <span class="v">#D0EDFC</span>
+<span class="k">avatar-fg</span>                 = <span class="v">--ps-sem-fg-brand</span>
+<span class="k">avatar-border</span>             = <span class="v">--ps-sem-bg-surface</span> <span class="c">// 2 px ring on stacks</span>
+<span class="k">avatar-status-dot-size</span>    = <span class="v">10px</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Breadcrumb</div>
+        <h4>breadcrumb</h4>
+        <div class="comp-preview" style="flex-direction:column;align-items:flex-start;gap:14px;">
+          <nav class="demo-breadcrumb">
+            <a href="#" class="demo-breadcrumb__back">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+              Design System
+            </a>
+            <span class="demo-breadcrumb__sep">/</span>
+            <span class="demo-breadcrumb__current">Tokens</span>
+          </nav>
+          <nav class="demo-breadcrumb">
+            <a href="#" style="color:var(--ps-cmp-breadcrumb-fg-link);text-decoration:none;font-weight:600;">Asset Inventory</a>
+            <span class="demo-breadcrumb__sep">/</span>
+            <a href="#" style="color:var(--ps-cmp-breadcrumb-fg-link);text-decoration:none;font-weight:600;">ICU — 4 West</a>
+            <span class="demo-breadcrumb__sep">/</span>
+            <span class="demo-breadcrumb__current">Stryker IV Pole</span>
+          </nav>
+        </div>
+<div class="tref"><span class="k">breadcrumb-fg-link</span>       = <span class="v">--ps-sem-fg-brand</span>
+<span class="k">breadcrumb-fg-current</span>    = <span class="v">--ps-sem-fg-primary</span>
+<span class="k">breadcrumb-separator-color</span>= <span class="v">--ps-sem-border-strong</span>
+<span class="k">breadcrumb-back-bg-hover</span>  = <span class="v">--ps-sem-bg-brand-tint</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Switch / Toggle</div>
+        <h4>switch</h4>
+        <div class="comp-preview" style="flex-direction:column;align-items:flex-start;gap:14px;">
+          <label class="demo-switch-row">
+            <span class="demo-switch is-on"><span class="demo-switch__track"></span><span class="demo-switch__thumb"></span></span>
+            <span class="txt">Notifications enabled</span>
+          </label>
+          <label class="demo-switch-row">
+            <span class="demo-switch"><span class="demo-switch__track"></span><span class="demo-switch__thumb"></span></span>
+            <span class="txt">Auto-reorder critical parts</span>
+          </label>
+        </div>
+<div class="tref"><span class="k">switch-track-width</span>    = <span class="v">44px</span>
+<span class="k">switch-track-height</span>   = <span class="v">24px</span>
+<span class="k">switch-track-bg-on</span>    = <span class="v">--ps-sem-action-default</span> = <span class="v">#005BA6</span>
+<span class="k">switch-track-bg-off</span>   = <span class="v">--ps-prim-gray-400</span>     = <span class="v">#CCCCCC</span>
+<span class="k">switch-thumb-size</span>     = <span class="v">20px</span>
+<span class="k">switch-thumb-translate</span>= <span class="v">20px</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Skeleton loader</div>
+        <h4>skeleton</h4>
+        <div class="comp-preview" style="background:var(--ps-sem-bg-canvas);">
+          <div style="background:var(--ps-sem-bg-surface);border:1px solid var(--ps-sem-border-default);border-radius:6px;padding:18px;width:100%;display:flex;gap:16px;align-items:flex-start;">
+            <div class="demo-skeleton demo-skeleton--avatar"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
+              <div class="demo-skeleton demo-skeleton--heading" style="width:60%;"></div>
+              <div class="demo-skeleton demo-skeleton--text" style="width:90%;"></div>
+              <div class="demo-skeleton demo-skeleton--text" style="width:75%;"></div>
+            </div>
+          </div>
+        </div>
+<div class="tref"><span class="k">skeleton-bg</span>               = <span class="v">--ps-prim-gray-150</span>  = <span class="v">#F1F1F1</span>
+<span class="k">skeleton-shimmer-highlight</span>= <span class="v">--ps-prim-gray-50</span>   = <span class="v">#FAFAFA</span>
+<span class="k">skeleton-radius</span>           = <span class="v">--ps-sem-radius-control</span>
+<span class="k">skeleton-shimmer-duration</span> = <span class="v">2s</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Spinner</div>
+        <h4>spinner</h4>
+        <div class="comp-preview" style="gap:20px;">
+          <span class="demo-spinner demo-spinner--sm"></span>
+          <span class="demo-spinner"></span>
+          <span class="demo-spinner demo-spinner--lg"></span>
+        </div>
+<div class="tref"><span class="k">spinner-size-sm/md/lg</span> = <span class="v">16 · 24 · 40px</span>
+<span class="k">spinner-stroke-width</span>  = <span class="v">2.5px</span>
+<span class="k">spinner-track-color</span>   = <span class="v">--ps-prim-gray-200</span>
+<span class="k">spinner-accent-color</span>  = <span class="v">--ps-sem-action-default</span>
+<span class="k">spinner-duration</span>      = <span class="v">900ms</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Progress bar</div>
+        <h4>progress</h4>
+        <div class="comp-preview" style="flex-direction:column;align-items:stretch;gap:12px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ps-cmp-progress-label-fg);margin-bottom:6px;"><span>Uploading</span><span>72%</span></div>
+            <div class="demo-progress"><div class="demo-progress__fill" style="width:72%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ps-cmp-progress-label-fg);margin-bottom:6px;"><span>Stock level</span><span>Low</span></div>
+            <div class="demo-progress"><div class="demo-progress__fill demo-progress__fill--warning" style="width:24%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ps-cmp-progress-label-fg);margin-bottom:6px;"><span>SLA usage</span><span>96%</span></div>
+            <div class="demo-progress"><div class="demo-progress__fill demo-progress__fill--danger" style="width:96%;"></div></div>
+          </div>
+        </div>
+<div class="tref"><span class="k">progress-height</span>      = <span class="v">6px</span>
+<span class="k">progress-track-bg</span>    = <span class="v">--ps-prim-gray-200</span>
+<span class="k">progress-fill-bg</span>     = <span class="v">--ps-sem-action-default</span>
+<span class="k">progress-fill-success</span>= <span class="v">--ps-sem-success-solid</span>
+<span class="k">progress-fill-warning</span>= <span class="v">--ps-sem-warning-solid</span>
+<span class="k">progress-fill-danger</span> = <span class="v">--ps-sem-danger-solid</span></div>
+      </div>
+
+      <div class="comp-tile">
+        <div class="ctitle">Empty state</div>
+        <h4>empty</h4>
+        <div class="comp-preview" style="background:var(--ps-sem-bg-surface);padding:24px 18px 32px;">
+          <div class="demo-empty" style="padding: 48px 32px; margin: 0px;">
+            <svg class="demo-empty__icon" viewBox="0 0 93 65" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width: 102px;">
+              <polygon fill="var(--ps-cmp-empty-icon-color)" points="79.42 0 13.46 0 0 36.997 0 64.904 92.881 64.904 92.881 36.997" style="fill: rgb(220, 220, 220);"></polygon>
+              <path fill="#FFFFFF" d="M56.246 32.452c0 5.427-4.39 9.825-9.806 9.825-5.415 0-9.807-4.398-9.807-9.825 0-.091.002-.181.004-.272H6.868L16.825 4.816h59.232l9.956 27.364H56.242c.002.091.004.181.004.272Z"></path>
+            </svg>
+            <div>
+              <h5 class="demo-empty__title" style="padding: 8px 0px 0px;">No Active orders in Awaiting Quote</h5>
+              <p class="demo-empty__body">Your currently have no active orders in Awaiting Quote</p>
+            </div>
+          </div>
+        </div>
+<div class="tref"><span class="c">// production "Empty Box" icon · 93 × 65 · #DCDCDC</span>
+<span class="k">empty-icon-width</span>    = <span class="v">93px</span> · <span class="k">height</span> = <span class="v">65px</span>
+<span class="k">empty-icon-color</span>    = <span class="v">--ps-prim-gray-300</span>     = <span class="v">#DCDCDC</span>
+<span class="k">empty-title-size</span>    = <span class="v">--ps-sem-text-heading</span>  = <span class="v">18px / 700</span>
+<span class="k">empty-title-fg</span>      = <span class="v">--ps-sem-fg-brand-dark</span> = <span class="v">#002F48</span>
+<span class="k">empty-body-size</span>     = <span class="v">--ps-sem-text-body-lg</span>  = <span class="v">16px</span>
+<span class="k">empty-gap</span>           = <span class="v">24px</span> (icon→title) · <span class="k">title-gap</span> = <span class="v">12px</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION · DARK MODE
+       ============================================ -->
+  <section class="group" id="dark-mode">
+    <div class="group-head">
+      <h2>Dark mode <span style="margin-left:10px;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;background:var(--ps-prim-orange-50);color:var(--ps-prim-orange-600);border-radius:99px;font:700 9px/1 var(--ps-sem-font-body);letter-spacing:1.4px;text-transform:uppercase;vertical-align:middle;">● Coming soon</span></h2>
+      <div class="desc">Token scaffold is in place — semantic tokens remap to the PS gray palette under <code>[data-theme="dark"]</code>. Components cascade through automatically. Not yet ready for production; preview only.</div>
+    </div>
+    <div style="padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <!-- light -->
+      <div style="background:var(--ps-sem-bg-surface);border:1px solid var(--ps-sem-border-subtle);border-radius:12px;overflow:hidden;">
+        <div style="padding:12px 16px;font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.4px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);border-bottom:1px solid var(--ps-sem-border-subtle);">Light · default</div>
+        <div style="padding:24px;background:var(--ps-sem-bg-canvas);">
+          <div style="background:var(--ps-sem-bg-surface);border:1px solid var(--ps-sem-border-default);border-radius:6px;padding:18px;color:var(--ps-sem-fg-primary);">
+            <div style="font-size:18px;font-weight:600;color:var(--ps-sem-fg-brand-dark);margin-bottom:6px;">Asset uptime</div>
+            <div style="font-size:14px;color:var(--ps-sem-fg-secondary);margin-bottom:14px;">30-day rolling for Stryker IV Pole · ICU 4-West.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="demo-badge demo-badge--success">Delivered</span>
+              <span class="demo-badge demo-badge--info">In Transit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- dark -->
+      <div data-theme="dark" style="background:var(--ps-sem-bg-surface);border:1px solid var(--ps-sem-border-subtle);border-radius:12px;overflow:hidden;">
+        <div style="padding:12px 16px;font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.4px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);border-bottom:1px solid var(--ps-sem-border-subtle);">data-theme="dark"</div>
+        <div style="padding:18px 20px 20px;background:var(--ps-sem-bg-canvas);font-size:12px;line-height:1.55;color:var(--ps-sem-fg-secondary);">
+          Re-keyed to the PS gray palette — <code style="font-family:var(--ps-sem-font-mono);font-size:11px;background:var(--ps-sem-bg-muted);padding:1px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">canvas #000</code> · <code style="font-family:var(--ps-sem-font-mono);font-size:11px;background:var(--ps-sem-bg-muted);padding:1px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">surface #2B2B2B</code> · <code style="font-family:var(--ps-sem-font-mono);font-size:11px;background:var(--ps-sem-bg-muted);padding:1px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">subtle #4A4A4A</code>. Headings flip to white. Tagged <b style="color:var(--ps-sem-fg-primary);">● Coming soon</b> until production-ready.
+        </div>
+        <div style="padding:0 24px 24px;background:var(--ps-sem-bg-canvas);">
+          <div style="background:var(--ps-sem-bg-surface);border:1px solid var(--ps-sem-border-default);border-radius:6px;padding:18px;color:var(--ps-sem-fg-primary);">
+            <div style="font-size:18px;font-weight:600;color:var(--ps-sem-fg-brand-dark);margin-bottom:6px;">Asset uptime</div>
+            <div style="font-size:14px;color:var(--ps-sem-fg-secondary);margin-bottom:14px;">30-day rolling for Stryker IV Pole · ICU 4-West.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="demo-badge demo-badge--success">Delivered</span>
+              <span class="demo-badge demo-badge--info">In Transit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 24px 24px;font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.6;">
+      Dark mode flips to the PS gray palette: <code>bg-canvas → gray-900</code>, <code>bg-surface → gray-800</code>, <code>bg-subtle → gray-700</code>, <code>fg-primary → gray-50</code>, <code>fg-brand-dark → white</code> (headings), and <code>action-default → blue-400</code> (brighter, for contrast on dark surfaces). Status backgrounds become translucent at 15% alpha so they sit naturally on a dark canvas.
+    </div>
+  </section>
+
+  <!-- ============================================
+       EXPORTS
+       ============================================ -->
+  <section class="group" id="exports">
+    <div class="group-head">
+      <h2>Exports</h2>
+      <div class="desc">The same tokens are shipped in three formats. <code>tokens.css</code> is the source of truth; the other two are regenerated from it.</div>
+    </div>
+    <div style="padding:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;">
+
+      <a href="../tokens.css" style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);border-radius:10px;padding:20px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;">
+        <div style="font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.4px;text-transform:uppercase;color:var(--ps-sem-fg-brand);">CSS Variables</div>
+        <div style="font-size:18px;font-weight:600;color:var(--ps-sem-fg-brand-dark);">tokens.css</div>
+        <div style="font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.5;">Source of truth. CSS custom properties with full primitive → semantic → component cascade, plus <code>[data-theme="dark"]</code> override.</div>
+      </a>
+
+      <a href="../tokens.json" style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);border-radius:10px;padding:20px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;">
+        <div style="font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.4px;text-transform:uppercase;color:var(--ps-sem-fg-brand);">JSON · Style Dictionary</div>
+        <div style="font-size:18px;font-weight:600;color:var(--ps-sem-fg-brand-dark);">tokens.json</div>
+        <div style="font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.5;">Nested <code>primitive / semantic / component</code> tree. Cross-references emitted as <code>{path.to.token}</code> so a transform pipeline can resolve them.</div>
+      </a>
+
+      <a href="../tokens.scss" style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);border-radius:10px;padding:20px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;">
+        <div style="font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.4px;text-transform:uppercase;color:var(--ps-sem-fg-brand);">SCSS</div>
+        <div style="font-size:18px;font-weight:600;color:var(--ps-sem-fg-brand-dark);">tokens.scss</div>
+        <div style="font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.5;"><code>$ps-*</code> variables, sectioned by tier. Includes a <code>@mixin ps-dark-theme</code> for dark-mode overrides.</div>
+      </a>
+
+      <a href="../audit-report.html" style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);border-radius:10px;padding:20px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;">
+        <div style="font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.4px;text-transform:uppercase;color:var(--ps-sem-fg-brand);">Audit</div>
+        <div style="font-size:18px;font-weight:600;color:var(--ps-sem-fg-brand-dark);">audit-report.html</div>
+        <div style="font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.5;">Drift report. Scans every <code>preview/*.html</code> for raw hex values that bypass tokens. Headline stats + top-20 offenders + per-file collapsible breakdown.</div>
+      </a>
+
+      <a href="../TOKEN_AUDIT.md" style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);border-radius:10px;padding:20px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;">
+        <div style="font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.4px;text-transform:uppercase;color:var(--ps-sem-warning-fg);">Governance</div>
+        <div style="font-size:18px;font-weight:600;color:var(--ps-sem-fg-brand-dark);">TOKEN_AUDIT.md</div>
+        <div style="font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.5;">Drift report — every hex literal in <code>preview/*.html</code> that bypasses <code>tokens.css</code>, ranked by frequency. Regenerate after any preview-page change.</div>
+      </a>
+
+      <a href="../TOKEN_RECONCILIATION.md" style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);border-radius:10px;padding:20px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;">
+        <div style="font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.4px;text-transform:uppercase;color:var(--ps-sem-warning-fg);">Governance</div>
+        <div style="font-size:18px;font-weight:600;color:var(--ps-sem-fg-brand-dark);">TOKEN_RECONCILIATION.md</div>
+        <div style="font-size:13px;color:var(--ps-sem-fg-secondary);line-height:1.5;">Diff against the canonical <code>NotTheVeal/PS-Design-Library</code> Token Studio source. Flags hex typos, naming differences, and JSON-vs-implementation contradictions.</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============================================
+       USAGE NOTE
+       ============================================ -->
+  <section class="group">
+    <div class="group-head">
+      <h2>Using the tokens</h2>
+      <div class="desc">Drop <code>tokens.css</code> into any page. Always reach for the highest level that's appropriate.</div>
+    </div>
+    <div style="padding:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
+
+      <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);border-radius:8px;padding:18px;">
+        <div style="font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.2px;text-transform:uppercase;color:var(--ps-sem-success-fg);margin-bottom:10px;">✓ Do</div>
+        <p style="margin:0;font-size:13px;line-height:1.55;color:var(--ps-sem-fg-secondary);">Reach for component tokens when styling a known component. <code style="font-family:var(--ps-sem-font-mono);background:var(--ps-sem-bg-muted);padding:1px 5px;border-radius:3px;">background: var(--ps-cmp-card-bg);</code></p>
+      </div>
+
+      <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);border-radius:8px;padding:18px;">
+        <div style="font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.2px;text-transform:uppercase;color:var(--ps-sem-success-fg);margin-bottom:10px;">✓ Do</div>
+        <p style="margin:0;font-size:13px;line-height:1.55;color:var(--ps-sem-fg-secondary);">Use semantic tokens for one-off elements where no component fits. <code style="font-family:var(--ps-sem-font-mono);background:var(--ps-sem-bg-muted);padding:1px 5px;border-radius:3px;">color: var(--ps-sem-fg-tertiary);</code></p>
+      </div>
+
+      <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);border-radius:8px;padding:18px;">
+        <div style="font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.2px;text-transform:uppercase;color:var(--ps-sem-danger-fg);margin-bottom:10px;">✗ Don't</div>
+        <p style="margin:0;font-size:13px;line-height:1.55;color:var(--ps-sem-fg-secondary);">Don't reach past semantic into primitives in component CSS. <code style="font-family:var(--ps-sem-font-mono);background:var(--ps-sem-bg-muted);padding:1px 5px;border-radius:3px;">background: var(--ps-prim-blue-500);</code> bypasses intent.</p>
+      </div>
+
+      <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-sem-border-subtle);border-radius:8px;padding:18px;">
+        <div style="font:700 10px/1 var(--ps-sem-font-body);letter-spacing:1.2px;text-transform:uppercase;color:var(--ps-sem-danger-fg);margin-bottom:10px;">✗ Don't</div>
+        <p style="margin:0;font-size:13px;line-height:1.55;color:var(--ps-sem-fg-secondary);">Don't hard-code hex values, px sizes, or font names anywhere outside <code style="font-family:var(--ps-sem-font-mono);background:var(--ps-sem-bg-muted);padding:1px 5px;border-radius:3px;">tokens.css</code>. The primitive layer is the only place raw values live.</p>
+      </div>
+
+    </div>
+  </section>
+
+
+
+</body>
+  <script>
+    // Click-to-copy on token names. Any <code> whose text starts with "--ps-" becomes copyable.
+    (function () {
+      document.querySelectorAll('code').forEach(el => {
+        const txt = (el.textContent || '').trim();
+        if (!/^--ps-/.test(txt) || el.children.length) return;
+        el.setAttribute('data-copy', txt);
+        el.setAttribute('title', 'Click to copy ' + txt);
+        el.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(txt);
+            el.classList.add('is-copied');
+            setTimeout(() => el.classList.remove('is-copied'), 1200);
+          } catch (_) {}
+        });
+      });
+    })();
+
+    // Auto-stamp anchor links on every section header
+    (function () {
+      document.querySelectorAll('section.group[id]').forEach(sec => {
+        const h2 = sec.querySelector('.group-head h2');
+        if (!h2 || h2.querySelector('.group-head__anchor')) return;
+        const a = document.createElement('a');
+        a.href = '#' + sec.id;
+        a.className = 'group-head__anchor';
+        a.textContent = '#';
+        a.setAttribute('aria-label', 'Link to section');
+        h2.appendChild(a);
+      });
+    })();
+  </script>
+
+</body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

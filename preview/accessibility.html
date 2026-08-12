@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accessibility · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb a{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;}
+  .ps-breadcrumb a:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCC;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+  .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+  .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0 0 4px;}
+  .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+  .section-body{padding:24px;}
+
+  /* Compliance pill at top */
+  .target{display:flex;flex-wrap:wrap;gap:12px;}
+  .target-card{flex:1 1 220px;padding:18px 20px;border-radius:8px;background:#EFF9FE;border:1px solid #B0D7F4;}
+  .target-card b{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;margin-bottom:6px;}
+  .target-card span{font-size:18px;font-weight:600;color:#002F48;line-height:1.3;}
+  .target-card p{margin:6px 0 0;font-size:13px;color:#4A4A4A;line-height:1.5;}
+
+  /* Contrast matrix */
+  table.matrix{width:100%;border-collapse:collapse;font-size:13px;}
+  table.matrix th,table.matrix td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;}
+  table.matrix th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  .swatch{display:inline-flex;align-items:center;gap:8px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#4A4A4A;}
+  .swatch span.chip{display:inline-block;width:18px;height:18px;border-radius:3px;border:1px solid rgba(0,0,0,.1);}
+  .pass{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.5px;}
+  .pass-aaa{background:#E2F5EE;color:#0A7850;}
+  .pass-aa{background:#E5F4FF;color:#005BA6;}
+  .pass-fail{background:#FFEBEB;color:#9E2020;}
+  .pass-large{background:#FFF4E5;color:#B45309;}
+
+  /* Keyboard table */
+  table.kbd{width:100%;border-collapse:collapse;font-size:13px;}
+  table.kbd th,table.kbd td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.kbd th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  kbd{display:inline-block;padding:1px 6px;font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;border:1px solid #DCDCDC;border-bottom-width:2px;border-radius:3px;color:#2B2B2B;margin-right:2px;}
+
+  /* Focus ring demo */
+  .focus-demo{display:flex;flex-wrap:wrap;gap:24px;align-items:center;}
+  .focus-spec{flex:1;min-width:240px;font-size:13px;color:#4A4A4A;line-height:1.6;}
+  .focus-spec b{display:block;margin-bottom:6px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;}
+  .focus-spec code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#F1F1F1;padding:1px 5px;border-radius:3px;color:#2B2B2B;}
+  .focus-sample{padding:30px;background:#FAFAFA;border-radius:8px;border:1px solid #F1F1F1;}
+  .focus-sample button{height:40px;padding:0 18px;border:2px solid #005BA6;background:#fff;color:#005BA6;font-family:'Source Sans Pro',sans-serif;font-size:14px;font-weight:600;border-radius:4px;cursor:pointer;outline:none;}
+  .focus-sample button.focused{box-shadow:0 0 0 3px rgba(176,198,211,0.91);}
+
+  /* Checklist */
+  ul.checklist{list-style:none;padding:0;margin:0;}
+  ul.checklist li{padding:10px 14px 10px 38px;border-bottom:1px solid #F1F1F1;position:relative;line-height:1.5;font-size:14px;}
+  ul.checklist li:last-child{border-bottom:0;}
+  ul.checklist li::before{content:"";position:absolute;left:14px;top:13px;width:16px;height:16px;border:1.5px solid #4A4A4A;border-radius:3px;}
+
+  /* Patterns grid */
+  .pattern-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+  .pattern{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;padding:16px 18px;}
+  .pattern h3{margin:0 0 6px;font-size:14px;font-weight:700;color:#002F48;}
+  .pattern p{margin:0 0 8px;font-size:13px;color:#4A4A4A;line-height:1.55;}
+  .pattern code{font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#fff;border:1px solid #E6E6E6;padding:1px 5px;border-radius:3px;color:#2B2B2B;}
+
+  /* Do/Don't */
+  .dodont{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:780px){.dodont{grid-template-columns:1fr;}}
+  .dodont__col{background:#fff;border:1px solid #F1F1F1;border-radius:8px;overflow:hidden;}
+  .dodont__col h4{margin:0;padding:12px 16px;font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  .dodont__do h4{background:#E5F9F2;color:#0A7850;}
+  .dodont__dont h4{background:#FDECEC;color:#9E2A1C;}
+  .dodont__col ul{list-style:none;margin:0;padding:14px 18px;display:flex;flex-direction:column;gap:10px;font-size:13px;line-height:1.5;}
+  .dodont__col li{padding-left:14px;position:relative;}
+  .dodont__col li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;}
+  .dodont__do li::before{background:#0A7850;}
+  .dodont__dont li::before{background:#9E2A1C;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Accessibility</span>
+</nav>
+
+<h1>Accessibility</h1>
+<p class="intro">PartsSource builds for clinical environments — operating rooms, biomed shops, procurement offices. Every screen must be usable with a keyboard, a screen reader, and one good eye in a noisy hospital hallway. This is the policy. The rest of the system inherits from it.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Target &amp; Promise</h2>
+    <div class="desc">The bar every component must clear before it ships.</div>
+  </div>
+  <div class="section-body">
+    <div class="target">
+      <div class="target-card">
+        <b>Standard</b>
+        <span>WCAG 2.1 · AA</span>
+        <p>All public-facing surfaces. AAA where text contrast is cheap to achieve.</p>
+      </div>
+      <div class="target-card">
+        <b>Keyboard</b>
+        <span>100% reachable</span>
+        <p>Every action available via Tab, arrow keys, Enter and Space. No mouse-only paths.</p>
+      </div>
+      <div class="target-card">
+        <b>Touch target</b>
+        <span>44 × 44 px min</span>
+        <p>Per WCAG 2.5.5. Padding counts; visible button can be smaller.</p>
+      </div>
+      <div class="target-card">
+        <b>Focus indicator</b>
+        <span>3 px ring · 3:1 contrast</span>
+        <p>Visible against any adjacent surface. Never <code>outline: none</code> without a replacement.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Color contrast matrix</h2>
+    <div class="desc">Which brand pairs pass which level. Use only AA/AAA pairs for text. Use AA Large for ≥ 18 px / 14 px bold.</div>
+  </div>
+  <div class="section-body">
+    <table class="matrix">
+      <thead>
+        <tr><th>Foreground</th><th>Background</th><th>Ratio</th><th>Body text</th><th>Large text (18+ / 14b+)</th><th>UI element</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="swatch"><span class="chip" style="background:#000;"></span>#000 Black</span></td>
+          <td><span class="swatch"><span class="chip" style="background:#fff;"></span>#FFF White</span></td>
+          <td>21.0 : 1</td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+        </tr>
+        <tr>
+          <td><span class="swatch"><span class="chip" style="background:#002F48;"></span>#002F48 Midnight</span></td>
+          <td><span class="swatch"><span class="chip" style="background:#fff;"></span>#FFF White</span></td>
+          <td>14.6 : 1</td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+        </tr>
+        <tr>
+          <td><span class="swatch"><span class="chip" style="background:#005BA6;"></span>#005BA6 PS Blue</span></td>
+          <td><span class="swatch"><span class="chip" style="background:#fff;"></span>#FFF White</span></td>
+          <td>7.4 : 1</td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+        </tr>
+        <tr>
+          <td><span class="swatch"><span class="chip" style="background:#4A4A4A;"></span>#4A4A4A Grey 1</span></td>
+          <td><span class="swatch"><span class="chip" style="background:#fff;"></span>#FFF White</span></td>
+          <td>9.1 : 1</td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+        </tr>
+        <tr>
+          <td><span class="swatch"><span class="chip" style="background:#777;"></span>#777 Grey 2</span></td>
+          <td><span class="swatch"><span class="chip" style="background:#fff;"></span>#FFF White</span></td>
+          <td>4.6 : 1</td>
+          <td><span class="pass pass-aa">AA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aa">AA</span></td>
+        </tr>
+        <tr>
+          <td><span class="swatch"><span class="chip" style="background:#949494;"></span>#949494 Grey 3</span></td>
+          <td><span class="swatch"><span class="chip" style="background:#fff;"></span>#FFF White</span></td>
+          <td>2.8 : 1</td>
+          <td><span class="pass pass-fail">Fail</span></td>
+          <td><span class="pass pass-fail">Fail</span></td>
+          <td><span class="pass pass-fail">Fail</span></td>
+        </tr>
+        <tr>
+          <td><span class="swatch"><span class="chip" style="background:#fff;border-color:#ccc;"></span>#FFF White</span></td>
+          <td><span class="swatch"><span class="chip" style="background:#005BA6;"></span>#005BA6 PS Blue</span></td>
+          <td>7.4 : 1</td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+        </tr>
+        <tr>
+          <td><span class="swatch"><span class="chip" style="background:#fff;border-color:#ccc;"></span>#FFF White</span></td>
+          <td><span class="swatch"><span class="chip" style="background:#FF9505;"></span>#FF9505 Orange 1</span></td>
+          <td>2.4 : 1</td>
+          <td><span class="pass pass-fail">Fail</span></td>
+          <td><span class="pass pass-fail">Fail</span></td>
+          <td><span class="pass pass-fail">Fail</span></td>
+        </tr>
+        <tr>
+          <td><span class="swatch"><span class="chip" style="background:#E00000;"></span>#E00000 Red 1</span></td>
+          <td><span class="swatch"><span class="chip" style="background:#FEF0F0;"></span>#FEF0F0 Fail bg</span></td>
+          <td>5.6 : 1</td>
+          <td><span class="pass pass-aa">AA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aa">AA</span></td>
+        </tr>
+        <tr>
+          <td><span class="swatch"><span class="chip" style="background:#0E7C55;"></span>#0E7C55 Green 3</span></td>
+          <td><span class="swatch"><span class="chip" style="background:#E2F5EE;"></span>#E2F5EE Success bg</span></td>
+          <td>5.0 : 1</td>
+          <td><span class="pass pass-aa">AA</span></td>
+          <td><span class="pass pass-aaa">AAA</span></td>
+          <td><span class="pass pass-aa">AA</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin:14px 0 0;font-size:13px;color:#777;line-height:1.55;">Grey 3 (<code>#949494</code>) is reserved for <strong>disabled</strong> states and decorative borders — never body text. Orange (<code>#FF9505</code>) is being retired from CTAs precisely because it fails AA on white.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Focus indicator</h2>
+    <div class="desc">One ring, applied everywhere a keyboard user can land.</div>
+  </div>
+  <div class="section-body">
+    <div class="focus-demo">
+      <div class="focus-sample">
+        <button class="focused" type="button">Focused button</button>
+      </div>
+      <div class="focus-spec">
+        <b>Spec</b>
+        <code>box-shadow: 0 0 0 3px rgba(176, 198, 211, 0.91);</code><br>
+        3 px Blue-Gray ring at 91% opacity. Sits outside the element's border (no offset needed). Contrast against the surrounding canvas must be ≥ 3:1.
+        <br><br>
+        Components that use a different ring (e.g. error inputs use red, segmented controls inset 3 px) document the variant on their own page.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Keyboard reference</h2>
+    <div class="desc">Patterns every interactive component must implement.</div>
+  </div>
+  <div class="section-body">
+    <table class="kbd">
+      <thead>
+        <tr><th>Component</th><th>Key</th><th>Behavior</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>All</td><td><kbd>Tab</kbd> / <kbd>Shift+Tab</kbd></td><td>Move focus forward / backward through tab-stops.</td></tr>
+        <tr><td>Button</td><td><kbd>Enter</kbd> <kbd>Space</kbd></td><td>Activate. Both keys, no exceptions.</td></tr>
+        <tr><td>Input</td><td><kbd>Enter</kbd></td><td>Submits the containing form when present.</td></tr>
+        <tr><td>Checkbox · Toggle</td><td><kbd>Space</kbd></td><td>Toggle on/off.</td></tr>
+        <tr><td>Radio</td><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>Move + select within the group. <kbd>Tab</kbd> exits.</td></tr>
+        <tr><td>Tabs</td><td><kbd>←</kbd> <kbd>→</kbd></td><td>Move + activate. <kbd>Home</kbd> / <kbd>End</kbd> jump to first / last.</td></tr>
+        <tr><td>Dropdown / Combobox</td><td><kbd>↓</kbd> opens, <kbd>↑</kbd> <kbd>↓</kbd> traverses, <kbd>Enter</kbd> selects, <kbd>Esc</kbd> closes</td><td>Type-ahead jumps to the next match.</td></tr>
+        <tr><td>Modal · Drawer</td><td><kbd>Esc</kbd> closes</td><td>Focus trapped inside until dismissed; returns to trigger on close.</td></tr>
+        <tr><td>Table</td><td><kbd>Tab</kbd> moves through actionable cells</td><td>Use real <code>&lt;button&gt;</code>s inside cells. No roving tabindex unless needed.</td></tr>
+        <tr><td>Toast</td><td><kbd>Esc</kbd> dismisses focused toast</td><td>Toasts announce via <code>aria-live="polite"</code> (or <code>assertive</code> for errors).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Screen reader patterns</h2>
+    <div class="desc">Eight rules that cover 90% of accessibility bugs in this codebase.</div>
+  </div>
+  <div class="section-body">
+    <div class="pattern-grid">
+      <div class="pattern"><h3>Use real semantic HTML</h3><p><code>&lt;button&gt;</code>, <code>&lt;a&gt;</code>, <code>&lt;label&gt;</code>, <code>&lt;table&gt;</code>. Don't reinvent with <code>&lt;div onClick&gt;</code>.</p></div>
+      <div class="pattern"><h3>Label icon-only controls</h3><p>Every <code>aria-label</code> reads like a verb-phrase: "Close drawer", "Remove filter", not "Close".</p></div>
+      <div class="pattern"><h3>Associate inputs &amp; labels</h3><p>Either wrap with <code>&lt;label&gt;</code> or link via <code>htmlFor</code> / <code>id</code>. Floating labels still need this.</p></div>
+      <div class="pattern"><h3>Announce async</h3><p>Use <code>aria-live="polite"</code> for status, <code>"assertive"</code> for errors. Never use <code>role="alert"</code> for content that already had its own focus.</p></div>
+      <div class="pattern"><h3>Hide decoration</h3><p><code>aria-hidden="true"</code> on icons, dividers, spacers. Don't make the SR read every <code>•</code>.</p></div>
+      <div class="pattern"><h3>Describe state</h3><p><code>aria-expanded</code> on disclosure triggers, <code>aria-selected</code> on tabs, <code>aria-checked</code> on switches.</p></div>
+      <div class="pattern"><h3>Trap &amp; restore</h3><p>Modals / Drawers trap focus while open and restore to the trigger on close. The kit handles this for you.</p></div>
+      <div class="pattern"><h3>Errors are descriptive</h3><p>Link error message via <code>aria-describedby</code>. Tell the user <em>what</em> is wrong + <em>how</em> to fix.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Reduced motion</h2>
+    <div class="desc">Animation is decoration, not function.</div>
+  </div>
+  <div class="section-body">
+    <p style="margin:0 0 12px;line-height:1.6;">All motion in this system respects <code>prefers-reduced-motion: reduce</code>. When set, transitions drop to 0 ms and oscillating/parallax effects are disabled. Static substitutes (e.g. cross-fade instead of slide) carry the same information.</p>
+    <p style="margin:0;line-height:1.6;">Never use motion as the only signal that something happened. Pair it with a label change, a focus shift, or an SR announcement. See <a href="motion.html" style="color:#005BA6;">Motion</a> for the full token set.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Pre-merge checklist</h2>
+    <div class="desc">Every PR touching UI runs this.</div>
+  </div>
+  <div class="section-body">
+    <ul class="checklist">
+      <li>Page navigates fully with keyboard alone. <kbd>Tab</kbd> order matches visual order.</li>
+      <li>Every interactive element has a visible focus indicator (3 px PS Blue-Gray ring).</li>
+      <li>All text passes WCAG AA against its background (verify with the contrast matrix above).</li>
+      <li>Icon-only buttons have a meaningful <code>aria-label</code>.</li>
+      <li>Form inputs have associated <code>&lt;label&gt;</code> elements.</li>
+      <li>Errors are linked via <code>aria-describedby</code> and describe the fix, not just the failure.</li>
+      <li>Modals / drawers trap focus and restore to trigger on close.</li>
+      <li>Live regions used for async status (<code>aria-live</code> on toast container, table loading, etc.).</li>
+      <li>Tested with VoiceOver (macOS), NVDA (Windows), or screen-reader of choice.</li>
+      <li><code>prefers-reduced-motion</code> respected — animations short-circuit to fades or no-ops.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Do &amp; Don't</h2>
+    <div class="desc">High-leverage rules.</div>
+  </div>
+  <div class="section-body">
+    <div class="dodont">
+      <div class="dodont__col dodont__do">
+        <h4>Do</h4>
+        <ul>
+          <li>Use color <em>and</em> shape/icon to indicate state — never color alone.</li>
+          <li>Test with the keyboard first. Mouse is the easier path.</li>
+          <li>Write error copy that tells the user how to recover.</li>
+          <li>Increase touch target padding when the visible button shrinks.</li>
+          <li>Treat AAA as the default for text, AA as the floor for decoration.</li>
+        </ul>
+      </div>
+      <div class="dodont__col dodont__dont">
+        <h4>Don't</h4>
+        <ul>
+          <li>Rely on hover to reveal essential info — keyboard users never see it.</li>
+          <li>Use <code>outline: none</code> without a replacement focus ring.</li>
+          <li>Set <code>tabindex</code> ≥ 1 — it breaks logical tab order across the page.</li>
+          <li>Wrap <code>&lt;button&gt;</code> inside <code>&lt;a&gt;</code> or vice-versa.</li>
+          <li>Use placeholder text as the only label — it disappears on focus.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

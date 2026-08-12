@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PartsSource Shell — Top Nav + LHN</title>
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family:'Source Sans Pro',var(--ps-font-sans);
+    background:#F5F5F5;
+    color:var(--ps-sem-fg-primary,#2B2B2B);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ========================================================
+     PAGE STRUCTURE
+     ======================================================== */
+  .page{display:flex;flex-direction:column;min-height:100vh;}
+  .body-row{display:flex;flex:1;min-height:0;position:relative;}
+  .rail-col{position:sticky;top:0;align-self:flex-start;height:calc(100vh - 0px);}
+  .main-col{flex:1;min-width:0;display:flex;flex-direction:column;}
+
+  /* ========================================================
+     TOP NAV — 3 stacked rows, full width
+     ======================================================== */
+  .tn{
+    width:100%;
+    font-family:'Source Sans Pro',sans-serif;
+    color:#2B2B2B;
+    display:flex;
+    flex-direction:column;
+    flex-shrink:0;
+    background:#fff;
+  }
+
+  /* Utility row — 28px */
+  .tn-util{
+    height:28px;background:#fff;border-bottom:1px solid #E0E0E0;
+    padding:0 40px;display:flex;justify-content:flex-end;align-items:center;
+    gap:20px;font-size:14px;line-height:16px;
+  }
+  .tn-util a{color:#000;text-decoration:none;}
+  .tn-util a:hover{color:#005BA6;text-decoration:underline;}
+  .tn-util .tn-phone{display:flex;align-items:center;gap:6px;color:#009CF4;font-weight:400;}
+  .tn-util .tn-phone svg{width:10px;height:12px;display:block;color:#000;}
+  .tn-util .tn-phone a{color:#009CF4;}
+
+  /* Main row — 60px */
+  .tn-main{
+    height:60px;background:#fff;border-bottom:1px solid #E0E0E0;
+    padding:0 40px;display:flex;align-items:center;gap:18px;
+  }
+  .tn-logo{flex-shrink:0;width:200px;display:flex;align-items:center;}
+  .tn-logo img{display:block;width:200px;height:auto;}
+
+  .tn-search{
+    flex:1;max-width:800px;height:32px;display:flex;align-items:stretch;
+    border:1px solid #CCCCCC;border-radius:5px;background:#fff;overflow:hidden;
+    transition:border-color 150ms ease, box-shadow 150ms ease;
+  }
+  .tn-search:hover{border-color:#999;}
+  .tn-search:focus-within{border-color:#005BA6;box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+  .tn-search input{
+    flex:1;border:0;outline:0;padding:0 16px;
+    font:14px/1 'Source Sans Pro',sans-serif;color:#2B2B2B;background:transparent;
+  }
+  .tn-search input::placeholder{color:#777;}
+  .tn-search button{
+    width:34px;flex-shrink:0;border:0;background:#FF9505;color:#fff;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:background 120ms ease;
+  }
+  .tn-search button:hover{background:#E58400;}
+  .tn-search button svg{width:18px;height:18px;display:block;}
+
+  .tn-categories{font-size:16px;font-weight:500;color:#000022;cursor:pointer;flex-shrink:0;white-space:nowrap;padding:6px 0;}
+  .tn-categories:hover{color:#005BA6;}
+
+  .tn-cart{position:relative;width:32px;height:32px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .tn-cart svg.cart-glyph{width:30px;height:24px;color:#005BA6;}
+  .tn-cart:hover svg.cart-glyph{color:#004A84;}
+
+  .tn-divider{width:1px;height:31px;background:#CCCCCC;flex-shrink:0;}
+
+  .tn-facility{display:flex;align-items:center;gap:9px;flex-shrink:0;cursor:pointer;padding:2px 4px;border-radius:4px;}
+  .tn-facility svg.tn-pin{width:14px;height:20px;color:#2B2B2B;flex-shrink:0;}
+  .tn-facility .tn-fac-meta{display:flex;flex-direction:column;line-height:1.1;gap:2px;}
+  .tn-facility .tn-fac-label{font-size:12px;color:#2B2B2B;}
+  .tn-facility .tn-fac-name{font-size:16px;font-weight:700;color:#2B2B2B;}
+
+  /* Page hero — 52px */
+  .tn-hero{height:52px;background:#003763;position:relative;overflow:hidden;display:flex;align-items:center;}
+  .tn-hero__title{
+    color:#fff;font-size:24px;font-family:'Source Sans Pro',sans-serif;
+    letter-spacing:-.01em;line-height:36px;padding:0 24px;flex-shrink:0;
+  }
+  .tn-hero__pro{
+    position:absolute;right:0;top:0;width:504px;height:52px;
+    background:#D0EDFC;clip-path:polygon(54px 0, 100% 0, 100% 100%, 0 100%);
+    box-shadow:inset -4px 4px 10px 0 rgba(0,0,0,.19);
+    display:flex;align-items:center;gap:14px;padding-left:120px;color:#4C4B46;
+  }
+  .tn-hero__pro .tn-hero__hospital{display:flex;align-items:center;}
+  .tn-hero__pro .tn-hero__hospital img{display:block;height:36px;width:auto;}
+  .tn-hero__pro .tn-hero__sep{width:1px;height:24px;background:#777;}
+  .tn-hero__pro .tn-hero__pro-label{font-size:16px;font-weight:700;color:#00AEEF;letter-spacing:.04em;}
+
+  /* ========================================================
+     PS-NAV (LEFT-HAND NAV) — scoped under [data-ps-nav]
+     Mirrors @PartsSourceInc/nav-utils
+     ======================================================== */
+  [data-ps-nav]{
+    --ps-nav-bg:#003763;
+    --ps-nav-header-bg:#004a84;
+    --ps-nav-app-label-bg:#022039;
+    --ps-nav-active-bg:#005ba6;
+    --ps-nav-hover-bg:#004a84;
+    --ps-nav-text:#ffffff;
+    --ps-nav-text-muted:#dcdcdc;
+    --ps-nav-divider:#004a84;
+    --ps-nav-avatar-bg:#ffffff;
+    --ps-nav-avatar-text:#005ba6;
+    --ps-nav-danger:#fdebeb;
+    --ps-nav-focus-ring:#009cf4;
+    --ps-nav-radius:5px;
+    --ps-nav-width:210px;
+    --ps-nav-width-collapsed:67px;
+    --ps-nav-z:40;
+
+    box-sizing:border-box;
+    display:flex;flex-direction:column;flex-shrink:0;
+    width:var(--ps-nav-width);
+    height:100%;
+    font-family:'Source Sans 3','Source Sans Pro',sans-serif;
+    font-size:14px;line-height:1.4;
+    color:var(--ps-nav-text);
+    background-color:var(--ps-nav-bg);
+    overflow:hidden;
+    transition:width 0.3s ease;
+    position:relative;
+  }
+  [data-ps-nav] *,[data-ps-nav] *::before,[data-ps-nav] *::after{box-sizing:border-box;margin:0;padding:0;}
+
+  [data-ps-nav][data-collapsed]{width:var(--ps-nav-width-collapsed);}
+  [data-ps-nav][data-collapsed] .ps-nav-label,
+  [data-ps-nav][data-collapsed] .ps-nav-back-label,
+  [data-ps-nav][data-collapsed] .ps-nav-username{opacity:0;width:0;overflow:hidden;}
+  [data-ps-nav][data-collapsed] .ps-nav-chevron{display:none;}
+  [data-ps-nav][data-collapsed] .ps-nav-item a,
+  [data-ps-nav][data-collapsed] .ps-nav-item button,
+  [data-ps-nav][data-collapsed] .ps-nav-logout button{padding-left:16.5px;padding-right:16.5px;}
+  [data-ps-nav][data-collapsed] .ps-nav-header{padding:16px 21.5px;}
+  [data-ps-nav][data-collapsed] .ps-nav-back{padding-left:17.5px;padding-right:17.5px;}
+
+  /* User Header */
+  [data-ps-nav] .ps-nav-header{
+    display:flex;align-items:center;gap:16px;
+    height:60px;padding:16px;
+    background-color:var(--ps-nav-header-bg);
+    box-shadow:0 1px 2px rgba(0,0,0,0.1);
+    transition:padding 0.3s ease;flex-shrink:0;
+  }
+  [data-ps-nav] .ps-nav-avatar{
+    display:flex;align-items:center;justify-content:center;
+    width:24px;height:24px;border-radius:50%;
+    padding-top:2px;font-size:12px;font-weight:700;text-transform:uppercase;
+    color:var(--ps-nav-avatar-text);background-color:var(--ps-nav-avatar-bg);flex-shrink:0;
+  }
+  [data-ps-nav] .ps-nav-username{
+    font-size:18px;font-weight:400;color:var(--ps-nav-text);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    transition:opacity 0.3s ease;
+  }
+
+  /* Viewport / Sliding Track */
+  [data-ps-nav] .ps-nav-viewport{position:relative;flex:1;overflow:hidden;}
+  [data-ps-nav] .ps-nav-track{display:flex;width:200%;height:100%;will-change:transform;}
+  [data-ps-nav] .ps-nav-track--animate{transition:transform 0.3s ease;}
+
+  /* Sliding Page */
+  [data-ps-nav] .ps-nav-page{
+    width:50%;height:100%;overflow-y:auto;overflow-x:hidden;
+    flex-shrink:0;padding:24px 8px;
+  }
+  [data-ps-nav] .ps-nav-page::-webkit-scrollbar{width:4px;}
+  [data-ps-nav] .ps-nav-page::-webkit-scrollbar-track{background:transparent;}
+  [data-ps-nav] .ps-nav-page::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2);border-radius:2px;}
+
+  /* Back Button */
+  [data-ps-nav] .ps-nav-back{
+    display:flex;align-items:center;gap:8px;
+    width:calc(100% + 24px);margin:-24px -12px 16px;
+    padding:8px 16px;border:none;
+    background:var(--ps-nav-app-label-bg);color:var(--ps-nav-text);
+    font:400 14px/1.4 inherit;font-family:inherit;
+    cursor:pointer;text-align:left;white-space:nowrap;
+    transition:padding 0.3s ease, background-color 0.15s ease;
+  }
+  [data-ps-nav] .ps-nav-back:hover{background:var(--ps-nav-hover-bg);}
+  [data-ps-nav] .ps-nav-back-label{margin-top:3px;white-space:nowrap;overflow:hidden;transition:opacity 0.3s ease;}
+  [data-ps-nav] .ps-nav-back-arrow{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;flex-shrink:0;
+  }
+  [data-ps-nav] .ps-nav-back-arrow::before{
+    content:'';display:block;width:10px;height:10px;
+    border-left:2.5px solid var(--ps-nav-text);
+    border-bottom:2.5px solid var(--ps-nav-text);
+    transform:rotate(45deg);margin-left:4px;
+  }
+
+  /* Nav List & Items */
+  [data-ps-nav] .ps-nav-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  [data-ps-nav] .ps-nav-item{display:flex;}
+  [data-ps-nav] .ps-nav-item a,
+  [data-ps-nav] .ps-nav-item button{
+    display:flex;align-items:center;gap:8px;
+    width:100%;height:32px;padding:8px;
+    border:none;border-radius:var(--ps-nav-radius);
+    background:transparent;color:var(--ps-nav-text);
+    font:400 14px/1.4 inherit;font-family:inherit;
+    text-decoration:none;cursor:pointer;text-align:left;white-space:nowrap;
+    transition:padding 0.3s ease, background-color 0.15s ease;
+  }
+  [data-ps-nav] .ps-nav-item a:hover,
+  [data-ps-nav] .ps-nav-item button:hover{background-color:var(--ps-nav-hover-bg);}
+  [data-ps-nav] .ps-nav-item a:focus-visible,
+  [data-ps-nav] .ps-nav-item button:focus-visible{
+    outline:none;box-shadow:0 0 4px 1px var(--ps-nav-focus-ring);
+  }
+  [data-ps-nav] .ps-nav-item--active a,
+  [data-ps-nav] .ps-nav-item--active button{background-color:var(--ps-nav-active-bg);}
+  [data-ps-nav] .ps-nav-item--active a:hover,
+  [data-ps-nav] .ps-nav-item--active button:hover{background-color:var(--ps-nav-active-bg);}
+
+  /* Icons */
+  [data-ps-nav] .ps-nav-icon{
+    width:18px;height:18px;flex-shrink:0;display:block;
+  }
+  [data-ps-nav] .ps-nav-icon img{width:18px;height:18px;display:block;}
+
+  /* Label */
+  [data-ps-nav] .ps-nav-label{margin-top:3px;white-space:nowrap;overflow:hidden;transition:opacity 0.3s ease;}
+
+  /* Drill-down Chevron */
+  [data-ps-nav] .ps-nav-chevron{
+    margin-left:auto;width:14px;height:14px;flex-shrink:0;
+    opacity:0.7;overflow:hidden;transition:opacity 0.3s ease;
+  }
+  [data-ps-nav] .ps-nav-chevron::before{
+    content:'';display:block;width:7px;height:7px;
+    margin:3px 0 0 2px;
+    border-right:2px solid var(--ps-nav-text);
+    border-top:2px solid var(--ps-nav-text);
+    transform:rotate(45deg);
+  }
+
+  /* Divider */
+  [data-ps-nav] .ps-nav-divider{
+    list-style:none;height:1px;background-color:var(--ps-nav-divider);margin:4px 0;
+  }
+
+  /* Logout */
+  [data-ps-nav] .ps-nav-logout{list-style:none;display:flex;}
+  [data-ps-nav] .ps-nav-logout button{
+    display:flex;align-items:center;gap:8px;
+    width:100%;height:32px;padding:8px;
+    border:none;border-radius:var(--ps-nav-radius);
+    background:transparent;color:var(--ps-nav-text);
+    font:400 14px/1.4 inherit;font-family:inherit;
+    cursor:pointer;text-align:left;white-space:nowrap;
+    transition:padding 0.3s ease, color 0.15s ease, background-color 0.15s ease;
+  }
+  [data-ps-nav] .ps-nav-logout button:hover{
+    background-color:var(--ps-nav-hover-bg);color:var(--ps-nav-danger);
+  }
+
+  /* Collapse toggle — floating circular button. Scoped to the rail-col so it
+     follows the rail when scrolling and doesn't sit over page content. */
+  .rail-col .ps-nav-collapse-toggle{
+    position:absolute;bottom:30px;left:190px;
+    display:flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border-radius:50%;border:none;
+    background-color:#005ba6;color:#fff;cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,0.25);
+    transition:left 0.3s ease, background-color 0.15s ease;
+    z-index:10;
+  }
+  .rail-col .ps-nav-collapse-toggle:hover{background-color:#004a84;}
+  .rail-col .ps-nav-collapse-toggle svg{
+    width:18px;height:18px;fill:none;stroke:currentColor;
+    stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+  }
+  .rail-col[data-collapsed] .ps-nav-collapse-toggle{left:18px;}
+
+  /* ========================================================
+     CONTENT AREA (placeholder)
+     ======================================================== */
+  .content{flex:1;background:#F5F5F5;padding:32px 40px;overflow-y:auto;}
+  .content-placeholder{
+    background:#fff;border:2px dashed #DCDCDC;border-radius:8px;
+    min-height:520px;padding:48px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;gap:14px;color:#777;
+  }
+  .content-placeholder h2{font-size:24px;font-weight:300;color:#003763;letter-spacing:-0.3px;margin:0;}
+  .content-placeholder p{font-size:14px;color:#4A4A4A;max-width:480px;line-height:1.6;margin:0;}
+  .content-placeholder .ph-badge{
+    display:inline-block;background:#EFF9FE;color:#005BA6;
+    border-radius:999px;padding:5px 14px;
+    font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    border:1px solid #B0C6D3;
+  }
+  .kbd{
+    display:inline-block;background:#F5F5F5;border:1px solid #DCDCDC;border-radius:3px;
+    padding:1px 6px;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#2B2B2B;
+    margin-right:4px;
+  }
+
+  /* Shell controls card */
+  .shell-controls{
+    position:fixed;bottom:18px;right:18px;z-index:50;
+    background:#fff;border:1px solid #DCDCDC;border-radius:8px;
+    padding:10px 14px;font-size:12px;color:#4A4A4A;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .shell-controls strong{font-size:11px;color:#003763;text-transform:uppercase;letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TOP NAV — full width
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="tn">
+    <!-- Utility row -->
+    <div class="tn-util">
+      <span class="tn-phone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <a href="#">877-497-6412</a>
+      </span>
+      <a href="#">Help</a>
+      <a href="#">About Us</a>
+    </div>
+    <!-- Main row -->
+    <div class="tn-main">
+      <a class="tn-logo" href="#">
+        <img src="../../assets/logos/ps-wordmark-blue.svg" alt="PartsSource">
+      </a>
+      <div class="tn-search" role="search">
+        <input type="text" placeholder="Search Keyword or Item Number">
+        <button type="submit" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+        </button>
+      </div>
+      <span class="tn-categories" style="font-weight: 600">Categories +</span>
+      <span class="tn-cart" role="button" aria-label="Cart">
+        <svg class="cart-glyph" viewBox="0 0 30 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L26 7H7"/>
+          <circle cx="11" cy="24" r="1.6" fill="currentColor"/>
+          <circle cx="22" cy="24" r="1.6" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="tn-divider"></span>
+      <span class="tn-facility" role="button">
+        <svg class="tn-pin" viewBox="0 0 14 20" fill="currentColor"><path d="M7 0a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5z"/></svg>
+        <span class="tn-fac-meta">
+          <span class="tn-fac-label">Selected Facility</span>
+          <span class="tn-fac-name">Chatham Memorial Hospital</span>
+        </span>
+      </span>
+    </div>
+    <!-- Page hero -->
+    <div class="tn-hero">
+      <span class="tn-hero__title" id="tn-hero-title">Home</span>
+      <div class="tn-hero__pro">
+        <span class="tn-hero__hospital"><img src="chatham-memorial.png" alt="Chatham Memorial Hospital"></span>
+        <span class="tn-hero__sep"></span>
+        <span class="tn-hero__pro-label">PRO&nbsp;&nbsp;ACCOUNT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       BODY ROW: PS-NAV rail + content
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="body-row">
+
+    <!-- PS-NAV rail -->
+    <div class="rail-col" id="rail-col">
+      <nav data-ps-nav id="ps-nav" aria-label="Primary navigation">
+        <div class="ps-nav-header">
+          <div class="ps-nav-avatar">DM</div>
+          <span class="ps-nav-username">Doug M.</span>
+        </div>
+        <div class="ps-nav-viewport">
+          <div class="ps-nav-track" id="ps-nav-track">
+            <!-- pages are injected by JS -->
+          </div>
+        </div>
+      </nav>
+      <button class="ps-nav-collapse-toggle" id="ps-nav-collapse-toggle" aria-label="Collapse sidebar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+    </div>
+
+    <!-- Content column -->
+    <div class="main-col">
+      <main class="content">
+        <div class="content-placeholder">
+          <span class="ph-badge">Shell Template</span>
+          <h2>Drop your page content here</h2>
+          <p>
+            PartsSource app shell — top navigation + ps-nav left rail (sliding-track drill-down).
+            Click any item with a chevron in the rail to drill in; the back chevron returns to the top level.
+          </p>
+          <p style="font-size:12px;color:#777;">
+            <span class="kbd">L</span>
+            also toggles collapse.
+          </p>
+        </div>
+      </main>
+    </div>
+
+  </div><!-- /body-row -->
+
+</div><!-- /page -->
+
+<script>
+(function(){
+  /* ============================================================
+     Nav config — top-level + drill-down pages
+     ============================================================ */
+  const ICON = (name) => `../../preview/lhn-icons/${name}.svg`;
+
+  const PAGES = {
+    root: {
+      label: 'Home',
+      items: [
+        { id:'my-lists',         label:'My Lists',         icon:ICON('my-lists') },
+        { id:'command-center',   label:'Command Center',   icon:ICON('command-center') },
+        { id:'my-dashboard',     label:'My Dashboard',     icon:ICON('my-dashboard') },
+        { id:'asset-uptime',     label:'Asset Uptime',     icon:ICON('asset-uptime'),    drillTo:'asset-uptime' },
+        { id:'visual-analytics', label:'Visual Analytics', icon:ICON('visual-analytics') },
+        { id:'parts-center',     label:'Parts Center',     icon:ICON('parts-center'),    drillTo:'parts-center' },
+        { id:'service-center',   label:'Service Center',   icon:ICON('service-center'),  drillTo:'service-center' },
+        { id:'tools',            label:'Tools',            icon:ICON('tools'),           drillTo:'tools' },
+        { id:'admin',            label:'Admin',            icon:ICON('admin') },
+      ],
+      showLogout: true,
+    },
+    'asset-uptime': {
+      label: 'Asset Uptime',
+      back: { to:'root', label:'Asset Uptime' },
+      items: [
+        { id:'asset-explorer',        label:'Asset Explorer',        icon:ICON('my-dashboard'),    active:true },
+        { id:'operational-readiness', label:'Operational Readiness', icon:ICON('command-center') },
+      ],
+    },
+    'parts-center': {
+      label: 'Parts Center',
+      back: { to:'root', label:'Parts Center' },
+      items: [
+        { id:'shop-parts',  label:'Shop Parts',  icon:ICON('parts-center') },
+        { id:'orders',      label:'Orders',      icon:ICON('my-lists') },
+        { id:'rfqs',        label:'RFQs',        icon:ICON('my-dashboard') },
+      ],
+    },
+    'service-center': {
+      label: 'Service Center',
+      back: { to:'root', label:'Service Center' },
+      items: [
+        { id:'service-events', label:'Service Events', icon:ICON('service-center') },
+        { id:'work-orders',    label:'Work Orders',    icon:ICON('my-lists') },
+      ],
+    },
+    tools: {
+      label: 'Tools',
+      back: { to:'root', label:'Tools' },
+      items: [
+        { id:'capital-planner', label:'Capital Planner', icon:ICON('tools') },
+        { id:'reports',         label:'Reports',         icon:ICON('visual-analytics') },
+      ],
+    },
+  };
+
+  /* ============================================================
+     Page renderer
+     ============================================================ */
+  function renderPage(pageId){
+    const page = PAGES[pageId];
+    const el = document.createElement('div');
+    el.className = 'ps-nav-page';
+    el.dataset.pageId = pageId;
+
+    let html = '';
+    if(page.back){
+      html += `
+        <button class="ps-nav-back" data-back="${page.back.to}">
+          <span class="ps-nav-back-arrow"></span>
+          <span class="ps-nav-back-label">${page.back.label}</span>
+        </button>`;
+    }
+    html += '<ul class="ps-nav-list">';
+    for(const item of page.items){
+      const activeCls = item.active ? ' ps-nav-item--active' : '';
+      const drillAttr = item.drillTo ? ` data-drill="${item.drillTo}"` : '';
+      const chevron   = item.drillTo ? '<span class="ps-nav-chevron"></span>' : '';
+      html += `
+        <li class="ps-nav-item${activeCls}">
+          <button${drillAttr}>
+            <span class="ps-nav-icon"><img src="${item.icon}" alt=""></span>
+            <span class="ps-nav-label">${item.label}</span>
+            ${chevron}
+          </button>
+        </li>`;
+    }
+    if(page.showLogout){
+      html += `
+        <li class="ps-nav-divider" role="separator"></li>
+        <li class="ps-nav-logout">
+          <button>
+            <span class="ps-nav-icon"><img src="${ICON('logout')}" alt=""></span>
+            <span class="ps-nav-label">Log Out</span>
+          </button>
+        </li>`;
+    }
+    html += '</ul>';
+    el.innerHTML = html;
+    return el;
+  }
+
+  /* ============================================================
+     Sliding-track controller
+     ============================================================ */
+  const track     = document.getElementById('ps-nav-track');
+  const navEl     = document.getElementById('ps-nav');
+  const railEl    = document.getElementById('rail-col');
+  const heroTitle = document.getElementById('tn-hero-title');
+  const toggleBtn = document.getElementById('ps-nav-collapse-toggle');
+
+  let currentPageId = 'root';
+  let animating = false;
+
+  function setHero(text){ if(heroTitle) heroTitle.textContent = text; }
+
+  function showStatic(pageId){
+    track.classList.remove('ps-nav-track--animate');
+    track.style.transform = 'translateX(0)';
+    track.innerHTML = '';
+    track.appendChild(renderPage(pageId));
+    currentPageId = pageId;
+    setHero(pageId === 'root' ? 'Home' : PAGES[pageId].label);
+    bindPageEvents();
+  }
+
+  function navigate(toPageId, direction){
+    if(animating || toPageId === currentPageId) return;
+    animating = true;
+
+    const fromPage = renderPage(currentPageId);
+    const toPage   = renderPage(toPageId);
+    track.innerHTML = '';
+    track.classList.remove('ps-nav-track--animate');
+
+    if(direction === 'forward'){
+      track.appendChild(fromPage);
+      track.appendChild(toPage);
+      track.style.transform = 'translateX(0)';
+    } else {
+      track.appendChild(toPage);
+      track.appendChild(fromPage);
+      track.style.transform = 'translateX(-50%)';
+    }
+
+    // Force layout, then animate
+    track.offsetHeight; // eslint-disable-line no-unused-expressions
+    requestAnimationFrame(() => {
+      track.classList.add('ps-nav-track--animate');
+      track.style.transform = direction === 'forward' ? 'translateX(-50%)' : 'translateX(0)';
+    });
+
+    const onEnd = (e) => {
+      if(e.propertyName !== 'transform') return;
+      track.removeEventListener('transitionend', onEnd);
+      currentPageId = toPageId;
+      setHero(toPageId === 'root' ? 'Home' : PAGES[toPageId].label);
+      showStatic(toPageId);
+      animating = false;
+    };
+    track.addEventListener('transitionend', onEnd);
+  }
+
+  function bindPageEvents(){
+    track.querySelectorAll('[data-drill]').forEach(btn => {
+      btn.addEventListener('click', () => navigate(btn.dataset.drill, 'forward'));
+    });
+    track.querySelectorAll('[data-back]').forEach(btn => {
+      btn.addEventListener('click', () => navigate(btn.dataset.back, 'back'));
+    });
+  }
+
+  /* ============================================================
+     Collapse / expand
+     ============================================================ */
+  function setCollapsed(collapsed){
+    if(collapsed){
+      navEl.setAttribute('data-collapsed', '');
+      railEl.setAttribute('data-collapsed', '');
+      toggleBtn.setAttribute('aria-label', 'Expand sidebar');
+      toggleBtn.querySelector('svg').innerHTML = '<polyline points="9 18 15 12 9 6"/>';
+    } else {
+      navEl.removeAttribute('data-collapsed');
+      railEl.removeAttribute('data-collapsed');
+      toggleBtn.setAttribute('aria-label', 'Collapse sidebar');
+      toggleBtn.querySelector('svg').innerHTML = '<polyline points="15 18 9 12 15 6"/>';
+    }
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    setCollapsed(!navEl.hasAttribute('data-collapsed'));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if(e.key === 'l' || e.key === 'L'){
+      setCollapsed(!navEl.hasAttribute('data-collapsed'));
+    }
+  });
+
+  /* ============================================================
+     Init
+     ============================================================ */
+  showStatic('root');
+})();
+</script>
+</body>
+</html>

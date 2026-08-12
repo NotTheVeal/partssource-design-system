@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  /* Breadcrumb (shared chrome) */
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb a{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms;}
+  .ps-breadcrumb a:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+  .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+  .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0 0 4px;}
+  .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+  .section-body{padding:24px;}
+  .section-body p{margin:0 0 12px;line-height:1.6;color:var(--ps-fg-primary);}
+  .section-body p:last-child{margin-bottom:0;}
+
+  pre{margin:0;padding:16px 18px;background:#0F1E2E;color:#E6F0FA;border-radius:6px;overflow-x:auto;font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.55;}
+  pre .c{color:#7FA0BC;}
+  pre .k{color:#FFB86C;}
+  pre .s{color:#A3E8A2;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+  .step{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;padding:18px;}
+  .step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#005BA6;color:#fff;font-weight:700;font-size:14px;margin-bottom:10px;}
+  .step h3{margin:0 0 6px;font-size:16px;font-weight:600;color:#002F48;}
+  .step p{margin:0;font-size:13px;line-height:1.55;color:var(--ps-fg-secondary);}
+
+  ul.tight{margin:0;padding-left:20px;line-height:1.7;}
+  ul.tight li{margin-bottom:6px;}
+
+  .link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+  .link-grid a{display:block;padding:14px 16px;background:#FAFAFA;border:1px solid #E6E6E6;border-radius:6px;text-decoration:none;color:var(--ps-fg-primary);transition:border-color 120ms,box-shadow 120ms;}
+  .link-grid a:hover{border-color:#005BA6;box-shadow:0 2px 8px rgba(0,91,166,.08);}
+  .link-grid b{display:block;font-size:14px;color:#002F48;margin-bottom:2px;}
+  .link-grid span{font-size:12px;color:var(--ps-fg-tertiary);line-height:1.4;display:block;}
+
+  .file-tree{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#FAFAFA;border:1px solid #F1F1F1;border-radius:6px;padding:16px 20px;line-height:1.8;color:#4A4A4A;}
+  .file-tree .dir{color:#005BA6;font-weight:600;}
+  .file-tree .comment{color:#949494;}
+
+  /* pipeline: flow diagram */
+  .pflow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:4px 0 20px;}
+  .pflow .node{background:#fff;border:1.5px solid #005BA6;color:#002F48;border-radius:6px;padding:10px 14px;font-size:14px;font-weight:600;flex:1;min-width:130px;text-align:center;}
+  .pflow .node small{display:block;font-weight:400;color:var(--ps-fg-tertiary);font-size:12px;margin-top:2px;}
+  .pflow .arrow{color:#005BA6;font-size:20px;font-weight:700;flex:none;}
+  @media(max-width:720px){.pflow{flex-direction:column;align-items:stretch;}.pflow .arrow{transform:rotate(90deg);align-self:center;}}
+
+  /* pipeline: numbered steps */
+  .psteps{list-style:none;padding:0;margin:12px 0;counter-reset:pstep;}
+  .psteps>li{position:relative;padding:13px 16px 13px 54px;border:1px solid #F1F1F1;border-radius:8px;margin:8px 0;background:#FAFAFA;font-size:14px;color:var(--ps-fg-primary);line-height:1.5;}
+  .psteps>li::before{counter-increment:pstep;content:counter(pstep);position:absolute;left:13px;top:11px;width:28px;height:28px;border-radius:50%;background:#005BA6;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .psteps>li b{color:#002F48;}
+  .psteps>li .say{display:block;color:var(--ps-fg-tertiary);font-size:12.5px;margin-top:3px;}
+
+  /* pipeline: key/value table */
+  .pkv{border:1px solid var(--ps-border-default);border-radius:8px;overflow:hidden;margin:12px 0;}
+  .pkv div{display:flex;gap:12px;padding:10px 14px;border-bottom:1px solid var(--ps-border-default);font-size:13.5px;line-height:1.5;}
+  .pkv div:last-child{border-bottom:0;}
+  .pkv .k{flex:0 0 170px;font-weight:700;color:var(--ps-fg-secondary);}
+  .pkv .v{color:var(--ps-fg-primary);}
+
+  /* pipeline: callouts */
+  .pcall{border-left:4px solid #005BA6;background:#EFF9FE;border-radius:4px;padding:12px 16px;margin:12px 0;font-size:14px;color:#083b63;line-height:1.5;}
+  .pcall.ok{border-left-color:#17AB78;background:#E4F4EE;color:#0c6b48;}
+  .pcall.warn{border-left-color:#FF9505;background:#FDF0DA;color:#7a4a00;}
+  .pcall b{font-weight:700;}
+  .pstepgroup{margin:22px 0 4px;padding-top:16px;border-top:1px solid var(--ps-border-default);font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:#005BA6;}
+  .pstepgroup:first-of-type{border-top:0;padding-top:0;}
+
+  /* pipeline: accordions */
+  .pacc{border:1px solid var(--ps-border-default);border-radius:8px;margin:10px 0;background:#fff;overflow:hidden;}
+  .pacc>summary{list-style:none;cursor:pointer;padding:15px 18px;font-weight:600;font-size:16px;color:#002F48;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .pacc>summary::-webkit-details-marker{display:none;}
+  .pacc>summary::after{content:"+";font-size:22px;font-weight:700;color:#005BA6;line-height:1;width:16px;text-align:center;flex:none;}
+  .pacc[open]>summary::after{content:"\2013";}
+  .pacc[open]>summary{border-bottom:1px solid var(--ps-border-default);}
+  .pacc>summary:hover{background:#EFF9FE;}
+  .pacc .acc-body{padding:8px 18px 18px;font-size:14px;color:var(--ps-fg-secondary);line-height:1.6;}
+  .pacc .acc-body p{margin:8px 0;}
+  .pacc .acc-body h3{font-weight:600;font-size:15px;color:#002F48;margin:18px 0 6px;}
+  .pacc .acc-body ul{margin:8px 0;padding-left:20px;}
+  .pacc .acc-body li{margin:5px 0;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+    Design System
+  </a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Getting Started</span>
+</nav>
+
+<h1>Getting Started</h1>
+<p class="intro">The PartsSource Design System is a shared vocabulary of tokens, components, and patterns that ship across every PartsSource surface — Marketplace, Pro, Command Center, and internal tooling. This page is the front door. Start here.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Who this is for</h2>
+    <div class="desc">Three audiences read this site differently.</div>
+  </div>
+  <div class="section-body">
+    <div class="grid-2">
+      <div class="step">
+        <h3>Designers</h3>
+        <p>Pull primitives from the Figma file (<code>Design System &amp; Component library.fig</code>). Use this site to confirm tokens, states, and copy. Don't recreate components — instance them.</p>
+      </div>
+      <div class="step">
+        <h3>Engineers</h3>
+        <p>Import the React + TypeScript kit from <code>UI Kit/</code>. Read each component page for prop API + states. Use <code>tokens.css</code> for any custom CSS so values stay in sync.</p>
+      </div>
+      <div class="step">
+        <h3>PMs &amp; writers</h3>
+        <p>Use the Voice &amp; Tone matrix (coming) before drafting copy. Reference Empty States and Alerts for status language.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>How your design reaches code</h2>
+    <div class="desc">The token pipeline, in plain language. You do not need to write code — most days you press one button in Figma.</div>
+  </div>
+  <div class="section-body">
+    <div class="pflow">
+      <div class="node">1. You design<small>in Figma</small></div>
+      <span class="arrow">&rarr;</span>
+      <div class="node">2. You push<small>Token Studio</small></div>
+      <span class="arrow">&rarr;</span>
+      <div class="node">3. It builds<small>GitHub</small></div>
+      <span class="arrow">&rarr;</span>
+      <div class="node">4. It shows up<small>Storybook</small></div>
+    </div>
+
+    <details class="pacc" open>
+      <summary>What is all this?</summary>
+      <div class="acc-body">
+        <p>We keep all our design choices in <b>one place</b> in Figma — colors, spaces, and text sizes. When you change one there, it can flow all the way to the code that runs our products. This saves time and stops mistakes.</p>
+        <p>The short version: you design in Figma, you push with a plugin called Token Studio, GitHub builds it for you, and it shows up in Storybook. Storybook is a web page where we can see every part we have built.</p>
+      </div>
+    </details>
+
+    <details class="pacc">
+      <summary>Words to know</summary>
+      <div class="acc-body">
+        <div class="pkv">
+          <div><span class="k">Token</span><span class="v">A saved value with a name. Like "brand blue" or "small space." You use the name, not the number.</span></div>
+          <div><span class="k">Token Studio</span><span class="v">A plugin inside Figma. It is the bridge. It sends your design choices to the code.</span></div>
+          <div><span class="k">GitHub</span><span class="v">Where the code lives. It also builds and checks the work on its own.</span></div>
+          <div><span class="k">Component</span><span class="v">A part we build once and use again. Like a button, a card, or a menu.</span></div>
+          <div><span class="k">Pull request (PR)</span><span class="v">A "please add my change" note. It lets the work get checked before it goes live.</span></div>
+          <div><span class="k">Storybook</span><span class="v">A web page that shows every part we have built, live and up to date.</span></div>
+        </div>
+      </div>
+    </details>
+
+    <details class="pacc">
+      <summary>How to start the pipeline from Token Studio</summary>
+      <div class="acc-body">
+        <p>Do this when you changed a value in Figma, like a color or a space, and you want it in the code.</p>
+        <ol class="psteps">
+          <li><b>Open your file in Figma.</b><span class="say">The one where you made the change.</span></li>
+          <li><b>Open the plugin.</b><span class="say">Click the <b>Plugins</b> menu, then click <b>Tokens Studio for Figma</b>.</span></li>
+          <li><b>Check it points to the right place.</b><span class="say">It should say <code>NotTheVeal/react-ui-kit</code>. The first-time setup box below shows how to check this.</span></li>
+          <li><b>Click Push.</b><span class="say">The Push button sends your change out.</span></li>
+          <li><b>Write a short note.</b><span class="say">Say what you changed, like "New brand blue." A few words is fine.</span></li>
+          <li><b>Choose "branch and pull request."</b><span class="say">Do not push straight to <code>main</code>. A pull request lets the work get checked first.</span></li>
+          <li><b>Click OK. You are done.</b><span class="say">GitHub takes over now. You do not touch the code.</span></li>
+        </ol>
+        <div class="pcall ok"><b>That is the whole push.</b> No code. No typing commands. The one button is Push. GitHub does the rest.</div>
+      </div>
+    </details>
+
+    <details class="pacc">
+      <summary>First-time setup: connect Token Studio to GitHub (full steps)</summary>
+      <div class="acc-body">
+        <p>You do this <b>one time</b>. It has four small parts. Take them in order. After this, you only press Push.</p>
+
+        <h3>Part 1 &mdash; Get a GitHub key</h3>
+        <p>A key is like a password just for apps. You make it once.</p>
+        <ol class="psteps">
+          <li><b>Go to GitHub and sign in.</b><span class="say">Open <code>github.com</code>.</span></li>
+          <li><b>Open your settings.</b><span class="say">Click your picture in the top right, then click <b>Settings</b>.</span></li>
+          <li><b>Open developer settings.</b><span class="say">Scroll to the very bottom of the left menu and click <b>Developer settings</b>.</span></li>
+          <li><b>Pick classic tokens.</b><span class="say">Click <b>Personal access tokens</b>, then <b>Tokens (classic)</b>.</span></li>
+          <li><b>Make a new one.</b><span class="say">Click <b>Generate new token</b>, then <b>Generate new token (classic)</b>.</span></li>
+          <li><b>Name it and set a date.</b><span class="say">Name it <code>Token Studio</code>. Set expiration to 90 days or longer.</span></li>
+          <li><b>Check one box only: <code>repo</code>.</b><span class="say">That single box is all you need. Leave the rest alone.</span></li>
+          <li><b>Click Generate token, then copy it.</b><span class="say">It starts with <code>ghp_</code>. You cannot see it again, so keep it handy for the next part.</span></li>
+        </ol>
+        <div class="pcall warn"><b>Careful:</b> this key is a secret, like a password. Do not paste it in a chat or an email. You will only paste it into Token Studio in the next part.</div>
+
+        <h3>Part 2 &mdash; Add GitHub to Token Studio</h3>
+        <ol class="psteps">
+          <li><b>Open the plugin in Figma.</b><span class="say"><b>Plugins</b> menu, then <b>Tokens Studio for Figma</b>.</span></li>
+          <li><b>Open its settings.</b><span class="say">Click the <b>gear</b> icon at the bottom of the plugin.</span></li>
+          <li><b>Add a sync provider.</b><span class="say">Find <b>Sync providers</b>, click <b>Add new</b>, and choose <b>GitHub</b>.</span></li>
+          <li><b>Fill in the boxes</b> (see the table below).</li>
+          <li><b>Click Save.</b><span class="say">This stores the connection.</span></li>
+        </ol>
+        <div class="pkv">
+          <div><span class="k">Name</span><span class="v">Anything you like, such as <code>react-ui-kit</code>.</span></div>
+          <div><span class="k">Personal access token</span><span class="v">Paste the <code>ghp_</code> key you copied in Part 1.</span></div>
+          <div><span class="k">Repository</span><span class="v"><code>NotTheVeal/react-ui-kit</code> &mdash; type it exactly.</span></div>
+          <div><span class="k">Branch</span><span class="v">A new name like <code>tokens/studio-sync</code>. Never <code>main</code>.</span></div>
+          <div><span class="k">File path</span><span class="v"><code>tokens</code> &mdash; this is the folder name, not one file.</span></div>
+          <div><span class="k">Multi-file</span><span class="v">Turn this <b>ON</b>. Our tokens live in several files inside the <code>tokens</code> folder.</span></div>
+        </div>
+
+        <h3>Part 3 &mdash; Pull once to line things up</h3>
+        <ol class="psteps">
+          <li><b>Click Pull.</b><span class="say">This brings the current tokens from GitHub into the plugin.</span></li>
+          <li><b>Check the token sets show up.</b><span class="say">On the left you should see: <code>primitive</code>, <code>semantic</code>, <code>semantic.dark</code>, <code>component</code>, <code>legacy</code>.</span></li>
+          <li><b>Check the themes show up.</b><span class="say">You should see: <b>Primitives</b>, <b>Light</b>, <b>Dark</b>, <b>Component</b>.</span></li>
+        </ol>
+        <div class="pcall ok"><b>If you see all of those, you are connected right.</b> You never have to do Parts 1 to 3 again.</div>
+
+        <h3>Part 4 &mdash; How you push from now on</h3>
+        <ol class="psteps">
+          <li><b>Change a value.</b><span class="say">Edit a color, space, or text size in a token set.</span></li>
+          <li><b>Click Push.</b><span class="say">Write a short note about what you changed.</span></li>
+          <li><b>Keep your branch, not main.</b><span class="say">This makes a pull request so the work gets checked first.</span></li>
+          <li><b>Click Push to confirm.</b><span class="say">You are done. GitHub checks it and the pipeline runs.</span></li>
+        </ol>
+
+        <h3>If something goes wrong</h3>
+        <div class="pkv">
+          <div><span class="k">"Bad credentials"</span><span class="v">Your key is wrong or expired. Make a new one in Part 1.</span></div>
+          <div><span class="k">"Not found"</span><span class="v">Check the Repository spelling: <code>NotTheVeal/react-ui-kit</code>.</span></div>
+          <div><span class="k">Sets look empty</span><span class="v">File path must be <code>tokens</code> with <b>Multi-file ON</b>. Fix it, then Pull again.</span></div>
+          <div><span class="k">Push went to main</span><span class="v">Change Branch to a new name so it opens a pull request, not a direct change.</span></div>
+        </div>
+      </div>
+    </details>
+
+    <details class="pacc">
+      <summary>How to make a new part (component) in Token Studio</summary>
+      <div class="acc-body">
+        <p>Say you want to add a brand new part, like a "Tag" or a "Callout." Its colors, spacing, and text sizes need their own tokens first. This is the part people get stuck on, so follow it slowly. It is easier than it looks.</p>
+
+        <p class="pstepgroup"><b>The trick to know first</b></p>
+        <p>Token Studio has <b>no "new component" button</b>. You cannot make one from nothing. Instead you <b>copy a part that already exists</b>, then rename it. That is the normal, correct way. Everyone does it this way.</p>
+
+        <p class="pstepgroup"><b>Part A — make the tokens (in Token Studio)</b></p>
+        <ol class="psteps">
+          <li><b>Open Token Studio in Figma.</b><span class="say">In Figma, open the Plugins menu and click Tokens Studio for Figma. A panel opens on the side.</span></li>
+          <li><b>Click the "component" set.</b><span class="say">On the left of the panel is a list of token sets: primitive, semantic, component, and so on. Click <b>component</b>. Now you see the tokens for every existing part, grouped by name (like <code>button</code>, <code>card</code>, <code>badge</code>).</span></li>
+          <li><b>Pick a part that looks close to yours.</b><span class="say">If your new part is a small pill, the <code>badge</code> group is a good start. If it is a box, start from <code>card</code>. It does not need to be perfect. You will change it next.</span></li>
+          <li><b>Hover a token in that group, then click the three dots (⋯).</b><span class="say">A tiny menu appears on the right side of the token row. This is where the copy option lives.</span></li>
+          <li><b>Click "Duplicate."</b><span class="say">A copy appears right below, with a name ending in "-copy." This copy is the seed of your new part.</span></li>
+          <li><b>Rename the copy to your part's name.</b><span class="say">Click the name and change the first word to your new part. Keep the dots and the shape. Example: change <code>badge.background</code> to <code>tag.background</code>. Keep the pattern <code>yourpart.piece.property</code>.</span></li>
+          <li><b>Duplicate and rename for each piece your part needs.</b><span class="say">Most parts need a few: <code>tag.background</code>, <code>tag.text</code>, <code>tag.border</code>, <code>tag.radius</code>, <code>tag.padding</code>. Duplicate one at a time, rename each.</span></li>
+          <li><b>Set each value by picking a token, not typing a number.</b><span class="say">Click a token's value box. Start typing <code>{</code> and a list appears. Pick a semantic token, like <code>{semantic.color.brand.primary}</code> for the background. <b>Never type a color like</b> <code>#005BA7</code>. Always point at a token.</span></li>
+          <li><b>Push it to GitHub.</b><span class="say">Click the <b>Push</b> button (an up arrow, near the top of the panel). Type a <b>new branch name</b> like <code>tag-tokens</code> — never <code>main</code>. Add a one-line message. Click Push. This opens a pull request for you.</span></li>
+        </ol>
+        <div class="pcall warn"><b>The one rule:</b> every value points at another token, never a raw number. A hand-typed color like <code>#005BA7</code> will not update when the brand changes. A token name like <code>{semantic.color.brand.primary}</code> will.</div>
+
+        <p class="pstepgroup"><b>Part B — what happens next (all automatic)</b></p>
+        <p>After you push, you are done. The push is the only manual step. The pipeline takes over on its own. You do not touch anything else, and you do not need to wait on a person.</p>
+        <ol class="psteps">
+          <li><b>The pipeline builds the tokens.</b><span class="say">GitHub turns your new tokens into code (the <code>--ps-...</code> names) with no one lifting a finger.</span></li>
+          <li><b>The checks run themselves.</b><span class="say">GitHub runs the safety checks automatically. Green means good.</span></li>
+          <li><b>Storybook updates on its own.</b><span class="say">When the checks pass, your change is live in Storybook. No merge to do by hand, no developer needed.</span></li>
+        </ol>
+        <div class="pcall"><b>Not sure which group to copy, or what to name a piece?</b> That naming choice is the only judgment call. Ask me, or ask a teammate — send the part's name and a screenshot and that is enough to guide you.</div>
+      </div>
+    </details>
+
+    <details class="pacc">
+      <summary>If you see red</summary>
+      <div class="acc-body">
+        <p>Red means a step stopped. This is normal sometimes. It is a safety net, not a big problem. Here is what to do.</p>
+        <ol class="psteps">
+          <li><b>Do not panic.</b><span class="say">Nothing broke on the live site. The check caught it before that.</span></li>
+          <li><b>Click the red step.</b><span class="say">It opens a page that says what went wrong.</span></li>
+          <li><b>Read the last few red lines.</b><span class="say">They usually name the file or the value with the problem.</span></li>
+          <li><b>Ask a developer, or ask me.</b><span class="say">Share the link to the red step. That is all we need to help fast.</span></li>
+        </ol>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Quick install — Web</h2>
+    <div class="desc">Bring the system into any HTML page.</div>
+  </div>
+  <div class="section-body">
+    <p>Drop these two stylesheets in your <code>&lt;head&gt;</code>. That's it — every <code>--ps-*</code> token and the Source Sans Pro family is now available.</p>
+    <pre><span class="c">&lt;!-- Tokens: primitive · semantic · component --&gt;</span>
+<span class="k">&lt;link</span> <span class="s">rel="stylesheet" href="/design-system/tokens.css"</span><span class="k">&gt;</span>
+
+<span class="c">&lt;!-- Type, color helpers, base resets --&gt;</span>
+<span class="k">&lt;link</span> <span class="s">rel="stylesheet" href="/design-system/colors_and_type.css"</span><span class="k">&gt;</span>
+
+<span class="c">&lt;!-- Source Sans Pro (only if not already loaded) --&gt;</span>
+<span class="k">&lt;link</span> <span class="s">rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;500;600;700&amp;display=swap"</span><span class="k">&gt;</span></pre>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Quick install — React</h2>
+    <div class="desc">For TypeScript projects using the kit in <code>UI Kit/</code>.</div>
+  </div>
+  <div class="section-body">
+    <p>Import components from the kit. Tokens are exported from <code>tokens.ts</code>:</p>
+    <pre><span class="k">import</span> { Button, Input, EventCard, Modal } <span class="k">from</span> <span class="s">'@partssource/ui-kit'</span>;
+<span class="k">import</span> { psBlue, psGray } <span class="k">from</span> <span class="s">'@partssource/ui-kit/tokens'</span>;
+
+<span class="k">function</span> Example() {
+  <span class="k">return</span> (
+    <span class="k">&lt;Button</span> variant=<span class="s">"primary"</span> size=<span class="s">"lg"</span> onClick={save}<span class="k">&gt;</span>
+      Save changes
+    <span class="k">&lt;/Button&gt;</span>
+  );
+}</pre>
+    <p>Need Tailwind utilities mapped to PS colors? See the <code>tailwind.config</code> snippet in <code>UI Kit/index.html</code>.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Your first component — in 5 minutes</h2>
+    <div class="desc">Build a simple form that uses tokens, Input, and Button.</div>
+  </div>
+  <div class="section-body">
+    <div class="grid-2">
+      <div class="step"><span class="step-num">1</span><h3>Pick a component</h3><p>Open the <a href="index.html">component index</a>. Every card links to a page with states, props, and tokens.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Copy the markup</h3><p>Each component page has a "snippet" block. Paste it in — the result will already be using your tokens.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Wire state</h3><p>Use controlled values for Inputs and Selections. The README in <code>UI Kit/</code> documents prop conventions.</p></div>
+      <div class="step"><span class="step-num">4</span><h3>Test states</h3><p>Force <code>state="focus"</code> or <code>state="disabled"</code> while you build. Real interactivity takes over once you remove it.</p></div>
+      <div class="step"><span class="step-num">5</span><h3>Check accessibility</h3><p>Run through the <a href="accessibility.html">Accessibility hub</a> checklist before merging — keyboard, focus, contrast, screen reader.</p></div>
+      <div class="step"><span class="step-num">6</span><h3>Ship it</h3><p>If you needed to add a new component or token, follow the <a href="contribution.html">Contribution guide</a>.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>File structure</h2>
+    <div class="desc">Where everything lives in this project.</div>
+  </div>
+  <div class="section-body">
+    <div class="file-tree">
+<span class="dir">tokens.css</span>          <span class="comment">— Primitive · Semantic · Component tokens</span><br>
+<span class="dir">tokens.json</span>         <span class="comment">— Same tokens, machine-readable</span><br>
+<span class="dir">tokens.scss</span>         <span class="comment">— Same tokens for Sass projects</span><br>
+<span class="dir">colors_and_type.css</span> <span class="comment">— Brand color + type utilities + base reset</span><br>
+<span class="dir">preview/</span>            <span class="comment">— Component docs (this site)</span><br>
+&nbsp;&nbsp;<span class="dir">index.html</span>        <span class="comment">— Landing page</span><br>
+&nbsp;&nbsp;<span class="dir">buttons.html</span>      <span class="comment">— Per-component pages</span><br>
+&nbsp;&nbsp;<span class="dir">…</span><br>
+<span class="dir">UI Kit/</span>             <span class="comment">— React + TypeScript implementations</span><br>
+&nbsp;&nbsp;<span class="dir">Button.tsx</span><br>
+&nbsp;&nbsp;<span class="dir">Input.tsx</span><br>
+&nbsp;&nbsp;<span class="dir">tokens.ts</span>         <span class="comment">— TS-side mirror of tokens.css</span><br>
+&nbsp;&nbsp;<span class="dir">…</span><br>
+<span class="dir">ui_kits/</span><br>
+&nbsp;&nbsp;<span class="dir">ps-shell/</span>         <span class="comment">— App-shell template</span><br>
+&nbsp;&nbsp;<span class="dir">ps-marketplace/</span>   <span class="comment">— Marketplace recreation</span><br>
+<span class="dir">assets/</span>             <span class="comment">— Logos, fonts, data-display PNGs</span><br>
+<span class="dir">Design System &amp; Component library.fig</span> <span class="comment">— Figma source of truth</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Where to find what</h2>
+    <div class="desc">Common questions answered.</div>
+  </div>
+  <div class="section-body">
+    <div class="link-grid">
+      <a href="tokens.html"><b>Tokens reference</b><span>Three-level token sheet</span></a>
+      <a href="colors.html"><b>Color palette</b><span>Brand, neutral, semantic, data viz</span></a>
+      <a href="type-display.html"><b>Type scale</b><span>Display + body sizes</span></a>
+      <a href="../UI Kit/index.html"><b>React components</b><span>Production-ready kit</span></a>
+      <a href="accessibility.html"><b>Accessibility</b><span>WCAG, keyboard, focus, contrast</span></a>
+      <a href="layout-grid.html"><b>Layout &amp; Grid</b><span>Breakpoints, containers, columns</span></a>
+      <a href="motion.html"><b>Motion</b><span>Durations, easing, choreography</span></a>
+      <a href="contribution.html"><b>Contribute</b><span>Propose a component or token</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Help &amp; ownership</h2>
+    <div class="desc">Who owns this, how to ask.</div>
+  </div>
+  <div class="section-body">
+    <ul class="tight">
+      <li><b>Design owner:</b> Design Systems guild — post in <code>#design-systems</code> on Slack.</li>
+      <li><b>Engineering owner:</b> Platform UI team — file an issue in the repo or tag <code>@design-systems</code>.</li>
+      <li><b>Office hours:</b> Thursdays 11–12 ET. Bring questions, proposals, or live screen-shares.</li>
+      <li><b>Bug reports:</b> include component name, browser, and a minimal repro. Screenshots welcome.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  /* single-open accordions: opening one closes the rest */
+  (function(){
+    var acc=[].slice.call(document.querySelectorAll(".pacc"));
+    acc.forEach(function(d){
+      d.addEventListener("toggle",function(){
+        if(d.open){acc.forEach(function(o){if(o!==d)o.open=false;});}
+      });
+    });
+  })();
+</script>
+</body>
+</html>

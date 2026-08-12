@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Voice &amp; Tone · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+  .tagline{font-family:'Source Sans Pro',sans-serif;color:#005BA6;font-weight:600;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+  .section-body{padding:24px;background:#FAFAFA;}
+
+  /* We are / we are not */
+  .voice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+  .voice-card{background:#fff;border:1px solid #E6E6E6;border-radius:8px;padding:18px 20px;}
+  .voice-card .we-are{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#0A7850;margin-bottom:6px;}
+  .voice-card .we-are-not{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#9E2020;margin-top:14px;margin-bottom:6px;}
+  .voice-card h3{margin:0 0 6px;font-size:16px;font-weight:700;color:#002F48;}
+  .voice-card .label{font-size:13px;color:#4A4A4A;}
+  .voice-card p{margin:0;font-size:13px;line-height:1.55;color:#4A4A4A;}
+
+  /* Principle cards (numbered, intro section) */
+  .principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}
+  .principle{background:#fff;border:1px solid #E6E6E6;border-radius:8px;padding:18px 20px;}
+  .principle .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#005BA6;color:#fff;font-weight:700;font-size:13px;margin-bottom:10px;}
+  .principle h3{margin:0 0 6px;font-size:15px;font-weight:700;color:#002F48;}
+  .principle p{margin:0;font-size:13px;line-height:1.55;color:#4A4A4A;}
+
+  /* Audit tables (CTA rules) */
+  table.matrix{width:100%;border-collapse:collapse;font-size:13px;background:#fff;}
+  table.matrix th,table.matrix td{padding:12px 14px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.matrix th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.matrix .yes{color:#0A7850;font-weight:600;}
+  table.matrix .no{color:#9E2020;font-weight:600;text-decoration:line-through;}
+  table.matrix .audit-current{color:#777;font-style:italic;text-decoration:line-through;}
+  table.matrix .audit-new{color:#0A7850;font-weight:700;}
+
+  /* Do/Don't side-by-side examples */
+  .examples{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:780px){.examples{grid-template-columns:1fr;}}
+  .example{background:#fff;border:1px solid #F1F1F1;border-radius:8px;overflow:hidden;}
+  .example__tag{font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;padding:8px 14px;}
+  .example--do .example__tag{background:#E5F9F2;color:#0A7850;}
+  .example--dont .example__tag{background:#FDECEC;color:#9E2A1C;}
+  .example__body{padding:14px 16px;font-size:14px;line-height:1.55;color:#2B2B2B;}
+  .example__body em{display:block;margin-top:8px;font-style:normal;color:#777;font-size:12px;}
+
+  /* Pull-quote / promise callout */
+  .promise{
+    background:#EFF9FE;border:1px solid #B0D7F4;border-radius:8px;
+    padding:20px 24px;display:flex;flex-direction:column;gap:6px;
+  }
+  .promise b{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#005BA6;}
+  .promise p{margin:0;font-size:18px;font-weight:300;color:#002F48;letter-spacing:-.01em;}
+
+  /* Editing checklist */
+  .checklist{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px 14px;font-size:13px;color:#4A4A4A;line-height:1.5;}
+  .checklist label{display:flex;gap:8px;align-items:flex-start;background:#fff;border:1px solid #F1F1F1;border-radius:6px;padding:10px 14px;}
+  .checklist input{margin-top:2px;}
+
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Voice &amp; Tone</span>
+</nav>
+
+<h1>Voice &amp; Tone</h1>
+<p class="intro">PartsSource is a clinical-grade procurement partner. Copy carries a single unifying promise — <span class="tagline">Ensuring healthcare is always on®</span> — and every button, error, headline, and email subject line should reflect it. Sourced from the <em>PartsSource Copywriting Best Practices for Healthcare Communication</em> and the <em>CTA Audit Report — PartsSource Platform</em>.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>The promise</h2>
+    <div class="desc">Every sentence should answer one question.</div>
+  </div>
+  <div class="section-body">
+    <div class="promise">
+      <b>Tagline</b>
+      <p>Ensuring healthcare is always on®</p>
+      <span style="font-size:13px;color:#4A4A4A;line-height:1.55;">Does this help keep healthcare running — reliably, safely, and without disruption? If not, cut it.</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>What copy must do</h2>
+    <div class="desc">Three non-negotiables from the Copywriting Best Practices guide.</div>
+  </div>
+  <div class="section-body">
+    <div class="principles">
+      <div class="principle">
+        <span class="num">1</span>
+        <h3>Reduce cognitive load</h3>
+        <p>Busy healthcare professionals scan; they don't read. One idea per sentence. One action per button. Progressive disclosure over up-front explanation.</p>
+      </div>
+      <div class="principle">
+        <span class="num">2</span>
+        <h3>Build trust in high-stakes environments</h3>
+        <p>Patient safety, compliance, and uptime are at stake. Write with authority, never hype. Let outcomes and proof points do the work.</p>
+      </div>
+      <div class="principle">
+        <span class="num">3</span>
+        <h3>Drive confident action</h3>
+        <p>Keep equipment, systems, and care delivery operational. If a sentence doesn't help the user decide, act, or reduce risk — cut it.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>We are / we are not</h2>
+    <div class="desc">Four traits and their opposites. Lean toward the "we are" column when in doubt.</div>
+  </div>
+  <div class="section-body">
+    <div class="voice-grid">
+      <div class="voice-card">
+        <div class="we-are">We are</div>
+        <h3>Clear over clever</h3>
+        <p class="label">Plain language. Say what the thing is before what it does.</p>
+        <div class="we-are-not">We are not</div>
+        <p>"A seamless, end-to-end procurement experience." Marketing fluff. Vague euphemism.</p>
+      </div>
+      <div class="voice-card">
+        <div class="we-are">We are</div>
+        <h3>Confident, not arrogant</h3>
+        <p class="label">"Trusted by thousands of hospitals to manage medical equipment parts."</p>
+        <div class="we-are-not">We are not</div>
+        <p>"The best platform in healthcare." Hype. Indefensible claim.</p>
+      </div>
+      <div class="voice-card">
+        <div class="we-are">We are</div>
+        <h3>Human, not casual</h3>
+        <p class="label">Smart colleague explaining something. Natural sentence structure.</p>
+        <div class="we-are-not">We are not</div>
+        <p>Slang, emojis, internet shorthand, or playful tone in critical moments.</p>
+      </div>
+      <div class="voice-card">
+        <div class="we-are">We are</div>
+        <h3>Specific, never silent</h3>
+        <p class="label">"Reduce part sourcing time by consolidating vendors in one platform."</p>
+        <div class="we-are-not">We are not</div>
+        <p>"Save time and money." Generic adjectives without data, outcome, or constraint.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Button labels · Verb–Subject is non-negotiable</h2>
+    <div class="desc">The naming pattern from the CTA Audit. Verb first, then the object it affects. Mirrors natural language, reduces cognitive load (Hick's Law), accelerates recognition (Jakob's Law).</div>
+  </div>
+  <div class="section-body" style="padding:0;background:#fff;">
+    <table class="matrix">
+      <thead><tr><th>Pattern</th><th>When to use</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><b>View Details</b></td><td>The action opens a single item or record — card → detail.</td><td>"View Details" on an asset card · part card · event card</td></tr>
+        <tr><td><b>View All + [Object]</b></td><td>The action navigates to a full list or collection — section → list.</td><td>"View All Events" · "View All Quotes" · "View All Orders"</td></tr>
+        <tr><td><b>Verb + Object</b></td><td>Workflow or task-based action.</td><td>"Submit Work Order" · "Approve Event" · "Request Quote"</td></tr>
+        <tr><td><b>Show All / Expand · Collapse</b></td><td>Section disclosure. Make the expand/collapse state explicit.</td><td>"Show All" → "Expand View" / "Collapse View"</td></tr>
+        <tr><td><b>Cancel</b></td><td>Always "Cancel". Never "Nevermind", "Back", or "Discard" for a cancel.</td><td>"Cancel" (secondary button in confirm dialogs)</td></tr>
+        <tr><td><b>Destructive verb</b></td><td>Name the destruction. Never "OK" or "Confirm" for a destructive action.</td><td>"Delete List" · "Remove Item" · "Discard Draft"</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Primary vs. Secondary CTAs</h2>
+    <div class="desc">One Primary per screen or section. From the Copywriting guide §10.4.</div>
+  </div>
+  <div class="section-body" style="padding:0;background:#fff;">
+    <table class="matrix">
+      <thead><tr><th>Tier</th><th>When to use</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Primary</b></td>
+          <td>One per screen / section. Reserved for the highest-value action. Must directly support uptime, readiness, or operational clarity.</td>
+          <td>"Resolve Open Repairs" · "Submit Order" · "Review Critical Alerts"</td>
+        </tr>
+        <tr>
+          <td><b>Secondary</b></td>
+          <td>Supports learning or exploration. Follows the same Verb–Subject rules. Must never compete visually with the primary.</td>
+          <td>"View Details" · "Learn More" · "Download Overview"</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Approved Verb–Subject patterns</h2>
+    <div class="desc">From §10.4 Approved patterns. Lead with action, end with the object the action affects.</div>
+  </div>
+  <div class="section-body" style="padding:0;background:#fff;">
+    <table class="matrix">
+      <thead><tr><th>Pattern</th><th>Use</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><b>View + object</b></td><td>Open a single record or detail</td><td>"View Order Status"</td></tr>
+        <tr><td><b>Request + artifact</b></td><td>Ask the system to produce something</td><td>"Request a Quote"</td></tr>
+        <tr><td><b>Submit + item</b></td><td>Commit a finished payload</td><td>"Submit Order"</td></tr>
+        <tr><td><b>Start + process</b></td><td>Kick off a multi-step workflow</td><td>"Start Service Request"</td></tr>
+        <tr><td><b>Download + asset</b></td><td>Pull a file from the system</td><td>"Download Overview"</td></tr>
+        <tr><td><b>Go to + destination</b></td><td>Cross-screen navigation</td><td>"Go to Command Center"</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>CTA anti-patterns · do not use</h2>
+    <div class="desc">Rule of thumb: users must know what will happen before they commit. From §10.4.</div>
+  </div>
+  <div class="section-body">
+    <div class="examples">
+      <div class="example example--dont">
+        <div class="example__tag">Don't · noun only</div>
+        <div class="example__body">"Report" · "Form" · "Dashboard"<em>No verb. User has no idea what clicking does.</em></div>
+      </div>
+      <div class="example example--dont">
+        <div class="example__tag">Don't · vague action</div>
+        <div class="example__body">"Click here" · "Continue" · "Get started"<em>Doesn't name the outcome. Defaults to fluff.</em></div>
+      </div>
+      <div class="example example--dont">
+        <div class="example__tag">Don't · marketing-first</div>
+        <div class="example__body">"Discover" · "Explore" · "Unlock"<em>Without a concrete object, sounds like a brochure, not a tool.</em></div>
+      </div>
+      <div class="example example--dont">
+        <div class="example__tag">Don't · overloaded</div>
+        <div class="example__body">"Save &amp; Continue to Review and Submit"<em>Multiple actions in one button. Pick one.</em></div>
+      </div>
+      <div class="example example--do">
+        <div class="example__tag">Do · urgency, calm</div>
+        <div class="example__body">"Address Overdue Repairs" · "Approve Pending Orders"<em>Verb-first. Operational. Names the outcome.</em></div>
+      </div>
+      <div class="example example--dont">
+        <div class="example__tag">Don't · alarmist</div>
+        <div class="example__body">"Fix this now!" · "Don't miss out!"<em>Emotional pressure erodes trust in clinical contexts.</em></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Brand language &amp; trademark discipline</h2>
+    <div class="desc">From §11. Required and prohibited terminology — internal copy reviews block on these.</div>
+  </div>
+  <div class="section-body" style="padding:0;background:#fff;">
+    <table class="matrix">
+      <thead><tr><th>Topic</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>Registered marks</td><td>Use <code>®</code> on first external reference. Full product name on first mention — e.g. <b>PartsSource PRO®</b>.</td></tr>
+        <tr><td>Trademarks</td><td>Never pluralize, abbreviate, or verb a trademark. Not "PROs", not "PRO it", not "PSP".</td></tr>
+        <tr><td class="yes">Approved phrases</td><td>Mission-critical · Evidence-based · Clinical availability · Uptime · "Parts, service, talent, and asset management" (in that order)</td></tr>
+        <tr><td class="no">Prohibited language</td><td>Distributor · Vendor · Parts company</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Audience-first writing</h2>
+    <div class="desc">From §3. Start with the user's job, respect their expertise.</div>
+  </div>
+  <div class="section-body">
+    <div class="principles">
+      <div class="principle">
+        <span class="num">1</span>
+        <h3>Start with the job</h3>
+        <p>Lead with the pain point or job-to-be-done. Introduce the product only after context is set. <b>Problem → why it matters → how PartsSource helps.</b></p>
+      </div>
+      <div class="principle">
+        <span class="num">2</span>
+        <h3>Respect domain expertise</h3>
+        <p>Most users are SMEs. Don't over-explain industry fundamentals. Do explain what's different or what's changed. Avoid condescension and teaching tone.</p>
+      </div>
+      <div class="principle">
+        <span class="num">3</span>
+        <h3>Lead with insight, not promotion</h3>
+        <p>From §6. Credibility comes from perspective. Reference PartsSource only where it naturally supports the point.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>One-pager structure</h2>
+    <div class="desc">From §10. The five-section shape every brochureware piece must follow.</div>
+  </div>
+  <div class="section-body">
+    <div class="principles">
+      <div class="principle"><span class="num">1</span><h3>Value headline</h3><p>What it is + why it matters. Stands alone without body copy.</p></div>
+      <div class="principle"><span class="num">2</span><h3>Operational context</h3><p>The problem being solved. Use the language of the buyer's daily work.</p></div>
+      <div class="principle"><span class="num">3</span><h3>Proof or scale</h3><p>Concrete metrics, adoption, outcomes. Label projections clearly. No "significant savings" without context.</p></div>
+      <div class="principle"><span class="num">4</span><h3>Functional breakdown</h3><p>What the solution actually does. Plain, operational language.</p></div>
+      <div class="principle"><span class="num">5</span><h3>Clear next step</h3><p>One Verb–Subject CTA. The one action you want the reader to take.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>The final principle</h2>
+    <div class="desc">From §12 of the Copywriting guide.</div>
+  </div>
+  <div class="section-body">
+    <div class="promise">
+      <b>Why we write</b>
+      <p>When systems fail, healthcare stops. Our job is to make sure it doesn't.</p>
+      <span style="font-size:13px;color:#4A4A4A;line-height:1.55;">If the copy does not support that outcome, it does not belong.</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Tone by surface</h2>
+    <div class="desc">Voice stays constant. Tone shifts by context.</div>
+  </div>
+  <div class="section-body" style="padding:0;background:#fff;">
+    <table class="matrix">
+      <thead><tr><th>Surface</th><th>Tone</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>Button label</td><td>Verb-first, &lt; 3 words</td><td>"Request Quote" · "Save Changes" · "Cancel"</td></tr>
+        <tr><td>Form error</td><td>What happened · why · what to do next</td><td>"We couldn't submit your order because the part number is missing. Add a part number and try again."</td></tr>
+        <tr><td>Empty state</td><td>Welcoming, action-oriented</td><td>"No quotes yet. Request your first below."</td></tr>
+        <tr><td>Success toast</td><td>Confirming, factual</td><td>"Order placed. PO #634-887-2210."</td></tr>
+        <tr><td>Warning alert</td><td>Calm, decisive</td><td>"3 parts need approval before the order can ship."</td></tr>
+        <tr><td>Critical error</td><td>Calm, never alarmist</td><td>"We couldn't process this order. Your data is safe — try again."</td></tr>
+        <tr><td>Marketing headline</td><td>Outcome-focused, stands alone</td><td>"Mission-critical uptime, on demand."</td></tr>
+        <tr><td>Email subject</td><td>Specific, scannable</td><td>"Quote ready: 3 parts for Chatham Memorial"</td></tr>
+        <tr><td>Notification</td><td>Status-first</td><td>"PM scheduled · 03/14 · Imaging Room 314"</td></tr>
+        <tr><td>One-pager / brochureware</td><td>Headline → operational context → proof → functional breakdown → CTA</td><td>5-section structure. Every section justifies its space.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Common patterns — Do &amp; Don't</h2>
+    <div class="desc">Pick once, use everywhere.</div>
+  </div>
+  <div class="section-body">
+    <div class="examples">
+      <div class="example example--do">
+        <div class="example__tag">Do</div>
+        <div class="example__body">"We couldn't submit your order because the part number is missing. Add a part number and try again."<em>Names what happened · why · what to do next.</em></div>
+      </div>
+      <div class="example example--dont">
+        <div class="example__tag">Don't</div>
+        <div class="example__body">"Something went wrong."<em>No specifics. No recovery. Erodes trust under stress.</em></div>
+      </div>
+      <div class="example example--do">
+        <div class="example__tag">Do</div>
+        <div class="example__body">"Delete this list?" (confirm dialog title) → button "Delete List"<em>Subject matches between title and primary CTA.</em></div>
+      </div>
+      <div class="example example--dont">
+        <div class="example__tag">Don't</div>
+        <div class="example__body">"Are you sure you want to permanently remove this item?" → "OK"<em>Hedging title. Generic button.</em></div>
+      </div>
+      <div class="example example--do">
+        <div class="example__tag">Do</div>
+        <div class="example__body">"Saved." (toast)<em>One word. The user already knows what they saved.</em></div>
+      </div>
+      <div class="example example--dont">
+        <div class="example__tag">Don't</div>
+        <div class="example__body">"Your changes have been successfully saved!"<em>Length + exclamation = treat user like a child.</em></div>
+      </div>
+      <div class="example example--do">
+        <div class="example__tag">Do</div>
+        <div class="example__body">"Trusted by thousands of hospitals to manage medical equipment parts."<em>Authority through proof.</em></div>
+      </div>
+      <div class="example example--dont">
+        <div class="example__tag">Don't</div>
+        <div class="example__body">"The best platform in healthcare."<em>Hype. Indefensible. Erodes confidence.</em></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Word choice</h2>
+    <div class="desc">Use these. Avoid those.</div>
+  </div>
+  <div class="section-body" style="padding:0;background:#fff;">
+    <table class="matrix">
+      <thead><tr><th>Use</th><th>Avoid</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td class="yes">Order</td><td class="no">Purchase</td><td>Shorter. Matches verb form ("place an order").</td></tr>
+        <tr><td class="yes">Quote</td><td class="no">Estimate</td><td>A quote is binding; an estimate is squishy.</td></tr>
+        <tr><td class="yes">Facility</td><td class="no">Location</td><td>Healthcare-specific. Customers say facility.</td></tr>
+        <tr><td class="yes">Approval</td><td class="no">Authorization</td><td>Plain. Workflow-aligned.</td></tr>
+        <tr><td class="yes">Vendor</td><td class="no">Supplier</td><td>Industry standard in procurement.</td></tr>
+        <tr><td class="yes">Sign in</td><td class="no">Log in</td><td>One spelling. One verb.</td></tr>
+        <tr><td class="yes">Email</td><td class="no">E-mail</td><td>One word. No hyphen.</td></tr>
+        <tr><td class="yes">Uptime · readiness · availability</td><td class="no">Operational excellence (alone)</td><td>Tagline-aligned. Concrete.</td></tr>
+        <tr><td class="yes">A11y · i18n (internal only)</td><td class="no">Anywhere in product copy</td><td>Internal slang. Never in UI.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Edit checklist · before publishing</h2>
+    <div class="desc">Run every piece of copy through this list. From the Copywriting Best Practices guide §8.</div>
+  </div>
+  <div class="section-body">
+    <div class="checklist">
+      <label><input type="checkbox"> The primary action is obvious.</label>
+      <label><input type="checkbox"> Jargon is necessary and defined.</label>
+      <label><input type="checkbox"> Claims are defensible and evidence-based.</label>
+      <label><input type="checkbox"> Copy supports uptime, reliability, and operational continuity.</label>
+      <label><input type="checkbox"> Copy aligns with approved brand language and terminology.</label>
+      <label><input type="checkbox"> Headline stands alone without body copy.</label>
+      <label><input type="checkbox"> Tagline check: does this support <em>Ensuring healthcare is always on®</em>?</label>
+      <label><input type="checkbox"> Every sentence helps the user decide, act, or reduce risk.</label>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

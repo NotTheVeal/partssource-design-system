@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabs — Responsive · PartsSource</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#FAFAFA;color:var(--ps-fg-primary);font-family:'Source Sans Pro','Source Sans 3',sans-serif;-webkit-font-smoothing:antialiased;}
+
+  /* ── Page chrome ───────────────────────────────────────────────── */
+  .doc-head{
+    background:#fff;border-bottom:1px solid #E6E6E6;
+    padding:24px 40px;
+  }
+  .crumb{display:flex;align-items:center;gap:10px;font-size:14px;color:#777;margin-bottom:12px;}
+  .crumb a{color:#005BA6;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;padding:6px 10px 6px 6px;border-radius:4px;}
+  .crumb a:hover{background:#EFF9FE;color:#004A84;}
+  .crumb__sep{color:#CCC;}
+  .crumb__cur{color:#2B2B2B;font-weight:600;}
+  h1{margin:0 0 6px;font-size:32px;font-weight:300;color:#002F48;letter-spacing:-.01em;}
+  .lede{margin:0;max-width:780px;color:#4A4A4A;line-height:1.6;font-size:16px;}
+  .lede code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  /* ── Frame grid (Figma-feel canvas) ───────────────────────────── */
+  .canvas{padding:48px 40px 96px;}
+  .frame-row{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+    gap:32px;
+    margin-bottom:64px;
+    align-items:start;
+  }
+  @media (max-width:1280px){
+    .frame-row{grid-template-columns:1fr;}
+  }
+  .frame{display:flex;flex-direction:column;gap:12px;}
+  .frame__label{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    font-size:11px;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;color:#005BA6;
+  }
+  .frame__label small{color:#949494;letter-spacing:0;text-transform:none;font-weight:500;font-size:12px;font-family:ui-monospace,Menlo,monospace;}
+  .frame__shell{
+    background:#fff;border:1px solid #E6E6E6;border-radius:8px;overflow:hidden;
+    box-shadow:0 1px 2px rgba(0,0,0,0.04);
+  }
+  .frame__inner{
+    /* Each frame renders the same Tabs markup; container queries scope
+       the responsive behavior to the frame width so the mobile frame
+       collapses regardless of viewport. */
+    container-type:inline-size;
+    container-name:tabframe;
+    padding:24px;
+    background:#FAFAFA;
+    min-height:200px;
+  }
+
+  /* ══ Tabs — Folder (1:1 with Figma node 3746:10859) ══
+     Per /My-Lists Section.jsx + Property1Active/Inactive symbols:
+       • 38 px tall · 20 px horizontal padding
+       • Active = 1 px PS Blue border all around (rgb(0,91,166)), white bg
+       • Inactive = no border, white bg, plain label
+       • Source Sans Pro 16 px regular (line-height 38 px)
+       • Count badge = 18 × 18 round, #DCDCDC bg, 12 px bold black
+     No folder-lift, no 3 px top accent — those came from the older
+     preview/tabs.html and were never in the Figma source. */
+  .tabs{
+    --tab-active-border:#005BA6;
+    --tab-text:#000;
+    --tab-text-hover:#005BA6;
+    --tab-text-disabled:#BBB;
+    --tab-count-bg:#DCDCDC;
+    --tab-count-fg:#000;
+  }
+  .tabs__bar{
+    display:flex;align-items:center;
+    background:#fff;
+    overflow-x:auto;overflow-y:visible;
+    scrollbar-width:thin;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tabs__bar::-webkit-scrollbar{height:4px;}
+  .tabs__bar::-webkit-scrollbar-thumb{background:#DCDCDC;border-radius:2px;}
+  .tab{
+    display:inline-flex;align-items:center;gap:10px;
+    height:38px;padding:0 20px;
+    font:400 16px/38px 'Source Sans Pro','Source Sans 3',sans-serif;
+    color:var(--tab-text);
+    background:#fff;
+    border:1px solid transparent;
+    cursor:pointer;white-space:nowrap;flex-shrink:0;
+    transition:color 120ms ease,border-color 120ms ease;
+  }
+  .tab:hover:not([aria-selected="true"]):not([disabled]){color:var(--tab-text-hover);}
+  .tab[aria-selected="true"]{border:1px solid var(--tab-active-border);}
+  .tab[disabled]{color:var(--tab-text-disabled);cursor:not-allowed;}
+  .tab:focus-visible{outline:2px solid var(--tab-active-border);outline-offset:2px;}
+  .tab__count{
+    width:18px;height:18px;
+    border-radius:30px;
+    background:var(--tab-count-bg);color:var(--tab-count-fg);
+    font:700 12px/1 'Source Sans Pro',sans-serif;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .tabs__panel{
+    background:#fff;
+    padding:20px 24px;
+    color:var(--ps-sem-fg-primary);font-size:14px;line-height:1.55;
+    box-shadow:0 -1px 5px 0 rgba(0,0,0,0.15);
+    margin-top:-1px;
+    position:relative;z-index:0;
+  }
+
+  /* ══ Tabs — Segmented (sibling pattern, not in My-Lists frame) ══
+     Retained from earlier preview/tabs.html for completeness. */
+  .seg-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .seg-label{font:14px/1 'Source Sans Pro',sans-serif;color:#777;font-weight:400;}
+  .seg{
+    display:inline-flex;
+    height:36px;
+    border:1px solid #E0E0E0;border-radius:6px;overflow:hidden;background:#fff;
+  }
+  .seg__btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:42px;height:100%;padding:0 12px;
+    border:0;border-left:1px solid #E0E0E0;
+    background:#F4F6F8;color:#2B2B2B;
+    cursor:pointer;
+    font:600 13px/1 'Source Sans Pro',sans-serif;
+    transition:background 120ms ease;
+  }
+  .seg__btn:first-child{border-left:0;}
+  .seg__btn:hover:not([aria-selected="true"]):not([disabled]){background:#ECEFF2;}
+  .seg__btn[aria-selected="true"]{background:#fff;color:#000;}
+  .seg__btn[disabled]{opacity:.4;cursor:not-allowed;}
+  .seg__btn svg{width:16px;height:16px;display:block;}
+  .seg__btn:focus-visible{outline:2px solid #005BA6;outline-offset:-3px;}
+
+  /* ══ Tabs — Pill ══ */
+  .pills{display:flex;gap:8px;flex-wrap:wrap;}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;
+    height:30px;padding:0 14px;border-radius:30px;
+    border:1px solid #CCCCCC;background:#fff;color:#2B2B2B;
+    font:14px/1 'Source Sans Pro',sans-serif;cursor:pointer;
+    transition:all 120ms ease;white-space:nowrap;
+  }
+  .pill:hover:not([aria-selected="true"]){border-color:#005BA6;color:#005BA6;}
+  .pill[aria-selected="true"]{background:#005BA6;border-color:#005BA6;color:#fff;}
+  .pill__count{
+    min-width:22px;height:20px;padding:0 7px;border-radius:30px;
+    background:#DCDCDC;color:#000;
+    font-size:12px;font-weight:700;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .pill[aria-selected="true"] .pill__count{background:rgba(255,255,255,.25);color:inherit;}
+
+  /* ── Container-query responsive ───────────────────────────────── */
+  @container tabframe (max-width: 720px){
+    .tab{padding:0 14px;font-size:15px;}
+    .seg-row{flex-direction:column;align-items:flex-start;gap:8px;}
+  }
+  @container tabframe (max-width: 480px){
+    .tab{padding:0 12px;font-size:14px;height:34px;line-height:34px;}
+    .tab__count{display:none;}
+    .tabs__panel{padding:16px;font-size:13.5px;}
+    .pill{height:28px;padding:0 12px;font-size:13px;}
+    .pill__count{display:none;}
+  }
+  @container tabframe (max-width: 360px){
+    .tab{padding:0 10px;}
+  }
+
+  /* ── Section heading inside the canvas ───────────────────────── */
+  .group{margin-bottom:48px;}
+  .group__head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    margin:0 0 18px;flex-wrap:wrap;
+  }
+  .group__head h2{margin:0;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;}
+  .group__head p{margin:0;font-size:13px;color:#777;line-height:1.5;max-width:640px;}
+  .group__head code{font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;padding:1px 5px;border-radius:3px;color:#2B2B2B;}
+
+  /* ── Tokens panel ─────────────────────────────────────────────── */
+  .tokens{
+    background:#fff;border:1px solid #E6E6E6;border-radius:8px;
+    padding:18px 22px;margin-top:8px;
+    font-size:12px;color:#4A4A4A;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px 24px;
+  }
+  .tokens b{color:#000;font-weight:600;display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px;}
+  .tokens code{font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;padding:1px 5px;border-radius:3px;color:#2B2B2B;}
+</style>
+</head>
+<body>
+
+<header class="doc-head">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="index.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+      Design System
+    </a>
+    <span class="crumb__sep">/</span>
+    <a href="tabs.html">Tabs</a>
+    <span class="crumb__sep">/</span>
+    <span class="crumb__cur">Responsive</span>
+  </nav>
+  <h1>Tabs — Responsive</h1>
+  <p class="lede">1-for-1 match to the Figma <code>Tabs</code> symbol (node <code>3746:10859</code> / <em>Property&nbsp;1=Active</em> &amp; <em>Inactive</em>). 38&nbsp;px tall, 20&nbsp;px horizontal padding, 1&nbsp;px PS Blue border around the active tab — nothing else. Count badge is an 18&nbsp;×&nbsp;18 round chip in <code>#DCDCDC</code> with 12&nbsp;px bold black numerals. Below 480&nbsp;cq the count badges drop; below 360&nbsp;cq padding tightens further. Each frame is its own CSS container, so the strip responds to its parent width — not the viewport.</p>
+</header>
+
+<main class="canvas">
+
+  <!-- ═══════════════ FOLDER TABS ═══════════════ -->
+  <section class="group" aria-labelledby="g-folder">
+    <div class="group__head">
+      <h2 id="g-folder">Folder · Page-level sub-nav</h2>
+      <p>Active tab carries a 1&nbsp;px PS Blue border on all four sides — no top accent, no folder-lift. Inactive tabs are borderless. Panel below picks up the <code>0 -1px 5px rgba(0,0,0,.15)</code> shadow that anchors it to the tab row.</p>
+    </div>
+    <div class="frame-row">
+      <article class="frame">
+        <header class="frame__label">Mobile · 375 <small>min-width</small></header>
+        <div class="frame__shell" style="max-width:375px;">
+          <div class="frame__inner">
+            <nav class="tabs" role="tablist">
+              <div class="tabs__bar">
+                <button class="tab" role="tab" aria-selected="true">My Lists <span class="tab__count">8</span></button>
+                <button class="tab" role="tab" aria-selected="false">PartsSource Lists <span class="tab__count">47</span></button>
+                <button class="tab" role="tab" aria-selected="false">Company Lists <span class="tab__count">21</span></button>
+                <button class="tab" role="tab" aria-selected="false">Standing Orders <span class="tab__count">6</span></button>
+              </div>
+              <div class="tabs__panel" role="tabpanel">My Lists panel content. At &lt; 480 cq the count badges drop and tab labels shrink to 14 px.</div>
+            </nav>
+          </div>
+        </div>
+      </article>
+
+      <article class="frame">
+        <header class="frame__label">Tablet · 768 <small>min-width</small></header>
+        <div class="frame__shell" style="max-width:768px;">
+          <div class="frame__inner">
+            <nav class="tabs" role="tablist">
+              <div class="tabs__bar">
+                <button class="tab" role="tab" aria-selected="true">My Lists <span class="tab__count">8</span></button>
+                <button class="tab" role="tab" aria-selected="false">PartsSource Lists <span class="tab__count">47</span></button>
+                <button class="tab" role="tab" aria-selected="false">Company Lists <span class="tab__count">21</span></button>
+                <button class="tab" role="tab" aria-selected="false">Standing Orders <span class="tab__count">6</span></button>
+              </div>
+              <div class="tabs__panel" role="tabpanel">My Lists panel content.</div>
+            </nav>
+          </div>
+        </div>
+      </article>
+
+      <article class="frame">
+        <header class="frame__label">Desktop · 1440 <small>min-width</small></header>
+        <div class="frame__shell">
+          <div class="frame__inner">
+            <nav class="tabs" role="tablist">
+              <div class="tabs__bar">
+                <button class="tab" role="tab" aria-selected="true">My Lists <span class="tab__count">8</span></button>
+                <button class="tab" role="tab" aria-selected="false">PartsSource Lists <span class="tab__count">47</span></button>
+                <button class="tab" role="tab" aria-selected="false">Company Lists <span class="tab__count">21</span></button>
+                <button class="tab" role="tab" aria-selected="false">Standing Orders <span class="tab__count">6</span></button>
+              </div>
+              <div class="tabs__panel" role="tabpanel">My Lists panel content. The shadow above the panel ties it back to the tab row even though the active tab and panel aren&rsquo;t physically connected.</div>
+            </nav>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SEGMENTED ═══════════════ -->
+  <section class="group" aria-labelledby="g-seg">
+    <div class="group__head">
+      <h2 id="g-seg">Segmented · View toggle</h2>
+      <p>Icon-only switcher for 2–3 view modes of the same data. The leading <strong>View:</strong> label drops below the control under 720&nbsp;cq.</p>
+    </div>
+    <div class="frame-row">
+      <article class="frame">
+        <header class="frame__label">Mobile · 375 <small>min-width</small></header>
+        <div class="frame__shell" style="max-width:375px;">
+          <div class="frame__inner">
+            <div class="seg-row">
+              <span class="seg-label">View:</span>
+              <div class="seg" role="tablist" aria-label="View mode">
+                <button class="seg__btn" role="tab" aria-selected="true" aria-label="Cards"><svg viewBox="0 0 16 16" fill="currentColor"><rect x="1.5" y="1.5" width="5.5" height="3.8" rx=".8"></rect><rect x="9" y="1.5" width="5.5" height="3.8" rx=".8"></rect><rect x="1.5" y="6.1" width="5.5" height="3.8" rx=".8"></rect><rect x="9" y="6.1" width="5.5" height="3.8" rx=".8"></rect><rect x="1.5" y="10.7" width="5.5" height="3.8" rx=".8"></rect><rect x="9" y="10.7" width="5.5" height="3.8" rx=".8"></rect></svg></button>
+                <button class="seg__btn" role="tab" aria-selected="false" aria-label="Table"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="1.5" width="13" height="13" rx="1"></rect><path d="M1.5 5.83h13M1.5 10.17h13M5.83 1.5v13M10.17 1.5v13"></path></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="frame">
+        <header class="frame__label">Tablet · 768 <small>min-width</small></header>
+        <div class="frame__shell" style="max-width:768px;">
+          <div class="frame__inner">
+            <div class="seg-row">
+              <span class="seg-label">View:</span>
+              <div class="seg" role="tablist" aria-label="View mode">
+                <button class="seg__btn" role="tab" aria-selected="true" aria-label="Cards"><svg viewBox="0 0 16 16" fill="currentColor"><rect x="1.5" y="1.5" width="5.5" height="3.8" rx=".8"></rect><rect x="9" y="1.5" width="5.5" height="3.8" rx=".8"></rect><rect x="1.5" y="6.1" width="5.5" height="3.8" rx=".8"></rect><rect x="9" y="6.1" width="5.5" height="3.8" rx=".8"></rect><rect x="1.5" y="10.7" width="5.5" height="3.8" rx=".8"></rect><rect x="9" y="10.7" width="5.5" height="3.8" rx=".8"></rect></svg></button>
+                <button class="seg__btn" role="tab" aria-selected="false" aria-label="Table"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="1.5" width="13" height="13" rx="1"></rect><path d="M1.5 5.83h13M1.5 10.17h13M5.83 1.5v13M10.17 1.5v13"></path></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="frame">
+        <header class="frame__label">Desktop · 1440 <small>min-width</small></header>
+        <div class="frame__shell">
+          <div class="frame__inner">
+            <div class="seg-row">
+              <span class="seg-label">View:</span>
+              <div class="seg" role="tablist" aria-label="View mode">
+                <button class="seg__btn" role="tab" aria-selected="true" aria-label="Cards"><svg viewBox="0 0 16 16" fill="currentColor"><rect x="1.5" y="1.5" width="5.5" height="3.8" rx=".8"></rect><rect x="9" y="1.5" width="5.5" height="3.8" rx=".8"></rect><rect x="1.5" y="6.1" width="5.5" height="3.8" rx=".8"></rect><rect x="9" y="6.1" width="5.5" height="3.8" rx=".8"></rect><rect x="1.5" y="10.7" width="5.5" height="3.8" rx=".8"></rect><rect x="9" y="10.7" width="5.5" height="3.8" rx=".8"></rect></svg></button>
+                <button class="seg__btn" role="tab" aria-selected="false" aria-label="Table"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="1.5" width="13" height="13" rx="1"></rect><path d="M1.5 5.83h13M1.5 10.17h13M5.83 1.5v13M10.17 1.5v13"></path></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═══════════════ PILLS ═══════════════ -->
+  <section class="group" aria-labelledby="g-pill">
+    <div class="group__head">
+      <h2 id="g-pill">Pill · Filter-style</h2>
+      <p>Many sibling categories; one acts as the “All” reset. Pills wrap naturally and shed their count badge below 480&nbsp;cq.</p>
+    </div>
+    <div class="frame-row">
+      <article class="frame">
+        <header class="frame__label">Mobile · 375 <small>min-width</small></header>
+        <div class="frame__shell" style="max-width:375px;">
+          <div class="frame__inner">
+            <div class="pills" role="tablist">
+              <button class="pill" role="tab" aria-selected="true">All <span class="pill__count">324</span></button>
+              <button class="pill" role="tab" aria-selected="false">Imaging <span class="pill__count">82</span></button>
+              <button class="pill" role="tab" aria-selected="false">Patient Monitoring <span class="pill__count">47</span></button>
+              <button class="pill" role="tab" aria-selected="false">Surgical <span class="pill__count">60</span></button>
+              <button class="pill" role="tab" aria-selected="false">Respiratory <span class="pill__count">35</span></button>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="frame">
+        <header class="frame__label">Tablet · 768 <small>min-width</small></header>
+        <div class="frame__shell" style="max-width:768px;">
+          <div class="frame__inner">
+            <div class="pills" role="tablist">
+              <button class="pill" role="tab" aria-selected="true">All <span class="pill__count">324</span></button>
+              <button class="pill" role="tab" aria-selected="false">Imaging <span class="pill__count">82</span></button>
+              <button class="pill" role="tab" aria-selected="false">Patient Monitoring <span class="pill__count">47</span></button>
+              <button class="pill" role="tab" aria-selected="false">Surgical <span class="pill__count">60</span></button>
+              <button class="pill" role="tab" aria-selected="false">Respiratory <span class="pill__count">35</span></button>
+              <button class="pill" role="tab" aria-selected="false">Lab</button>
+              <button class="pill" role="tab" aria-selected="false">IV Therapy</button>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="frame">
+        <header class="frame__label">Desktop · 1440 <small>min-width</small></header>
+        <div class="frame__shell">
+          <div class="frame__inner">
+            <div class="pills" role="tablist">
+              <button class="pill" role="tab" aria-selected="true">All <span class="pill__count">324</span></button>
+              <button class="pill" role="tab" aria-selected="false">Imaging <span class="pill__count">82</span></button>
+              <button class="pill" role="tab" aria-selected="false">Patient Monitoring <span class="pill__count">47</span></button>
+              <button class="pill" role="tab" aria-selected="false">Surgical <span class="pill__count">60</span></button>
+              <button class="pill" role="tab" aria-selected="false">Respiratory <span class="pill__count">35</span></button>
+              <button class="pill" role="tab" aria-selected="false">Lab</button>
+              <button class="pill" role="tab" aria-selected="false">IV Therapy</button>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═══════════════ TOKEN PANEL ═══════════════ -->
+  <section class="group" aria-labelledby="g-tokens">
+    <div class="group__head">
+      <h2 id="g-tokens">Tokens &amp; breakpoints</h2>
+      <p>Container-query breakpoints scope responsive behavior to the parent frame — not the viewport — so a tab bar dropped into a 400&nbsp;px drawer collapses the same way it does on a 400&nbsp;px phone.</p>
+    </div>
+    <div class="tokens">
+      <div><b>tab/height</b><code>38px</code></div>
+      <div><b>tab/pad-x</b><code>20px</code></div>
+      <div><b>tab/gap</b><code>10px</code></div>
+      <div><b>tab/active-border</b><code>1px #005BA6</code></div>
+      <div><b>tab/font</b><code>Source Sans Pro · 16/38</code></div>
+      <div><b>tab/count-size</b><code>18×18 round</code></div>
+      <div><b>tab/count-bg</b><code>#DCDCDC</code></div>
+      <div><b>tab/count-font</b><code>12px bold</code></div>
+      <div><b>panel/shadow</b><code>0 -1px 5px rgba(0,0,0,.15)</code></div>
+      <div><b>bp/sm</b><code>&lt; 480 cq</code></div>
+      <div><b>bp/md</b><code>&lt; 720 cq</code></div>
+      <div><b>bp/lg</b><code>≥ 720 cq</code></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Click-to-switch + arrow-key nav, scoped to each tablist on the page.
+  document.querySelectorAll('[role="tablist"]').forEach(function (list) {
+    var listEl = list.classList.contains('tabs') ? list.querySelector('.tabs__bar') : list;
+    var sel = listEl.classList.contains('tabs__bar') ? '.tab'
+            : listEl.classList.contains('pills')    ? '.pill'
+            : '.seg__btn';
+
+    listEl.addEventListener('click', function (e) {
+      var t = e.target.closest(sel);
+      if (!t || t.hasAttribute('disabled') || !listEl.contains(t)) return;
+      listEl.querySelectorAll(sel + '[aria-selected="true"]').forEach(function (el) {
+        el.setAttribute('aria-selected', 'false');
+      });
+      t.setAttribute('aria-selected', 'true');
+    });
+
+    listEl.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var tabs = [].slice.call(listEl.querySelectorAll(sel + ':not([disabled])'));
+      var i = tabs.indexOf(document.activeElement);
+      if (i === -1) return;
+      var next = e.key === 'ArrowRight' ? (i + 1) % tabs.length : (i - 1 + tabs.length) % tabs.length;
+      tabs[next].focus();
+      tabs[next].click();
+      e.preventDefault();
+    });
+  });
+</script>
+
+</body>
+</html>

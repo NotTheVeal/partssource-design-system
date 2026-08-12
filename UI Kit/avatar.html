@@ -1,0 +1,55 @@
+<!-- @dsCard group="Components" name="Avatar" subtitle="Initials, image, and group variants — xs through xl, 8 tone options, 4 presence statuses" viewport="580x220" -->
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../tokens.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+</head><body style="margin:0;padding:24px;background:#FAFAFA;">
+<div id="root"></div>
+<script>
+(function(){
+  var Avatar = window.Avatar, AvatarGroup = window.AvatarGroup;
+  if (!Avatar) { document.getElementById('root').innerHTML='<p style="color:#9E2020;font-size:13px;font-family:sans-serif;padding:8px">⚠ Avatar not in bundle — rebuild _ds_bundle.js</p>'; return; }
+  var e = React.createElement;
+  var lbl = function(t) { return e('p',{style:{margin:'0 0 8px',fontSize:11,fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase',color:'#999',fontFamily:'sans-serif'}},t); };
+  var row = function() { var args=[{style:{display:'flex',alignItems:'center',gap:10}}].concat(Array.prototype.slice.call(arguments)); return e.apply(null,['div'].concat(args)); };
+
+  var Demo = function() {
+    return e('div',{style:{display:'flex',flexDirection:'column',gap:20}},
+      e('div',null,
+        lbl('Sizes'),
+        row(
+          e(Avatar,{name:'Alex Chen',size:'xs'}),
+          e(Avatar,{name:'Alex Chen',size:'sm'}),
+          e(Avatar,{name:'Alex Chen',size:'md'}),
+          e(Avatar,{name:'Alex Chen',size:'lg'}),
+          e(Avatar,{name:'Alex Chen',size:'xl'})
+        )
+      ),
+      e('div',null,
+        lbl('Tones + Presence'),
+        row(
+          e(Avatar,{name:'Earl Green',tone:'blue',status:'online'}),
+          e(Avatar,{name:'Maria R',tone:'green',status:'busy'}),
+          e(Avatar,{name:'Sam T',tone:'orange',status:'away'}),
+          e(Avatar,{name:'Jo B',tone:'purple'}),
+          e(Avatar,{name:'Dana K',tone:'red'}),
+          e(Avatar,{initials:'PS',tone:'brand'}),
+          e(Avatar,{name:'Guest',tone:'neutral'})
+        )
+      ),
+      e('div',null,
+        lbl('Group'),
+        e(AvatarGroup,{overflow:4},
+          e(Avatar,{name:'Earl Green',tone:'blue'}),
+          e(Avatar,{name:'Maria R',tone:'green'}),
+          e(Avatar,{name:'Sam T',tone:'orange'})
+        )
+      )
+    );
+  };
+  ReactDOM.createRoot(document.getElementById('root')).render(e(Demo,null));
+})();
+</script></body></html>

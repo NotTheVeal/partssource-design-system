@@ -1,0 +1,34 @@
+<!-- Shared styles for preview cards; import via <link> from each card. -->
+<style>
+  @import url('../colors_and_type.css');
+  html, body { margin: 0; padding: 0; background: var(--ps-sem-bg-surface); }
+  .pc-card {
+    padding: 20px 24px;
+    font-family: var(--ps-font-sans);
+    color: var(--ps-fg-primary);
+  }
+  .pc-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .pc-col { display: flex; flex-direction: column; gap: 8px; }
+  .pc-grid { display: grid; gap: 12px; }
+  .pc-swatch {
+    display: flex; flex-direction: column; gap: 6px;
+    min-width: 0;
+  }
+  .pc-chip {
+    width: 100%; height: 56px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .pc-chip-lg { height: 72px; }
+  .pc-chip-sm { height: 40px; }
+  .pc-label {
+    font-family: var(--ps-font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ps-fg-secondary);
+  }
+  .pc-name { font-size: 13px; font-weight: 600; color: var(--ps-brand-secondary); }
+  .pc-val  { font-size: 12px; font-family: var(--ps-font-mono); color: var(--ps-fg-secondary); letter-spacing: 0; }
+</style>

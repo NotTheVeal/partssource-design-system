@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Form Patterns · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+  .section-body{padding:24px;background:#FAFAFA;}
+
+  /* Field grouping */
+  .form-card{background:#fff;border:1px solid #E6E6E6;border-radius:8px;padding:24px;max-width:520px;}
+  .form-group{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+  .form-group:last-child{margin-bottom:0;}
+  .form-label{font-size:13px;font-weight:600;color:#002F48;}
+  .form-hint{font-size:12px;color:#777;line-height:1.4;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  .input{
+    width:100%;height:40px;padding:0 12px;
+    border:1px solid #CCCCCC;border-radius:4px;
+    font:14px/1 'Source Sans Pro',sans-serif;color:#2B2B2B;background:#fff;
+    outline:none;transition:border-color 120ms ease, box-shadow 120ms ease;
+  }
+  .input:hover{border-color:#000;}
+  .input:focus{border-color:#005BA6;box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+  .input.is-error{border-color:#D32F2F;}
+  .input.is-error:focus{box-shadow:0 0 0 3px rgba(211,47,47,.18);}
+  .error-msg{font-size:12px;color:#D32F2F;display:flex;align-items:center;gap:4px;}
+  .success-msg{font-size:12px;color:#0E7C55;display:flex;align-items:center;gap:4px;}
+
+  .summary{
+    background:#FEF0F0;border:1px solid #FFCFCF;border-radius:6px;
+    padding:14px 18px;margin-bottom:18px;
+  }
+  .summary h4{margin:0 0 6px;font-size:14px;color:#9E2020;font-weight:700;}
+  .summary ul{margin:0;padding-left:18px;font-size:13px;color:#9E2020;line-height:1.6;}
+  .summary a{color:inherit;text-decoration:underline;}
+
+  .actions{display:flex;justify-content:flex-end;gap:12px;border-top:1px solid #F1F1F1;padding-top:18px;margin-top:6px;}
+  .btn{height:40px;padding:0 18px;border-radius:4px;font:600 14px/1 'Source Sans Pro',sans-serif;cursor:pointer;transition:all 120ms;}
+  .btn-primary{background:#005BA6;color:#fff;border:none;}
+  .btn-primary:hover{background:#004A84;}
+  .btn-secondary{background:#fff;color:#005BA6;border:2px solid #005BA6;}
+  .btn-secondary:hover{background:#EFF9FE;}
+
+  .pattern-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:8px;}
+  .pattern{background:#fff;border:1px solid #F1F1F1;border-radius:8px;padding:16px 18px;}
+  .pattern h3{margin:0 0 6px;font-size:14px;font-weight:700;color:#002F48;}
+  .pattern p{margin:0;font-size:13px;line-height:1.55;color:#4A4A4A;}
+
+  .dodont{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:780px){.dodont{grid-template-columns:1fr;}}
+  .dodont__col{background:#fff;border:1px solid #F1F1F1;border-radius:8px;overflow:hidden;}
+  .dodont__col h4{margin:0;padding:10px 14px;font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  .dodont__do h4{background:#E5F9F2;color:#0A7850;}
+  .dodont__dont h4{background:#FDECEC;color:#9E2A1C;}
+  .dodont__col ul{list-style:none;margin:0;padding:14px 18px;display:flex;flex-direction:column;gap:10px;font-size:13px;line-height:1.5;}
+  .dodont__col li{padding-left:14px;position:relative;}
+  .dodont__col li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;}
+  .dodont__do li::before{background:#0A7850;}
+  .dodont__dont li::before{background:#9E2A1C;}
+
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Form Patterns</span>
+</nav>
+
+<h1>Form Patterns</h1>
+<p class="intro">How to compose Inputs, Selections, Date Pickers, and Buttons into coherent forms. Covers field grouping, validation timing, error summaries, multi-step flows, and save/cancel patterns.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Field grouping</h2>
+    <div class="desc">Each field has a label, an input, and optional hint text. Required fields use an asterisk and a screen-reader-only "required" annotation.</div>
+  </div>
+  <div class="section-body">
+    <form class="form-card" onsubmit="event.preventDefault()">
+      <div class="form-group">
+        <label class="form-label" for="fp-1">Facility name <span style="color:#D32F2F;">*</span></label>
+        <input id="fp-1" class="input" value="Chatham Memorial Hospital" />
+        <span class="form-hint">Shown on order confirmations and shipping labels.</span>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="fp-2">PO number</label>
+          <input id="fp-2" class="input" placeholder="PO-…" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fp-3">Cost center</label>
+          <input id="fp-3" class="input" placeholder="CC-…" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Validation timing</h2>
+    <div class="desc">Validate on <strong>blur</strong>, not on every keystroke. Async checks (uniqueness, format) run after a 400 ms debounce. Submit-time validation surfaces a summary at the top of the form.</div>
+  </div>
+  <div class="section-body">
+    <form class="form-card" onsubmit="event.preventDefault()">
+      <div class="form-group">
+        <label class="form-label" for="fp-4">Email <span style="color:#D32F2F;">*</span></label>
+        <input id="fp-4" class="input is-error" value="alex@partssource" />
+        <span class="error-msg">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Enter a valid email (e.g. alex@partssource.com).
+        </span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="fp-5">Password <span style="color:#D32F2F;">*</span></label>
+        <input id="fp-5" type="password" class="input" value="••••••••••" />
+        <span class="success-msg">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><polyline points="9 11 12 14 22 4"/></svg>
+          Strong password.
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Error summary</h2>
+    <div class="desc">When a user submits with multiple errors, summarize them at the top of the form with anchor links to each field. Screen readers announce the summary via <code>aria-live="assertive"</code>.</div>
+  </div>
+  <div class="section-body">
+    <form class="form-card" onsubmit="event.preventDefault()">
+      <div class="summary" role="alert" aria-live="assertive">
+        <h4>Fix 2 fields before submitting:</h4>
+        <ul>
+          <li><a href="#fp-email">Email</a> — Enter a valid email.</li>
+          <li><a href="#fp-pass">Password</a> — Must be at least 8 characters.</li>
+        </ul>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="fp-email">Email <span style="color:#D32F2F;">*</span></label>
+        <input id="fp-email" class="input is-error" value="alex@" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="fp-pass">Password <span style="color:#D32F2F;">*</span></label>
+        <input id="fp-pass" type="password" class="input is-error" value="••" />
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Save &amp; cancel</h2>
+    <div class="desc">Primary action on the right, secondary (Cancel) immediately to its left. Both anchored to a footer divider. Cancel never destroys data without a confirm dialog.</div>
+  </div>
+  <div class="section-body">
+    <form class="form-card" onsubmit="event.preventDefault()">
+      <div class="form-group">
+        <label class="form-label" for="fp-6">Facility name</label>
+        <input id="fp-6" class="input" value="Chatham Memorial Hospital" />
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Patterns at a glance</h2>
+    <div class="desc">Five rules that cover 80% of form design decisions.</div>
+  </div>
+  <div class="section-body">
+    <div class="pattern-grid">
+      <div class="pattern"><h3>One column by default</h3><p>Two columns only when the fields are paired (city + state, first + last name).</p></div>
+      <div class="pattern"><h3>Top labels, never placeholders</h3><p>Placeholder text disappears on focus and breaks accessibility. Always use a visible <code>&lt;label&gt;</code>.</p></div>
+      <div class="pattern"><h3>Mark required, not optional</h3><p>Most fields should be required. Mark the few that aren't with "(optional)" after the label.</p></div>
+      <div class="pattern"><h3>Group related fields</h3><p>Use <code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code> for clusters that share a heading (Address, Billing).</p></div>
+      <div class="pattern"><h3>Auto-focus on entry</h3><p>The first empty required field gets focus on page load. Don't auto-focus inside modals that already have a heading.</p></div>
+      <div class="pattern"><h3>Disable submit only when nothing is filled</h3><p>Let users try to submit and see errors — don't lock the button while they're still typing.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Multi-step forms</h2>
+    <div class="desc">Pair every multi-step flow with the <a href="stepper.html" style="color:#005BA6;">Stepper</a> component. Show progress at all times; let users navigate back without losing data.</div>
+  </div>
+  <div class="section-body">
+    <ul style="margin:0;padding-left:20px;line-height:1.8;font-size:14px;color:#4A4A4A;">
+      <li>Validate each step before allowing forward navigation.</li>
+      <li>Persist data to local storage after each step so a refresh doesn't lose progress.</li>
+      <li>Show a "Review" step before final submit; let users edit any prior step from there.</li>
+      <li>If the flow is &gt; 4 steps, consider a sidebar layout (vertical Stepper).</li>
+      <li>End with a clear confirmation page, not just a toast.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Do &amp; Don't</h2>
+    <div class="desc"></div>
+  </div>
+  <div class="section-body">
+    <div class="dodont">
+      <div class="dodont__col dodont__do">
+        <h4>Do</h4>
+        <ul>
+          <li>Validate on blur, not on every keystroke.</li>
+          <li>Summarize errors at the top of the form on submit.</li>
+          <li>Anchor primary action to the right of the form.</li>
+          <li>Preserve form state across navigation.</li>
+          <li>Write error copy that tells the user how to fix.</li>
+        </ul>
+      </div>
+      <div class="dodont__col dodont__dont">
+        <h4>Don't</h4>
+        <ul>
+          <li>Disable submit until the form is "complete".</li>
+          <li>Auto-submit on Enter inside multi-step flows.</li>
+          <li>Use red asterisks without an accompanying screen-reader-only "required" label.</li>
+          <li>Strip whitespace silently — show what you trimmed.</li>
+          <li>Use a single "Save" button for both create and update flows.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,662 @@
+<!DOCTYPE html><html><head>
+
+
+
+
+  <meta charset="utf-8">
+  <title>Input Fields</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 56px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);margin-bottom:32px;}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0 0 4px;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+
+    .inputs{padding:24px;display:flex;flex-direction:column;gap:24px;}
+
+    /* Input wrapper */
+    .input-wrap {
+      position: relative;
+      width: 335px;
+      height: 48px;
+    }
+    .input-wrap input,
+    .input-wrap select {
+      width: 100%;
+      height: 48px;
+      padding: 0 10px;
+      font-family: 'Source Sans Pro', sans-serif;
+      font-size: 16px;
+      line-height: 100%;
+      color: var(--ps-prim-gray-900);
+      background: white;
+      border: 1px solid #949494;
+      border-radius: 3px;
+      box-sizing: border-box;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .input-wrap input::placeholder {
+      color: transparent;
+    }
+    .input-wrap label {
+      position: absolute;
+      left: 10px;
+      top: 0;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      font-family: 'Source Sans Pro', sans-serif;
+      font-size: 16px;
+      line-height: 100%;
+      color: var(--ps-sem-fg-secondary);
+      pointer-events: none;
+      transition: all 0.2s;
+    }
+
+    /* Floating label when focused or has value */
+    .input-wrap input:focus + label,
+    .input-wrap select:focus + label,
+    .input-wrap.has-value label,
+    .input-wrap label.has-value {
+      top: 5px;
+      height: 22px;
+      align-items: flex-start;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ps-sem-fg-brand);
+    }
+
+    /* Adjust padding when label floats */
+    .input-wrap input:focus,
+    .input-wrap.has-value input,
+    .input-wrap select:focus,
+    .input-wrap.has-value select {
+      padding-top: 22px;
+      padding-bottom: 4px;
+    }
+
+    /* Focus state - blue border with shadow */
+    .input-wrap input:focus,
+    .input-wrap select:focus {
+      border-color: var(--ps-sem-fg-brand);
+      box-shadow: 0px 0px 10px 0px rgba(0, 91, 166, 0.5);
+    }
+
+    /* Hover - black border */
+    .input-wrap input:hover:not(:focus):not(:disabled),
+    .input-wrap select:hover:not(:focus):not(:disabled) {
+      border-color: var(--ps-prim-gray-900);
+    }
+
+    /* Disabled - light grey */
+    .input-wrap input:disabled,
+    .input-wrap select:disabled {
+      border-color: var(--ps-sem-border-default);
+      color: #DCDCDC;
+      background: white;
+      cursor: not-allowed;
+    }
+    .input-wrap input:disabled + label,
+    .input-wrap select:disabled + label {
+      color: #DCDCDC;
+    }
+
+    /* Large inputs (80px) */
+    .input-wrap.large {
+      height: 80px;
+    }
+    .input-wrap.large input {
+      height: 80px;
+    }
+    .input-wrap.large label {
+      height: 80px;
+    }
+    
+    /* Large input floating label */
+    .input-wrap.large input:focus + label,
+    .input-wrap.large.has-value label,
+    .input-wrap.large label.has-value {
+      top: 8px;
+      height: 32px;
+      font-size: 12px;
+    }
+    
+    /* Large input with floating label - adjust padding */
+    .input-wrap.large input:focus,
+    .input-wrap.large.has-value input {
+      padding-top: 32px;
+      padding-bottom: 8px;
+    }
+
+    /* Dropdown arrow icon - add to all dropdown inputs */
+    .input-wrap input[id^="dropdown"] {
+      background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9L12 15L18 9' stroke='%23949494' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 24px 24px;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+    .input-wrap input[id^="dropdown"]:disabled {
+      cursor: not-allowed;
+    }
+
+    /* Error state */
+    .input-wrap.error input {
+      border-color: #D32F2F;
+      color: #D32F2F;
+    }
+    .input-wrap.error input:focus {
+      border-color: #D32F2F;
+      box-shadow: 0px 0px 10px 0px rgba(211, 47, 47, 0.5);
+    }
+    .input-wrap.error label {
+      color: #D32F2F;
+    }
+    .error-message {
+      font-size: 11px;
+      color: #D32F2F;
+      margin-top: 4px;
+    }
+    
+    /* Custom dropdown container - must be position relative */
+    .inputs > div {
+      position: relative;
+    }
+    
+    /* Dropdown menu - Type 1 (standard 10-item) */
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 1px);
+      left: 0;
+      width: 335px;
+      max-height: 297px;
+      overflow-y: auto;
+      background: white;
+      border: 1px solid #F1F1F1;
+      border-radius: 2px;
+      box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+      display: none;
+      z-index: 1000;
+    }
+    .show-menu .dropdown-menu {
+      display: block;
+    }
+    .dropdown-item {
+      padding: 14px 10px;
+      font-size: 14px;
+      font-family: 'Source Sans Pro', sans-serif;
+      color: var(--ps-prim-gray-900);
+      border-bottom: 1px solid #F1F1F1;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+    .dropdown-item:hover {
+      background: #D0EDFC;
+    }
+    .dropdown-item.selected {
+      background: #D0EDFC;
+    }
+
+    /* Dropdown menu - Type 2 (3-option with bold text) */
+    .dropdown-menu-type2 {
+      position: absolute;
+      top: calc(100% + 1px);
+      left: 0;
+      width: 335px;
+      background: white;
+      border: 1px solid #F1F1F1;
+      border-radius: 2px;
+      box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+      display: none;
+      z-index: 1000;
+    }
+    .show-menu .dropdown-menu-type2 {
+      display: block;
+    }
+    .dropdown-menu-type2 .dropdown-item {
+      padding: 14px 10px;
+      font-size: 14px;
+      font-family: 'Source Sans Pro', sans-serif;
+      font-weight: 700;
+      color: var(--ps-prim-gray-900);
+      border-bottom: 1px solid #F1F1F1;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .dropdown-menu-type2 .dropdown-item:last-child {
+      border-bottom: none;
+    }
+    .dropdown-menu-type2 .dropdown-item:first-child {
+      background: var(--ps-sem-bg-muted);
+    }
+    .dropdown-menu-type2 .dropdown-item:hover {
+      background: #D6EBFF;
+    }
+    /* Static hover state - non-interactive demo */
+    .static-hover .dropdown-item:first-child {
+      background: #D6EBFF !important;
+      pointer-events: none;
+    }
+    .static-hover .dropdown-item {
+      pointer-events: none;
+    }
+    /* State labels */
+    .state-label {
+      font-size: 11px;
+      color: #949494;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body data-cc-id="cc-1" style="cursor: crosshair; font-family: &quot;Source Sans Pro&quot;;">
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Input Fields</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Input Fields</h1>
+  <p class="intro">Text inputs and dropdowns are fundamental form controls used throughout the PartsSource platform. These components follow consistent styling, spacing, and interaction patterns to ensure a cohesive user experience across all applications.</p>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Text Field — 48px</h2>
+      <div class="desc">Standard text input with floating label. Pulled directly from Figma <code>Input Fields</code> frame.</div>
+    </div>
+    <div class="inputs">
+      <div>
+        <div class="state-label">Idle &amp; Empty (Interactive)</div>
+        <div class="input-wrap">
+          <input type="text" id="input1">
+          <label>Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Hover</div>
+        <div class="input-wrap">
+          <input type="text" id="input2" style="border-color: var(--ps-prim-gray-900);">
+          <label>Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Focused</div>
+        <div class="input-wrap">
+          <input type="text" id="input3" style="border: 1px solid #005DA6; box-shadow: 0px 0px 10px 0px rgba(0, 91, 166, 0.5);">
+          <label style="top: 5px; height: 22px; align-items: flex-start; font-size: 12px; font-weight: 700; color: var(--ps-sem-fg-brand);">Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">With Value</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="input4" value="Input Text" readonly="" style="padding-top: 22px; padding-bottom: 4px;">
+          <label class="has-value">Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Disabled</div>
+        <div class="input-wrap">
+          <input type="text" id="input5" disabled="">
+          <label>Label</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 80px Large Inputs -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Large Input Fields — 80px</h2>
+      <div class="desc">Larger text inputs for prominent form fields.</div>
+    </div>
+    <div class="inputs">
+      <div>
+        <div class="state-label">Idle &amp; Empty (Interactive)</div>
+        <div class="input-wrap large">
+          <input type="text" id="input-lg1">
+          <label>Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Hover</div>
+        <div class="input-wrap large">
+          <input type="text" id="input-lg2" style="border-color: var(--ps-prim-gray-900);">
+          <label>Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Focused</div>
+        <div class="input-wrap large">
+          <input type="text" id="input-lg3" style="border: 1px solid #005DA6; box-shadow: 0px 0px 10px 0px rgba(0, 91, 166, 0.5);">
+          <label style="top: 8px; height: 32px; align-items: flex-start; font-size: 12px; font-weight: 700; color: var(--ps-sem-fg-brand);">Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">With Value</div>
+        <div class="input-wrap large has-value">
+          <input type="text" id="input-lg4" value="Text Input" readonly="" style="padding-top: 32px; padding-bottom: 8px;">
+          <label class="has-value">Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Disabled</div>
+        <div class="input-wrap large">
+          <input type="text" id="input-lg5" disabled="">
+          <label>Label</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Text Field — 48px — Error</h2>
+      <div class="desc">Error</div>
+    </div>
+    <div class="inputs">
+      <div style="pointer-events: none;">
+        <div class="state-label">Error State</div>
+        <div class="input-wrap has-value error">
+          <input type="text" id="input-error" value="invalid@" readonly="" style="padding-top: 22px; padding-bottom: 4px;">
+          <label class="has-value">Email</label>
+        </div>
+        <div class="error-message">Please enter a valid email address</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dropdown Type 1 -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Dropdown · Type 1: Standard with 3-item menu</h2>
+      <div class="desc">Standard dropdown with type-ahead search.</div>
+    </div>
+    <div class="inputs" style="gap: 48px; min-height: 300px;">
+      <!-- Idle & Empty (Interactive) -->
+      <div id="dropdown-type1-interactive">
+        <div class="state-label">Idle &amp; Empty (Interactive)</div>
+        <div class="input-wrap">
+          <input type="text" id="dropdown1-interactive" autocomplete="off">
+          <label>Label</label>
+        </div>
+        <div class="dropdown-menu" style="display: none;">
+          <div class="dropdown-item">Item 1</div>
+          <div class="dropdown-item">Item 2</div>
+          <div class="dropdown-item">Item 3</div>
+        </div>
+      </div>
+      
+      <!-- Open with menu -->
+      <div class="show-menu" style="pointer-events: none;">
+        <div class="state-label">Open with Menu</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="dropdown1" value="Label" autocomplete="off" readonly="">
+          <label class="has-value">Label</label>
+        </div>
+        <div class="dropdown-menu">
+          <div class="dropdown-item">Item 1</div>
+          <div class="dropdown-item selected">Item 2</div>
+          <div class="dropdown-item">Item 3</div>
+        </div>
+      </div>
+
+      <!-- Item Selected -->
+      <div style="pointer-events: none;">
+        <div class="state-label">Item Selected</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="dropdown2" value="Item 2" readonly="" style="padding-top: 22px; padding-bottom: 4px;">
+          <label class="has-value">Label</label>
+        </div>
+      </div>
+
+      <!-- Disabled -->
+      <div style="pointer-events: none;">
+        <div class="state-label">Disabled</div>
+        <div class="input-wrap">
+          <input type="text" id="dropdown3" disabled="">
+          <label>Label</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dropdown Type 2 -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Dropdown · Type 2: Input Dropdown with 3-option menu</h2>
+      <div class="desc">Compact dropdown with type-ahead filtering for shorter option lists.</div>
+    </div>
+    <div class="inputs" style="gap: 48px; min-height: 250px;">
+      <!-- Idle & Empty (Interactive) -->
+      <div id="dropdown-type2-interactive">
+        <div class="state-label">Idle &amp; Empty (Interactive)</div>
+        <div class="input-wrap">
+          <input type="text" id="dropdown4-interactive" autocomplete="off">
+          <label>Label</label>
+        </div>
+        <div class="dropdown-menu-type2" style="display: none;">
+          <div class="dropdown-item">Option 1</div>
+          <div class="dropdown-item">Option 2</div>
+          <div class="dropdown-item">Option 3</div>
+        </div>
+      </div>
+      
+      <!-- Open with typing -->
+      <div class="show-menu" style="pointer-events: none;">
+        <div class="state-label">Open with Typing</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="dropdown4" value="Opt" autocomplete="off" readonly="">
+          <label class="has-value">Label</label>
+        </div>
+        <div class="dropdown-menu-type2">
+          <div class="dropdown-item">Option 1</div>
+          <div class="dropdown-item">Option 2</div>
+          <div class="dropdown-item">Option 3</div>
+        </div>
+      </div>
+      
+      <!-- Item hovering -->
+      <div class="show-menu" style="pointer-events: none;">
+        <div class="state-label">Item Hovering</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="dropdown5" value="Label" readonly="">
+          <label class="has-value">Label</label>
+        </div>
+        <div class="dropdown-menu-type2">
+          <div class="dropdown-item" style="background: #D6EBFF;">Option 1</div>
+          <div class="dropdown-item">Option 2</div>
+          <div class="dropdown-item">Option 3</div>
+        </div>
+      </div>
+      
+      <!-- Item Selected -->
+      <div style="pointer-events: none;">
+        <div class="state-label">Item Selected</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="dropdown-selected" value="Option 2" readonly="" style="padding-top: 22px; padding-bottom: 4px;">
+          <label class="has-value">Label</label>
+        </div>
+      </div>
+      
+      <!-- Disabled -->
+      <div style="pointer-events: none;">
+        <div class="state-label">Disabled</div>
+        <div class="input-wrap">
+          <input type="text" id="dropdown6" disabled="">
+          <label>Label</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle has-value class based on input content
+    function updateLabel(input) {
+      const wrap = input.closest('.input-wrap');
+      if (input.value.trim()) {
+        wrap.classList.add('has-value');
+      } else {
+        wrap.classList.remove('has-value');
+      }
+    }
+
+    // Attach to all inputs
+    document.querySelectorAll('.input-wrap input').forEach(el => {
+      el.addEventListener('input', () => updateLabel(el));
+      el.addEventListener('change', () => updateLabel(el));
+      // Init on load
+      updateLabel(el);
+    });
+    
+    // Dropdown functionality
+    document.querySelectorAll('.dropdown-menu .dropdown-item, .dropdown-menu-type2 .dropdown-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const menu = this.closest('.dropdown-menu, .dropdown-menu-type2');
+        const container = menu.closest('div');
+        const input = container.querySelector('input');
+        
+        // Update input value
+        input.value = this.textContent;
+        updateLabel(input);
+        
+        // Hide menu
+        container.classList.remove('show-menu');
+        
+        // Update selected state
+        menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+    
+    // Show/hide dropdowns on focus/blur and click - ONLY for interactive ones
+    const interactiveDropdowns = ['dropdown1-interactive', 'dropdown4-interactive'];
+    
+    interactiveDropdowns.forEach(id => {
+      const input = document.getElementById(id);
+      if (!input) return;
+      
+      input.addEventListener('click', function() {
+        const container = this.closest('div').parentElement;
+        const menu = container.querySelector('.dropdown-menu, .dropdown-menu-type2');
+        if (menu) {
+          // Toggle menu display
+          if (menu.style.display === 'block') {
+            menu.style.display = 'none';
+          } else {
+            // Close all other interactive menus first
+            interactiveDropdowns.forEach(otherId => {
+              const otherInput = document.getElementById(otherId);
+              if (otherInput && otherInput !== this) {
+                const otherContainer = otherInput.closest('div').parentElement;
+                const otherMenu = otherContainer.querySelector('.dropdown-menu, .dropdown-menu-type2');
+                if (otherMenu) otherMenu.style.display = 'none';
+              }
+            });
+            menu.style.display = 'block';
+          }
+        }
+      });
+      
+      input.addEventListener('blur', function(e) {
+        // Delay to allow click on dropdown item
+        setTimeout(() => {
+          const container = this.closest('div').parentElement;
+          const menu = container.querySelector('.dropdown-menu, .dropdown-menu-type2');
+          if (menu && !menu.querySelector('.dropdown-item:hover')) {
+            menu.style.display = 'none';
+          }
+        }, 200);
+      });
+    });
+    
+    // Handle clicks on interactive dropdown items
+    document.querySelectorAll('#dropdown-type1-interactive .dropdown-item, #dropdown-type2-interactive .dropdown-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const container = this.closest('#dropdown-type1-interactive, #dropdown-type2-interactive');
+        const input = container.querySelector('input');
+        const menu = this.closest('.dropdown-menu, .dropdown-menu-type2');
+        
+        // Update input value
+        input.value = this.textContent;
+        updateLabel(input);
+        
+        // Hide menu
+        menu.style.display = 'none';
+        
+        // Update selected state
+        menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+  </script>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance, keyboard support, and implementation guidance for inclusive form design.</div>
+    </div>
+    <div class="states">
+      <ul style="margin:0;padding:20px 24px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Standard inputs: 48px height, Large inputs: 80px</strong> — both meet WCAG 2.5.5 touch targets (44×44px minimum)</li>
+        <li><strong>Floating labels must persist:</strong> 16px grey at center when empty; floats to top-left at 12px bold blue when focused/filled — never disappears</li>
+        <li><strong>Focus ring:</strong> 1px PS Blue border + 0 0 10px shadow (50% opacity) = 3:1 contrast against white background (WCAG 2.4.11)</li>
+        <li><strong>Error state:</strong> Red border + red label + red text below input; use <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">aria-describedby</code> to link error message — screen readers announce on focus</li>
+        <li><strong>Disabled inputs:</strong> Grey background (#F7F7F7) + grey text (#949494) — use <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">disabled</code> attribute so screen readers skip</li>
+        <li><strong>Dropdown menus:</strong> Type 1 (280px tall, 10 items, scroll) vs Type 2 (3 items, text-space); arrow keys navigate, Enter selects, Escape closes</li>
+        <li><strong>Required fields need two indicators:</strong> <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">required</code> attribute + visual marker (asterisk, "(required)" text) — never color alone</li>
+        <li><strong>Never use placeholder as label:</strong> Placeholder text disappears on input and fails 4.5:1 contrast — always show persistent label</li>
+      </ul>
+    </div>
+  </div>
+
+
+</body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

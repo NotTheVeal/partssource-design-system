@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Drawer" subtitle="Right-slide drawer — Drawer / DrawerHeader / DrawerContainer" viewport="1280x900" -->
+<html><head>
+  <meta charset="utf-8">
+  <title>Drawer — PartsSource Design System</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    /* ============================================
+       Drawer — recreated EXACTLY from app source
+       (src/components/drawer/drawer.tsx)
+       ============================================
+
+       The app Tailwind tokens that appear in the source:
+         text-grey-1   → primary text     #2B2B2B
+         text-grey-2   → secondary text   #4A4A4A
+         border-grey-5 → divider          #DCDCDC
+         text-ps-blue  → action / link    #005BA6
+         text-md       → 15px
+         text-2xl      → 24px / 32px lh
+         max-w-125     → 500px  (125 × 4px)
+         shadow-xl     → tailwind default xl shadow
+         duration-300  → 300ms transform
+         ease-out      → cubic-bezier(0, 0, 0.2, 1)
+    */
+
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      padding:32px 40px 96px;
+      font-family:var(--ps-font-sans);
+      background:var(--ps-bg-default);
+      color:var(--ps-fg-primary);
+      font-size:15px;
+    }
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:880px;line-height:1.6;}
+    code.kbd{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-bg-subtle);padding:2px 5px;border-radius:3px;color:var(--ps-fg-primary);}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-bg-default);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+    .section-body{padding:32px 24px;background:var(--ps-bg-canvas);}
+    .section-body.plain{background:var(--ps-bg-default);padding:24px;}
+
+    .demo-cap{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ps-fg-tertiary);font-weight:700;margin:0 0 12px;}
+
+    /* ============================================
+       Stage — viewport that hosts a drawer
+       ============================================ */
+    .stage{
+      position:relative;width:100%;
+      background:#F4F6F8;border:1px solid var(--ps-border-default);
+      border-radius:8px;overflow:hidden;
+      height:680px;
+    }
+    .stage--short{height:560px;}
+
+    /* Page-behind chrome — faux app shell so it's clear what's a drawer */
+    .pc{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--ps-bg-default);}
+    .pc__nav{height:52px;border-bottom:1px solid var(--ps-border-default);display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;background:var(--ps-bg-default);}
+    .pc__logo{width:120px;height:18px;background:linear-gradient(90deg,var(--ps-brand-primary) 0 100%);border-radius:2px;opacity:.85;}
+    .pc__search{flex:1;max-width:520px;height:30px;background:var(--ps-bg-subtle);border-radius:4px;}
+    .pc__avatar{width:32px;height:32px;border-radius:50%;background:var(--ps-bg-subtle);}
+    .pc__body{flex:1;padding:24px;display:flex;flex-direction:column;gap:14px;}
+    .pc__h{font-size:22px;font-weight:300;color:var(--ps-brand-blue-3);margin:0 0 4px;}
+    .pc__row{display:flex;gap:16px;}
+    .pc__card{flex:1;height:96px;border:1px solid var(--ps-border-default);border-radius:6px;background:var(--ps-bg-default);padding:14px;display:flex;flex-direction:column;gap:8px;}
+    .pc__bar{height:10px;border-radius:3px;background:var(--ps-bg-subtle);}
+    .pc__bar.w60{width:60%;}.pc__bar.w40{width:40%;}.pc__bar.w80{width:80%;}.pc__bar.w50{width:50%;}.pc__bar.w90{width:90%;}
+
+    /* ============================================
+       Scrim
+       Source uses <Scrim isOpen handleClick> sibling
+       — fades black at ~32% over the content.
+       ============================================ */
+    .scrim{
+      position:absolute;inset:0;background:rgba(0,0,0,0.40);
+      opacity:0;pointer-events:none;
+      transition:opacity 200ms ease-out;
+      z-index:1;
+    }
+    .scrim.is-open{opacity:1;pointer-events:auto;}
+
+    /* ============================================
+       Drawer — translates from right
+       Source spec:
+         fixed top-0 right-0
+         max-w-125 (500px) w-full h-screen
+         bg-white shadow-xl z-50
+         flex flex-col
+         transition-transform duration-300 ease-out
+         outline-none
+       Open:  translate-x-0
+       Closed: translate-x-full pointer-events-none
+       role=dialog aria-modal=true
+       ============================================ */
+    .drawer{
+      position:absolute;top:0;right:0;bottom:0;
+      width:100%;max-width:500px;
+      background:var(--ps-bg-default);
+      box-shadow:0 20px 25px -5px rgba(0,0,0,0.10), 0 8px 10px -6px rgba(0,0,0,0.10);
+      display:flex;flex-direction:column;
+      transform:translateX(100%);
+      transition:transform 300ms cubic-bezier(0, 0, 0.2, 1);
+      outline:none;z-index:2;
+      pointer-events:none;
+    }
+    .drawer.is-open{transform:translateX(0);pointer-events:auto;}
+
+    /* ============================================
+       DrawerContainer
+         <div className="p-4 md:p-8 [+className]">
+       Common pattern: h-full overflow-y-auto OR
+                       flex-1 overflow-y-auto
+       ============================================ */
+    .drawer-container{
+      padding:16px;
+    }
+    @media (min-width:768px){
+      .drawer-container{padding:32px;}
+    }
+    .drawer-container--scroll{
+      height:100%;
+      overflow-y:auto;
+    }
+    .drawer-container--flex{
+      flex:1;
+      overflow-y:auto;
+    }
+
+    /* ============================================
+       DrawerHeader
+         outer:    flex justify-between items-start gap-4 mb-8
+         text:     flex flex-col gap-1 min-w-0
+         title:    text-2xl font-semibold text-grey-1  (24px / 600)
+         subtitle: text-md font-normal text-grey-2     (15px / 400)
+         close:    Button variant=ghost size=iconOnly  (X 18px)
+       ============================================ */
+    .drawer-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      margin-bottom:32px;
+    }
+    .drawer-header__text{
+      flex:1;
+      display:flex;flex-direction:column;
+      gap:4px;
+      min-width:0;
+    }
+    .drawer-header h3{
+      margin:0;
+      font-family:var(--ps-font-sans);
+      font-size:24px;
+      line-height:32px;
+      font-weight:600;
+      color:#2B2B2B;            /* text-grey-1 */
+      letter-spacing:0;
+    }
+    .drawer-header p{
+      margin:0;
+      font-size:15px;            /* text-md */
+      line-height:1.4;
+      font-weight:400;
+      color:#4A4A4A;            /* text-grey-2 */
+    }
+    .drawer-header__close{
+      flex-shrink:0;
+      width:36px;height:36px;
+      display:inline-flex;align-items:center;justify-content:center;
+      background:transparent;border:0;cursor:pointer;border-radius:6px;
+      color:#2B2B2B;
+      transition:background 120ms ease, color 120ms ease;
+    }
+    .drawer-header__close:hover{background:var(--ps-bg-subtle);}
+    .drawer-header__close:focus-visible{outline:2px solid var(--ps-brand-primary);outline-offset:2px;}
+    .drawer-header__close svg{width:18px;height:18px;display:block;}
+
+    /* ============================================
+       Buttons used inside drawer demos (per Button variants)
+       ============================================ */
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:6px;
+      height:40px;padding:0 16px;
+      font:600 14px/1 var(--ps-font-sans);
+      border-radius:4px;border:1px solid transparent;cursor:pointer;
+      transition:background 120ms ease, border-color 120ms ease, color 120ms ease;
+      text-transform:uppercase;letter-spacing:.3px;
+    }
+    .btn--primary{background:var(--ps-brand-primary);color:#fff;}
+    .btn--primary:hover{background:var(--ps-brand-blue-2);}
+    .btn--primary:disabled{background:#A8C2D8;cursor:not-allowed;}
+    .btn--outline{background:#fff;color:var(--ps-brand-primary);border-color:var(--ps-brand-primary);}
+    .btn--outline:hover{background:#EFF6FB;}
+    .btn--ghost{background:transparent;color:var(--ps-brand-primary);}
+    .btn--ghost:hover{background:#EFF6FB;}
+    .btn--block{width:100%;}
+    .btn--sm{height:32px;padding:0 12px;font-size:12px;letter-spacing:.4px;}
+
+    /* ============================================
+       Drawer body demo content (per CreateBundleDrawer)
+       ============================================ */
+    .field{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+    .field__label{font-size:15px;font-weight:600;color:#2B2B2B;}
+    .field--row{flex-direction:row;justify-content:space-between;align-items:center;}
+    .form-stack{display:flex;flex-direction:column;gap:16px;}
+
+    /* ============================================
+       PS Inputs — floating-label, pulled from preview/inputs.html
+       ============================================ */
+    .input-wrap{
+      position:relative;width:100%;height:48px;
+    }
+    .input-wrap input,
+    .input-wrap textarea,
+    .input-wrap select{
+      width:100%;height:48px;
+      padding:12px 10px;
+      font:14px/1.4 'Source Sans Pro','Source Sans 3',sans-serif;color:#000;
+      background:#fff;
+      border:1px solid #949494;border-radius:3px;
+      outline:0;
+      transition:border-color 0.2s, box-shadow 0.2s, padding 0.2s;
+    }
+    .input-wrap input::placeholder,
+    .input-wrap textarea::placeholder{color:transparent;}
+    .input-wrap label{
+      position:absolute;left:10px;top:0;height:48px;
+      display:flex;align-items:center;
+      font:14px/1 'Source Sans Pro','Source Sans 3',sans-serif;color:#4A4A4A;
+      pointer-events:none;
+      transition:top 0.2s, height 0.2s, font-size 0.2s, font-weight 0.2s, color 0.2s;
+    }
+    /* Floating label when focused or filled */
+    .input-wrap input:focus + label,
+    .input-wrap textarea:focus + label,
+    .input-wrap.has-value label{
+      top:5px;height:22px;align-items:flex-start;
+      font-size:12px;font-weight:700;color:#005BA6;
+    }
+    .input-wrap input:focus,
+    .input-wrap textarea:focus,
+    .input-wrap.has-value input,
+    .input-wrap.has-value textarea{
+      padding-top:22px;padding-bottom:4px;
+    }
+    .input-wrap input:focus,
+    .input-wrap textarea:focus{
+      border-color:#005BA6;
+      box-shadow:0 0 10px 0 rgba(0,91,166,0.5);
+    }
+    .input-wrap input:hover:not(:focus):not(:disabled),
+    .input-wrap textarea:hover:not(:focus):not(:disabled){
+      border-color:#000;
+    }
+    .input-wrap input:disabled,
+    .input-wrap textarea:disabled{
+      border-color:#E6E6E6;color:#DCDCDC;background:#fff;cursor:not-allowed;
+    }
+    .input-wrap input:disabled + label,
+    .input-wrap textarea:disabled + label{color:#DCDCDC;}
+    /* Textarea variant */
+    .input-wrap--textarea{height:auto;}
+    .input-wrap--textarea textarea{height:auto;min-height:96px;resize:vertical;line-height:1.45;}
+    .input-wrap--textarea label{height:48px;}
+
+    /* Toggle */
+    .toggle{
+      position:relative;display:inline-block;flex-shrink:0;
+      width:36px;height:20px;padding:0;margin:0;
+      background:#CCCCCC;border:0;border-radius:9999px;
+      cursor:pointer;transition:background 120ms ease;
+      vertical-align:middle;-webkit-appearance:none;appearance:none;
+    }
+    .toggle::after{
+      content:'';position:absolute;top:2px;left:2px;
+      width:16px;height:16px;border-radius:50%;
+      background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.15);
+      transition:left 150ms ease;
+    }
+    .toggle.is-on{background:var(--ps-brand-primary);}
+    .toggle.is-on::after{left:18px;}
+    .toggle:focus-visible{outline:2px solid var(--ps-brand-primary);outline-offset:2px;}
+
+    /* List card */
+    .list-card{
+      display:flex;align-items:center;gap:12px;
+      padding:12px 14px;
+      border:1px solid #F1F1F1;border-radius:6px;background:#fff;
+    }
+    .list-card + .list-card{margin-top:8px;}
+    .list-card__main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+    .list-card__title{font:600 14px/1.3 var(--ps-font-sans);color:#2B2B2B;}
+    .list-card__meta{font:13px/1.3 var(--ps-font-sans);color:#949494;}
+
+    /* Step pills (from step-pills.tsx) */
+    .pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+    .pill{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:4px 12px;border-radius:9999px;
+      font:600 12px/1 var(--ps-font-sans);
+      border:1px solid #DCDCDC;background:#fff;color:#4A4A4A;
+    }
+    .pill.is-current{border-color:var(--ps-brand-primary);color:var(--ps-brand-primary);background:rgba(0,91,166,0.08);}
+    .pill.is-visited{border-color:var(--ps-success);color:var(--ps-success);background:rgba(23,171,120,0.10);}
+
+    /* Footer (SelectionFooter pattern) */
+    .drawer-footer{
+      border-top:1px solid #DCDCDC;
+      padding:16px;display:flex;flex-direction:column;gap:16px;
+      flex-shrink:0;
+    }
+    @media (min-width:768px){
+      .drawer-footer{padding:24px;}
+    }
+    .drawer-footer__head{
+      display:flex;justify-content:space-between;align-items:center;
+      font:600 15px/1 var(--ps-font-sans);color:#2B2B2B;cursor:pointer;
+      background:transparent;border:0;padding:0;text-align:left;
+    }
+    .drawer-footer__head svg{transition:transform 200ms ease;}
+
+    /* ============================================
+       Spec table
+       ============================================ */
+    .spec{
+      width:100%;border-collapse:collapse;font-size:13px;
+      background:#fff;border:1px solid var(--ps-border-default);border-radius:6px;overflow:hidden;
+    }
+    .spec th,.spec td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--ps-border-default);vertical-align:top;}
+    .spec th{background:var(--ps-bg-canvas);font-weight:600;color:var(--ps-fg-secondary);font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+    .spec tr:last-child td{border-bottom:0;}
+    .spec td.k{font-family:var(--ps-font-mono);font-size:12px;color:var(--ps-fg-primary);width:30%;}
+    .spec td.v{font-family:var(--ps-font-mono);font-size:12px;color:var(--ps-brand-primary);width:30%;}
+
+    /* Two-column layout */
+    .twocol{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+    @media (max-width:960px){.twocol{grid-template-columns:1fr;}}
+
+    /* Toolbar above the stage */
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+    .toolbar__group{display:flex;gap:8px;flex-wrap:wrap;}
+    .toolbar__hint{font-size:12px;color:var(--ps-fg-tertiary);font-family:var(--ps-font-mono);}
+
+    /* ============================================
+       Anatomy widgets
+       ============================================ */
+    .anatomy{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:start;}
+    @media (max-width:1100px){.anatomy{grid-template-columns:1fr;}}
+    .anatomy__stage{
+      position:relative;height:520px;
+      background:#F4F6F8;border:1px solid var(--ps-border-default);
+      border-radius:8px;overflow:hidden;
+    }
+    .anatomy__stage .drawer{position:absolute;}
+    .anatomy__legend{
+      list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px;
+      font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;
+    }
+    .anatomy__legend li{display:flex;gap:12px;align-items:flex-start;}
+    .anatomy__legend b{display:block;font-size:13px;color:var(--ps-fg-primary);margin-bottom:2px;}
+    .anatomy__legend li > div > span{display:block;}
+    .legend__dot{
+      flex-shrink:0;width:24px;height:24px;border-radius:50%;
+      background:var(--ps-brand-primary);color:#fff;
+      display:inline-flex;align-items:center;justify-content:center;
+      font:700 12px/1 var(--ps-font-sans);
+      margin-top:1px;
+    }
+
+    /* Callouts overlayed on the stage — dots only, labels live in the legend */
+    .dot{
+      position:absolute;z-index:5;pointer-events:none;
+      width:24px;height:24px;border-radius:50%;
+      background:var(--ps-brand-primary);color:#fff;border:2px solid #fff;
+      display:inline-flex;align-items:center;justify-content:center;
+      font:700 11px/1 var(--ps-font-sans);
+      box-shadow:0 2px 6px rgba(0,0,0,0.25);
+      transition:opacity 200ms ease-out;
+    }
+    .anatomy__stage:not(:has(.drawer.is-open)) .dot{opacity:0;}
+    .dot--scrim{top:48%;left:18%;}
+    .dot--shell{top:14px;left:calc(58% - 12px);}
+    .dot--header{top:80px;left:calc(58% + 24px);}
+    .dot--close{top:34px;right:18px;}
+    .dot--container{bottom:18px;left:calc(58% + 24px);}
+
+    /* Sizing diagram */
+    .size-stage{
+      position:relative;width:100%;height:180px;
+      background:#F4F6F8;border:1px solid var(--ps-border-default);border-radius:8px;
+      padding:24px;
+    }
+    .size-box{
+      position:absolute;top:0;right:0;bottom:0;
+      width:42%;background:#fff;border-left:2px solid var(--ps-brand-primary);
+      box-shadow:-4px 0 12px rgba(0,0,0,0.08);
+    }
+    .size-box--mob{width:100%;border-left:0;background:rgba(255,255,255,0.85);}
+    .size-label{
+      position:absolute;font:600 11px/1 var(--ps-font-mono);
+      color:var(--ps-brand-primary);background:#fff;
+      padding:3px 6px;border-radius:3px;border:1px solid var(--ps-brand-primary);z-index:2;
+    }
+    .size-label--top{top:8px;left:50%;transform:translateX(-50%);}
+    .size-label--right{top:50%;right:8px;transform:translateY(-50%);}
+    .size-caption{font-size:13px;color:var(--ps-fg-secondary);margin:10px 0 0;line-height:1.5;}
+
+    /* States */
+    .states{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+    @media (max-width:900px){.states{grid-template-columns:1fr;}}
+    .state{margin:0;}
+    .state__stage{
+      position:relative;height:200px;
+      background:#F4F6F8;border:1px solid var(--ps-border-default);border-radius:8px;overflow:hidden;
+    }
+    .state__scrim{position:absolute;inset:0;background:rgba(0,0,0,0.40);opacity:0;}
+    .state__scrim--mid{opacity:0.5;}
+    .state__scrim--full{opacity:1;}
+    .state__drawer{
+      position:absolute;top:0;right:0;bottom:0;width:45%;
+      background:#fff;box-shadow:-4px 0 12px rgba(0,0,0,0.12);
+    }
+    .state__drawer--closed{transform:translateX(100%);}
+    .state__drawer--mid{transform:translateX(40%);}
+    .state__drawer--open{transform:translateX(0);}
+    .state figcaption{margin-top:10px;font-size:13px;color:var(--ps-fg-secondary);line-height:1.45;}
+    .state figcaption b{display:block;font-size:13px;color:var(--ps-fg-primary);margin-bottom:2px;}
+    .state figcaption span{display:block;}
+
+    /* Layer stack */
+    .layers{display:flex;flex-direction:column;gap:8px;}
+    .layer{
+      display:flex;align-items:center;gap:12px;
+      padding:14px 16px;border:1px solid var(--ps-border-default);
+      border-radius:6px;background:#fff;
+    }
+    .layer__z{
+      font:700 11px/1 var(--ps-font-mono);
+      background:var(--ps-bg-subtle);color:var(--ps-fg-secondary);
+      padding:5px 8px;border-radius:3px;min-width:56px;text-align:center;
+    }
+    .layer__name{font-size:14px;color:var(--ps-fg-primary);}
+    .layer--page{opacity:.7;}
+    .layer--scrim{background:rgba(0,0,0,0.05);}
+    .layer--drawer{background:#fff;border-color:var(--ps-brand-primary);}
+    .layer--drawer .layer__z{background:var(--ps-brand-primary);color:#fff;}
+    .layer--portal{background:var(--ps-bg-canvas);font-style:italic;}
+
+    /* Behaviors list */
+    .behaviors{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0;border:1px solid var(--ps-border-default);border-radius:6px;background:#fff;overflow:hidden;}
+    .behaviors li{
+      display:flex;gap:14px;padding:12px 16px;
+      border-bottom:1px solid var(--ps-border-default);
+      font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;
+    }
+    .behaviors li:last-child{border-bottom:0;}
+    .bh__k{
+      flex-shrink:0;width:110px;
+      font:600 12px/1.4 var(--ps-font-mono);color:var(--ps-fg-primary);
+    }
+
+    /* DrawerHeader anatomy */
+    .header-anatomy{
+      display:grid;grid-template-columns:1.1fr 1fr;gap:24px;
+      align-items:start;
+    }
+    @media (max-width:900px){.header-anatomy{grid-template-columns:1fr;}}
+    .header-anatomy__demo{
+      background:#fff;border:1px solid var(--ps-border-default);border-radius:6px;
+      padding:24px;
+    }
+    .header-anatomy__demo .drawer-header{
+      outline:1px dashed rgba(0,91,166,0.30);outline-offset:6px;
+      margin-bottom:32px;
+    }
+    .header-anatomy__spacer{
+      position:relative;height:32px;margin:-32px 0 0;
+      background:repeating-linear-gradient(45deg, rgba(0,91,166,0.06) 0 4px, transparent 4px 8px);
+      border-left:1px dashed rgba(0,91,166,0.30);
+      border-right:1px dashed rgba(0,91,166,0.30);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .ha-rule{
+      font:600 11px/1 var(--ps-font-mono);
+      color:var(--ps-brand-primary);background:#fff;
+      padding:3px 8px;border-radius:3px;border:1px solid var(--ps-brand-primary);
+    }
+    .header-anatomy__sibling{
+      margin-top:0;padding:12px 14px;
+      background:var(--ps-bg-subtle);border-radius:4px;
+      font:13px/1.3 var(--ps-font-mono);color:var(--ps-fg-tertiary);text-align:center;
+    }
+    .ha-spec{
+      width:100%;border-collapse:collapse;font-size:13px;
+      background:#fff;border:1px solid var(--ps-border-default);border-radius:6px;overflow:hidden;
+    }
+    .ha-spec td{padding:10px 14px;border-bottom:1px solid var(--ps-border-default);vertical-align:top;}
+    .ha-spec tr:last-child td{border-bottom:0;}
+    .ha-spec td.k{font:600 12px/1.3 var(--ps-font-mono);color:var(--ps-fg-primary);width:38%;}
+    .ha-spec td.v{font:12px/1.3 var(--ps-font-mono);color:var(--ps-brand-primary);width:32%;}
+
+    /* Container variants */
+    .container-variants{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+    @media (max-width:900px){.container-variants{grid-template-columns:1fr;}}
+    .cv{
+      display:flex;flex-direction:column;gap:0;
+      border:1px solid var(--ps-border-default);border-radius:6px;background:#fff;overflow:hidden;
+    }
+    .cv__chip{
+      background:var(--ps-bg-canvas);border-bottom:1px solid var(--ps-border-default);
+      padding:10px 14px;font:600 12px/1.2 var(--ps-font-mono);color:var(--ps-brand-primary);
+    }
+    .cv__body{padding:14px;}
+    .cv__kicker{margin:0 0 4px;font-size:13px;font-weight:600;color:var(--ps-fg-primary);}
+    .cv__desc{margin:0;font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+
+  </style>
+</head>
+<body>
+
+<h1>Drawer</h1>
+<p class="intro">
+  Right-anchored slide-in panel — recreated exactly from <code class="kbd">src/components/drawer/drawer.tsx</code>.
+  Composes three primitives: <code class="kbd">&lt;Drawer&gt;</code> (the panel + scrim + portal),
+  <code class="kbd">&lt;DrawerHeader&gt;</code> (title, optional subtitle, close button), and
+  <code class="kbd">&lt;DrawerContainer&gt;</code> (padded scroll region).
+  Used by Create Bundle, Create Assessment, and the multi-step Create Assignment drawer.
+</p>
+
+<!-- =====================================================
+     SECTION 1 — Live demo (toggle)
+     ===================================================== -->
+<div class="section">
+  <div class="section-head">
+    <h2>01 &middot; Live</h2>
+    <p class="desc">Toggle the drawer and click the scrim or the close button to dismiss. Esc also closes per source (<code class="kbd">useEffect</code> keydown listener).</p>
+  </div>
+  <div class="section-body">
+    <div class="toolbar">
+      <div class="toolbar__group">
+        <button class="btn btn--primary" data-open="d1">Open drawer</button>
+      </div>
+      <span class="toolbar__hint">desktop · max-w-125 (500px)</span>
+    </div>
+
+    <div class="stage" id="stage-1">
+      <!-- Faux page behind -->
+      <div class="pc">
+        <div class="pc__nav">
+          <div class="pc__logo"></div>
+          <div class="pc__search"></div>
+          <div class="pc__avatar"></div>
+        </div>
+        <div class="pc__body">
+          <p class="pc__h">Content Bundles</p>
+          <div class="pc__row">
+            <div class="pc__card"><div class="pc__bar w60"></div><div class="pc__bar w40"></div></div>
+            <div class="pc__card"><div class="pc__bar w80"></div><div class="pc__bar w50"></div></div>
+            <div class="pc__card"><div class="pc__bar w50"></div><div class="pc__bar w90"></div></div>
+          </div>
+          <div class="pc__row">
+            <div class="pc__card"><div class="pc__bar w90"></div><div class="pc__bar w40"></div></div>
+            <div class="pc__card"><div class="pc__bar w60"></div><div class="pc__bar w80"></div></div>
+            <div class="pc__card"><div class="pc__bar w50"></div><div class="pc__bar w60"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scrim -->
+      <div class="scrim" data-scrim="d1"></div>
+
+      <!-- Drawer: CreateBundle variant -->
+      <div class="drawer" data-drawer="d1" role="dialog" aria-modal="true" aria-hidden="true" tabindex="-1">
+        <div class="drawer-container drawer-container--flex">
+          <div class="drawer-header">
+            <div class="drawer-header__text">
+              <h3>Create Bundle</h3>
+              <p>Create a content bundle to grant access to modules.</p>
+            </div>
+            <button class="drawer-header__close" data-close="d1" aria-label="Close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+
+          <div class="form-stack">
+            <div class="input-wrap has-value">
+              <input id="d1-name" type="text" value="Q3 Biomed Onboarding">
+              <label class="has-value" for="d1-name">Bundle name</label>
+            </div>
+            <div class="input-wrap input-wrap--textarea">
+              <textarea id="d1-desc"></textarea>
+              <label for="d1-desc">Description</label>
+            </div>
+            <div class="field field--row" style="margin-bottom:0;">
+              <span class="field__label">Status</span>
+              <button type="button" class="toggle is-on" aria-pressed="true"></button>
+            </div>
+          </div>
+        </div>
+        <div class="drawer-footer">
+          <button class="btn btn--primary btn--block">Create Bundle</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     SECTION 2 — Anatomy / parts
+     ===================================================== -->
+<div class="section">
+  <div class="section-head">
+    <h2>02 &middot; Anatomy</h2>
+    <p class="desc">The drawer is three composable pieces plus a scrim, mounted into a portal. There is no fixed layout — compose <code class="kbd">DrawerHeader</code> + <code class="kbd">DrawerContainer</code> + footer however the screen needs.</p>
+  </div>
+  <div class="section-body plain">
+
+    <!-- 2a. Labeled parts diagram -->
+    <div class="toolbar" style="margin-bottom:8px;">
+      <p class="demo-cap" style="margin:0;">2a · Parts (labeled)</p>
+      <div class="toolbar__group">
+        <button class="btn btn--outline btn--sm" data-open="a1">Reopen</button>
+      </div>
+    </div>
+    <div class="anatomy">
+      <div class="anatomy__stage" data-stage="a1">
+        <div class="pc">
+          <div class="pc__nav"><div class="pc__logo"></div><div class="pc__search"></div><div class="pc__avatar"></div></div>
+          <div class="pc__body">
+            <div class="pc__row">
+              <div class="pc__card"><div class="pc__bar w60"></div><div class="pc__bar w40"></div></div>
+              <div class="pc__card"><div class="pc__bar w80"></div><div class="pc__bar w50"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="scrim is-open" data-scrim="a1"></div>
+        <div class="drawer is-open" data-drawer="a1" role="dialog" aria-modal="true" aria-hidden="false" tabindex="-1">
+          <div class="drawer-container drawer-container--scroll">
+            <div class="drawer-header">
+              <div class="drawer-header__text">
+                <h3>Create Bundle</h3>
+                <p>Create a content bundle to grant access to modules.</p>
+              </div>
+              <button class="drawer-header__close" data-close="a1" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+            <div class="form-stack">
+              <div class="input-wrap">
+                <input type="text" id="a-name">
+                <label for="a-name">Bundle name</label>
+              </div>
+              <div class="input-wrap input-wrap--textarea">
+                <textarea id="a-desc"></textarea>
+                <label for="a-desc">Description</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Callouts (dots only — labels live in the legend) -->
+        <span class="dot dot--scrim">1</span>
+        <span class="dot dot--shell">2</span>
+        <span class="dot dot--header">3</span>
+        <span class="dot dot--close">4</span>
+        <span class="dot dot--container">5</span>
+      </div>
+      <ol class="anatomy__legend">
+        <li><span class="legend__dot">1</span><div><b>Scrim</b><span>Sibling <code class="kbd">&lt;Scrim isOpen handleClick&gt;</code>. Click dismisses the drawer.</span></div></li>
+        <li><span class="legend__dot">2</span><div><b>Drawer shell</b><span>Fixed top/right · <code class="kbd">max-w-125 w-full h-screen</code> · slides via <code class="kbd">translate-x</code>.</span></div></li>
+        <li><span class="legend__dot">3</span><div><b>DrawerHeader</b><span>Title row with optional subtitle and a trailing close button. <code class="kbd">mb-8</code> below.</span></div></li>
+        <li><span class="legend__dot">4</span><div><b>Close button</b><span>Button <code class="kbd">variant="ghost" size="iconOnly"</code> with a Lucide <code class="kbd">X size={18}</code>.</span></div></li>
+        <li><span class="legend__dot">5</span><div><b>DrawerContainer</b><span>Padded region. Pass <code class="kbd">h-full overflow-y-auto</code> or <code class="kbd">flex-1 overflow-y-auto</code> for scrollable bodies.</span></div></li>
+      </ol>
+    </div>
+
+    <!-- 2b. Sizing -->
+    <p class="demo-cap" style="margin-top:48px;">2b · Sizing — Desktop &amp; Mobile</p>
+    <div class="twocol">
+      <div>
+        <div class="size-stage size-stage--desk">
+          <span class="size-label size-label--top">h-screen · 100vh</span>
+          <span class="size-label size-label--right">max-w-125 · 500px</span>
+          <div class="size-box"></div>
+        </div>
+        <p class="size-caption">Desktop · ≥ md (768px) — pinned right, 500px max width, full viewport height.</p>
+      </div>
+      <div>
+        <div class="size-stage size-stage--mob">
+          <span class="size-label size-label--top">h-screen · 100vh</span>
+          <span class="size-label size-label--right">w-full · 100%</span>
+          <div class="size-box size-box--mob"></div>
+        </div>
+        <p class="size-caption">Mobile · &lt; md — fills the viewport. <code class="kbd">w-full</code> caps at 500px on wider screens, so phones get edge-to-edge coverage.</p>
+      </div>
+    </div>
+
+    <!-- 2c. States -->
+    <p class="demo-cap" style="margin-top:48px;">2c · States — Open ↔ Closed (300ms ease-out)</p>
+    <div class="states">
+      <figure class="state">
+        <div class="state__stage">
+          <div class="state__scrim"></div>
+          <div class="state__drawer state__drawer--closed"></div>
+        </div>
+        <figcaption><b>Closed</b><span><code class="kbd">translate-x-full · pointer-events-none · aria-hidden=true</code></span></figcaption>
+      </figure>
+      <figure class="state">
+        <div class="state__stage">
+          <div class="state__scrim state__scrim--mid"></div>
+          <div class="state__drawer state__drawer--mid"></div>
+        </div>
+        <figcaption><b>In motion</b><span>Both scrim opacity and panel transform interpolate <code class="kbd">300ms</code> ease-out.</span></figcaption>
+      </figure>
+      <figure class="state">
+        <div class="state__stage">
+          <div class="state__scrim state__scrim--full"></div>
+          <div class="state__drawer state__drawer--open"></div>
+        </div>
+        <figcaption><b>Open</b><span><code class="kbd">translate-x-0 · pointer-events-auto · aria-hidden=false</code></span></figcaption>
+      </figure>
+    </div>
+
+    <!-- 2d. Layer stack & behaviors -->
+    <div class="twocol" style="margin-top:48px;">
+      <div>
+        <p class="demo-cap">2d · Layer stack</p>
+        <div class="layers">
+          <div class="layer layer--page"><span class="layer__z">z 0</span><span class="layer__name">Page · app content</span></div>
+          <div class="layer layer--scrim"><span class="layer__z">z 40</span><span class="layer__name">Scrim · rgba(0,0,0,.40)</span></div>
+          <div class="layer layer--drawer"><span class="layer__z">z 50</span><span class="layer__name">Drawer · shadow-xl</span></div>
+          <div class="layer layer--portal"><span class="layer__z">portal</span><span class="layer__name">Mounted via <code class="kbd">Portal.Root</code> at &lt;body&gt;</span></div>
+        </div>
+      </div>
+      <div>
+        <p class="demo-cap">2e · Behaviors</p>
+        <ul class="behaviors">
+          <li><span class="bh__k">Esc</span><span>Closes the drawer (<code class="kbd">useEffect</code> keydown listener).</span></li>
+          <li><span class="bh__k">Scrim click</span><span>Closes via <code class="kbd">handleClick</code> on <code class="kbd">Scrim</code>.</span></li>
+          <li><span class="bh__k">Focus trap</span><span><code class="kbd">FocusTrap</code> active when open; <code class="kbd">allowOutsideClick</code>; <code class="kbd">escapeDeactivates:false</code>.</span></li>
+          <li><span class="bh__k">Fallback focus</span><span><code class="kbd">[data-drawer-dialog]</code> if nothing is focusable inside.</span></li>
+          <li><span class="bh__k">Scroll lock</span><span><code class="kbd">useScrollLock(isOpen)</code> freezes body scroll while open.</span></li>
+          <li><span class="bh__k">Portal</span><span>Renders into a <code class="kbd">Portal.Root</code> sibling of body — never clipped by parent overflow.</span></li>
+          <li><span class="bh__k">ARIA</span><span><code class="kbd">role="dialog"</code> · <code class="kbd">aria-modal="true"</code> · <code class="kbd">aria-hidden</code> toggles with state.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2f. DrawerHeader anatomy -->
+    <p class="demo-cap" style="margin-top:48px;">2f · DrawerHeader internals</p>
+    <div class="header-anatomy">
+      <div class="header-anatomy__demo">
+        <div class="drawer-header" id="ha-demo">
+          <div class="drawer-header__text">
+            <h3>Create Assignment</h3>
+            <p>Select the modules you want to assign and click next.</p>
+          </div>
+          <button class="drawer-header__close" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="header-anatomy__spacer"><span class="ha-rule">mb-8 (32px)</span></div>
+        <div class="header-anatomy__sibling">next sibling (e.g. SearchInput)</div>
+      </div>
+      <table class="ha-spec">
+        <tbody>
+          <tr><td class="k">title</td><td class="v">text-2xl / 600 / #2B2B2B</td><td>required · single line typically</td></tr>
+          <tr><td class="k">subtitle</td><td class="v">text-md / 400 / #4A4A4A</td><td>optional · omitted when not passed</td></tr>
+          <tr><td class="k">gap (title ↔ close)</td><td class="v">gap-4 → 16px</td><td>flex gap between text + close</td></tr>
+          <tr><td class="k">close button</td><td class="v">Button ghost iconOnly</td><td>Lucide <code class="kbd">X size={18}</code></td></tr>
+          <tr><td class="k">spacing below</td><td class="v">mb-8 → 32px</td><td>between header and next sibling</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2g. DrawerContainer variants -->
+    <p class="demo-cap" style="margin-top:48px;">2g · DrawerContainer — three observed compositions</p>
+    <div class="container-variants">
+      <div class="cv">
+        <div class="cv__chip">p-4 md:p-8</div>
+        <div class="cv__body">
+          <p class="cv__kicker">Default</p>
+          <p class="cv__desc">No scroll behavior on its own. Used when the body fits — Create Assessment list view.</p>
+        </div>
+      </div>
+      <div class="cv">
+        <div class="cv__chip">h-full overflow-y-auto</div>
+        <div class="cv__body">
+          <p class="cv__kicker">Scrollable, fills drawer</p>
+          <p class="cv__desc">For a drawer that has no separate footer (single container scrolls). Used by Create Bundle.</p>
+        </div>
+      </div>
+      <div class="cv">
+        <div class="cv__chip">flex-1 overflow-y-auto</div>
+        <div class="cv__body">
+          <p class="cv__kicker">Scrollable above sticky footer</p>
+          <p class="cv__desc">Container takes remaining height; footer sits below it. Used by Create Assignment.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =====================================================
+     SECTION 3 — Variants (compositions in source)
+     ===================================================== -->
+<div class="section">
+  <div class="section-head">
+    <h2>03 &middot; Compositions</h2>
+    <p class="desc">Patterns lifted from the actual call-sites: a form drawer (Create Bundle), a single-pick drawer (Create Assessment), and a multi-step selection drawer with sticky footer + step pills (Create Assignment).</p>
+  </div>
+  <div class="section-body">
+
+    <div class="twocol" style="margin-bottom:32px;">
+      <div>
+        <p class="demo-cap">Form drawer (Create Bundle)</p>
+        <div class="stage stage--short">
+          <div class="pc"></div>
+          <div class="scrim is-open"></div>
+          <div class="drawer is-open">
+            <div class="drawer-container drawer-container--flex">
+              <div class="drawer-header">
+                <div class="drawer-header__text">
+                  <h3>Create Bundle</h3>
+                  <p>Create a content bundle to grant access to modules.</p>
+                </div>
+                <button class="drawer-header__close" aria-label="Close">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+              </div>
+              <div class="form-stack">
+                <div class="input-wrap">
+                  <input type="text" id="c-name">
+                  <label for="c-name">Bundle name</label>
+                </div>
+                <div class="input-wrap input-wrap--textarea">
+                  <textarea id="c-desc"></textarea>
+                  <label for="c-desc">Description</label>
+                </div>
+                <div class="field field--row" style="margin-bottom:0;"><span class="field__label">Status</span><button type="button" class="toggle is-on" aria-pressed="true"></button></div>
+              </div>
+            </div>
+            <div class="drawer-footer">
+              <button class="btn btn--primary btn--block">Create Bundle</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="demo-cap">List-pick drawer (Create Assessment)</p>
+        <div class="stage stage--short">
+          <div class="pc"></div>
+          <div class="scrim is-open"></div>
+          <div class="drawer is-open">
+            <div class="drawer-container drawer-container--scroll">
+              <div class="drawer-header">
+                <div class="drawer-header__text">
+                  <h3>Create Assessment</h3>
+                  <p>Select a module to create an assessment</p>
+                </div>
+                <button class="drawer-header__close" aria-label="Close">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+              </div>
+              <div class="list-card"><div class="list-card__main"><div class="list-card__title">Infusion Pump Preventive Maintenance</div><div class="list-card__meta">Interactive · 12 sections</div></div></div>
+              <div class="list-card"><div class="list-card__main"><div class="list-card__title">Ventilator Safety Checks</div><div class="list-card__meta">Interactive · 9 sections</div></div></div>
+              <div class="list-card"><div class="list-card__main"><div class="list-card__title">Defibrillator OEM Service</div><div class="list-card__meta">Interactive · 14 sections</div></div></div>
+              <div class="list-card"><div class="list-card__main"><div class="list-card__title">Patient Monitor Calibration</div><div class="list-card__meta">Interactive · 7 sections</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="demo-cap">Multi-step with sticky footer (Create Assignment)</p>
+    <div class="stage">
+      <div class="pc"></div>
+      <div class="scrim is-open"></div>
+      <div class="drawer is-open">
+        <div class="drawer-container drawer-container--flex">
+          <div class="drawer-header">
+            <div class="drawer-header__text">
+              <h3>Modules</h3>
+              <p>Select the modules you want to assign and click next.</p>
+            </div>
+            <button class="drawer-header__close" aria-label="Close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+          <div class="pills">
+            <span class="pill is-current"><span>1</span><span>Modules</span></span>
+            <span class="pill"><span>2</span><span>Profiles</span></span>
+            <span class="pill"><span>3</span><span>Confirm</span></span>
+          </div>
+          <div class="input-wrap" style="margin-bottom:16px;">
+            <input type="text" id="s-search">
+            <label for="s-search">Search by title or procedure</label>
+          </div>
+          <div class="list-card"><div class="list-card__main"><div class="list-card__title">Infusion Pump PM</div><div class="list-card__meta">Interactive</div></div></div>
+          <div class="list-card"><div class="list-card__main"><div class="list-card__title">Ventilator Safety</div><div class="list-card__meta">Interactive</div></div></div>
+          <div class="list-card"><div class="list-card__main"><div class="list-card__title">Defibrillator OEM</div><div class="list-card__meta">Interactive</div></div></div>
+          <div class="list-card"><div class="list-card__main"><div class="list-card__title">Patient Monitor Cal</div><div class="list-card__meta">Interactive</div></div></div>
+        </div>
+        <div class="drawer-footer">
+          <button class="drawer-footer__head">
+            <span>2 selected</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg);"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="list-card"><div class="list-card__main"><div class="list-card__title">Infusion Pump PM</div><div class="list-card__meta">Interactive</div></div></div>
+          <div class="list-card"><div class="list-card__main"><div class="list-card__title">Ventilator Safety</div><div class="list-card__meta">Interactive</div></div></div>
+          <button class="btn btn--primary btn--block">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     SECTION 4 — Spec
+     ===================================================== -->
+<div class="section">
+  <div class="section-head">
+    <h2>04 &middot; Spec</h2>
+    <p class="desc">Direct mapping from the source Tailwind classes to the design tokens used in this preview.</p>
+  </div>
+  <div class="section-body plain">
+    <table class="spec">
+      <thead><tr><th style="width:22%;">Part</th><th>Property</th><th>Token / Value</th><th>Source class</th></tr></thead>
+      <tbody>
+        <tr><td>Drawer shell</td><td class="k">position</td><td class="v">fixed top:0 right:0</td><td>fixed top-0 right-0</td></tr>
+        <tr><td></td><td class="k">size</td><td class="v">max-width 500px · 100% w · 100vh</td><td>max-w-125 w-full h-screen</td></tr>
+        <tr><td></td><td class="k">background</td><td class="v">#FFFFFF</td><td>bg-white</td></tr>
+        <tr><td></td><td class="k">shadow</td><td class="v">tailwind xl</td><td>shadow-xl</td></tr>
+        <tr><td></td><td class="k">stack</td><td class="v">flex column</td><td>flex flex-col</td></tr>
+        <tr><td></td><td class="k">z-index</td><td class="v">50</td><td>z-50</td></tr>
+        <tr><td></td><td class="k">transition</td><td class="v">transform 300ms ease-out</td><td>transition-transform duration-300 ease-out</td></tr>
+        <tr><td></td><td class="k">open</td><td class="v">translateX(0)</td><td>translate-x-0</td></tr>
+        <tr><td></td><td class="k">closed</td><td class="v">translateX(100%) · pointer-events:none</td><td>translate-x-full pointer-events-none</td></tr>
+        <tr><td></td><td class="k">role · aria</td><td class="v">dialog · aria-modal=true · aria-hidden when closed</td><td>role · aria-modal · aria-hidden</td></tr>
+
+        <tr><td>Scrim</td><td class="k">component</td><td class="v">&lt;Scrim isOpen handleClick&gt;</td><td>../scrim</td></tr>
+        <tr><td></td><td class="k">behavior</td><td class="v">click ⇒ onClose</td><td>handleClick</td></tr>
+
+        <tr><td>Keyboard</td><td class="k">Escape</td><td class="v">calls onClose</td><td>useEffect → keydown</td></tr>
+        <tr><td></td><td class="k">focus</td><td class="v">trap inside drawer when open</td><td>FocusTrap (focus-trap-react)</td></tr>
+        <tr><td></td><td class="k">scroll lock</td><td class="v">body scroll disabled while open</td><td>useScrollLock</td></tr>
+
+        <tr><td>DrawerHeader</td><td class="k">layout</td><td class="v">flex · justify-between · items-start · gap 16px · mb 32px</td><td>flex justify-between items-start gap-4 mb-8</td></tr>
+        <tr><td></td><td class="k">title</td><td class="v">24px / 32 · 600 · #2B2B2B</td><td>text-2xl font-semibold text-grey-1</td></tr>
+        <tr><td></td><td class="k">subtitle</td><td class="v">15px · 400 · #4A4A4A</td><td>text-md font-normal text-grey-2</td></tr>
+        <tr><td></td><td class="k">close</td><td class="v">Button ghost iconOnly · X 18px</td><td>variant="ghost" size="iconOnly"</td></tr>
+
+        <tr><td>DrawerContainer</td><td class="k">padding</td><td class="v">16px · ≥md 32px</td><td>p-4 md:p-8</td></tr>
+        <tr><td></td><td class="k">composition</td><td class="v">accepts +className</td><td>className?:string</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- =====================================================
+     SECTION 5 — Code snippet
+     ===================================================== -->
+<div class="section">
+  <div class="section-head">
+    <h2>05 &middot; Usage</h2>
+    <p class="desc">Drop-in shape — three primitives.</p>
+  </div>
+  <div class="section-body plain">
+<pre style="margin:0;padding:18px 20px;background:#1B232C;color:#E8EEF5;border-radius:8px;overflow-x:auto;font:13px/1.55 var(--ps-font-mono);"><span style="color:#7FB1E0;">import</span> { Drawer, DrawerContainer, DrawerHeader } <span style="color:#7FB1E0;">from</span> <span style="color:#C8E6A8;">'./drawer'</span>;
+
+<span style="color:#7FB1E0;">function</span> <span style="color:#F3D77F;">CreateBundleDrawer</span>({ isOpen, onClose }) {
+  <span style="color:#7FB1E0;">return</span> (
+    <span style="color:#9AB7CC;">&lt;Drawer</span> isOpen={isOpen} onClose={onClose}<span style="color:#9AB7CC;">&gt;</span>
+      <span style="color:#9AB7CC;">&lt;DrawerContainer</span> className=<span style="color:#C8E6A8;">"flex-1 overflow-y-auto"</span><span style="color:#9AB7CC;">&gt;</span>
+        <span style="color:#9AB7CC;">&lt;DrawerHeader</span>
+          title=<span style="color:#C8E6A8;">"Create Bundle"</span>
+          subtitle=<span style="color:#C8E6A8;">"Create a content bundle to grant access to modules."</span>
+          onClose={onClose}
+        <span style="color:#9AB7CC;">/&gt;</span>
+        {<span style="color:#A8B8C8;">/* form fields scroll here */</span>}
+      <span style="color:#9AB7CC;">&lt;/DrawerContainer&gt;</span>
+
+      <span style="color:#A8B8C8;">{/* Sticky footer — primary CTA never hides below the fold */}</span>
+      <span style="color:#9AB7CC;">&lt;div</span> className=<span style="color:#C8E6A8;">"drawer-footer border-t border-grey-5 p-4 md:p-6"</span><span style="color:#9AB7CC;">&gt;</span>
+        <span style="color:#9AB7CC;">&lt;SubmitButton</span> onClick={onSubmit} className=<span style="color:#C8E6A8;">"w-full sm:w-full"</span><span style="color:#9AB7CC;">&gt;</span>Create Bundle<span style="color:#9AB7CC;">&lt;/SubmitButton&gt;</span>
+      <span style="color:#9AB7CC;">&lt;/div&gt;</span>
+    <span style="color:#9AB7CC;">&lt;/Drawer&gt;</span>
+  );
+}</pre>
+  </div>
+</div>
+
+<script>
+  // ---- Drawer interactivity ----
+  const openAll = (id) => {
+    document.querySelectorAll(`[data-drawer="${id}"]`).forEach(el => {
+      el.classList.add('is-open');
+      el.setAttribute('aria-hidden', 'false');
+    });
+    document.querySelectorAll(`[data-scrim="${id}"]`).forEach(el => el.classList.add('is-open'));
+  };
+  const closeAll = (id) => {
+    document.querySelectorAll(`[data-drawer="${id}"]`).forEach(el => {
+      el.classList.remove('is-open');
+      el.setAttribute('aria-hidden', 'true');
+    });
+    document.querySelectorAll(`[data-scrim="${id}"]`).forEach(el => el.classList.remove('is-open'));
+  };
+
+  document.querySelectorAll('[data-open]').forEach(btn => {
+    btn.addEventListener('click', () => openAll(btn.getAttribute('data-open')));
+  });
+  document.querySelectorAll('[data-close]').forEach(btn => {
+    btn.addEventListener('click', () => closeAll(btn.getAttribute('data-close')));
+  });
+  document.querySelectorAll('[data-scrim]').forEach(el => {
+    el.addEventListener('click', () => closeAll(el.getAttribute('data-scrim')));
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.drawer.is-open').forEach(d => {
+      const id = d.getAttribute('data-drawer');
+      if (id) closeAll(id);
+    });
+  });
+
+  // ---- Floating label (.input-wrap) ----
+  const syncLabel = (el) => {
+    const wrap = el.closest('.input-wrap');
+    if (!wrap) return;
+    if (el.value && el.value.trim()) wrap.classList.add('has-value');
+    else wrap.classList.remove('has-value');
+  };
+  document.querySelectorAll('.input-wrap input, .input-wrap textarea').forEach(el => {
+    syncLabel(el);
+    el.addEventListener('input', () => syncLabel(el));
+    el.addEventListener('change', () => syncLabel(el));
+    el.addEventListener('blur', () => syncLabel(el));
+  });
+
+  // ---- Toggle button (.toggle) ----
+  document.querySelectorAll('button.toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const next = !btn.classList.contains('is-on');
+      btn.classList.toggle('is-on', next);
+      btn.setAttribute('aria-pressed', next ? 'true' : 'false');
+    });
+  });
+</script>
+
+<!-- =====================================================
+     SECTION 6 — Drawer Builder (live tweaks)
+     ===================================================== -->
+<div class="section">
+  <div class="section-head">
+    <h2>06 &middot; Drawer Builder</h2>
+    <p class="desc">Configure a drawer interactively. Tweak the header, body pattern, footer, and behaviors on the left — the live preview updates and the generated <code class="kbd">&lt;Drawer&gt;</code> JSX appears below.</p>
+  </div>
+  <div class="section-body" id="db-root" style="background:#F4F6F8;min-height:780px;">
+    <div style="padding:60px;color:var(--ps-fg-tertiary);text-align:center;font-style:italic;">Loading Drawer Builder…</div>
+  </div>
+</div>
+
+<style>
+  /* Drawer Builder */
+  .db-grid{display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start;}
+  @media (max-width:980px){.db-grid{grid-template-columns:1fr;}}
+
+  .db-tweaks{
+    background:var(--ps-bg-default);border:1px solid var(--ps-border-default);
+    border-radius:8px;padding:18px 18px 20px;
+    display:flex;flex-direction:column;gap:14px;
+    font-family:var(--ps-font-sans);
+  }
+  .db-section{
+    display:flex;align-items:center;gap:10px;
+    font:700 10px/1 'Source Sans Pro',sans-serif;
+    letter-spacing:1.4px;text-transform:uppercase;color:var(--ps-brand-primary);
+    margin-top:6px;
+  }
+  .db-section:first-child{margin-top:0;}
+  .db-section::after{content:"";flex:1;height:1px;background:var(--ps-border-default);}
+  .db-tweak{display:flex;flex-direction:column;gap:6px;}
+  .db-tweak label.k{font:700 10px/1.2 'Source Sans Pro',sans-serif;letter-spacing:1px;text-transform:uppercase;color:var(--ps-fg-tertiary);}
+  .db-tweak input[type="text"],
+  .db-tweak textarea,
+  .db-tweak select{
+    width:100%;height:34px;border:1px solid #CCCCCC;border-radius:4px;
+    padding:0 10px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-fg-primary);background:#fff;
+  }
+  .db-tweak textarea{height:auto;min-height:54px;padding:8px 10px;line-height:1.4;resize:vertical;}
+  .db-tweak input[type="text"]:focus,
+  .db-tweak textarea:focus,
+  .db-tweak select:focus{outline:0;border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+  .db-seg{display:flex;background:#F4F6F8;border-radius:5px;padding:3px;height:34px;}
+  .db-seg button{
+    border:0;background:transparent;font:600 12px/1 'Source Sans Pro',sans-serif;
+    color:var(--ps-fg-secondary);padding:0 10px;border-radius:3px;cursor:pointer;flex:1;text-align:center;
+  }
+  .db-seg button.on{background:#fff;color:var(--ps-brand-primary);box-shadow:0 1px 2px rgba(0,0,0,.08);}
+  .db-check{display:flex;align-items:center;justify-content:space-between;gap:8px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-fg-primary);cursor:pointer;height:32px;}
+  .db-stage{
+    position:relative;width:100%;min-height:680px;
+    background:#FAFBFC url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'><defs><pattern id='g' width='40' height='40' patternUnits='userSpaceOnUse'><path d='M40 0H0V40' fill='none' stroke='%23ECEEF1' stroke-width='1'/></pattern></defs><rect width='100%25' height='100%25' fill='url(%23g)'/></svg>");
+    border-radius:8px;border:1px solid var(--ps-border-default);
+    overflow:hidden;display:flex;justify-content:flex-end;
+  }
+  .db-stage .pc{position:absolute;inset:0;}
+  .db-stage .drawer{position:absolute;right:0;top:0;bottom:0;}
+  .db-stage .scrim{position:absolute;inset:0;}
+  .db-codebox{
+    margin-top:18px;background:#1B232C;color:#E8EEF5;border-radius:8px;
+    padding:18px 20px;font:12px/1.55 var(--ps-font-mono);
+    max-height:280px;overflow:auto;white-space:pre;position:relative;
+  }
+  .db-copy{position:absolute;top:10px;right:10px;background:#374151;border:0;color:#fff;padding:6px 12px;border-radius:5px;font:600 11px/1 var(--ps-font-sans);cursor:pointer;}
+  .db-copy:hover{background:#4B5563;}
+  .db-copy.copied{background:#0A7850;}
+
+  /* Builder list rows */
+  .db-list-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #F1F1F1;border-radius:5px;background:#fff;}
+  .db-list-row + .db-list-row{margin-top:8px;}
+  .db-avatar{width:32px;height:32px;border-radius:50%;background:#D0EDFC;color:var(--ps-brand-primary);display:inline-flex;align-items:center;justify-content:center;font:700 12px/1 var(--ps-font-sans);flex-shrink:0;}
+  .db-list-row__main{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;}
+  .db-list-row__title{font:600 14px/1.3 var(--ps-font-sans);color:#2B2B2B;}
+  .db-list-row__meta{font:13px/1.3 var(--ps-font-sans);color:#949494;}
+  .db-icon-btn{
+    width:32px;height:32px;border-radius:4px;background:#fff;border:1px solid var(--ps-brand-primary);
+    color:var(--ps-brand-primary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+  }
+  .db-icon-btn:hover{background:#EFF6FB;}
+  .db-icon-btn--danger{border-color:var(--ps-red-1);color:var(--ps-red-1);}
+  .db-icon-btn--danger:hover{background:var(--ps-red-4);}
+
+  .db-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+
+  /* Section editor list */
+  .db-secedit-list{display:flex;flex-direction:column;gap:8px;}
+  .db-secedit{
+    background:#fff;border:1px solid var(--ps-border-default);border-radius:6px;
+    overflow:hidden;
+  }
+  .db-secedit__head{
+    display:flex;align-items:center;gap:4px;
+    padding:6px 10px 6px 6px;background:var(--ps-bg-canvas);
+    border-bottom:1px solid var(--ps-border-default);
+  }
+  .db-secedit__toggle{
+    flex:1;display:flex;align-items:center;gap:10px;
+    padding:6px 6px;background:transparent;border:0;border-radius:4px;
+    cursor:pointer;text-align:left;
+  }
+  .db-secedit__toggle:hover{background:#EFF6FB;}
+  .db-secedit__icon{
+    flex-shrink:0;width:24px;height:24px;border-radius:4px;
+    background:#EFF6FB;color:var(--ps-brand-primary);
+    display:inline-flex;align-items:center;justify-content:center;
+    font:700 13px/1 var(--ps-font-mono);
+  }
+  .db-secedit__title{
+    flex:1;font:600 12px/1.2 var(--ps-font-sans);color:var(--ps-fg-primary);
+  }
+  .db-secedit__actions{display:flex;gap:2px;flex-shrink:0;}
+  .db-secedit__btn{
+    width:24px;height:24px;border:0;background:transparent;color:var(--ps-fg-tertiary);
+    border-radius:3px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  }
+  .db-secedit__btn:hover{background:#E5E9EE;color:var(--ps-fg-primary);}
+  .db-secedit__btn:disabled{opacity:.3;cursor:not-allowed;}
+  .db-secedit__btn--del:hover{background:#FDECEC;color:#9E2A1C;}
+  .db-secedit__body{padding:12px;display:flex;flex-direction:column;gap:10px;}
+  .db-empty{
+    font-style:italic;font-size:13px;color:var(--ps-fg-tertiary);
+    margin:0;padding:4px 2px;
+  }
+  .db-empty code{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-bg-subtle);padding:1px 4px;border-radius:3px;}
+
+  /* Item editor (list/selected items) */
+  .db-itemed{display:flex;flex-direction:column;gap:6px;background:var(--ps-bg-canvas);border:1px solid var(--ps-border-default);border-radius:5px;padding:8px;}
+  .db-itemed__row{display:grid;grid-template-columns:1fr 1fr 24px;gap:6px;align-items:center;}
+  .db-itemed__row input{
+    width:100%;height:28px;border:1px solid #DCDCDC;border-radius:3px;
+    padding:0 8px;font:13px/1 var(--ps-font-sans);color:var(--ps-fg-primary);background:#fff;
+  }
+  .db-itemed__row input:focus{outline:0;border-color:var(--ps-brand-primary);box-shadow:0 0 0 2px rgba(0,91,166,.12);}
+  .db-itemed__del{
+    width:24px;height:24px;background:transparent;border:0;color:var(--ps-fg-tertiary);
+    border-radius:3px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  }
+  .db-itemed__del:hover{background:#FDECEC;color:#9E2A1C;}
+  .db-itemed__add{
+    align-self:flex-start;margin-top:2px;height:26px;padding:0 10px;
+    border:1px dashed #BFBFBF;background:#fff;border-radius:3px;
+    font:600 11px/1 var(--ps-font-sans);color:var(--ps-brand-primary);cursor:pointer;
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .db-itemed__add:hover{background:#EFF6FB;border-style:solid;border-color:var(--ps-brand-primary);}
+
+  /* Table editor */
+  .db-tabled{display:flex;flex-direction:column;gap:4px;background:var(--ps-bg-canvas);border:1px solid var(--ps-border-default);border-radius:5px;padding:8px;}
+  .db-tabled__row{
+    display:grid;
+    grid-template-columns:repeat(var(--cols, 3), minmax(0, 1fr)) 28px;
+    gap:4px;align-items:center;
+  }
+  .db-tabled__row input{
+    width:100%;height:26px;border:1px solid #DCDCDC;border-radius:3px;
+    padding:0 6px;font:12px/1 var(--ps-font-sans);color:var(--ps-fg-primary);background:#fff;
+  }
+  .db-tabled__row--head input{font-weight:600;background:#fff;}
+  .db-tabled__col{position:relative;}
+  .db-tabled__col input{padding-right:18px;}
+  .db-tabled__col .db-tabled__del{position:absolute;top:1px;right:1px;width:18px;height:24px;font-size:9px;}
+  .db-tabled__del{
+    width:22px;height:24px;background:transparent;border:0;color:var(--ps-fg-tertiary);
+    border-radius:3px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  }
+  .db-tabled__del:hover{background:#FDECEC;color:#9E2A1C;}
+  .db-tabled__del--row{grid-column:-1;}
+  .db-tabled__add{
+    align-self:flex-start;margin-top:2px;height:22px;padding:0 8px;
+    border:1px dashed #BFBFBF;background:#fff;border-radius:3px;
+    font:600 10px/1 var(--ps-font-sans);color:var(--ps-brand-primary);cursor:pointer;
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .db-tabled__add:hover{background:#EFF6FB;border-style:solid;border-color:var(--ps-brand-primary);}
+  .db-tabled__add--col{grid-column:-1 / -2;align-self:center;justify-self:center;width:24px;height:24px;padding:0;}
+
+  /* Add-section dropdown */
+  .db-add{position:relative;}
+  .db-add__btn{
+    width:100%;height:36px;padding:0 12px;
+    border:1px dashed var(--ps-brand-primary);background:#fff;border-radius:5px;
+    color:var(--ps-brand-primary);cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    font:600 13px/1 var(--ps-font-sans);
+  }
+  .db-add__btn:hover{background:#EFF6FB;border-style:solid;}
+  .db-add__menu{
+    position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:10;
+    background:#fff;border:1px solid var(--ps-border-default);border-radius:6px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.12);
+    padding:4px;display:flex;flex-direction:column;max-height:320px;overflow-y:auto;
+  }
+  .db-add__item{
+    width:100%;display:flex;align-items:center;gap:10px;
+    padding:8px 10px;border:0;background:transparent;border-radius:4px;
+    color:var(--ps-fg-primary);cursor:pointer;text-align:left;
+    font:13px/1 var(--ps-font-sans);
+  }
+  .db-add__item:hover{background:var(--ps-bg-canvas);}
+  .db-add__icon{
+    flex-shrink:0;width:22px;height:22px;border-radius:4px;
+    background:#EFF6FB;color:var(--ps-brand-primary);
+    display:inline-flex;align-items:center;justify-content:center;
+    font:700 12px/1 var(--ps-font-mono);
+  }
+
+  /* Presets */
+  .db-presets{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+  .db-presets button{
+    height:32px;border:1px solid var(--ps-border-default);background:#fff;
+    border-radius:4px;font:600 12px/1 var(--ps-font-sans);color:var(--ps-fg-primary);
+    cursor:pointer;
+  }
+  .db-presets button:hover{background:#EFF6FB;border-color:var(--ps-brand-primary);color:var(--ps-brand-primary);}
+
+  /* Main column */
+  .db-main{display:flex;flex-direction:column;gap:0;}
+
+  /* States: banner, skeleton, empty, spinner */
+  .db-banner{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:10px 12px;border-radius:4px;
+    font:14px/1.4 var(--ps-font-sans);
+  }
+  .db-banner--err{background:#FFEBEB;color:#9E2020;border:1px solid #F5C2C2;}
+  .db-banner svg{flex-shrink:0;margin-top:1px;}
+
+  .db-skel{display:flex;flex-direction:column;gap:14px;padding:24px 0;}
+  .db-skel__row{display:block;}
+  .db-skel__bar{
+    height:14px;border-radius:3px;
+    background:linear-gradient(90deg, #E6E6E6 0%, #F5F5F5 50%, #E6E6E6 100%);
+    background-size:200% 100%;animation:db-shimmer 1.4s linear infinite;
+  }
+  .db-skel__cap{margin:8px 0 0;text-align:center;color:var(--ps-fg-tertiary);font-style:italic;font-size:13px;}
+  @keyframes db-shimmer{
+    0%{background-position:200% 0;}
+    100%{background-position:-200% 0;}
+  }
+
+  .db-empty-state{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:12px;padding:40px 20px;text-align:center;
+    color:var(--ps-fg-tertiary);
+  }
+  .db-empty-state svg{color:var(--ps-fg-tertiary);opacity:.6;}
+  .db-empty-state p{margin:0;font-size:14px;line-height:1.4;}
+
+  .db-spinner{
+    width:14px;height:14px;border-radius:50%;
+    border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;
+    animation:db-spin 0.8s linear infinite;margin-right:8px;
+  }
+  @keyframes db-spin{to{transform:rotate(360deg);}}
+
+  /* Mini table inside preview */
+  .db-mini-table{
+    width:100%;border-collapse:collapse;font:13px/1.3 var(--ps-font-sans);color:var(--ps-fg-primary);
+    border:1px solid #F1F1F1;border-radius:5px;overflow:hidden;
+  }
+  .db-mini-table th{
+    background:var(--ps-bg-canvas);color:var(--ps-fg-tertiary);
+    font:600 11px/1.2 var(--ps-font-sans);letter-spacing:.4px;text-transform:uppercase;
+    text-align:left;padding:8px 10px;border-bottom:1px solid #F1F1F1;
+  }
+  .db-mini-table td{padding:8px 10px;border-bottom:1px solid #F5F5F5;}
+  .db-mini-table tbody tr:last-child td{border-bottom:0;}
+
+  /* Pill / danger button variants — pulled from preview/modals.html */
+  .btn--pill{
+    background:#F08A00;color:#fff;border:0;border-radius:9999px;
+    height:44px;padding:0 28px;
+    font:700 13px/1 var(--ps-font-sans);letter-spacing:.04em;text-transform:uppercase;
+  }
+  .btn--pill:hover{background:#D77800;}
+  .btn--pill:disabled{background:#F4B66C;cursor:not-allowed;}
+  .btn--pill-amber{background:#F2BC6B;color:#fff;}
+  .btn--pill-amber:hover{background:#E5A94B;}
+  .btn--danger{background:#C0392B;color:#fff;border-color:transparent;}
+  .btn--danger:hover{background:#9E2A1C;}
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" data-presets="react" src="drawer-builder.jsx"></script>
+
+<!-- =====================================================
+     SECTION 7 — Accessibility
+     ===================================================== -->
+<div class="section">
+  <div class="section-head">
+    <h2>07 &middot; Accessibility</h2>
+    <p class="desc">The drawer is always modal — focus-trap, scroll-lock, Esc, and proper ARIA roles are built into the component, not optional knobs.</p>
+  </div>
+  <div class="a11y-grid">
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 6h12"/></svg>Roles &amp; ARIA</h4>
+      <p>Shell is <code>role="dialog"</code> with <code>aria-modal="true"</code>. <code>aria-hidden</code> flips with the <code>isOpen</code> prop so screen readers ignore the panel when closed. Always pair the title in <code>DrawerHeader</code> with an <code>aria-labelledby</code> reference if you replace the default header.</p>
+    </div>
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="12" height="8" rx="1"/><path d="M5 7l3 2 3-2"/></svg>Focus management</h4>
+      <p><code>FocusTrap</code> from <code>focus-trap-react</code> activates when <code>isOpen</code> is true. <code>fallbackFocus</code> is <code>[data-drawer-dialog]</code> when nothing else is focusable. <code>allowOutsideClick</code> lets the scrim dismiss. On close, focus returns to the trigger that opened it.</p>
+    </div>
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>Keyboard</h4>
+      <p><code>Esc</code> always closes via the component's own <code>useEffect</code> keydown listener — independent of <code>FocusTrap</code>'s <code>escapeDeactivates:false</code>. <code>Tab</code>/<code>Shift+Tab</code> cycle inside the drawer only. <code>Enter</code> submits forms in the body.</p>
+    </div>
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 8c2-4 8-4 10 0M2 8c2 4 8 4 10 0"/><circle cx="8" cy="8" r="2"/></svg>Contrast</h4>
+      <p>Title <code>#2B2B2B</code> on <code>#FFF</code> = 12.6 : 1. Subtitle <code>#4A4A4A</code> = 8.6 : 1. Footer rule <code>#DCDCDC</code> separates the sticky region — the contrast is structural, not chromatic.</p>
+    </div>
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2h12v12H2z"/><path d="M2 6h12M6 2v12"/></svg>Scroll containment</h4>
+      <p><code>useScrollLock(isOpen)</code> freezes the body while open — non-negotiable, the drawer is always modal. Inside the drawer, only the <code>DrawerContainer</code> scrolls (pass <code>h-full overflow-y-auto</code> or <code>flex-1 overflow-y-auto</code>).</p>
+    </div>
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 4v4M8 11h.01"/></svg>Hit targets</h4>
+      <p>Close button is the standard Button <code>ghost iconOnly</code> — 36×36 visual with comfortable padding. <code>AddEntityCard</code> / <code>RemoveEntityCard</code> list rows are 56 px+ tall on touch. Mobile drawers fill the viewport so all targets stay full-width.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     SECTION 8 — Do / Don't
+     ===================================================== -->
+<div class="section">
+  <div class="section-head">
+    <h2>08 &middot; Do &amp; Don't</h2>
+    <p class="desc">Drawer vs. modal vs. sheet — pick right. A drawer is for productive work that needs space; reach for a Modal for confirmations and a Sheet for read-while-working surfaces.</p>
+  </div>
+  <div class="dodont">
+    <div class="dodont__col dodont__col--do">
+      <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="2 8 6 12 14 4"/></svg>Do</h4>
+      <ul>
+        <li>Use a drawer for create/edit flows — bundles, assignments, assessments — where the user fills in a focused form.</li>
+        <li>Use a drawer for multi-step selection (modules → profiles → confirm). Keep the step pills sticky in the header area.</li>
+        <li>Lead with a verb in the title: &ldquo;Create Bundle&rdquo;, &ldquo;Create Assignment&rdquo; — never &ldquo;Bundle Form&rdquo;.</li>
+        <li>Let <code class="kbd">Esc</code>, the scrim, <em>and</em> the close icon all dismiss.</li>
+        <li>Put long bodies behind a sticky footer (<code class="kbd">flex-1 overflow-y-auto</code> + footer outside the container) — never hide the primary CTA below the fold.</li>
+        <li>Return focus to the trigger button when the drawer closes.</li>
+      </ul>
+    </div>
+    <div class="dodont__col dodont__col--dont">
+      <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M3 3l10 10M13 3L3 13"/></svg>Don't</h4>
+      <ul>
+        <li>Use a drawer for a single yes/no decision — that's a Modal/Dialog.</li>
+        <li>Stack drawers. If a drawer opens another drawer, fold it into the existing wizard with one more step.</li>
+        <li>Reuse the drawer to display read-only detail content — use a Sheet (non-modal) so the user can reference page state.</li>
+        <li>Forget to reset wizard state on open — <code class="kbd">useEffect(() =&gt; { if (isOpen) reset() }, [isOpen, …])</code>.</li>
+        <li>Hide errors below the scroll fold. Pin field-level errors inline; pin form-level errors above the footer.</li>
+        <li>Auto-dismiss after a timer. Drawers are user-driven.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Pulled from preview/sheets.html — a11y + do/don't cards */
+  .a11y-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;padding:24px;}
+  .a11y-card{background:var(--ps-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;}
+  .a11y-card h4{margin:0 0 8px;font-size:13px;font-weight:700;color:var(--ps-fg-primary);display:flex;align-items:center;gap:8px;}
+  .a11y-card h4 svg{width:16px;height:16px;color:var(--ps-brand-primary);}
+  .a11y-card p{margin:0;font-size:13px;line-height:1.5;color:var(--ps-fg-secondary);}
+  .a11y-card code{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-bg-default);padding:1px 5px;border-radius:3px;border:1px solid #E5E7EB;}
+
+  .dodont{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px;}
+  @media (max-width:760px){.dodont{grid-template-columns:1fr;}}
+  .dodont__col{background:var(--ps-bg-default);border:1px solid var(--ps-border-subtle);border-radius:8px;overflow:hidden;}
+  .dodont__col h4{margin:0;padding:12px 16px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px;}
+  .dodont__col--do h4{background:#E5F9F2;color:#0A7850;}
+  .dodont__col--dont h4{background:#FDECEC;color:#9E2A1C;}
+  .dodont__col ul{list-style:none;margin:0;padding:14px 18px;display:flex;flex-direction:column;gap:10px;}
+  .dodont__col li{font-size:13px;line-height:1.5;color:var(--ps-fg-primary);display:flex;align-items:flex-start;gap:8px;}
+  .dodont__col li::before{content:"";flex-shrink:0;width:6px;height:6px;border-radius:50%;margin-top:8px;}
+  .dodont__col--do li::before{background:#0A7850;}
+  .dodont__col--dont li::before{background:#9E2A1C;}
+  .dodont__col li em{font-style:italic;color:var(--ps-fg-secondary);}
+</style>
+
+<!-- =====================================================
+     SECTION 9 — Mobile & Performance
+     ===================================================== -->
+<div class="section">
+  <div class="section-head">
+    <h2>09 &middot; Mobile &amp; Performance</h2>
+    <p class="desc">The drawer has no separate mobile variant — it fills the viewport below the 500&thinsp;px breakpoint and tightens padding (<code class="kbd">p-4 md:p-8</code>). These are the considerations that still bite on phones.</p>
+  </div>
+  <div class="a11y-grid">
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>Layout &amp; sizing</h4>
+      <p>One panel, always right-side. <code>max-w-125</code> (500&thinsp;px) caps width on desktop; <code>w-full</code> takes over below it. Body padding switches from <code>p-8</code> (32&thinsp;px) at <code>md</code> to <code>p-4</code> (16&thinsp;px) below. Don't introduce a bottom-sheet variant — if the content doesn't fit, redesign the body.</p>
+    </div>
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6m6-11h6m-22 0h6"/></svg>Touch targets</h4>
+      <p>Minimum <b>44&thinsp;×&thinsp;44&thinsp;pt</b> on iOS, <b>48&thinsp;dp</b> on Android. The close button's <code>Button ghost iconOnly</code> already hits 36&thinsp;px visual; pad to 44 on touch. Stack form fields with at least 16&thinsp;px gap. <code>AddEntityCard</code> rows are 56&thinsp;px+ tall by default.</p>
+    </div>
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 12h4M14 12h3"/></svg>Sticky footer</h4>
+      <p>For wizards and selection drawers, use the <code>flex-1 overflow-y-auto</code> pattern on <code>DrawerContainer</code> so the footer pins to the bottom. Stack footer buttons full-width on mobile — primary on top. Don't let the body scroll behind a half-visible CTA.</p>
+    </div>
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Keyboard &amp; safe area</h4>
+      <p>When the soft keyboard appears, <b>push the focused field into view</b> — the drawer's own scroll region handles this when you focus an <code>input</code>. Respect <code>env(safe-area-inset-bottom)</code> on the sticky footer for notched phones.</p>
+    </div>
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M3 12h18M3 6h18M3 18h12"/></svg>Content density</h4>
+      <p>The drawer is a focused surface — not a dashboard. Keep one column on phones; collapse optional fields under a disclosure. Don't try to fit a 6-column table in 500&thinsp;px — use the Table section for &le;&thinsp;3 columns.</p>
+    </div>
+    <div class="a11y-card">
+      <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Performance</h4>
+      <p>Animate <code>transform</code> + <code>opacity</code> only — the source's <code>translate-x-0</code> / <code>translate-x-full</code> already does this. The query options (Create Assignment, Create Assessment) pass <code>enabled: isOpen</code> so data is only fetched when the drawer opens. Defer heavy lists until <code>300&thinsp;ms</code> after open if needed.</p>
+    </div>
+  </div>
+</div>
+
+</body></html>

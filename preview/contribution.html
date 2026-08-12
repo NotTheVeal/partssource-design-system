@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contributing · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb a{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;}
+  .ps-breadcrumb a:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCC;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+  .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+  .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0 0 4px;}
+  .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+  .section-body{padding:24px;}
+
+  /* Lifecycle stages */
+  .lifecycle{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative;}
+  @media(max-width:980px){.lifecycle{grid-template-columns:repeat(2,1fr);gap:12px;}}
+  .stage{padding:18px 16px 16px;background:#FAFAFA;border:1px solid #F1F1F1;border-right:0;position:relative;}
+  .stage:last-child{border-right:1px solid #F1F1F1;}
+  .stage:first-child{border-top-left-radius:8px;border-bottom-left-radius:8px;}
+  .stage:last-child{border-top-right-radius:8px;border-bottom-right-radius:8px;}
+  @media(max-width:980px){.stage{border-right:1px solid #F1F1F1;border-radius:8px!important;}}
+  .stage-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#005BA6;color:#fff;font-weight:700;font-size:11px;margin-bottom:8px;}
+  .stage h3{margin:0 0 6px;font-size:14px;font-weight:700;color:#002F48;}
+  .stage p{margin:0;font-size:12.5px;color:var(--ps-fg-secondary);line-height:1.5;}
+  .stage-owner{display:inline-block;margin-top:8px;padding:2px 7px;border-radius:3px;background:#fff;border:1px solid #E6E6E6;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#777;}
+
+  /* Decision matrix */
+  table.decision{width:100%;border-collapse:collapse;font-size:13px;}
+  table.decision th,table.decision td{padding:12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.decision th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.decision .yes{color:#0A7850;font-weight:700;}
+  table.decision .no{color:#9E2020;font-weight:700;}
+
+  /* Naming */
+  .naming{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+  .name-card{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;padding:16px;}
+  .name-card b{display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#777;margin-bottom:6px;}
+  .name-card code{display:block;font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#002F48;margin-bottom:4px;background:transparent;}
+  .name-card p{margin:0;font-size:12.5px;color:var(--ps-fg-secondary);line-height:1.5;}
+
+  /* Definition of done checklist */
+  ul.dod{list-style:none;padding:0;margin:0;}
+  ul.dod li{padding:10px 14px 10px 38px;border-bottom:1px solid #F1F1F1;position:relative;line-height:1.55;font-size:13.5px;}
+  ul.dod li:last-child{border-bottom:0;}
+  ul.dod li::before{content:"";position:absolute;left:14px;top:13px;width:16px;height:16px;border:1.5px solid #4A4A4A;border-radius:3px;}
+
+  /* Versioning */
+  .semver{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media(max-width:780px){.semver{grid-template-columns:1fr;}}
+  .semver-card{background:#FAFAFA;border:1px solid #F1F1F1;border-radius:8px;padding:16px;}
+  .semver-card .label{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;}
+  .semver-major .label{background:#FFEBEB;color:#9E2020;}
+  .semver-minor .label{background:#FFF4E5;color:#B45309;}
+  .semver-patch .label{background:#E2F5EE;color:#0A7850;}
+  .semver-card h3{margin:0 0 6px;font-size:14px;font-weight:700;color:#002F48;font-family:ui-monospace,Menlo,monospace;}
+  .semver-card ul{margin:6px 0 0;padding-left:18px;line-height:1.55;color:#4A4A4A;font-size:12.5px;}
+
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  /* PR template */
+  .pr-template{background:#0F1E2E;color:#E6F0FA;border-radius:8px;padding:18px 22px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.6;overflow-x:auto;white-space:pre;}
+  .pr-template b{color:#FFB86C;font-weight:600;}
+  .pr-template .placeholder{color:#7FA0BC;font-style:italic;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Contributing</span>
+</nav>
+
+<h1>Contributing</h1>
+<p class="intro">A design system is a product. It has owners, a roadmap, a definition of done, and customers who depend on its contracts. This is how new components, tokens, and patterns enter the system — and how they leave.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Lifecycle</h2>
+    <div class="desc">Every contribution moves through five stages. Nothing skips ahead.</div>
+  </div>
+  <div class="section-body">
+    <div class="lifecycle">
+      <div class="stage"><span class="stage-num">1</span><h3>Propose</h3><p>Open a discussion issue describing the problem, the user, and 2–3 existing references.</p><span class="stage-owner">Author</span></div>
+      <div class="stage"><span class="stage-num">2</span><h3>Triage</h3><p>Systems guild reviews weekly. Accept · clarify · decline. Linked back to the issue.</p><span class="stage-owner">Guild</span></div>
+      <div class="stage"><span class="stage-num">3</span><h3>Design</h3><p>Figma file with all variants and states. Token usage audit. Accessibility review.</p><span class="stage-owner">Author + DS Lead</span></div>
+      <div class="stage"><span class="stage-num">4</span><h3>Build</h3><p>React + TS implementation, docs page, snippet, tests. Internal preview with 2+ teams.</p><span class="stage-owner">Author + Platform UI</span></div>
+      <div class="stage"><span class="stage-num">5</span><h3>Release</h3><p>Versioned, changelogged, announced. Migration notes if it replaces something.</p><span class="stage-owner">Maintainer</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>When to add a new component</h2>
+    <div class="desc">The bar is high. Most needs are met by composition.</div>
+  </div>
+  <div class="section-body">
+    <table class="decision">
+      <thead><tr><th>Question</th><th>Answer · Result</th></tr></thead>
+      <tbody>
+        <tr><td>Can this be built by composing existing components (Button + Input + Card etc.)?</td><td><span class="yes">Yes →</span> Compose. Don't add to the system.</td></tr>
+        <tr><td>Does at least one other team need this within the next 6 months?</td><td><span class="no">No →</span> Build in your app. Revisit if a second team asks.</td></tr>
+        <tr><td>Does it solve a real, recurring user problem (not a stylistic preference)?</td><td><span class="no">No →</span> Use existing patterns. Propose only with usage data.</td></tr>
+        <tr><td>Can the API be stable in 6 months — or will it churn with every consumer?</td><td><span class="no">No →</span> Incubate in a consumer app first. Promote later.</td></tr>
+        <tr><td>Are you willing to own the component (code review, bug triage, deprecations) for 12 months?</td><td><span class="no">No →</span> Find a co-owner or shelve.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Naming conventions</h2>
+    <div class="desc">Predictable names are the cheapest documentation.</div>
+  </div>
+  <div class="section-body">
+    <div class="naming">
+      <div class="name-card">
+        <b>CSS tokens</b>
+        <code>--ps-{level}-{role}-{variant}</code>
+        <p><code>--ps-prim-blue-500</code>, <code>--ps-sem-bg-canvas</code>, <code>--ps-cmp-modal-width-md</code>. Level is prim · sem · cmp.</p>
+      </div>
+      <div class="name-card">
+        <b>React components</b>
+        <code>PascalCase</code>
+        <p>Singular, descriptive, no prefixes: <code>Button</code>, <code>Drawer</code>, <code>FilterChip</code>. Reserve <code>Ps</code> prefix for collision-prone primitives only.</p>
+      </div>
+      <div class="name-card">
+        <b>Variants</b>
+        <code>variant="…"</code>
+        <p>Lowercase nouns describing role, not appearance: <code>primary</code>, <code>tertiary</code>, <code>pill</code>. Never <code>blue</code> or <code>orange</code>.</p>
+      </div>
+      <div class="name-card">
+        <b>Sizes</b>
+        <code>size="sm | md | lg"</code>
+        <p>Two-letter abbreviations. Default is always <code>md</code>. <code>xl</code> / <code>xs</code> only when the component genuinely has 5+ sizes.</p>
+      </div>
+      <div class="name-card">
+        <b>States (force)</b>
+        <code>state="…"</code>
+        <p><code>default · hover · focus · pressed · disabled · loading</code>. Used in docs to render every state without faking interaction.</p>
+      </div>
+      <div class="name-card">
+        <b>Files</b>
+        <code>kebab-case.html</code> · <code>PascalCase.tsx</code>
+        <p><code>preview/filter.html</code>, <code>UI Kit/Button.tsx</code>. Match the page or component name exactly.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Versioning · Semantic</h2>
+    <div class="desc">All releases follow semver. Consumers pin to majors and review minors.</div>
+  </div>
+  <div class="section-body">
+    <div class="semver">
+      <div class="semver-card semver-major">
+        <span class="label">Major · X.0.0</span>
+        <h3>Breaking</h3>
+        <ul>
+          <li>Renamed or removed prop</li>
+          <li>Removed component</li>
+          <li>Changed default behavior</li>
+          <li>Token renamed/removed</li>
+          <li>Markup structure shift</li>
+        </ul>
+      </div>
+      <div class="semver-card semver-minor">
+        <span class="label">Minor · 1.X.0</span>
+        <h3>Additive</h3>
+        <ul>
+          <li>New component</li>
+          <li>New variant/size on existing</li>
+          <li>New optional prop</li>
+          <li>New token (no rename)</li>
+          <li>Deprecation warning (not removal)</li>
+        </ul>
+      </div>
+      <div class="semver-card semver-patch">
+        <span class="label">Patch · 1.2.X</span>
+        <h3>Fixes</h3>
+        <ul>
+          <li>Bug fix that restores documented behavior</li>
+          <li>Visual fix matching Figma spec</li>
+          <li>Docs / typo / example</li>
+          <li>Performance with no API change</li>
+          <li>Dependency security bump</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Definition of Done</h2>
+    <div class="desc">A component isn't "done" until every box is ticked. Maintainers will check this list during review.</div>
+  </div>
+  <div class="section-body">
+    <ul class="dod">
+      <li>Figma source published with all variants, states, and prop overrides — instance-swappable.</li>
+      <li>React + TypeScript implementation in <code>UI Kit/</code> with typed props.</li>
+      <li>All visual states implemented: default, hover, focus, pressed, disabled, loading (where applicable).</li>
+      <li>Force-state prop (<code>state="…"</code>) supported for docs and screenshots.</li>
+      <li>Component renders correctly when wrapped in a 320 px-wide container (responsive floor).</li>
+      <li>Keyboard fully reachable; Tab order matches visual order; focus indicator present.</li>
+      <li>Color contrast verified against the <a href="accessibility.html" style="color:#005BA6;">accessibility matrix</a>.</li>
+      <li>Documented on its own <code>preview/*.html</code> page with: intro, states, tokens, a11y, do/don't, snippet.</li>
+      <li>Listed in <code>preview/index.html</code> under the correct section.</li>
+      <li>Added to <code>UI Kit/Showcase.tsx</code> with a representative example.</li>
+      <li>Tokens used end-to-end — no hardcoded hex values in component CSS.</li>
+      <li>Changelog entry added with rationale + migration notes (if breaking).</li>
+      <li>At least one consumer team has stress-tested it in a real screen.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Deprecation policy</h2>
+    <div class="desc">Components leave the system gracefully.</div>
+  </div>
+  <div class="section-body">
+    <p style="margin:0 0 12px;line-height:1.6;">When a component is replaced or removed, it enters a <strong>deprecation window</strong>. During that window:</p>
+    <ul style="margin:0;padding-left:20px;line-height:1.8;font-size:14px;color:#4A4A4A;">
+      <li>The component still works, unchanged.</li>
+      <li>Its docs page is marked with a <code>⚠ Deprecated</code> banner pointing at the replacement.</li>
+      <li>The React component emits a <code>console.warn()</code> on first render (dev only).</li>
+      <li>Minimum window: <strong>two minor releases or 90 days</strong>, whichever is longer.</li>
+      <li>Removal happens in the next major release; the changelog includes a one-line migration recipe.</li>
+    </ul>
+    <p style="margin:14px 0 0;line-height:1.6;font-size:14px;">Example: the orange Pill button is deprecated for ADA reasons. Its docs show a red banner pointing at the Primary button. Removal is scheduled for v2.0.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Pull-request template</h2>
+    <div class="desc">Copy this into the PR description. Skip nothing.</div>
+  </div>
+  <div class="section-body">
+    <div class="pr-template"><b>## Summary</b>
+<span class="placeholder">What changed and why — one paragraph.</span>
+
+<b>## Scope</b>
+- [ ] New component
+- [ ] New variant on existing component
+- [ ] Token addition / change
+- [ ] Bug fix
+- [ ] Docs only
+
+<b>## Definition of Done</b>
+- [ ] Figma source published with all variants &amp; states
+- [ ] All visual states implemented (default · hover · focus · pressed · disabled · loading)
+- [ ] Force-state prop supported
+- [ ] Keyboard reachable; Tab order correct; focus visible
+- [ ] Contrast verified against accessibility matrix
+- [ ] Own preview/*.html page + listed in index
+- [ ] Added to UI Kit Showcase
+- [ ] Uses tokens only — no hardcoded hex
+- [ ] Changelog entry with rationale
+
+<b>## Versioning</b>
+This change is: [ ] major  [ ] minor  [ ] patch
+
+<b>## Migration</b>
+<span class="placeholder">For breaking changes only — show before/after snippet.</span>
+
+<b>## Screenshots / preview</b>
+<span class="placeholder">Drop link to deployed preview or attach images.</span>
+
+<b>## Owner &amp; SLA</b>
+<span class="placeholder">Who owns this for the next 12 months?</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Office hours &amp; ownership</h2>
+    <div class="desc">Who to talk to, when, and where.</div>
+  </div>
+  <div class="section-body">
+    <table class="decision">
+      <thead><tr><th>Need</th><th>Where to go</th></tr></thead>
+      <tbody>
+        <tr><td>Bug report</td><td>GitHub issue with reproduction · tag <code>@design-systems</code></td></tr>
+        <tr><td>Component proposal</td><td>Discussion issue with the lifecycle template</td></tr>
+        <tr><td>Quick question</td><td><code>#design-systems</code> on Slack</td></tr>
+        <tr><td>Live screen-share</td><td>Office hours · Thursdays 11–12 ET</td></tr>
+        <tr><td>Token addition</td><td>PR with consumer proof — at least two surfaces using it</td></tr>
+        <tr><td>Visual escalation</td><td>Direct to Design Lead — overrides triage</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>

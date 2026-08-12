@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Brand" name="Cards" --><html><head>
+
+
+
+
+  <meta charset="utf-8">
+  <title>Cards</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:#fff;color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:#fff;}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:#FAFAFA;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+
+    .section-body{padding:24px;}
+
+    /* Event Card — from Figma 3334:8877 */
+    .card {
+      width: 317px;
+      background: white;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .card-body {
+      padding: 23px 21px 13px 21px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 46px;
+      margin-bottom: 18px;
+    }
+    .icon-circle {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #D0EDFC;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-circle svg {
+      width: 23px;
+      height: 23px;
+      fill: #005BA6;
+    }
+    .card-title-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-top: 3px;
+    }
+    .card-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #4A4A4A;
+      margin: 0 0 4px;
+      line-height: 18px;
+      letter-spacing: -0.01em;
+    }
+    .card-subtitle {
+      font-size: 16px;
+      color: #777777;
+      margin: 0;
+      line-height: 18px;
+    }
+    .card-meta {
+      font-size: 16px;
+      color: #777777;
+      line-height: 18px;
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .card-meta div {
+      margin-bottom: 0;
+    }
+    .card-meta div:first-child {
+      margin-bottom: 0;
+    }
+    .card-meta div:nth-child(2) {
+      margin-bottom: 2px;
+    }
+    .card-label {
+      font-weight: 400;
+      color: #777777;
+      display: inline;
+    }
+    .card-footer {
+      background: #FAFAFA;
+      border-top: 1px solid #F1F1F1;
+      padding: 18px 0 20px 0;
+      min-height: 56px;
+      box-sizing: border-box;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-link {
+      color: #009CF4;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+    }
+    .card-link svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+    }
+
+    /* Status Card — horizontal compact variant */
+    .status-card {
+      width: 220px;
+      height: 73px;
+      background: white;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+      padding: 14px;
+      box-sizing: border-box;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+    .status-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .status-card-img {
+      width: 44px;
+      height: 44px;
+      background: #C4C4C4;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .status-card-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .status-card-title {
+      font-size: 12px;
+      font-weight: 400;
+      color: #000000;
+      margin: 0 0 0 0;
+      line-height: 1;
+    }
+    .status-card-meta {
+      font-size: 10px;
+      color: #5C5C5C;
+      line-height: 1.48;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Alert Card — Medium */
+    .alert-card {
+      width: 220px;
+      min-height: auto;
+      background: white;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+      padding: 14px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .alert-card:hover {
+      box-shadow: 0 5px 8px rgba(21,21,21,0.12);
+    }
+    .alert-card-top {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .alert-card-img {
+      width: 44.45px;
+      height: 44.45px;
+      background: #C4C4C4;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .alert-card-icon {
+      width: 24px;
+      height: 24px;
+      background: #005BA6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .alert-card-icon svg {
+      width: 12px;
+      height: 12px;
+    }
+    .alert-card-text {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .alert-card-title {
+      font-size: 12px;
+      font-weight: 400;
+      color: #000000;
+      margin: 0 0 0 0;
+      line-height: 1;
+      word-wrap: break-word;
+    }
+    .alert-card-title.red {
+      color: #DE3700;
+    }
+    .alert-card-subtitle {
+      font-size: 10px;
+      font-weight: 400;
+      color: #5C5C5C;
+      margin: 0;
+      line-height: 1.48;
+      margin-top: 0;
+    }
+    .alert-card-divider {
+      height: 0.823px;
+      background: rgba(0,0,0,0.15);
+      margin: 0 -14px;
+      width: calc(100% + 28px);
+    }
+    .alert-card-meta {
+      font-size: 10px;
+      line-height: 1.48;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .alert-card-meta .location {
+      font-weight: 400;
+      color: #000000;
+      margin: 0;
+    }
+    .alert-card-meta .datetime {
+      color: #5C5C5C;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0;
+    }
+    .alert-card-meta .datetime .dot {
+      width: 3.29px;
+      height: 3.29px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.15);
+    }
+
+    /* AI Chat Card */
+    .ai-chat-card {
+      width: 348px;
+      background: #F5F5F5;
+      border: 1px solid #E5E5E5;
+      border-radius: 8px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.04);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .ai-chat-card:hover {
+      background: #E6F2FF;
+      border-color: #CCE5FF;
+    }
+    .product-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .product-title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 100%;
+      color: #4A4A4A;
+      margin: 0;
+    }
+    .product-manufacturer {
+      font-size: 14px;
+      line-height: 100%;
+      color: #777777;
+      margin: 0;
+    }
+    .delivery-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .delivery-info div {
+      font-size: 14px;
+      line-height: 100%;
+      color: #777777;
+    }
+    .tracking-number {
+      color: #005BA6;
+      font-weight: 600;
+    }
+    .product-divider {
+      width: 100%;
+      height: 1px;
+      background: #E5E5E5;
+    }
+    .cost-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+    }
+    .status-badges {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .status-badge {
+      padding: 4px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 12px;
+      white-space: nowrap;
+    }
+    .status-badge.not-shipped {
+      background: #E5E5E5;
+      color: #525252;
+    }
+    .status-badge.urgent {
+      background: #FED7AA;
+      color: #C2410C;
+    }
+    .status-badge.pending {
+      background: #BFDBFE;
+      color: #1D4ED8;
+    }
+    .cost-details {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .cost-label {
+      font-size: 14px;
+      line-height: 100%;
+      color: #949494;
+    }
+    .cost-amount {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 100%;
+      color: #4A4A4A;
+    }
+
+    /* Product Card */
+    .product-card {
+      width: 100%;
+      max-width: 620px;
+      background: white;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      overflow: visible;
+      padding: 25px 29px;
+    }
+    .product-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0;
+    }
+    .product-card-header-left {
+      font-size: 14px;
+      color: #777777;
+      text-decoration: none;
+      font-weight: 400;
+    }
+    .product-card-header-left a {
+      color: #777777;
+      text-decoration: none;
+    }
+    .product-card-header-left a:hover {
+      text-decoration: underline;
+    }
+    .product-card-date {
+      font-size: 13px;
+      font-weight: 700;
+      color: #000000;
+      text-transform: uppercase;
+    }
+    .product-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #005DA6;
+      margin: 15px 0 32px;
+      line-height: 1.3;
+    }
+    .product-card-title a {
+      color: #005DA6;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .product-card-title a:hover {
+      text-decoration: underline;
+    }
+    .product-card-body {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 0;
+    }
+    .product-card-image {
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+    }
+    .product-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .product-card-info {
+      flex: 1;
+      font-size: 16px;
+      color: #000000;
+      line-height: 1.5;
+    }
+    .product-card-info div {
+      margin-bottom: 0;
+    }
+    .product-card-footer {
+      background: #EFEFEF;
+      padding: 16px 0;
+      margin: 32px -29px 20px;
+    }
+    .product-card-status {
+      padding: 0 29px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .product-card-status div:first-child {
+      font-weight: 700;
+      color: #000000;
+      margin-bottom: 4px;
+    }
+    .product-card-status div:last-child {
+      color: #000000;
+      font-weight: 400;
+    }
+    .product-card-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px 20px;
+      background: white;
+    }
+    .product-card-btn {
+      background: #FF9505;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 14px 24px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      font-family: 'Source Sans Pro', sans-serif;
+    }
+    .product-card-btn:hover {
+      background: #EC8000;
+    }
+    .btn.sec-sm {
+      background: white;
+      color: #4A4A4A;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+      padding: 12px 24px;
+      height: 44.5px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      text-transform: none;
+      letter-spacing: 0;
+      font-family: 'Source Sans Pro', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn.sec-sm:hover {
+      background: #005BA6;
+      color: white;
+      border-color: #005BA6;
+    }
+  </style>
+</head>
+<body data-cc-id="cc-1" style="cursor: crosshair; font-family: &quot;Source Sans Pro&quot;;">
+
+  <h1>Cards</h1>
+  <p class="intro">Card components for various content types: events, status summaries, alerts, AI-generated product data, and full product details. Each card type has specific dimensions and interaction patterns optimized for its use case.</p>
+
+  <!-- Event Cards — Large -->
+  <div class="section">
+    <div class="section-head">
+      <h2 data-cc-id="cc-7" style="">Event Cards — Large · 315px</h2>
+      <div class="desc">Primary card for service events. Features icon header, reference number, metadata rows, and action footer. 317px fixed width, flexible height based on content.</div>
+    </div>
+    <div class="section-body" style="display:flex;gap:24px;flex-wrap:wrap;">
+      
+      <!-- Service Event -->
+      <div class="card">
+        <div class="card-body">
+          <div class="card-header">
+            <div class="icon-circle">
+              <svg viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.420898 19.8526V8.95789C0.420898 8.35867 0.634398 7.84548 1.06141 7.41848C1.48781 6.99209 2.00057 6.77887 2.59979 6.77887H5.86816V4.6C5.86816 4.00078 6.08167 3.48799 6.50868 3.06164C6.93506 2.63461 7.44784 2.4211 8.04705 2.4211H14.584C15.1832 2.4211 15.6964 2.63461 16.1234 3.06164C16.5498 3.48799 16.7629 4.00078 16.7629 4.6V6.77887H20.0313C20.6306 6.77887 21.1437 6.99209 21.5708 7.41848C21.9971 7.84548 22.2103 8.35867 22.2103 8.95789V19.8526H0.420898ZM2.59979 17.6737H20.0313V14.4053H17.8524V15.4947H15.6735V14.4053H6.95769V15.4947H4.77876V14.4053H2.59979V17.6737ZM2.59979 8.95789V12.2263H4.77876V11.1368H6.95769V12.2263H15.6735V11.1368H17.8524V12.2263H20.0313V8.95789H2.59979ZM8.04705 6.77887H14.584V4.6H8.04705V6.77887Z"></path>
+              </svg>
+            </div>
+            <div class="card-title-wrap">
+              <div class="card-title">Service Event</div>
+              <div class="card-subtitle">Reference #: 6668550</div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <div><span class="card-label">Service Needed:</span> PS000011</div>
+            <div><span class="card-label">Service Type:</span> Install</div>
+            <div><span class="card-label">Date Created:</span> 03/11/2025</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="card-link">
+            View Details
+            <svg viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 1L13 6M13 6L8 11M13 6H1" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Equipment Failure -->
+      <div class="card">
+        <div class="card-body">
+          <div class="card-header">
+            <div class="icon-circle" style="background:#FEF0F0;">
+              <svg viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" style="fill:#DE3700;">
+                <path d="M0.420898 19.8526V8.95789C0.420898 8.35867 0.634398 7.84548 1.06141 7.41848C1.48781 6.99209 2.00057 6.77887 2.59979 6.77887H5.86816V4.6C5.86816 4.00078 6.08167 3.48799 6.50868 3.06164C6.93506 2.63461 7.44784 2.4211 8.04705 2.4211H14.584C15.1832 2.4211 15.6964 2.63461 16.1234 3.06164C16.5498 3.48799 16.7629 4.00078 16.7629 4.6V6.77887H20.0313C20.6306 6.77887 21.1437 6.99209 21.5708 7.41848C21.9971 7.84548 22.2103 8.35867 22.2103 8.95789V19.8526H0.420898ZM2.59979 17.6737H20.0313V14.4053H17.8524V15.4947H15.6735V14.4053H6.95769V15.4947H4.77876V14.4053H2.59979V17.6737ZM2.59979 8.95789V12.2263H4.77876V11.1368H6.95769V12.2263H15.6735V11.1368H17.8524V12.2263H20.0313V8.95789H2.59979ZM8.04705 6.77887H14.584V4.6H8.04705V6.77887Z"></path>
+              </svg>
+            </div>
+            <div class="card-title-wrap">
+              <div class="card-title">Equipment Failure</div>
+              <div class="card-subtitle">Reference #: 8842203</div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <div><span class="card-label">Service Needed:</span> PS000189</div>
+            <div><span class="card-label">Service Type:</span> Repair</div>
+            <div><span class="card-label">Date Created:</span> 04/19/2025</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="card-link">
+            View Details
+            <svg viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 1L13 6M13 6L8 11M13 6H1" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Calibration Due -->
+      <div class="card">
+        <div class="card-body" data-cc-id="cc-6">
+          <div class="card-header">
+            <div class="icon-circle" style="background:#FFF4E5;">
+              <svg viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" style="fill:#B45309;">
+                <path d="M0.420898 19.8526V8.95789C0.420898 8.35867 0.634398 7.84548 1.06141 7.41848C1.48781 6.99209 2.00057 6.77887 2.59979 6.77887H5.86816V4.6C5.86816 4.00078 6.08167 3.48799 6.50868 3.06164C6.93506 2.63461 7.44784 2.4211 8.04705 2.4211H14.584C15.1832 2.4211 15.6964 2.63461 16.1234 3.06164C16.5498 3.48799 16.7629 4.00078 16.7629 4.6V6.77887H20.0313C20.6306 6.77887 21.1437 6.99209 21.5708 7.41848C21.9971 7.84548 22.2103 8.35867 22.2103 8.95789V19.8526H0.420898ZM2.59979 17.6737H20.0313V14.4053H17.8524V15.4947H15.6735V14.4053H6.95769V15.4947H4.77876V14.4053H2.59979V17.6737ZM2.59979 8.95789V12.2263H4.77876V11.1368H6.95769V12.2263H15.6735V11.1368H17.8524V12.2263H20.0313V8.95789H2.59979ZM8.04705 6.77887H14.584V4.6H8.04705V6.77887Z"></path>
+              </svg>
+            </div>
+            <div class="card-title-wrap">
+              <div class="card-title">Calibration Due</div>
+              <div class="card-subtitle">Reference #: 7721405</div>
+            </div>
+          </div>
+          <div class="card-meta">
+            <div><span class="card-label">Service Needed:</span> PS000067</div>
+            <div><span class="card-label">Service Type:</span> Calibration</div>
+            <div><span class="card-label">Date Created:</span> 04/15/2025</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="card-link">
+            View Details
+            <svg viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 1L13 6M13 6L8 11M13 6H1" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Status Cards — Small -->
+  <div class="section">
+    <div class="section-head">
+      <h2 data-cc-id="cc-5" style="">Status Cards — Small · 220px</h2>
+      <div class="desc">Compact horizontal card for dashboard status displays. Fixed 220×73px dimensions, thumbnail left, text content right.</div>
+    </div>
+    <div class="section-body" style="display:flex;gap:16px;flex-wrap:wrap;">
+      
+      <div class="status-card">
+        <div class="status-card-img"></div>
+        <div class="status-card-content">
+          <div class="status-card-title">XXXXXXXXXXXXX</div>
+          <div class="status-card-meta">
+            XXXXXXXXXXXXXXX<br>
+            XXXXXXXXXXXXXXX
+          </div>
+        </div>
+      </div>
+
+      <div class="status-card">
+        <div class="status-card-img"></div>
+        <div class="status-card-content">
+          <div class="status-card-title">Asset Health Status</div>
+          <div class="status-card-meta">
+            Uptime: 99.2%<br>
+            Last Service: 03/10/2025
+          </div>
+        </div>
+      </div>
+
+      <div class="status-card">
+        <div class="status-card-img"></div>
+        <div class="status-card-content">
+          <div class="status-card-title">Open Work Orders</div>
+          <div class="status-card-meta">
+            Total: 12<br>
+            Overdue: 2
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Alert Cards — Medium -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Alert Cards — Medium · 220px</h2>
+      <div class="desc">Notification cards for critical items and service updates. Fixed 220px width, flexible height, with thumbnail or icon, title, subtitle, divider, and metadata.</div>
+    </div>
+    <div class="section-body" style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;">
+      
+      <div class="alert-card">
+        <div class="alert-card-top">
+          <div class="alert-card-img"></div>
+          <div class="alert-card-text">
+            <div class="alert-card-title red">Critical Item - Ship Notification</div>
+            <div class="alert-card-subtitle">Straton MX P Tube Assembly</div>
+          </div>
+        </div>
+        <div class="alert-card-divider"></div>
+        <div class="alert-card-meta">
+          <div class="location">Chatham Memorial Hospital</div>
+          <div class="datetime">
+            <span>June 11, 2024</span>
+            <span class="dot"></span>
+            <span>10:38am</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert-card">
+        <div class="alert-card-top">
+          <div class="alert-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+            </svg>
+          </div>
+          <div class="alert-card-text">
+            <div class="alert-card-title">Service Scheduled</div>
+            <div class="alert-card-subtitle">Lightspeed VCT</div>
+          </div>
+        </div>
+        <div class="alert-card-divider"></div>
+        <div class="alert-card-meta">
+          <div class="location">Chatham Memorial Hospital</div>
+          <div class="datetime">
+            <span>April 11, 2024</span>
+            <span class="dot"></span>
+            <span>9:00am</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert-card">
+        <div class="alert-card-top">
+          <div class="alert-card-img"></div>
+          <div class="alert-card-text">
+            <div class="alert-card-title">Overnight Deliveries</div>
+            <div class="alert-card-subtitle">Parts pending shipment confirmation</div>
+          </div>
+        </div>
+        <div class="alert-card-divider"></div>
+        <div class="alert-card-meta">
+          <div class="location">Chatham Memorial Hospital</div>
+          <div class="datetime">
+            <span>June 11, 2024</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AI Data Cards -->
+  <div class="section">
+    <div class="section-head">
+      <h2>AI Data Cards · 348px</h2>
+      <div class="desc">Cards for AI-generated product and delivery data. Fixed 348px width, flexible height. Features product info, delivery/tracking details, status badges, and cost display.</div>
+    </div>
+    <div class="section-body" style="display:flex;gap:24px;flex-wrap:wrap;">
+      
+      <div class="ai-chat-card">
+        <div class="product-info">
+          <h3 class="product-title">BATTERY RECHARGEABLE, LITHIUM ION, 7.2V, 1.35 AH</h3>
+          <p class="product-manufacturer">by Welch Allyn Inc.</p>
+        </div>
+        
+        <div class="delivery-info">
+          <div>FedEx  ·  <span class="tracking-number">#032523123242</span></div>
+          <div>Est. Delivery: Today by 1:00 PM</div>
+        </div>
+        
+        <div class="product-divider"></div>
+        
+        <div class="cost-info">
+          <span class="status-badge not-shipped">Not Shipped</span>
+          <div class="cost-details">
+            <span class="cost-label">Cost:</span>
+            <span class="cost-amount">$2,400</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-chat-card">
+        <div class="product-info">
+          <h3 class="product-title">PUMP, INFUSION, PCA EPIDURAL, CADD SOLIS</h3>
+          <p class="product-manufacturer">by Smiths Medical</p>
+        </div>
+        
+        <div class="delivery-info">
+          <div>ICU  ·  Tech Mike R.  ·  Yesterday at 3:47pm</div>
+        </div>
+        
+        <div class="product-divider"></div>
+        
+        <div class="cost-info">
+          <div class="status-badges">
+            <span class="status-badge urgent">Urgent</span>
+            <span class="status-badge pending">Waiting for approval</span>
+          </div>
+          <div class="cost-details">
+            <span class="cost-label">Cost:</span>
+            <span class="cost-amount">$2,400</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Product Cards — Dynamic -->
+  <div class="section">
+    <div class="section-head">
+      <h2 data-cc-id="cc-3" style="">Product Cards — Dynamic 500PX</h2>
+      <div class="desc">Full-featured product display cards. Max 620px width, flexible height. Includes header with view details link and date, product title, image, metadata grid, status footer, and action buttons.</div>
+    </div>
+    <div class="section-body" style="display:flex;gap:24px;flex-wrap:wrap;">
+      
+      <div class="product-card" style="width: 500px; height: 447px" data-cc-id="cc-4">
+        <div class="product-card-header">
+          <a href="#" class="product-card-header-left">View Details</a>
+          <span class="product-card-date">CREATED 04/21/2026</span>
+        </div>
+        
+        <div class="product-card-title"><a href="#">PATIENT CABLE, SPO2 SPOT CHECK, RED LNC-01 SERIES, 1FT CABLE LENGTH, 20 NUMBER ORDER</a></div>
+        
+        <div class="product-card-body">
+          <div class="product-card-image">
+            <div style="width:100px;height:100px;background:#F5F5F5;border:1px solid #E5E5E5;border-radius:4px;"></div>
+          </div>
+          
+          <div class="product-card-info">
+            <div><span style="font-weight:400;">Facility:</span> <span style="font-weight:600;">Chatham Memorial Clinic</span></div>
+            <div><span style="font-weight:400;">Ref #:</span> <span style="font-weight:600;">9535566</span></div>
+            <div><span style="font-weight:400;">Requester:</span> <span style="font-weight:600;">PETE ZILKO</span></div>
+            <div><span style="font-weight:400;">Qty:</span> <span style="font-weight:600;">1</span></div>
+          </div>
+        </div>
+        
+        <div class="product-card-footer">
+          <div class="product-card-status">
+            <div>Quote Available</div>
+            <div>Item is ready for purchase.</div>
+          </div>
+        </div>
+        
+        <div class="product-card-actions" style="height: 60px">
+          <button class="product-card-btn">SEE BUYING OPTIONS (2)</button>
+        </div>
+      </div>
+
+      <div class="product-card" style="width: 500px; height: 463px" data-cc-id="cc-2">
+        <div class="product-card-header">
+          <div class="product-card-header-left"><a href="#">View Details</a></div>
+          <div class="product-card-date">CREATED MM/DD/YYYY</div>
+        </div>
+        <div class="product-card-title"><a href="#">ITEM NAME By Original Equipment Manufacturer</a></div>
+        <div class="product-card-body">
+          <div class="product-card-image">
+            <div style="width:100px;height:100px;background:#F5F5F5;border:1px solid #E5E5E5;border-radius:4px;"></div>
+          </div>
+          <div class="product-card-info">
+            <div><span style="font-weight:400;">Qty:</span> <span style="font-weight:600;">X</span></div>
+            <div><span style="font-weight:400;">Item #:</span> <span style="font-weight:600;">XXXXXX-XX</span></div>
+            <div><span style="font-weight:400;">Condition:</span> <span style="font-weight:600;">Original Outright</span></div>
+            <div><span style="font-weight:400;">Facility:</span> <span style="font-weight:600;">Erie Medical Hospital</span></div>
+            <div><span style="font-weight:400;">Requestor:</span> <span style="font-weight:600;">First Last Name</span></div>
+            <div><span style="font-weight:400;">Reference #:</span> <span style="font-weight:600;">XXXXXXX</span></div>
+          </div>
+        </div>
+        <div class="product-card-footer">
+          <div class="product-card-status">
+            <div>Tracker Status</div>
+            <div>Description. Lorem ipsum dolor</div>
+          </div>
+        </div>
+        <div class="product-card-actions" style="height: 55px">
+          <button class="btn sec-sm">SECONDARY</button>
+          <button class="product-card-btn">PRIMARY</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance, keyboard support, and implementation guidance for inclusive card design.</div>
+    </div>
+    <div class="states">
+      <ul style="margin:0;padding:20px 24px;line-height:1.8;font-size:13px;color:#4A4A4A;list-style-position:outside;">
+        <li><strong>Interactive cards need keyboard support:</strong> Make entire card focusable with <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;padding:2px 5px;border-radius:3px;color:#2B2B2B;">tabindex="0"</code> and trigger action on Enter/Space</li>
+        <li><strong>Hover elevation:</strong> Cards lift on hover (0 4px 12px shadow) — ensure focus state matches hover for keyboard users</li>
+        <li><strong>Clickable area:</strong> If card is clickable, entire surface should be interactive (not just title or button)</li>
+        <li><strong>Images require alt text:</strong> Use descriptive <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;padding:2px 5px;border-radius:3px;color:#2B2B2B;">alt</code> for product images; <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;padding:2px 5px;border-radius:3px;color:#2B2B2B;">alt=""</code> for decorative icons</li>
+        <li><strong>Semantic structure:</strong> Use headings (&lt;h3&gt;) for card titles so screen readers can navigate by headings</li>
+        <li><strong>Button vs link:</strong> Use &lt;button&gt; for actions (add to cart), &lt;a&gt; for navigation (view details)</li>
+        <li><strong>Status indicators:</strong> Color-coded status pills must include text label — never color alone</li>
+        <li><strong>Minimum contrast:</strong> All text must meet WCAG AA (4.5:1 for body text, 3:1 for large text 18px+)</li>
+      </ul>
+    </div>
+  </div>
+
+
+
+</body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Top Navigation" subtitle="Three-row top navigation: utility row, main row (logo / search / cart / facility), page hero with PRO ACCOUNT panel" --><html><head>
+  <meta charset="utf-8">
+  <title>Top Navigation — PartsSource Design System</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+
+    .section-body{padding:32px 24px;background:var(--ps-sem-bg-canvas);}
+    .section-body.plain{background:var(--ps-sem-bg-surface);padding:24px;}
+    .section-body.flush{padding:0;background:var(--ps-sem-bg-canvas);}
+
+    .demo-cap{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ps-fg-tertiary);font-weight:700;margin:0 0 10px;}
+    .demo-stack{display:flex;flex-direction:column;gap:28px;}
+
+    /* ─────────────────────────────────────────
+       TOP NAV — canvas
+       The whole nav is built at its design width
+       (1440 px). Wrapper scrolls on narrow viewports.
+       ───────────────────────────────────────── */
+    .tn-frame{width:100%;overflow-x:auto;background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-default);border-radius:8px;}
+    .tn-frame::-webkit-scrollbar{height:8px;}
+    .tn-frame::-webkit-scrollbar-thumb{background:#dcdcdc;border-radius:4px;}
+
+    .tn{
+      width:1440px;
+      font-family:'Source Sans Pro','Source Sans 3',var(--ps-font-sans);
+      color:var(--ps-prim-gray-900);
+      position:relative;
+      display:flex;
+      flex-direction:column;
+    }
+    .tn--full{height:140px;}
+    .tn--slim{height:52px;}
+
+    /* ── Utility row (28 px) ── */
+    .tn-util{
+      height:28px;
+      background:var(--ps-sem-bg-surface);
+      border-bottom:1px solid #E0E0E0;
+      padding:0 40px;
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:20px;
+      font-size:14px;
+      line-height:16px;
+    }
+    .tn-util a{color:var(--ps-prim-gray-900);text-decoration:none;}
+    .tn-util a:hover{color:var(--ps-brand-primary);text-decoration:underline;}
+    .tn-util .tn-phone{display:flex;align-items:center;gap:6px;color:#009CF4;font-weight:400;}
+    .tn-util .tn-phone svg{width:10px;height:12px;display:block;}
+    .tn-util .tn-phone a{color:#009CF4;}
+
+    /* ── Main row (60 px) ── */
+    .tn-main{
+      height:60px;
+      background:var(--ps-sem-bg-surface);
+      border-bottom:1px solid #E0E0E0;
+      padding:0 40px;
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+    .tn-logo{flex-shrink:0;width:200px;}
+    .tn-logo img{display:block;width:200px;height:auto;}
+
+    .tn-search{
+      flex:1;
+      max-width:800px;
+      height:32px;
+      display:flex;
+      align-items:stretch;
+      border:1px solid #CCCCCC;
+      border-radius:5px;
+      background:var(--ps-sem-bg-surface);
+      overflow:hidden;
+      transition:border-color 150ms ease, box-shadow 150ms ease;
+    }
+    .tn-search:hover{border-color:#999;}
+    .tn-search:focus-within{border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+    .tn-search input{
+      flex:1;
+      border:0;
+      outline:0;
+      padding:0 16px;
+      font:14px/1 'Source Sans Pro',sans-serif;
+      color:var(--ps-sem-fg-primary);
+      background:transparent;
+    }
+    .tn-search input::placeholder{color:var(--ps-sem-fg-tertiary);}
+    .tn-search button{
+      width:34px;
+      flex-shrink:0;
+      border:0;
+      background:#FF9505;
+      color:var(--ps-sem-fg-inverse);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:background 120ms ease;
+    }
+    .tn-search button:hover{background:#E58400;}
+    .tn-search button svg{width:18px;height:18px;display:block;}
+
+    .tn-categories{
+      font-size:16px;
+      font-weight:700;
+      color:#000022;
+      cursor:pointer;
+      flex-shrink:0;
+      white-space:nowrap;
+      padding:6px 0;
+    }
+    .tn-categories:hover{color:var(--ps-brand-primary);text-decoration:underline;text-underline-offset:3px;}
+
+    .tn-cart{
+      position:relative;
+      width:32px;
+      height:32px;
+      flex-shrink:0;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .tn-cart svg.cart-glyph{width:30px;height:24px;color:var(--ps-sem-fg-brand);}
+    .tn-cart .tn-cart-badge{
+      position:absolute;
+      top:-1px;
+      right:-3px;
+      min-width:18px;
+      height:18px;
+      padding:0 5px;
+      border-radius:32px;
+      background:var(--ps-sem-action-default);
+      color:var(--ps-sem-fg-inverse);
+      font-size:11px;
+      font-weight:700;
+      line-height:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 0 0 2px #fff;
+    }
+    .tn-cart:hover svg.cart-glyph{color:#004A84;}
+
+    .tn-divider{width:1px;height:31px;background:#CCCCCC;flex-shrink:0;}
+
+    .tn-facility{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      flex-shrink:0;
+      cursor:pointer;
+      padding:2px 4px;
+      border-radius:4px;
+    }
+    .tn-facility svg.tn-pin{width:14px;height:20px;color:var(--ps-prim-gray-900);flex-shrink:0;}
+    .tn-facility .tn-fac-meta{display:flex;flex-direction:column;line-height:1.1;gap:2px;}
+    .tn-facility .tn-fac-label{font-size:12px;color:var(--ps-prim-gray-900);}
+    .tn-facility .tn-fac-name{font-size:16px;font-weight:700;color:var(--ps-prim-gray-900);}
+
+    /* ── Page hero row (52 px) ──
+       Dark navy left half, slanted PRO ACCOUNT panel right half.
+       Slant uses clip-path: starts 54 px in at the top edge.
+    */
+    .tn-hero{
+      height:52px;
+      background:#003763;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+    }
+    .tn-hero__title{
+      color:var(--ps-sem-fg-inverse);
+      font-size:24px;
+      font-family:'Source Sans Pro',sans-serif;
+      letter-spacing:-.01em;
+      line-height:36px;
+      padding:0 24px;
+      flex-shrink:0;
+    }
+    .tn-hero__pro{
+      position:absolute;
+      right:0;top:0;
+      width:504px;
+      height:52px;
+      background:#D0EDFC;
+      clip-path:polygon(54px 0, 100% 0, 100% 100%, 0 100%);
+      box-shadow:inset -4px 4px 10px 0 rgba(0,0,0,.19);
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding-left:120px;
+      color:var(--ps-sem-fg-secondary);
+    }
+    .tn-hero__pro .tn-hero__hospital{
+      font-size:16px;
+      font-weight:700;
+      color:#4C4B46;
+      letter-spacing:.005em;
+    }
+    .tn-hero__pro .tn-hero__sep{
+      width:1px;
+      height:24px;
+      background:#777;
+    }
+    .tn-hero__pro .tn-hero__pro-label{
+      font-size:16px;
+      font-weight:700;
+      color:#00AEEF;
+      letter-spacing:.04em;
+    }
+    .tn-hero__pro .tn-hero__hosp-logo{
+      width:32px;
+      height:32px;
+      border-radius:4px;
+      background:var(--ps-prim-blue-800);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--ps-sem-fg-inverse);
+      font-weight:700;
+      font-size:13px;
+      flex-shrink:0;
+    }
+    .tn-hero__pro .tn-hero__hosp-logo--cleveland{
+      background:var(--ps-sem-bg-surface);
+      border:1px solid #E0E0E0;
+      color:#9CC03A;
+      font-size:18px;
+      letter-spacing:-1px;
+    }
+
+    /* ─────────────────────────────────────────
+       Anatomy — grid: label column + nav rows
+       Each label cell is height-matched to its row
+       ───────────────────────────────────────── */
+    .anatomy-frame{padding:32px;overflow-x:auto;}
+    .anatomy-grid{
+      display:grid;
+      grid-template-columns:200px 1440px;
+      gap:24px;
+      align-items:start;
+      width:max-content;
+    }
+    .anatomy-labels{display:flex;flex-direction:column;}
+    .anatomy-label{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-end;
+      text-align:right;
+      padding-right:18px;
+      border-right:1px dashed #DCDCDC;
+      gap:3px;
+      font-family:'Source Sans Pro',sans-serif;
+    }
+    .anatomy-label b{color:var(--ps-brand-primary);font-size:13px;font-weight:700;letter-spacing:.3px;}
+    .anatomy-label em{font-style:normal;color:var(--ps-sem-fg-tertiary);font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+    .anatomy-label span{color:var(--ps-sem-fg-secondary);font-size:12px;font-weight:400;letter-spacing:0;line-height:1.4;}
+    .anatomy-nav{position:relative;width:1440px;}
+    .anatomy-nav .tn{margin:0;}
+    .anatomy-pin{
+      position:absolute;
+      right:-12px;
+      transform:translateY(-50%);
+      background:var(--ps-sem-bg-surface);
+      border:1px solid var(--ps-border-default);
+      border-radius:3px;
+      padding:2px 8px;
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.4px;
+      color:var(--ps-brand-primary);
+      line-height:14px;
+      white-space:nowrap;
+      box-shadow:0 1px 2px rgba(0,0,0,.04);
+    }
+    .anatomy-pin::before{
+      content:"";position:absolute;left:-7px;top:50%;
+      width:7px;height:1px;background:#DCDCDC;
+    }
+
+    /* ─────────────────────────────────────────
+       States grid
+       ───────────────────────────────────────── */
+    .states-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:18px;}
+    .state-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-default);border-radius:8px;overflow:hidden;}
+    .state-card .state-stage{padding:14px 16px;background:#F4F6F8;display:flex;align-items:center;justify-content:center;min-height:88px;}
+    .state-card .state-meta{padding:10px 14px;border-top:1px solid var(--ps-border-subtle);display:flex;justify-content:space-between;gap:8px;font-size:12px;}
+    .state-card .state-meta b{color:var(--ps-sem-fg-primary);font-weight:700;}
+    .state-card .state-meta span{color:var(--ps-sem-fg-tertiary);font-weight:600;font-family:var(--ps-font-mono);font-size:11px;}
+
+    /* token table */
+    .tokens{width:100%;border-collapse:collapse;font-size:12px;}
+    .tokens th, .tokens td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--ps-border-subtle);}
+    .tokens th{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);font-weight:700;background:var(--ps-sem-bg-canvas);}
+    .tokens td.swatch{width:42px;}
+    .tokens td.swatch span{display:block;width:24px;height:24px;border-radius:4px;border:1px solid rgba(0,0,0,.08);}
+    .tokens td code{font-family:var(--ps-font-mono);font-size:11px;color:var(--ps-sem-fg-primary);}
+    .tokens td.label{font-weight:600;color:var(--ps-sem-fg-primary);}
+
+    code.kbd{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+  </style>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Top Navigation</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Top Navigation</h1>
+  <p class="intro">The horizontal banner that anchors every PartsSource page. It carries three stacked rows — a thin <strong>utility</strong> bar (phone &amp; meta links), the <strong>main</strong> row (brand, search, categories, cart, facility selector), and a colored <strong>page hero</strong> with the page title and Pro Account panel. Specs are at the design width of <code class="kbd">1440 px</code>; the bar is full-width fluid in production with all internal elements pinned to a 40 px gutter.</p>
+
+  <!-- Default ------------------------------------------------------- -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Default · 1440 × 140</h2>
+      <div class="desc">The canonical 3-row layout. Page title in the hero is contextual — set per route (Welcome on home, Asset Uptime in that module, etc.).</div>
+    </div>
+    <div class="section-body flush">
+      <div class="tn-frame">
+        <div class="tn tn--full" data-screen-label="Top Nav · Default">
+          <!-- Utility row -->
+          <div class="tn-util">
+            <span class="tn-phone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href="#">877-497-6412</a>
+            </span>
+            <a href="#">Help</a>
+            <a href="#">About Us</a>
+          </div>
+          <!-- Main row -->
+          <div class="tn-main">
+            <a class="tn-logo" href="#"><img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource"></a>
+            <div class="tn-search" role="search">
+              <input type="text" placeholder="Search">
+              <button type="submit" aria-label="Search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+              </button>
+            </div>
+            <span class="tn-categories">Categories +</span>
+            <span class="tn-cart" role="button" aria-label="Cart, 3 items">
+              <svg class="cart-glyph" viewBox="0 0 30 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 3h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L26 7H7"/>
+                <circle cx="11" cy="24" r="1.6" fill="currentColor"/>
+                <circle cx="22" cy="24" r="1.6" fill="currentColor"/>
+              </svg>
+              <span class="tn-cart-badge">3</span>
+            </span>
+            <span class="tn-divider"></span>
+            <span class="tn-facility" role="button">
+              <svg class="tn-pin" viewBox="0 0 14 20" fill="currentColor" aria-hidden="true"><path d="M7 0a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5z"/></svg>
+              <span class="tn-fac-meta">
+                <span class="tn-fac-label">Selected Facility</span>
+                <span class="tn-fac-name">Chatham Memorial Hospital</span>
+              </span>
+            </span>
+          </div>
+          <!-- Page hero row -->
+          <div class="tn-hero">
+            <span class="tn-hero__title">Welcome</span>
+            <div class="tn-hero__pro">
+                            <span class="tn-hero__hospital"><img src="assets/logos/chatham-memorial.png" alt="Chatham Memorial Hospital" style="height:32px;width:auto;display:block;"></span>
+              <span class="tn-hero__sep"></span>
+              <span class="tn-hero__pro-label">PRO&nbsp;&nbsp;ACCOUNT</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page hero variants ------------------------------------------- -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Page Hero · Title Variants</h2>
+      <div class="desc">The dark navy band swaps its title to match the active route. Long titles wrap inside the navy region without overlapping the slanted Pro Account panel.</div>
+    </div>
+    <div class="section-body">
+      <div class="demo-stack">
+
+        <div>
+          <p class="demo-cap">Welcome (Home)</p>
+          <div class="tn-frame"><div class="tn tn--slim"><div class="tn-hero">
+            <span class="tn-hero__title">Welcome</span>
+            <div class="tn-hero__pro">
+                            <span class="tn-hero__hospital"><img src="assets/logos/chatham-memorial.png" alt="Chatham Memorial Hospital" style="height:32px;width:auto;display:block;"></span>
+              <span class="tn-hero__sep"></span>
+              <span class="tn-hero__pro-label">PRO&nbsp;&nbsp;ACCOUNT</span>
+            </div>
+          </div></div></div>
+        </div>
+
+        <div>
+          <p class="demo-cap">Module title — Asset Uptime</p>
+          <div class="tn-frame"><div class="tn tn--slim"><div class="tn-hero">
+            <span class="tn-hero__title">Asset Uptime</span>
+            <div class="tn-hero__pro">
+                            <span class="tn-hero__hospital"><img src="assets/logos/chatham-memorial.png" alt="Chatham Memorial Hospital" style="height:32px;width:auto;display:block;"></span>
+              <span class="tn-hero__sep"></span>
+              <span class="tn-hero__pro-label">PRO&nbsp;&nbsp;ACCOUNT</span>
+            </div>
+          </div></div></div>
+        </div>
+
+        <div>
+          <p class="demo-cap">Module title — Command Center</p>
+          <div class="tn-frame"><div class="tn tn--slim"><div class="tn-hero">
+            <span class="tn-hero__title">Command Center</span>
+            <div class="tn-hero__pro">
+                            <span class="tn-hero__hospital"><img src="assets/logos/chatham-memorial.png" alt="Chatham Memorial Hospital" style="height:32px;width:auto;display:block;"></span>
+              <span class="tn-hero__sep"></span>
+              <span class="tn-hero__pro-label">PRO&nbsp;&nbsp;ACCOUNT</span>
+            </div>
+          </div></div></div>
+        </div>
+
+        <div>
+          <p class="demo-cap">Module title — My Lists</p>
+          <div class="tn-frame"><div class="tn tn--slim"><div class="tn-hero">
+            <span class="tn-hero__title">My Lists</span>
+            <div class="tn-hero__pro">
+                            <span class="tn-hero__hospital"><img src="assets/logos/chatham-memorial.png" alt="Chatham Memorial Hospital" style="height:32px;width:auto;display:block;"></span>
+              <span class="tn-hero__sep"></span>
+              <span class="tn-hero__pro-label">PRO&nbsp;&nbsp;ACCOUNT</span>
+            </div>
+          </div></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Anatomy ------------------------------------------------------- -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Anatomy</h2>
+      <div class="desc">Three stacked rows. Heights and key dimensions are fixed; width is fluid above 1280 px and never below.</div>
+    </div>
+    <div class="section-body plain">
+      <div class="anatomy-frame">
+        <div class="anatomy-grid">
+          <div class="anatomy-labels">
+            <div class="anatomy-label" style="height:28px;">
+              <b>Utility row</b>
+              <em>28 px · #FFF</em>
+            </div>
+            <div class="anatomy-label" style="height:60px;">
+              <b>Main row</b>
+              <em>60 px · #FFF</em>
+              <span>Logo, search, cart, facility</span>
+            </div>
+            <div class="anatomy-label" style="height:52px;">
+              <b>Page hero</b>
+              <em>52 px · #003763</em>
+              <span>Title + Pro Account</span>
+            </div>
+          </div>
+          <div class="anatomy-nav">
+          <div class="tn tn--full">
+            <div class="tn-util">
+              <span class="tn-phone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <a href="#">877-497-6412</a>
+              </span>
+              <a href="#">Help</a>
+              <a href="#">About Us</a>
+            </div>
+            <div class="tn-main">
+              <a class="tn-logo" href="#"><img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource"></a>
+              <div class="tn-search">
+                <input type="text" placeholder="Search">
+                <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button>
+              </div>
+              <span class="tn-categories">Categories +</span>
+              <span class="tn-cart">
+                <svg class="cart-glyph" viewBox="0 0 30 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L26 7H7"/><circle cx="11" cy="24" r="1.6" fill="currentColor"/><circle cx="22" cy="24" r="1.6" fill="currentColor"/></svg>
+                <span class="tn-cart-badge">3</span>
+              </span>
+              <span class="tn-divider"></span>
+              <span class="tn-facility">
+                <svg class="tn-pin" viewBox="0 0 14 20" fill="currentColor"><path d="M7 0a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                <span class="tn-fac-meta">
+                  <span class="tn-fac-label">Selected Facility</span>
+                  <span class="tn-fac-name">Chatham Memorial Hospital</span>
+                </span>
+              </span>
+            </div>
+            <div class="tn-hero">
+              <span class="tn-hero__title">Welcome</span>
+              <div class="tn-hero__pro">
+                              <span class="tn-hero__hospital"><img src="assets/logos/chatham-memorial.png" alt="Chatham Memorial Hospital" style="height:32px;width:auto;display:block;"></span>
+                <span class="tn-hero__sep"></span>
+                <span class="tn-hero__pro-label">PRO&nbsp;&nbsp;ACCOUNT</span>
+              </div>
+            </div>
+          </div>
+
+          <span class="anatomy-pin" style="top:14px;">28 px</span>
+          <span class="anatomy-pin" style="top:58px;">60 px</span>
+          <span class="anatomy-pin" style="top:114px;">52 px</span>
+          </div>
+        </div>
+      </div>
+
+      <ul style="margin:32px 0 0;padding-left:20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);">
+        <li><strong>Utility row (28 px):</strong> White surface with a 1 px <code class="kbd">#E0E0E0</code> bottom border. Right-aligned cluster of phone, Help, and About Us at 14 px Source Sans Pro. Phone number renders in <code class="kbd">#009CF4</code> with the icon glyph at <code class="kbd">#000</code>; everything else is <code class="kbd">#000</code>.</li>
+        <li><strong>Main row (60 px):</strong> White surface with a 1 px <code class="kbd">#E0E0E0</code> bottom border, 40 px horizontal gutter, 18 px gap between groups. Holds the wordmark (≈200 px), search (flexible up to 800 px), Categories+, cart with badge, vertical divider, and the facility selector.</li>
+        <li><strong>Search (32 px):</strong> 5 px corner radius, <code class="kbd">#CCCCCC</code> stroke, 14 px placeholder in <code class="kbd">#777</code>. The submit button is a 34 px square in PS Orange <code class="kbd">#FF9505</code> with a white search glyph; corners are flush-right with the field.</li>
+        <li><strong>Cart:</strong> 32 × 32 hit area with the cart glyph in PS Blue <code class="kbd">#005BA6</code>. The badge is a 14 px PS-Blue circle (white "3") pinned to the top-right corner with a 2 px white stroke for separation.</li>
+        <li><strong>Facility selector:</strong> 13 px map-pin icon, then a two-line stack — 12 px "Selected Facility" caption above the 16 px bold facility name. Has no hover state — clicking opens the <em>Select Facility</em> modal (see below).</li>
+        <li><strong>Page hero (52 px):</strong> Solid <code class="kbd">#003763</code> from the left edge through ~936 px. The right 504 px is a slanted panel filled <code class="kbd">#D0EDFC</code> with an inset shadow <code class="kbd">inset -4px 4px 10px rgba(0,0,0,.19)</code>. The slant clip-path runs <code class="kbd">54 px 0 → 100% 0 → 100% 100% → 0 100%</code>.</li>
+        <li><strong>Hero title:</strong> 24 px Source Sans Pro at <code class="kbd">letter-spacing:-.01em</code>, white, 36 px line-height. Sits 24 px from the left edge.</li>
+        <li><strong>Pro Account panel:</strong> Hospital wordmark + 16 px bold facility name in <code class="kbd">#4C4B46</code>, a 24 px <code class="kbd">#777</code> divider, then "PRO ACCOUNT" in 16 px bold <code class="kbd">#00AEEF</code> with a wide letter-space.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Breakpoints --------------------------------------------------- -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Breakpoints</h2>
+      <div class="desc">The top nav has four supported widths. Desktop (1440 +) and Wide-desktop (1920 +) keep the three-row composition; Tablet (≤ 1024) and Mobile (≤ 480) collapse to a stacked layout — utility row drops, hamburger replaces Categories, search moves below the wordmark, and the page-hero collapses to a slim navy bar with just the facility and a notification bell.</div>
+    </div>
+    <div class="section-body flush">
+      <style>
+        /* Wider desktop -------------------------------------------- */
+        .tn--w1920{width:1920px;height:140px;}
+        .tn--w1920 .tn-util{padding:0 80px;}
+        .tn--w1920 .tn-main{padding:0 80px;gap:32px;}
+        .tn--w1920 .tn-search{max-width:none;}
+        .tn--w1920 .tn-hero{padding:0 80px;}
+        .tn--w1920 .tn-hero__pro{width:504px;padding-right:80px;}
+
+        /* Responsive (Tablet + Mobile) ---------------------------- */
+        .tn--rwd{
+          font-family:'Source Sans Pro','Source Sans 3',var(--ps-font-sans);
+          color:var(--ps-prim-gray-900);
+          display:flex;
+          flex-direction:column;
+          background:var(--ps-sem-bg-surface);
+          overflow:hidden;
+        }
+        .tn--tablet{width:768px;}
+        .tn--mobile{width:375px;}
+
+        .tn-rwd-top{
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          padding:0 24px;
+          height:56px;
+          background:var(--ps-sem-bg-surface);
+          border-bottom:1px solid #E0E0E0;
+        }
+        .tn--mobile .tn-rwd-top{padding:0 16px;height:52px;}
+
+        .tn-rwd-burger{
+          width:24px;height:18px;
+          display:flex;flex-direction:column;justify-content:space-between;
+          background:transparent;border:0;cursor:pointer;padding:0;
+          flex-shrink:0;
+        }
+        .tn-rwd-burger span{display:block;height:3px;background:#000;border-radius:1px;}
+
+        .tn-rwd-logo{
+          flex:0 0 auto;
+        }
+        .tn-rwd-logo img{display:block;height:24px;width:auto;}
+        .tn--mobile .tn-rwd-logo img{height:20px;}
+
+        .tn-rwd-cart{
+          display:flex;align-items:center;gap:6px;
+          color:var(--ps-sem-fg-brand);font-size:16px;font-weight:700;
+          flex-shrink:0;cursor:pointer;
+        }
+        .tn-rwd-cart svg{width:24px;height:20px;}
+
+        /* Search row */
+        .tn-rwd-search-row{
+          padding:14px 24px 14px;
+          background:var(--ps-sem-bg-surface);
+          border-bottom:1px solid #E0E0E0;
+        }
+        .tn--mobile .tn-rwd-search-row{padding:12px 16px;}
+        .tn-rwd-search{
+          display:flex;align-items:stretch;
+          background:var(--ps-sem-bg-surface);
+          border:1px solid #CCCCCC;
+          border-radius:5px;
+          height:42px;
+          overflow:hidden;
+        }
+        .tn-rwd-search input{
+          flex:1;border:0;outline:0;background:transparent;
+          padding:0 14px;font:14px/1 'Source Sans Pro',sans-serif;
+          color:var(--ps-sem-fg-primary);
+        }
+        .tn-rwd-search input::placeholder{color:var(--ps-sem-fg-tertiary);}
+        .tn-rwd-search button{
+          width:54px;flex-shrink:0;border:0;cursor:pointer;
+          background:#FF9505;color:var(--ps-sem-fg-inverse);
+          display:flex;align-items:center;justify-content:center;
+        }
+        .tn-rwd-search button svg{width:18px;height:18px;}
+
+        /* Facility bar */
+        .tn-rwd-fac{
+          display:flex;align-items:center;justify-content:space-between;
+          height:42px;padding:0 24px;
+          background:#003763;color:var(--ps-sem-fg-inverse);
+        }
+        .tn--mobile .tn-rwd-fac{padding:0 16px;height:40px;}
+        .tn-rwd-fac-left{display:flex;align-items:center;gap:8px;}
+        .tn-rwd-fac-left svg{width:14px;height:18px;color:var(--ps-sem-fg-inverse);}
+        .tn-rwd-fac-name{font-size:14px;font-weight:700;color:var(--ps-sem-fg-inverse);}
+        .tn-rwd-fac-bell{position:relative;width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--ps-sem-fg-inverse);cursor:pointer;}
+        .tn-rwd-fac-bell::after{
+          content:"";
+          position:absolute;top:2px;right:2px;
+          width:6px;height:6px;border-radius:50%;
+          background:#FF9505;border:1.5px solid #003763;
+        }
+
+        /* Breakpoint frame group */
+        .bp-group{display:flex;flex-direction:column;gap:32px;padding:24px;}
+        .bp-row{display:flex;flex-direction:column;gap:10px;}
+        .bp-row .bp-cap{
+          display:flex;align-items:baseline;gap:14px;
+          font:600 12px/1 'Source Sans Pro',sans-serif;
+          letter-spacing:.06em;text-transform:uppercase;color:var(--ps-sem-fg-primary);
+        }
+        .bp-row .bp-cap span{font-weight:400;letter-spacing:.04em;color:var(--ps-sem-fg-tertiary);text-transform:none;font-size:12px;}
+        .bp-row .bp-cap em{font-style:normal;color:var(--ps-sem-fg-secondary);font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;}
+        .bp-frame{
+          background:var(--ps-sem-bg-surface);
+          border:1px solid var(--ps-border-default);
+          border-radius:8px;
+          overflow-x:auto;
+        }
+        .bp-frame::-webkit-scrollbar{height:8px;}
+        .bp-frame::-webkit-scrollbar-thumb{background:#dcdcdc;border-radius:4px;}
+        .bp-frame > .tn,
+        .bp-frame > .tn--rwd{margin:0;}
+
+        /* Side-by-side row for the two narrow breakpoints */
+        .bp-narrow-row{display:flex;gap:24px;align-items:flex-start;padding:24px;flex-wrap:wrap;}
+        .bp-narrow-row .bp-row{flex:0 0 auto;}
+        .bp-narrow-row .bp-frame{width:auto;display:inline-block;}
+      </style>
+
+      <div class="bp-group">
+        <!-- 1920 -->
+        <div class="bp-row">
+          <div class="bp-cap">Wide desktop · 1920 px<span>≥ 1920</span><em>Same three-row layout, generous 80&nbsp;px gutters, search expands to fill the row.</em></div>
+          <div class="bp-frame">
+            <div class="tn tn--w1920" data-screen-label="Top Nav · 1920">
+              <!-- Utility row -->
+              <div class="tn-util">
+                <span class="tn-phone">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <a href="#">877-497-6412</a>
+                </span>
+                <a href="#">Help</a>
+                <a href="#">About Us</a>
+              </div>
+              <!-- Main row -->
+              <div class="tn-main">
+                <a class="tn-logo" href="#"><img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource"></a>
+                <div class="tn-search" role="search">
+                  <input type="text" placeholder="Search Keyword or Item Number">
+                  <button type="submit" aria-label="Search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+                  </button>
+                </div>
+                <span class="tn-categories">Categories +</span>
+                <span class="tn-cart" role="button" aria-label="Cart, 0 items">
+                  <svg class="cart-glyph" viewBox="0 0 30 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M2 3h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L26 7H7"/>
+                    <circle cx="11" cy="24" r="1.6" fill="currentColor"/>
+                    <circle cx="22" cy="24" r="1.6" fill="currentColor"/>
+                  </svg>
+                </span>
+                <span class="tn-divider"></span>
+                <span class="tn-facility" role="button">
+                  <svg class="tn-pin" viewBox="0 0 14 20" fill="currentColor" aria-hidden="true"><path d="M7 0a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                  <span class="tn-fac-meta">
+                    <span class="tn-fac-label">Selected Facility</span>
+                    <span class="tn-fac-name">Chatham Memorial Hospital</span>
+                  </span>
+                </span>
+              </div>
+              <!-- Page hero row -->
+              <div class="tn-hero">
+                <span class="tn-hero__title">Welcome</span>
+                <div class="tn-hero__pro">
+                                <span class="tn-hero__hospital"><img src="assets/logos/chatham-memorial.png" alt="Chatham Memorial Hospital" style="height:32px;width:auto;display:block;"></span>
+                  <span class="tn-hero__sep"></span>
+                  <span class="tn-hero__pro-label">PRO&nbsp;&nbsp;ACCOUNT</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1440 -->
+        <div class="bp-row">
+          <div class="bp-cap">Desktop · 1440 px<span>1280 – 1919</span><em>Default reference. 40&nbsp;px gutters, search caps at 800&nbsp;px.</em></div>
+          <div class="bp-frame">
+            <div class="tn tn--full" data-screen-label="Top Nav · 1440">
+              <div class="tn-util">
+                <span class="tn-phone">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <a href="#">877-497-6412</a>
+                </span>
+                <a href="#">Help</a>
+                <a href="#">About Us</a>
+              </div>
+              <div class="tn-main">
+                <a class="tn-logo" href="#"><img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource"></a>
+                <div class="tn-search" role="search">
+                  <input type="text" placeholder="Search">
+                  <button type="submit" aria-label="Search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+                  </button>
+                </div>
+                <span class="tn-categories">Categories +</span>
+                <span class="tn-cart" role="button" aria-label="Cart, 0 items">
+                  <svg class="cart-glyph" viewBox="0 0 30 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M2 3h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L26 7H7"/>
+                    <circle cx="11" cy="24" r="1.6" fill="currentColor"/>
+                    <circle cx="22" cy="24" r="1.6" fill="currentColor"/>
+                  </svg>
+                  <span class="tn-cart-badge" style="background:var(--ps-sem-action-default);">0</span>
+                </span>
+                <span class="tn-divider"></span>
+                <span class="tn-facility" role="button">
+                  <svg class="tn-pin" viewBox="0 0 14 20" fill="currentColor" aria-hidden="true"><path d="M7 0a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                  <span class="tn-fac-meta">
+                    <span class="tn-fac-label">Selected Facility</span>
+                    <span class="tn-fac-name">Chatham Memorial Hospital</span>
+                  </span>
+                </span>
+              </div>
+              <div class="tn-hero">
+                <span class="tn-hero__title">Welcome</span>
+                <div class="tn-hero__pro">
+                                <span class="tn-hero__hospital"><img src="assets/logos/chatham-memorial.png" alt="Chatham Memorial Hospital" style="height:32px;width:auto;display:block;"></span>
+                  <span class="tn-hero__sep"></span>
+                  <span class="tn-hero__pro-label">PRO&nbsp;&nbsp;ACCOUNT</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet + Mobile, side-by-side -->
+        <div class="bp-narrow-row" style="padding:0;">
+          <!-- Tablet -->
+          <div class="bp-row">
+            <div class="bp-cap">Tablet · 768 px<span>481 – 1024</span></div>
+            <div class="bp-frame">
+              <div class="tn tn--rwd tn--tablet" data-screen-label="Top Nav · Tablet">
+                <div class="tn-rwd-top">
+                  <button class="tn-rwd-burger" aria-label="Menu"><span></span><span></span><span></span></button>
+                  <a class="tn-rwd-logo" href="#"><img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource"></a>
+                  <span class="tn-rwd-cart" role="button" aria-label="Cart">
+                    <svg viewBox="0 0 30 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L26 7H7"/><circle cx="11" cy="24" r="1.6" fill="currentColor"/><circle cx="22" cy="24" r="1.6" fill="currentColor"/></svg>
+                    <span>Cart</span>
+                  </span>
+                </div>
+                <div class="tn-rwd-search-row">
+                  <div class="tn-rwd-search" role="search">
+                    <input type="text" placeholder="Search Keyword or Item Number">
+                    <button type="submit" aria-label="Search">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="tn-rwd-fac">
+                  <div class="tn-rwd-fac-left">
+                    <svg viewBox="0 0 14 20" fill="currentColor"><path d="M7 0a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                    <span class="tn-rwd-fac-name">Chatham Memorial Hospital</span>
+                  </div>
+                  <span class="tn-rwd-fac-bell" role="button" aria-label="Notifications, 1 new">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile -->
+          <div class="bp-row">
+            <div class="bp-cap">Mobile · 375 px<span>≤ 480</span></div>
+            <div class="bp-frame">
+              <div class="tn tn--rwd tn--mobile" data-screen-label="Top Nav · Mobile">
+                <div class="tn-rwd-top">
+                  <button class="tn-rwd-burger" aria-label="Menu"><span></span><span></span><span></span></button>
+                  <a class="tn-rwd-logo" href="#"><img src="../assets/logos/ps-wordmark-blue.svg" alt="PartsSource"></a>
+                  <span class="tn-rwd-cart" role="button" aria-label="Cart">
+                    <svg viewBox="0 0 30 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L26 7H7"/><circle cx="11" cy="24" r="1.6" fill="currentColor"/><circle cx="22" cy="24" r="1.6" fill="currentColor"/></svg>
+                    <span>Cart</span>
+                  </span>
+                </div>
+                <div class="tn-rwd-search-row">
+                  <div class="tn-rwd-search" role="search">
+                    <input type="text" placeholder="Search Keyword or Item Number">
+                    <button type="submit" aria-label="Search">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="tn-rwd-fac">
+                  <div class="tn-rwd-fac-left">
+                    <svg viewBox="0 0 14 20" fill="currentColor"><path d="M7 0a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                    <span class="tn-rwd-fac-name">Chatham Memorial Hospital</span>
+                  </div>
+                  <span class="tn-rwd-fac-bell" role="button" aria-label="Notifications">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ul style="margin:24px 32px 24px;padding-left:20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);">
+        <li><strong>≥ 1920 px:</strong> Same three-row composition, gutters increase to 80&nbsp;px, search field expands flexibly to fill the row, Pro Account panel pinned to the 504&nbsp;px slanted region.</li>
+        <li><strong>1280 – 1919 px:</strong> Default reference. 40&nbsp;px gutters, 60&nbsp;px main row, search caps at 800&nbsp;px wide.</li>
+        <li><strong>481 – 1024 px (Tablet):</strong> Utility row drops. Hamburger icon (24×18, 3&nbsp;px bars) replaces Categories+ on the far left. Wordmark centers. Cart shows the icon plus a "Cart" label in PS Blue. Search moves to its own 70&nbsp;px row beneath, full-bleed minus 24&nbsp;px gutters. Page-hero collapses to a 42&nbsp;px navy bar with pin + facility name (white, 14&nbsp;px bold) on the left and a notification bell on the right (orange dot when there are unread alerts).</li>
+        <li><strong>≤ 480 px (Mobile):</strong> Same composition as Tablet at 16&nbsp;px gutters and a 52&nbsp;px top row. Wordmark drops to 20&nbsp;px tall.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Element states ------------------------------------------------ -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Element States</h2>
+      <div class="desc">Interactive states for individual sub-elements. Hover and focus are previewed below; on the live nav they are triggered by the cursor or keyboard.</div>
+    </div>
+    <div class="section-body">
+      <div class="states-grid">
+
+        <div class="state-card">
+          <div class="state-stage" style="background:var(--ps-sem-bg-surface);">
+            <div class="tn-search" style="width:320px;"><input type="text" placeholder="Search"><button aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button></div>
+          </div>
+          <div class="state-meta"><b>Search · default</b><span>border #CCC</span></div>
+        </div>
+
+        <div class="state-card">
+          <div class="state-stage" style="background:var(--ps-sem-bg-surface);">
+            <div class="tn-search" style="width:320px;border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(0,91,166,.15);"><input type="text" value="contrast media" style="color:var(--ps-sem-fg-primary);"><button aria-label="Search" style="background:#E58400;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button></div>
+          </div>
+          <div class="state-meta"><b>Search · focus + button hover</b><span>#005BA6 · #E58400</span></div>
+        </div>
+
+        <div class="state-card">
+          <div class="state-stage" style="background:var(--ps-sem-bg-surface);">
+            <span class="tn-cart" style="position:relative;display:inline-flex;">
+              <svg class="cart-glyph" viewBox="0 0 30 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ps-sem-fg-brand);width:30px;height:24px;"><path d="M2 3h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L26 7H7"/><circle cx="11" cy="24" r="1.6" fill="currentColor"/><circle cx="22" cy="24" r="1.6" fill="currentColor"/></svg>
+              <span class="tn-cart-badge">3</span>
+            </span>
+          </div>
+          <div class="state-meta"><b>Cart · default</b><span>3 items</span></div>
+        </div>
+
+        <div class="state-card">
+          <div class="state-stage" style="background:var(--ps-sem-bg-surface);">
+            <span class="tn-cart" style="position:relative;display:inline-flex;">
+              <svg class="cart-glyph" viewBox="0 0 30 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:#004A84;width:30px;height:24px;"><path d="M2 3h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L26 7H7"/><circle cx="11" cy="24" r="1.6" fill="currentColor"/><circle cx="22" cy="24" r="1.6" fill="currentColor"/></svg>
+              <span class="tn-cart-badge" style="background:#004A84;">12</span>
+            </span>
+          </div>
+          <div class="state-meta"><b>Cart · hover · 2-digit</b><span>badge widens</span></div>
+        </div>
+
+        <div class="state-card">
+          <div class="state-stage" style="background:var(--ps-sem-bg-surface);justify-content:flex-start;padding:14px 24px;">
+            <span class="tn-categories">Categories +</span>
+          </div>
+          <div class="state-meta"><b>Categories · default</b><span>#000022 · 16/700</span></div>
+        </div>
+
+        <div class="state-card">
+          <div class="state-stage" style="background:var(--ps-sem-bg-surface);justify-content:flex-start;padding:14px 24px;">
+            <span class="tn-categories" style="color:var(--ps-brand-primary);text-decoration:underline;text-underline-offset:3px;">Categories +</span>
+          </div>
+          <div class="state-meta"><b>Categories · hover</b><span>#005BA6 + underline</span></div>
+        </div>
+
+        <div class="state-card">
+          <div class="state-stage" style="background:var(--ps-sem-bg-surface);justify-content:flex-start;padding:14px 20px;">
+            <span class="tn-facility">
+              <svg class="tn-pin" viewBox="0 0 14 20" fill="currentColor"><path d="M7 0a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5z"/></svg>
+              <span class="tn-fac-meta">
+                <span class="tn-fac-label">Selected Facility</span>
+                <span class="tn-fac-name">Chatham Memorial Hospital</span>
+              </span>
+            </span>
+          </div>
+          <div class="state-meta"><b>Facility · default</b><span>16/700 + 12/400</span></div>
+        </div>
+
+        <div class="state-card">
+          <div class="state-stage" style="background:var(--ps-sem-bg-surface);justify-content:flex-start;padding:8px 20px;flex-direction:column;align-items:flex-start;gap:8px;">
+            <a href="#" style="color:var(--ps-prim-gray-900);text-decoration:none;font-size:14px;">Help</a>
+            <a href="#" style="color:var(--ps-prim-gray-900);text-decoration:none;font-size:14px;">About Us</a>
+          </div>
+          <div class="state-meta"><b>Util link · default</b><span>#000 · 14/400</span></div>
+        </div>
+
+        <div class="state-card">
+          <div class="state-stage" style="background:var(--ps-sem-bg-surface);justify-content:flex-start;padding:8px 20px;flex-direction:column;align-items:flex-start;gap:8px;">
+            <a href="#" style="color:var(--ps-brand-primary);text-decoration:underline;text-underline-offset:3px;font-size:14px;">Help</a>
+            <a href="#" style="color:var(--ps-brand-primary);text-decoration:underline;text-underline-offset:3px;font-size:14px;">About Us</a>
+          </div>
+          <div class="state-meta"><b>Util link · hover</b><span>#005BA6 + underline</span></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Facility modal ------------------------------------------------ -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Select Facility · Modal</h2>
+      <div class="desc">Clicking the Facility selector in the main row opens this modal. The current facility is shown in the search field; the list below is filterable and shows every facility the user is entitled to.</div>
+    </div>
+    <div class="section-body">
+      <style>
+        .fac-modal-frame{position:relative;width:100%;height:560px;border:1px solid var(--ps-border-default);border-radius:8px;overflow:hidden;background:var(--ps-sem-bg-canvas);}
+        .fac-modal-frame::before{content:"";position:absolute;inset:0;background:rgba(43,43,43,.45);}
+        .fac-modal{
+          position:absolute;
+          left:50%;top:50%;
+          transform:translate(-50%,-50%);
+          width:520px;
+          background:var(--ps-sem-bg-surface);
+          border-radius:6px;
+          box-shadow:0 12px 48px rgba(0,0,0,.28);
+          font-family:'Source Sans Pro',sans-serif;
+          padding:28px 32px 24px;
+        }
+        .fac-modal__close{position:absolute;top:14px;right:14px;width:24px;height:24px;border:0;background:transparent;cursor:pointer;color:var(--ps-sem-fg-tertiary);display:flex;align-items:center;justify-content:center;}
+        .fac-modal__close:hover{color:var(--ps-sem-fg-primary);}
+        .fac-modal__title{font-size:24px;font-weight:400;color:var(--ps-sem-fg-primary);margin:0 0 18px;letter-spacing:-.01em;}
+        .fac-modal__field{
+          width:100%;
+          height:42px;
+          border:2px solid var(--ps-brand-primary);
+          border-radius:4px;
+          background:var(--ps-sem-bg-surface);
+          padding:0 38px 0 14px;
+          font:14px/1 'Source Sans Pro',sans-serif;
+          color:var(--ps-brand-primary);
+          font-weight:700;
+          outline:0;
+          box-shadow:0 0 0 3px rgba(0,91,166,.10);
+        }
+        .fac-modal__field-wrap{position:relative;}
+        .fac-modal__clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#CCCCCC;color:var(--ps-sem-fg-inverse);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;line-height:1;border:0;}
+        .fac-modal__list{margin:14px 0 0;border:1px solid #E6E6E6;border-radius:4px;overflow:hidden;}
+        .fac-modal__row{padding:11px 16px;font-size:14px;color:var(--ps-sem-fg-primary);cursor:pointer;border-bottom:1px solid #F1F1F1;}
+        .fac-modal__row:last-child{border-bottom:0;}
+        .fac-modal__row:hover{background:#F5F8FB;color:var(--ps-brand-primary);}
+      </style>
+      <div class="fac-modal-frame">
+        <div class="fac-modal" role="dialog" aria-modal="true" aria-labelledby="fac-modal-title">
+          <button class="fac-modal__close" aria-label="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+          <h3 class="fac-modal__title" id="fac-modal-title">Select Facility</h3>
+          <div class="fac-modal__field-wrap">
+            <input class="fac-modal__field" type="text" value="Select Facility" aria-label="Search facilities">
+            <button class="fac-modal__clear" aria-label="Clear">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="fac-modal__list">
+            <div class="fac-modal__row">Flambeau Hospital - Park Falls (CE) - BT2</div>
+            <div class="fac-modal__row">Marshfield - Ladysmith (CE)</div>
+            <div class="fac-modal__row">Marshfield Clinic - Eau Claire Ctr (CE)</div>
+            <div class="fac-modal__row">Marshfield Clinic - Lakeview Med Ctr (CE)</div>
+            <div class="fac-modal__row">Marshfield Clinic - Marshfield Ctr (CE)</div>
+            <div class="fac-modal__row">Marshfield Clinic - Minocqua Ctr (CE)</div>
+            <div class="fac-modal__row">Marshfield Clinic - Wausau Ctr (CE)</div>
+            <div class="fac-modal__row">Marshfield Clinic - Weston Ctr (CE)</div>
+          </div>
+        </div>
+      </div>
+      <ul style="margin:20px 0 0;padding-left:20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);">
+        <li><strong>Trigger:</strong> The Facility selector in the main row. There is no hover state on the trigger — the entire selector is one click target.</li>
+        <li><strong>Width:</strong> 520 px on desktop. Centered, with a 45 % black scrim behind.</li>
+        <li><strong>Active field:</strong> 2 px PS Blue stroke with the current selection in PS Blue 700 weight. The trailing × clears the field; the list below filters as the user types.</li>
+        <li><strong>Row hover:</strong> Background <code class="kbd">#F5F8FB</code>, text shifts to PS Blue.</li>
+        <li><strong>Dismiss:</strong> Top-right ×, Esc key, or click on the scrim.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Accessibility ------------------------------------------------- -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance, keyboard support, and implementation guidance for the top nav.</div>
+    </div>
+    <div class="section-body plain">
+      <ul style="margin:0;padding-left:20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);">
+        <li><strong>Landmark role:</strong> Wrap the whole bar in <code class="kbd">&lt;header role="banner"&gt;</code>. Place the search inside <code class="kbd">&lt;form role="search"&gt;</code> and the brand logo inside the header so it's part of the banner landmark.</li>
+        <li><strong>Skip link:</strong> Provide a <code class="kbd">"Skip to main content"</code> anchor above the utility row so keyboard users can bypass three rows of chrome.</li>
+        <li><strong>Tab order:</strong> Phone → Help → About Us → Logo → Search input → Search submit → Categories → Cart → Facility. The hero row is non-interactive on the default route.</li>
+        <li><strong>Cart badge:</strong> The "3" must be exposed semantically — use <code class="kbd">aria-label="Cart, 3 items"</code> on the cart link and hide the badge text with <code class="kbd">aria-hidden="true"</code> so screen readers don't read it twice.</li>
+        <li><strong>Search submit:</strong> Icon-only button needs <code class="kbd">aria-label="Search"</code>. The orange button measures 4.6:1 contrast for the white glyph (passes AA Large + AA non-text), and the field placeholder <code class="kbd">#777</code> on white is 4.6:1 (passes).</li>
+        <li><strong>Color contrast:</strong> White on the navy hero <code class="kbd">#003763</code> measures 12.4 : 1 (AAA). PRO ACCOUNT <code class="kbd">#00AEEF</code> on <code class="kbd">#D0EDFC</code> measures 2.1:1 — the label is paired with the bold hospital name to meet the AA non-text requirement; treat it as decorative emphasis only and don't use this pairing for any other text.</li>
+        <li><strong>Focus indicator:</strong> 2 px <code class="kbd">#B6D5F0</code> outline with 2 px offset on every focusable element. On the orange search button the focus ring uses <code class="kbd">#003763</code> for visibility against the orange fill.</li>
+        <li><strong>Touch targets:</strong> Cart, Categories, and the facility selector each meet 44 × 44 px including padding. The 32 px search field uses an oversized 34 × 32 button — keep finger-reachable on touch via 8 px hit-area extension on the parent.</li>
+        <li><strong>Facility switcher:</strong> Render as a <code class="kbd">&lt;button aria-haspopup="dialog"&gt;</code>; opening should set focus into the dialog and trap focus until dismissed.</li>
+        <li><strong>Slanted Pro panel:</strong> Decorative — shapes and gradients carry no semantic meaning. The hospital name &amp; PRO ACCOUNT label sit on the regular DOM order so screen readers read them in source sequence.</li>
+        <li><strong>Responsive:</strong> Below 1280 px the search collapses to icon-only and Categories is folded into a hamburger; below 768 px the utility row drops and the cart + facility move into the mobile drawer.</li>
+      </ul>
+    </div>
+  </div>
+
+</body></html>

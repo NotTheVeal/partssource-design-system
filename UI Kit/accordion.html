@@ -1,0 +1,60 @@
+<!-- @dsCard group="Components" name="Accordion" subtitle="Collapsible content groups — default, row, and filled variants with count badges" viewport="600x400" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../tokens.css">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="../_ds_bundle.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      padding: 24px;
+      background: #FAFAFA;
+      font-family: 'Source Sans Pro', 'Source Sans 3', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    (function () {
+      var ns = window.PartsSourceDesignSystem_e42fb5 || {};
+      var Accordion = ns.Accordion;
+      var AccordionCount = ns.AccordionCount;
+
+      if (!Accordion) {
+        document.getElementById('root').innerHTML =
+          '<p style="color:#9E2020;font-family:sans-serif;font-size:13px;">⚠ Accordion not found in bundle — rebuild _ds_bundle.js</p>';
+        return;
+      }
+
+      var e = React.createElement;
+
+      var Demo = function () {
+        return e('div', { style: { display: 'flex', flexDirection: 'column', gap: 12 } },
+          // Collapsed
+          e(Accordion, { title: 'In-progress activity', meta: e(AccordionCount, null, '3') }),
+          // Expanded with subtitle + critical count
+          e(Accordion, {
+            title: 'Critical events',
+            subtitle: 'Requires immediate attention',
+            defaultOpen: true,
+            meta: e(AccordionCount, { tone: 'critical' }, '2 critical'),
+          },
+            e('p', { style: { margin: 0, fontSize: 14, color: '#2B2B2B' } },
+              'Critical events affecting clinical workflow.')
+          ),
+          // Count only
+          e(Accordion, { title: 'Your assets', meta: e(AccordionCount, null, '42') })
+        );
+      };
+
+      var root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(e(Demo, null));
+    })();
+  </script>
+</body>
+</html>

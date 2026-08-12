@@ -1,0 +1,438 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Colors & Typography</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      background: #F7F5F5;
+    }
+
+    .page-header {
+      margin-bottom: 48px;
+    }
+    .page-header h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: #002F48;
+      margin: 0 0 16px 0;
+    }
+    .page-header p {
+      font-size: 16px;
+      color: var(--ps-sem-fg-secondary);
+      margin: 0;
+      max-width: 800px;
+      line-height: 1.6;
+    }
+
+    .section {
+      background: white;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+    .section-head {
+      background: var(--ps-sem-bg-muted);
+      border-bottom: 1px solid #DCDCDC;
+      padding: 20px 24px;
+    }
+    .section-head h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ps-sem-fg-brand);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0 0 4px 0;
+    }
+    .section-head .desc {
+      font-size: 14px;
+      color: var(--ps-sem-fg-tertiary);
+      margin: 0;
+    }
+    .section-body {
+      padding: 32px 24px;
+    }
+
+    /* Color Swatches */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 24px;
+    }
+    .color-swatch {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .color-chip {
+      height: 80px;
+      border-radius: 4px;
+      border: 1px solid #DCDCDC;
+    }
+    .color-info {
+      font-size: 13px;
+    }
+    .color-name {
+      font-weight: 700;
+      color: var(--ps-prim-gray-900);
+      margin-bottom: 4px;
+    }
+    .color-hex {
+      color: var(--ps-sem-fg-tertiary);
+      font-family: 'Source Code', monospace;
+      font-size: 12px;
+    }
+    .color-var {
+      color: var(--ps-sem-fg-brand);
+      font-family: 'Source Code', monospace;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    /* Typography Samples */
+    .type-sample {
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #F1F1F1;
+    }
+    .type-sample:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .type-spec {
+      font-size: 12px;
+      color: var(--ps-sem-fg-tertiary);
+      margin-bottom: 12px;
+      font-family: 'Source Code', monospace;
+    }
+    .type-demo {
+      color: var(--ps-prim-gray-900);
+    }
+
+    /* Accessibility */
+    .accessibility-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .accessibility-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid #F1F1F1;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .accessibility-list li:last-child {
+      border-bottom: none;
+    }
+    .accessibility-list strong {
+      color: #002F48;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Colors & Type</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <div class="page-header">
+    <h1>Colors & Typography</h1>
+    <p>Foundation tokens for the PartsSource design system. All colors, type scales, spacing, and elevation values derive from primitives defined in the design library. Use CSS custom properties (--ps-*) for consistent theming.</p>
+  </div>
+
+  <!-- Brand Colors -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Brand Colors — Blue Scale</h2>
+      <div class="desc">Primary brand palette spanning light accents to deep midnight tones</div>
+    </div>
+    <div class="section-body">
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #DCEAED;"></div>
+          <div class="color-info">
+            <div class="color-name">Airway</div>
+            <div class="color-hex">#DCEAED</div>
+            <div class="color-var">--ps-blue-100</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #009CF4;"></div>
+          <div class="color-info">
+            <div class="color-name">Azure Blue</div>
+            <div class="color-hex">#009CF4</div>
+            <div class="color-var">--ps-blue-200</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: var(--ps-sem-action-default);"></div>
+          <div class="color-info">
+            <div class="color-name">PS Blue (Primary)</div>
+            <div class="color-hex">#005BA6</div>
+            <div class="color-var">--ps-blue-500</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #004A84;"></div>
+          <div class="color-info">
+            <div class="color-name">Blue 2 (Hover)</div>
+            <div class="color-hex">#004A84</div>
+            <div class="color-var">--ps-blue-700</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #002F48;"></div>
+          <div class="color-info">
+            <div class="color-name">Midnight</div>
+            <div class="color-hex">#002F48</div>
+            <div class="color-var">--ps-blue-900</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Semantic Colors -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Semantic Colors — Feedback</h2>
+      <div class="desc">Success, warning, danger, and info states</div>
+    </div>
+    <div class="section-body">
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #17AB78;"></div>
+          <div class="color-info">
+            <div class="color-name">Success</div>
+            <div class="color-hex">#17AB78</div>
+            <div class="color-var">--ps-success</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #E3A92D;"></div>
+          <div class="color-info">
+            <div class="color-name">Warning</div>
+            <div class="color-hex">#E3A92D</div>
+            <div class="color-var">--ps-warning</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #FF0000;"></div>
+          <div class="color-info">
+            <div class="color-name">Danger</div>
+            <div class="color-hex">#FF0000</div>
+            <div class="color-var">--ps-danger</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #009CF4;"></div>
+          <div class="color-info">
+            <div class="color-name">Info</div>
+            <div class="color-hex">#009CF4</div>
+            <div class="color-var">--ps-info</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Neutrals -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Neutrals — Grayscale</h2>
+      <div class="desc">Text, borders, and surface colors</div>
+    </div>
+    <div class="section-body">
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-chip" style="background: var(--ps-sem-bg-surface); border: 2px solid #DCDCDC;"></div>
+          <div class="color-info">
+            <div class="color-name">White</div>
+            <div class="color-hex">#FFFFFF</div>
+            <div class="color-var">--ps-neutral-0</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: var(--ps-sem-bg-canvas);"></div>
+          <div class="color-info">
+            <div class="color-name">Neutral 50</div>
+            <div class="color-hex">#FAFAFA</div>
+            <div class="color-var">--ps-neutral-50</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: var(--ps-sem-bg-muted);"></div>
+          <div class="color-info">
+            <div class="color-name">Neutral 100</div>
+            <div class="color-hex">#F1F1F1</div>
+            <div class="color-var">--ps-neutral-100</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #DCDCDC;"></div>
+          <div class="color-info">
+            <div class="color-name">Neutral 200</div>
+            <div class="color-hex">#DCDCDC</div>
+            <div class="color-var">--ps-neutral-200</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #949494;"></div>
+          <div class="color-info">
+            <div class="color-name">Neutral 400</div>
+            <div class="color-hex">#949494</div>
+            <div class="color-var">--ps-neutral-400</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #777777;"></div>
+          <div class="color-info">
+            <div class="color-name">Neutral 500</div>
+            <div class="color-hex">#777777</div>
+            <div class="color-var">--ps-neutral-500</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #4A4A4A;"></div>
+          <div class="color-info">
+            <div class="color-name">Neutral 700</div>
+            <div class="color-hex">#4A4A4A</div>
+            <div class="color-var">--ps-neutral-700</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-chip" style="background: #000000;"></div>
+          <div class="color-info">
+            <div class="color-name">Black</div>
+            <div class="color-hex">#000000</div>
+            <div class="color-var">--ps-neutral-1000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Typography -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Typography — Headings</h2>
+      <div class="desc">Source Sans Pro and Metronic Pro heading scales</div>
+    </div>
+    <div class="section-body">
+      <div class="type-sample">
+        <div class="type-spec">H1 · 30px / 300 / 1.2 · Source Sans Pro Light</div>
+        <h1 class="type-demo">The quick brown fox jumps over the lazy dog</h1>
+      </div>
+      <div class="type-sample">
+        <div class="type-spec">H2 · 24px / 300 / 1.2 · Source Sans Pro Light</div>
+        <h2 class="type-demo">The quick brown fox jumps over the lazy dog</h2>
+      </div>
+      <div class="type-sample">
+        <div class="type-spec">H3 · 24px / 400 / 1.2 · Source Sans Pro Regular</div>
+        <h3 class="type-demo">The quick brown fox jumps over the lazy dog</h3>
+      </div>
+      <div class="type-sample">
+        <div class="type-spec">H4 · 18px / 600 / 1.2 · Source Sans Pro SemiBold</div>
+        <h4 class="type-demo">The quick brown fox jumps over the lazy dog</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body Text -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Typography — Body Text</h2>
+      <div class="desc">Default paragraph and body copy styles</div>
+    </div>
+    <div class="section-body">
+      <div class="type-sample">
+        <div class="type-spec">Body 01 · 16px / 400 / 1.5 · Source Sans Pro Regular</div>
+        <p class="type-demo">The quick brown fox jumps over the lazy dog. PartsSource provides healthcare organizations with the tools they need to manage equipment inventory, procurement, and maintenance.</p>
+      </div>
+      <div class="type-sample">
+        <div class="type-spec">Body 02 (Bold) · 16px / 700 / 1.5 · Source Sans Pro Bold</div>
+        <p class="type-demo ps-body-02">The quick brown fox jumps over the lazy dog. PartsSource provides healthcare organizations with the tools they need to manage equipment inventory.</p>
+      </div>
+      <div class="type-sample">
+        <div class="type-spec">Micro · 12px / 400 / 1.5 · Source Sans Pro Regular</div>
+        <p class="type-demo ps-micro">Helper text, captions, and metadata. Use sparingly for supplemental information that supports primary content.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- UI Labels -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Typography — UI Labels</h2>
+      <div class="desc">Buttons, form labels, and uppercase text</div>
+    </div>
+    <div class="section-body">
+      <div class="type-sample">
+        <div class="type-spec">Button Large · 16px / 600 / 1.5 · Source Sans Pro SemiBold · Uppercase</div>
+        <div class="type-demo ps-button-lg-label">BUY NOW</div>
+      </div>
+      <div class="type-sample">
+        <div class="type-spec">Button Small · 14px / 400 / 1.4 · Source Sans Pro Regular</div>
+        <div class="type-demo ps-button-sm-label">Apply Filter</div>
+      </div>
+      <div class="type-sample">
+        <div class="type-spec">Label · 12px / 600 / 1.5 · Source Sans Pro SemiBold · Uppercase · 1.5px tracking</div>
+        <div class="type-demo ps-label">Form Label</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head" style="background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <h2 style="font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-sem-fg-brand);font-weight:700;margin:0;flex-shrink:0;">ACCESSIBILITY &amp; BEST PRACTICES</h2>
+      <div class="desc" style="font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;margin:0;">WCAG compliance and implementation guidance for inclusive color and typography usage.</div>
+    </div>
+    <div class="section-body">
+      <ul style="margin:0;padding:0 0 0 20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;list-style:disc;">
+        <li><strong>Color Contrast:</strong> All text meets WCAG AA standards (4.5:1 for normal text, 3:1 for large text 18px+). Use --ps-fg-primary (#4A4A4A) on white backgrounds.</li>
+        <li><strong>Orange Deprecation:</strong> Moving away from orange CTAs (#FF9505) due to ADA non-compliance. Use blue primary (#005BA6) for interactive elements.</li>
+        <li><strong>Semantic Color Usage:</strong> Red for errors, green for success, amber for warnings, blue for info. Never rely on color alone—pair with icons or text labels.</li>
+        <li><strong>Type Scale:</strong> Minimum 12px for body text, 14px recommended for UI labels. Line-height ≥1.5 for readability.</li>
+        <li><strong>Font Loading:</strong> All @font-face declarations use font-display:swap to prevent invisible text during load.</li>
+        <li><strong>Variable Naming:</strong> Use semantic tokens (--ps-fg-primary) over primitives (--ps-neutral-700) for themeable, context-aware styling.</li>
+        <li><strong>Link States:</strong> Links use --ps-fg-link (#005BA6) with underline on hover. Ensure 3px minimum click target padding.</li>
+        <li><strong>Monospace Usage:</strong> Reserve Source Code for code snippets, variable names, and technical values only—never for UI copy.</li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>

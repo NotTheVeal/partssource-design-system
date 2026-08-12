@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Interaction States" subtitle="Complete state matrix for all components" --><html><head>
+
+
+
+
+  <meta charset="utf-8">
+  <title>Interaction States — Complete Matrix</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+
+    .section-body{padding:24px;}
+    
+    .state-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+    .state-card{background:white;border:1px solid #DCDCDC;border-radius:4px;padding:24px;min-height:180px;display:flex;flex-direction:column;}
+    .state-card.required{border:2px solid #B45309;}
+    .state-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--ps-fg-tertiary);margin-bottom:16px;}
+    .state-label.required{color:#B45309;}
+    .state-demo{flex:1;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+    .state-specs{font-size:12px;line-height:1.8;color:var(--ps-sem-fg-secondary);padding-top:16px;border-top:1px solid #F1F1F1;}
+    .state-specs dt{font-weight:600;color:var(--ps-prim-gray-900);margin-top:6px;font-size:11px;text-transform:uppercase;letter-spacing:0.3px;}
+    .state-specs dd{margin:0;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--ps-sem-fg-brand);background:#F5F5F5;padding:3px 6px;border-radius:2px;display:inline-block;}
+    
+    .demo-btn{height:50px;min-width:160px;padding:0 15px;font-size:15px;font-family:var(--ps-font-sans);border-radius:4px;border:2px solid;font-weight:400;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .demo-input{width:180px;height:48px;padding:24px 12px 8px;font-size:14px;font-family:var(--ps-font-sans);border-radius:4px;box-sizing:border-box;position:relative;border:1px solid;}
+    .demo-input-label{position:absolute;left:12px;top:8px;font-size:12px;font-weight:700;pointer-events:none;}
+    .demo-checkbox{width:24px;height:24px;border-radius:2px;display:flex;align-items:center;justify-content:center;border:1.5px solid;}
+    .demo-card{width:100%;height:100%;background:var(--ps-sem-bg-surface);border-radius:4px;padding:12px;box-sizing:border-box;border:1px solid #DCDCDC;}
+    
+    code{font-family:'Source Code Pro',monospace;background:#F5F5F5;padding:2px 6px;border-radius:3px;font-size:12px;color:var(--ps-sem-fg-brand);}
+  </style>
+<link id="gfont-Source-Sans-Pro" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;500;600;700&amp;display=swap"></head>
+<body data-cc-id="cc-1" style="cursor: crosshair; font-family: &quot;Source Sans Pro&quot;;">
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Interaction States</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+  <h1>Interaction States</h1>
+  <p class="intro">Every interactive component requires documentation for all 8 core interaction states. This page provides a comprehensive reference for Default, Hover, Focus, Active, Disabled, Loading, Error, and Selected states across all PartsSource component types.</p>
+
+  <!-- WCAG Principle -->
+  <div class="section">
+    <div class="section-head">
+      <h2>WCAG Compliance Requirement</h2>
+      <div class="desc">Focus states are mandatory under WCAG 2.4.7 (Level AA). All interactive elements must have a visible focus indicator with at least 3:1 contrast ratio against adjacent colors.</div>
+    </div>
+  </div>
+
+  <!-- State Definitions -->
+  <div class="section">
+    <div class="section-head">
+      <h2>State Definitions</h2>
+      <div class="desc">The 8 core interaction states every component should document.</div>
+    </div>
+    <div class="section-body">
+  
+  <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">1. Default (Rest)</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:var(--ps-sem-bg-surface);border-color:var(--ps-sem-fg-brand);color:var(--ps-sem-fg-brand);">Default</div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:var(--ps-sem-fg-secondary);">
+        <strong>Initial state</strong> before any user interaction. The element is interactive but untouched. Must clearly signal affordance (clickability) through visual design.
+      </div>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">2. Hover</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:var(--ps-sem-action-default);border-color:#009CF4;color:var(--ps-sem-fg-inverse);">Hover</div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:var(--ps-sem-fg-secondary);">
+        <strong>Mouse cursor over element.</strong> Provides immediate feedback that element is interactive. Not accessible to keyboard or touch users — must combine with focus.
+      </div>
+    </div>
+    
+    <div class="state-card" style="border:2px solid #B45309;">
+      <div class="state-label" style="color:#B45309;">3. Focus (Required)</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:var(--ps-sem-bg-surface);border-color:var(--ps-sem-fg-brand);color:var(--ps-sem-fg-brand);box-shadow:0 0 0 3px rgba(0,147,244,0.3);">Focus</div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:var(--ps-sem-fg-secondary);">
+        <strong>Keyboard navigation indicator.</strong> WCAG 2.4.7 Level AA mandatory. Must have 3:1 contrast (WCAG 1.4.11). Typically 2–3px ring offset 2px from element.
+      </div>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">4. Active (Pressed)</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:#004A84;border-color:#004A84;color:var(--ps-sem-fg-inverse);">Active</div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:var(--ps-sem-fg-secondary);">
+        <strong>User is clicking/tapping.</strong> Momentary state during press. Provides tactile feedback. Typically darker/pressed appearance. Releases to hover or default.
+      </div>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">5. Disabled</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:var(--ps-sem-bg-muted);border-color:var(--ps-sem-border-strong);color:#ACACAC;cursor:not-allowed;">Disabled</div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:var(--ps-sem-fg-secondary);">
+        <strong>Non-interactive state.</strong> Element cannot be clicked. Greyed out appearance. Must include <code>cursor:not-allowed</code>. Do not hide — show disabled for context.
+      </div>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">6. Loading</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:var(--ps-sem-action-default);border-color:var(--ps-sem-fg-brand);color:var(--ps-sem-fg-inverse);position:relative;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;">
+            <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+            <path d="M12 2a10 10 0 0 1 10 10" stroke-opacity="1"></path>
+          </svg>
+          <style>@keyframes spin{to{transform:rotate(360deg);}}</style>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:var(--ps-sem-fg-secondary);">
+        <strong>Async action in progress.</strong> Shows spinner or progress indicator. Button disabled during load. Must include loading text or ARIA label for screen readers.
+      </div>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">7. Error</div>
+      <div class="state-demo">
+        <div class="demo-input" style="border-color:#DC2626;background:var(--ps-sem-bg-surface);color:var(--ps-prim-gray-900);">
+          <span class="demo-input-label" style="color:#DC2626;">Label</span>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:var(--ps-sem-fg-secondary);">
+        <strong>Validation failed.</strong> Red border, error icon, helper text. Must include descriptive error message. For inputs/forms primarily.
+      </div>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">8. Selected/Checked</div>
+      <div class="state-demo">
+        <div class="demo-checkbox" style="background:#FF9505;border-color:#EC8000;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:var(--ps-sem-fg-secondary);">
+        <strong>Toggled on.</strong> For checkboxes, radios, tabs, toggles. Shows active selection. Must be visually distinct from all other states.
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Button States -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Button — All States</h2>
+      <div class="desc">Primary Large button (50px) showing all 8 interaction states.</div>
+    </div>
+    <div class="section-body">
+  
+  <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Default</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:var(--ps-sem-bg-surface);border-color:var(--ps-sem-fg-brand);color:var(--ps-sem-fg-brand);">Buy Now</div>
+      </div>
+      <dl class="state-specs">
+        <dt>Background</dt><dd>#FFFFFF</dd>
+        <dt>Border</dt><dd>2px #005BA6</dd>
+        <dt>Text</dt><dd>#005BA6</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Hover</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:var(--ps-sem-action-default);border-color:#009CF4;color:var(--ps-sem-fg-inverse);">Buy Now</div>
+      </div>
+      <dl class="state-specs">
+        <dt>Background</dt><dd>#005BA6</dd>
+        <dt>Border</dt><dd>2px #009CF4</dd>
+        <dt>Text</dt><dd>#FFFFFF</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card" style="border:2px solid #B45309;">
+      <div class="state-label" style="color:#B45309;">Focus (Add)</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:var(--ps-sem-bg-surface);border-color:var(--ps-sem-fg-brand);color:var(--ps-sem-fg-brand);box-shadow:0 0 0 3px rgba(0,147,244,0.3);outline:none;">Buy Now</div>
+      </div>
+      <dl class="state-specs">
+        <dt>Background</dt><dd>#FFFFFF</dd>
+        <dt>Border</dt><dd>2px #005BA6</dd>
+        <dt>Ring</dt><dd>0 0 0 3px rgba(0,147,244,0.3)</dd>
+        <dt>Offset</dt><dd>2px</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Active</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:#004A84;border-color:#004A84;color:var(--ps-sem-fg-inverse);box-shadow:0 2px 4px rgba(0,0,0,0.2);">Buy Now</div>
+      </div>
+      <dl class="state-specs">
+        <dt>Background</dt><dd>#004A84</dd>
+        <dt>Border</dt><dd>2px #004A84</dd>
+        <dt>Shadow</dt><dd>0 2px 4px rgba(0,0,0,0.2)</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Disabled</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:var(--ps-sem-bg-muted);border-color:var(--ps-sem-border-strong);color:#ACACAC;cursor:not-allowed;">Buy Now</div>
+      </div>
+      <dl class="state-specs">
+        <dt>Background</dt><dd>#F1F1F1</dd>
+        <dt>Border</dt><dd>2px #CCCCCC</dd>
+        <dt>Text</dt><dd>#ACACAC</dd>
+        <dt>Cursor</dt><dd>not-allowed</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card" style="border:2px solid #B45309;">
+      <div class="state-label" style="color:#B45309;">Loading (Add)</div>
+      <div class="state-demo">
+        <div class="demo-btn" style="background:var(--ps-sem-action-default);border-color:var(--ps-sem-fg-brand);color:var(--ps-sem-fg-inverse);cursor:wait;gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;">
+            <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+            <path d="M12 2a10 10 0 0 1 10 10" stroke-opacity="1"></path>
+          </svg>
+          Processing...
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>Background</dt><dd>#005BA6</dd>
+        <dt>Border</dt><dd>2px #005BA6</dd>
+        <dt>Icon</dt><dd>Spinner (animated)</dd>
+        <dt>Cursor</dt><dd>wait</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Error (N/A)</div>
+      <div class="state-demo" style="font-size:12px;color:var(--ps-sem-fg-tertiary);">
+        Not applicable<br>for buttons
+      </div>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Selected (N/A)</div>
+      <div class="state-demo" style="font-size:12px;color:var(--ps-sem-fg-tertiary);">
+        Not applicable<br>for buttons
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Card States -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Card — All States</h2>
+      <div class="desc">Event Card (Large) showing applicable interaction states.</div>
+    </div>
+    <div class="section-body">
+  
+  <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Default</div>
+      <div class="state-demo">
+        <div class="demo-card" style="width:140px;height:100px;"></div>
+      </div>
+      <dl class="state-specs">
+        <dt>Background</dt><dd>#FFFFFF</dd>
+        <dt>Border</dt><dd>1px #DCDCDC</dd>
+        <dt>Shadow</dt><dd>none</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Hover</div>
+      <div class="state-demo">
+        <div class="demo-card" style="width:140px;height:100px;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+      </div>
+      <dl class="state-specs">
+        <dt>Background</dt><dd>#FFFFFF</dd>
+        <dt>Border</dt><dd>1px #DCDCDC</dd>
+        <dt>Shadow</dt><dd>0 4px 12px rgba(0,0,0,0.1)</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card" style="border:2px solid #B45309;">
+      <div class="state-label" style="color:#B45309;">Focus (Add)</div>
+      <div class="state-demo">
+        <div class="demo-card" style="width:140px;height:100px;box-shadow:0 0 0 3px rgba(0,147,244,0.3);"></div>
+      </div>
+      <dl class="state-specs">
+        <dt>Background</dt><dd>#FFFFFF</dd>
+        <dt>Border</dt><dd>1px #DCDCDC</dd>
+        <dt>Ring</dt><dd>0 0 0 3px rgba(0,147,244,0.3)</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card" style="border:2px solid #B45309;">
+      <div class="state-label" style="color:#B45309;">Active (Add)</div>
+      <div class="state-demo">
+        <div class="demo-card" style="width:140px;height:100px;transform:scale(0.98);box-shadow:0 2px 6px rgba(0,0,0,0.15);"></div>
+      </div>
+      <dl class="state-specs">
+        <dt>Transform</dt><dd>scale(0.98)</dd>
+        <dt>Shadow</dt><dd>0 2px 6px rgba(0,0,0,0.15)</dd>
+        <dt>Note</dt><dd style="background:transparent;padding:0;color:var(--ps-sem-fg-secondary);">Subtle press feedback</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Disabled (N/A)</div>
+      <div class="state-demo" style="font-size:12px;color:var(--ps-sem-fg-tertiary);">
+        Not typically<br>used for cards
+      </div>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Loading (N/A)</div>
+      <div class="state-demo" style="font-size:12px;color:var(--ps-sem-fg-tertiary);">
+        Show skeleton<br>or spinner overlay
+      </div>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Error (N/A)</div>
+      <div class="state-demo" style="font-size:12px;color:var(--ps-sem-fg-tertiary);">
+        Use error alert<br>within card
+      </div>
+    </div>
+    
+    <div class="state-card" style="border:2px solid #B45309;">
+      <div class="state-label" style="color:#B45309;">Selected (Add)</div>
+      <div class="state-demo">
+        <div class="demo-card" style="width:140px;height:100px;border-color:var(--ps-sem-fg-brand);border-width:2px;background:#F0F8FF;"></div>
+      </div>
+      <dl class="state-specs">
+        <dt>Background</dt><dd>#F0F8FF (light blue tint)</dd>
+        <dt>Border</dt><dd>2px #005BA6</dd>
+        <dt>Note</dt><dd style="background:transparent;padding:0;color:var(--ps-sem-fg-secondary);">Multi-select scenarios</dd>
+      </dl>
+    </div>
+  </div>
+
+  <h2>Drag &amp; Drop States</h2>
+  <p style="font-size:14px;color:#5C5C5C;margin:-12px 0 24px;">Draggable elements (accordion panels, dashboard widgets, list items) require visual feedback across drag lifecycle: idle → grab → dragging → drop zone.</p>
+  
+  <div class="state-grid">
+    <div class="state-card">
+      <div class="state-label">Idle (Draggable)</div>
+      <div class="state-demo">
+        <div style="width:180px;padding:14px;background:var(--ps-sem-bg-surface);border:1px solid #DCDCDC;border-radius:4px;display:flex;align-items:center;gap:12px;cursor:grab;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#949494">
+            <circle cx="4" cy="3" r="1.5"></circle><circle cx="4" cy="8" r="1.5"></circle><circle cx="4" cy="13" r="1.5"></circle>
+            <circle cx="12" cy="3" r="1.5"></circle><circle cx="12" cy="8" r="1.5"></circle><circle cx="12" cy="13" r="1.5"></circle>
+          </svg>
+          <div style="flex:1;font-size:13px;color:var(--ps-prim-gray-900);">Panel Title</div>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>Drag handle</dt><dd>16px six-dot grip, #949494</dd>
+        <dt>Cursor</dt><dd>grab</dd>
+        <dt>Border</dt><dd>1px #DCDCDC</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Dragging (Active)</div>
+      <div class="state-demo">
+        <div style="width:180px;padding:14px;background:var(--ps-sem-bg-surface);border:1px solid #005BA6;border-radius:4px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 24px rgba(0,0,0,0.15);opacity:0.9;cursor:grabbing;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#005BA6">
+            <circle cx="4" cy="3" r="1.5"></circle><circle cx="4" cy="8" r="1.5"></circle><circle cx="4" cy="13" r="1.5"></circle>
+            <circle cx="12" cy="3" r="1.5"></circle><circle cx="12" cy="8" r="1.5"></circle><circle cx="12" cy="13" r="1.5"></circle>
+          </svg>
+          <div style="flex:1;font-size:13px;color:var(--ps-prim-gray-900);">Panel Title</div>
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>Border</dt><dd>1px #005BA6</dd>
+        <dt>Shadow</dt><dd>0 8px 24px rgba(0,0,0,0.15)</dd>
+        <dt>Opacity</dt><dd>0.9 (ghost effect)</dd>
+        <dt>Cursor</dt><dd>grabbing</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Drop Zone (Valid)</div>
+      <div class="state-demo">
+        <div style="width:180px;height:60px;border:2px dashed #005BA6;border-radius:4px;background:#D7ECF8;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ps-sem-fg-brand);font-weight:600;">
+          Drop here
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>Border</dt><dd>2px dashed #005BA6</dd>
+        <dt>Background</dt><dd>#D7ECF8 (light blue)</dd>
+        <dt>Text</dt><dd>12px #005BA6</dd>
+      </dl>
+    </div>
+    
+    <div class="state-card">
+      <div class="state-label">Drop Zone (Invalid)</div>
+      <div class="state-demo">
+        <div style="width:180px;height:60px;border:2px dashed #D27272;border-radius:4px;background:#FEF0F0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#D27272;font-weight:600;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;">
+            <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+          Can't drop
+        </div>
+      </div>
+      <dl class="state-specs">
+        <dt>Border</dt><dd>2px dashed #D27272</dd>
+        <dt>Background</dt><dd>#FEF0F0 (light red)</dd>
+        <dt>Icon</dt><dd>16px circle-x, #D27272</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="note info">
+    <strong>Drag Implementation:</strong> Used on My Dashboard accordion panels. Handle must be visually distinct (six-dot grip), always visible, and clickable area should extend to full panel height for better UX.
+  </div>
+
+  <div class="note success">
+    <strong>Next Steps:</strong> To complete the interaction state system, add Focus state documentation for all components. Focus is the highest priority for WCAG compliance.
+  </div>
+
+  <h2>Code Examples</h2>
+  <p style="font-size:14px;color:#5C5C5C;margin:-12px 0 24px;">CSS implementation for all interaction states. Copy and adapt for your components.</p>
+
+  <div style="background:white;border:1px solid #DCDCDC;border-radius:4px;padding:24px;margin-bottom:32px;">
+    <h3 style="margin:0 0 16px;font-size:16px;font-weight:600;">Button States — CSS</h3>
+    <pre style="background:#F5F5F5;padding:16px;border-radius:4px;overflow-x:auto;font-size:12px;line-height:1.6;margin:0;"><code style="font-family:'Source Code Pro',monospace;color:var(--ps-sem-fg-primary);">/* Default */
+.btn-primary {
+  background: var(--ps-sem-bg-surface);
+  border: 2px solid #005BA6;
+  color: var(--ps-sem-fg-brand);
+  padding: 0 15px;
+  height: 50px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.btn-primary:hover {
+  background: var(--ps-sem-action-default);
+  border-color: #009CF4;
+  color: var(--ps-sem-fg-inverse);
+}
+
+/* Focus (WCAG Required) */
+.btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 147, 244, 0.3);
+}
+
+/* Active (Pressed) */
+.btn-primary:active {
+  background: #004A84;
+  border-color: #004A84;
+  color: var(--ps-sem-fg-inverse);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Disabled */
+.btn-primary:disabled {
+  background: var(--ps-sem-bg-muted);
+  border-color: var(--ps-sem-border-strong);
+  color: #ACACAC;
+  cursor: not-allowed;
+}
+
+/* Loading */
+.btn-primary.loading {
+  background: var(--ps-sem-action-default);
+  border-color: var(--ps-sem-fg-brand);
+  color: var(--ps-sem-fg-inverse);
+  cursor: wait;
+  pointer-events: none;
+}
+.btn-primary.loading::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--ps-sem-fg-inverse);
+  border-radius: 50%;
+  margin-right: 8px;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}</code></pre>
+  </div>
+
+  <div style="background:white;border:1px solid #DCDCDC;border-radius:4px;padding:24px;margin-bottom:32px;">
+    <h3 style="margin:0 0 16px;font-size:16px;font-weight:600;">Card States — CSS</h3>
+    <pre style="background:#F5F5F5;padding:16px;border-radius:4px;overflow-x:auto;font-size:12px;line-height:1.6;margin:0;"><code style="font-family:'Source Code Pro',monospace;color:var(--ps-sem-fg-primary);">/* Default */
+.card {
+  background: var(--ps-sem-bg-surface);
+  border: 1px solid #DCDCDC;
+  border-radius: 4px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus (WCAG Required) */
+.card:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 147, 244, 0.3);
+}
+
+/* Active (Pressed) */
+.card:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Selected (Multi-select) */
+.card.selected {
+  background: #F0F8FF;
+  border: 2px solid #005BA6;
+  border-width: 2px;
+}</code></pre>
+  </div>
+
+  <div style="background:white;border:1px solid #DCDCDC;border-radius:4px;padding:24px;margin-bottom:32px;">
+    <h3 style="margin:0 0 16px;font-size:16px;font-weight:600;">Input States — CSS</h3>
+    <pre style="background:#F5F5F5;padding:16px;border-radius:4px;overflow-x:auto;font-size:12px;line-height:1.6;margin:0;"><code style="font-family:'Source Code Pro',monospace;color:var(--ps-sem-fg-primary);">/* Default */
+.input {
+  border: 1px solid #DCDCDC;
+  border-radius: 3px;
+  padding: 24px 10px 8px;
+  font-size: 14px;
+  height: 48px;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.input:hover {
+  border-color: var(--ps-prim-gray-900);
+}
+
+/* Focus (WCAG Required) */
+.input:focus {
+  outline: none;
+  border-color: var(--ps-sem-fg-brand);
+  box-shadow: 0 0 0 10px rgba(0, 93, 166, 0.1);
+}
+
+/* Disabled */
+.input:disabled {
+  background: var(--ps-sem-bg-canvas);
+  border-color: var(--ps-sem-border-default);
+  color: #949494;
+  cursor: not-allowed;
+}
+
+/* Error */
+.input.error {
+  border-color: #FF0000;
+  background: #FFF5F5;
+}
+.input.error:focus {
+  border-color: #FF0000;
+  box-shadow: 0 0 0 10px rgba(255, 0, 0, 0.1);
+}</code></pre>
+  </div>
+
+  <div style="background:white;border:1px solid #DCDCDC;border-radius:4px;padding:24px;margin-bottom:32px;">
+    <h3 style="margin:0 0 16px;font-size:16px;font-weight:600;">Checkbox States — CSS</h3>
+    <pre style="background:#F5F5F5;padding:16px;border-radius:4px;overflow-x:auto;font-size:12px;line-height:1.6;margin:0;"><code style="font-family:'Source Code Pro',monospace;color:var(--ps-sem-fg-primary);">/* Default (Unselected) */
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid #005BA6;
+  border-radius: 2px;
+  background: var(--ps-sem-bg-surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.checkbox:hover {
+  border-color: #009CF4;
+  background: #F0F8FF;
+}
+
+/* Focus (WCAG Required) */
+.checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 147, 244, 0.3);
+}
+
+/* Selected (Checked) */
+.checkbox.checked {
+  background: var(--ps-sem-action-default);
+  border-color: var(--ps-sem-fg-brand);
+}
+.checkbox.checked::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 10px;
+  border: solid #FFFFFF;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin: 2px 0 0 6px;
+}
+
+/* Disabled */
+.checkbox:disabled {
+  background: var(--ps-sem-bg-muted);
+  border-color: var(--ps-sem-border-strong);
+  cursor: not-allowed;
+}
+.checkbox:disabled.checked {
+  background: #CCCCCC;
+  border-color: var(--ps-sem-border-strong);
+}</code></pre>
+  </div>
+
+  <h2>Implementation Checklist</h2>
+  <div style="background:white;border:1px solid #DCDCDC;border-radius:4px;padding:24px;margin-top:24px;">
+    <h3 style="margin:0 0 16px;font-size:16px;font-weight:600;">Required Actions</h3>
+    <ul style="margin:0;padding-left:20px;font-size:14px;line-height:2;color:var(--ps-sem-fg-secondary);">
+      <li><strong>HIGH:</strong> Add Focus states to Buttons, Cards, Checkboxes, Links (WCAG compliance)</li>
+      <li><strong>HIGH:</strong> Document Active states for Cards (press feedback)</li>
+      <li><strong>MEDIUM:</strong> Add Selected states for Cards (multi-select UI)</li>
+      <li><strong>MEDIUM:</strong> Document Disabled states for Inputs</li>
+      <li>✅ <strong>DONE:</strong> Drag states for sortable lists (accordion panels)</li>
+      <li>✅ <strong>DONE:</strong> Loading states for Buttons (async actions)</li>
+    </ul>
+  </div>
+
+
+</div></div></div></div></body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>

@@ -1,0 +1,974 @@
+<!DOCTYPE html><html><head>
+  <meta charset="utf-8">
+  <title>Input Fields — PartsSource Design System</title>
+  
+  <template id="__bundler_thumbnail" data-bg-color="#ffffff">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <!-- Input field icon -->
+      <rect x="360" y="280" width="480" height="80" rx="4" fill="none" stroke="#005DA6" stroke-width="3"/>
+      <text x="380" y="310" font-family="sans-serif" font-size="18" fill="#005BA6" font-weight="700">Label</text>
+      <text x="380" y="345" font-family="sans-serif" font-size="24" fill="#000000">Input Text</text>
+      
+      <rect x="360" y="420" width="480" height="80" rx="4" fill="none" stroke="#949494" stroke-width="2"/>
+      <text x="600" y="470" font-family="sans-serif" font-size="24" fill="#4A4A4A" text-anchor="middle">Label</text>
+    </svg>
+  </template>
+  
+  <style>
+/* ================================================================
+   PartsSource Design System — Colors & Type (inlined)
+   ================================================================ */
+/* ================================================================
+   PartsSource Design System — Colors & Type
+   Source of truth: NotTheVeal/PS-Design-Library (tokens/*)
+   All values derive from primitives.json → ps-styles.json.
+   ================================================================ */
+
+/* Brand font — Metronic Pro. Loaded from local files (fonts/*.otf).
+   Full weight ramp: Air (100) → Light (300) → Regular (400) →
+   SemiBold (600) → Bold (700) → Black (900), with italics. */
+
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproAir.otf") format("opentype");
+  font-weight: 100; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproAirIt.otf") format("opentype");
+  font-weight: 100; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproLi.otf") format("opentype");
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproLiIt.otf") format("opentype");
+  font-weight: 300; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproReg.otf") format("opentype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproRegIt.otf") format("opentype");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproSemiBo.otf") format("opentype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproSemiBoIt.otf") format("opentype");
+  font-weight: 600; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproBold.otf") format("opentype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproBoldIt.otf") format("opentype");
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproBlack.otf") format("opentype");
+  font-weight: 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro";
+  src: url("fonts/MetronicproBlackIt.otf") format("opentype");
+  font-weight: 900; font-style: italic; font-display: swap;
+}
+
+/* Condensed cut — Metronic Pro Condensed (separate family). */
+@font-face {
+  font-family: "Metronic Pro Condensed";
+  src: url("fonts/MetronicproLightCnd.otf") format("opentype");
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro Condensed";
+  src: url("fonts/MetronicproRegCnd.otf") format("opentype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro Condensed";
+  src: url("fonts/MetronicproSemBoCnd.otf") format("opentype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro Condensed";
+  src: url("fonts/MetronicproBoldCnd.otf") format("opentype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Metronic Pro Condensed";
+  src: url("fonts/MetronicproBlackCnd.otf") format("opentype");
+  font-weight: 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Source Code";
+  src: url("fonts/SourceCodeVariable-Roman.otf") format("opentype-variations");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ─── Primitive colors — blue ──────────────────────────────────── */
+  --ps-blue-50:  #B0C6D3;   /* Light Blue            */
+  --ps-blue-100: #DCEAED;   /* Airway (brand.light)  */
+  --ps-blue-200: #009CF4;   /* Azure Blue (brand.accent) */
+  --ps-blue-500: #005BA6;   /* PS Blue (brand.primary) */
+  --ps-blue-700: #004A84;   /* Blue 2 — hover        */
+  --ps-blue-800: #002F48;   /* Blue 3 — pressed      */
+  --ps-blue-900: #002F48;   /* Midnight (brand.secondary) */
+
+  /* ─── Teal / Green / Red / Amber ───────────────────────────────── */
+  --ps-teal-400:  #03D0BF;
+  --ps-teal-500:  #87AFB8;  /* Jetstream            */
+
+  --ps-green-100: #DCFAEF;
+  --ps-green-300: #8BD5BC;
+  --ps-green-500: #17AB78;  /* Signal Green         */
+
+  --ps-red-100:   #FACBCB;
+  --ps-red-500:   #FF0000;  /* Alert Red            */
+
+  --ps-amber-100: #FFF4D0;
+  --ps-amber-400: #E3A92D;  /* Amber (warning)      */
+  --ps-amber-500: #FF9505;  /* Orange — used by pill button */
+
+  /* ─── Neutrals ─────────────────────────────────────────────────── */
+  --ps-neutral-0:    #FFFFFF;
+  --ps-neutral-50:   #FAFAFA;
+  --ps-neutral-100:  #F1F1F1;
+  --ps-neutral-200:  #DCDCDC;
+  --ps-neutral-300:  #CCCCCC;
+  --ps-neutral-400:  #949494;
+  --ps-neutral-500:  #777777;
+  --ps-neutral-700:  #4A4A4A;
+  --ps-neutral-1000: #000000;
+
+  /* ─── Semantic: brand ──────────────────────────────────────────── */
+  --ps-brand-primary:   var(--ps-blue-500);
+  --ps-brand-secondary: var(--ps-blue-900);
+  --ps-brand-accent:    var(--ps-blue-200);
+  --ps-brand-light:     var(--ps-blue-100);
+
+  /* ─── Semantic: feedback ───────────────────────────────────────── */
+  --ps-success:         var(--ps-green-500);
+  --ps-success-subtle:  var(--ps-green-100);
+  --ps-warning:         var(--ps-amber-400);
+  --ps-warning-subtle:  var(--ps-amber-100);
+  --ps-danger:          var(--ps-red-500);
+  --ps-danger-subtle:   var(--ps-red-100);
+  --ps-info:            var(--ps-blue-200);
+  --ps-info-subtle:     var(--ps-blue-50);
+
+  /* ─── Semantic: text ───────────────────────────────────────────── */
+  --ps-fg-primary:   var(--ps-neutral-700);
+  --ps-fg-secondary: var(--ps-neutral-500);
+  --ps-fg-tertiary:  var(--ps-neutral-400);
+  --ps-fg-disabled:  var(--ps-neutral-300);
+  --ps-fg-inverse:   var(--ps-neutral-0);
+  --ps-fg-link:      var(--ps-blue-500);
+  --ps-fg-brand:     var(--ps-blue-900);
+
+  /* ─── Semantic: surface ────────────────────────────────────────── */
+  --ps-surface-page:    var(--ps-neutral-0);
+  --ps-surface-subtle:  var(--ps-neutral-50);
+  --ps-surface-muted:   var(--ps-neutral-100);
+  --ps-surface-overlay: var(--ps-neutral-200);
+
+  /* ─── Semantic: border ─────────────────────────────────────────── */
+  --ps-border-default: var(--ps-neutral-200);
+  --ps-border-subtle:  var(--ps-neutral-300);
+  --ps-border-brand:   var(--ps-blue-500);
+  --ps-border-focus:   var(--ps-blue-200);
+
+  /* ─── Spacing (4px base) ───────────────────────────────────────── */
+  --ps-space-0:  0;
+  --ps-space-1:  4px;
+  --ps-space-2:  8px;
+  --ps-space-3:  12px;
+  --ps-space-4:  16px;
+  --ps-space-5:  20px;
+  --ps-space-6:  24px;
+  --ps-space-8:  32px;
+  --ps-space-10: 40px;
+  --ps-space-12: 48px;
+  --ps-space-14: 56px;
+  --ps-space-16: 64px;
+  --ps-space-20: 80px;
+  --ps-space-24: 96px;
+
+  /* ─── Radii ────────────────────────────────────────────────────── */
+  --ps-radius-none: 0;
+  --ps-radius-sm:   2px;
+  --ps-radius-md:   4px;   /* default */
+  --ps-radius-xl:   8px;
+  --ps-radius-pill: 20px;
+  --ps-radius-full: 9999px;
+
+  /* ─── Elevation ────────────────────────────────────────────────── */
+  --ps-shadow-sm: 0 1px 4px  0 rgba(0, 47, 72, 0.08);
+  --ps-shadow-md: 0 2px 10px 0 rgba(0, 47, 72, 0.10);
+  --ps-shadow-lg: 0 6px 20px 0 rgba(0, 47, 72, 0.18);
+
+  /* ─── Typography — base ────────────────────────────────────────── */
+  --ps-font-sans: "Source Sans Pro", "Source Sans 3", "Metronic Pro", -apple-system, BlinkMacSystemFont, sans-serif;
+  --ps-font-ui:   "Source Sans Pro", "Source Sans 3", "Metronic Pro", -apple-system, BlinkMacSystemFont, sans-serif;
+  --ps-font-display: "Metronic Pro", "Source Sans Pro", -apple-system, BlinkMacSystemFont, sans-serif;
+  --ps-font-condensed: "Metronic Pro Condensed", "Metronic Pro", sans-serif;
+  --ps-font-mono: "Source Code", ui-monospace, Menlo, monospace;
+
+  --ps-weight-light:    300;
+  --ps-weight-regular:  400;
+  --ps-weight-semibold: 600;
+  --ps-weight-bold:     700;
+
+  --ps-size-xs:   12px;
+  --ps-size-sm:   14px;
+  --ps-size-base: 16px;
+  --ps-size-lg:   18px;
+  --ps-size-xl:   24px;
+  --ps-size-2xl:  30px;
+  --ps-size-3xl:  34px;
+
+  --ps-lh-tight:   1.2;
+  --ps-lh-snug:    1.4;
+  --ps-lh-normal:  1.5;
+  --ps-lh-relaxed: 1.625;
+
+  --ps-tracking-tight:  -0.5px;
+  --ps-tracking-normal: 0;
+  --ps-tracking-wide:   1.5px;
+
+  /* ─── Motion ───────────────────────────────────────────────────── */
+  --ps-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ps-duration-fast: 150ms;
+  --ps-duration-base: 200ms;
+}
+
+/* ================================================================
+   Semantic element defaults
+   ================================================================ */
+html, body {
+  font-family: var(--ps-font-sans);
+  font-size: var(--ps-size-base);
+  line-height: var(--ps-lh-normal);
+  color: var(--ps-fg-primary);
+  background: var(--ps-surface-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, .ps-h1 {
+  font-family: var(--ps-font-sans);
+  font-weight: var(--ps-weight-light);
+  font-size: var(--ps-size-2xl);
+  line-height: var(--ps-lh-tight);
+  color: var(--ps-brand-secondary);
+  margin: 0;
+}
+h2, .ps-h2 {
+  font-family: var(--ps-font-sans);
+  font-weight: var(--ps-weight-light);
+  font-size: var(--ps-size-xl);
+  line-height: var(--ps-lh-tight);
+  color: var(--ps-brand-secondary);
+  margin: 0;
+}
+h3, .ps-h3 {
+  font-family: var(--ps-font-sans);
+  font-weight: var(--ps-weight-regular);
+  font-size: var(--ps-size-xl);
+  line-height: var(--ps-lh-tight);
+  color: var(--ps-brand-secondary);
+  margin: 0;
+}
+h4, .ps-h4 {
+  font-family: var(--ps-font-sans);
+  font-weight: var(--ps-weight-semibold);
+  font-size: var(--ps-size-lg);
+  line-height: var(--ps-lh-tight);
+  color: var(--ps-brand-secondary);
+  margin: 0;
+}
+
+.ps-header-00 {
+  font-family: var(--ps-font-sans);
+  font-weight: var(--ps-weight-light);
+  font-size: var(--ps-size-3xl);
+  line-height: var(--ps-lh-tight);
+  color: var(--ps-brand-secondary);
+}
+
+p, .ps-body-01 {
+  font-size: var(--ps-size-base);
+  font-weight: var(--ps-weight-regular);
+  line-height: var(--ps-lh-normal);
+  color: var(--ps-fg-primary);
+}
+.ps-body-02 { /* emphasized body */
+  font-size: var(--ps-size-base);
+  font-weight: var(--ps-weight-bold);
+  line-height: var(--ps-lh-normal);
+}
+.ps-body-mobile {
+  font-size: var(--ps-size-sm);
+  line-height: var(--ps-lh-snug);
+}
+.ps-micro {
+  font-size: var(--ps-size-xs);
+  line-height: var(--ps-lh-normal);
+  color: var(--ps-fg-secondary);
+}
+
+.ps-label {
+  font-family: var(--ps-font-ui);
+  font-weight: var(--ps-weight-semibold);
+  font-size: var(--ps-size-xs);
+  line-height: var(--ps-lh-normal);
+  letter-spacing: var(--ps-tracking-wide);
+  text-transform: uppercase;
+  color: var(--ps-fg-secondary);
+}
+
+.ps-button-lg-label {
+  font-family: var(--ps-font-sans);
+  font-weight: var(--ps-weight-semibold);
+  font-size: var(--ps-size-base);
+  line-height: var(--ps-lh-normal);
+  text-transform: uppercase;
+}
+.ps-button-sm-label {
+  font-family: var(--ps-font-sans);
+  font-weight: var(--ps-weight-regular);
+  font-size: var(--ps-size-sm);
+  line-height: var(--ps-lh-snug);
+}
+
+a, .ps-link {
+  color: var(--ps-fg-link);
+  text-decoration: none;
+  transition: color var(--ps-duration-fast) var(--ps-ease-standard);
+}
+a:hover, .ps-link:hover { color: var(--ps-blue-700); text-decoration: underline; }
+
+code, pre, .ps-mono { font-family: var(--ps-font-mono); }
+
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 56px;font-family:var(--ps-font-sans);background:#fff;color:var(--ps-fg-primary);}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:#fff;margin-bottom:32px;}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:#FAFAFA;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0 0 4px;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+
+    .inputs{padding:24px;display:flex;flex-direction:column;gap:24px;}
+
+    /* Input wrapper */
+    .input-wrap {
+      position: relative;
+      width: 335px;
+      height: 48px;
+    }
+    .input-wrap input,
+    .input-wrap select {
+      width: 100%;
+      height: 48px;
+      padding: 0 10px;
+      font-family: 'Source Sans Pro', sans-serif;
+      font-size: 16px;
+      line-height: 100%;
+      color: #000000;
+      background: white;
+      border: 1px solid #949494;
+      border-radius: 3px;
+      box-sizing: border-box;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .input-wrap input::placeholder {
+      color: transparent;
+    }
+    .input-wrap label {
+      position: absolute;
+      left: 10px;
+      top: 0;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      font-family: 'Source Sans Pro', sans-serif;
+      font-size: 16px;
+      line-height: 100%;
+      color: #4A4A4A;
+      pointer-events: none;
+      transition: all 0.2s;
+    }
+
+    /* Floating label when focused or has value */
+    .input-wrap input:focus + label,
+    .input-wrap select:focus + label,
+    .input-wrap.has-value label,
+    .input-wrap label.has-value {
+      top: 5px;
+      height: 22px;
+      align-items: flex-start;
+      font-size: 12px;
+      font-weight: 700;
+      color: #005BA6;
+    }
+
+    /* Adjust padding when label floats */
+    .input-wrap input:focus,
+    .input-wrap.has-value input,
+    .input-wrap select:focus,
+    .input-wrap.has-value select {
+      padding-top: 22px;
+      padding-bottom: 4px;
+    }
+
+    /* Focus state - blue border with shadow */
+    .input-wrap input:focus,
+    .input-wrap select:focus {
+      border-color: #005DA6;
+      box-shadow: 0px 0px 10px 0px rgba(0, 91, 166, 0.5);
+    }
+
+    /* Hover - black border */
+    .input-wrap input:hover:not(:focus):not(:disabled),
+    .input-wrap select:hover:not(:focus):not(:disabled) {
+      border-color: #000000;
+    }
+
+    /* Disabled - light grey */
+    .input-wrap input:disabled,
+    .input-wrap select:disabled {
+      border-color: #DCDCDC;
+      color: #DCDCDC;
+      background: white;
+      cursor: not-allowed;
+    }
+    .input-wrap input:disabled + label,
+    .input-wrap select:disabled + label {
+      color: #DCDCDC;
+    }
+
+    /* Large inputs (80px) */
+    .input-wrap.large {
+      height: 80px;
+    }
+    .input-wrap.large input {
+      height: 80px;
+    }
+    .input-wrap.large label {
+      height: 80px;
+    }
+    
+    /* Large input floating label */
+    .input-wrap.large input:focus + label,
+    .input-wrap.large.has-value label,
+    .input-wrap.large label.has-value {
+      top: 8px;
+      height: 32px;
+      font-size: 12px;
+    }
+    
+    /* Large input with floating label - adjust padding */
+    .input-wrap.large input:focus,
+    .input-wrap.large.has-value input {
+      padding-top: 32px;
+      padding-bottom: 8px;
+    }
+
+    /* Dropdown arrow icon - add to all dropdown inputs */
+    .input-wrap input[id^="dropdown"] {
+      background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9L12 15L18 9' stroke='%23949494' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 24px 24px;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+    .input-wrap input[id^="dropdown"]:disabled {
+      cursor: not-allowed;
+    }
+
+    /* Error state */
+    .input-wrap.error input {
+      border-color: #D32F2F;
+      color: #D32F2F;
+    }
+    .input-wrap.error input:focus {
+      border-color: #D32F2F;
+      box-shadow: 0px 0px 10px 0px rgba(211, 47, 47, 0.5);
+    }
+    .input-wrap.error label {
+      color: #D32F2F;
+    }
+    .error-message {
+      font-size: 11px;
+      color: #D32F2F;
+      margin-top: 4px;
+    }
+    
+    /* Custom dropdown container - must be position relative */
+    .inputs > div {
+      position: relative;
+    }
+    
+    /* Dropdown menu - Type 1 (standard 10-item) */
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 1px);
+      left: 0;
+      width: 335px;
+      max-height: 297px;
+      overflow-y: auto;
+      background: white;
+      border: 1px solid #F1F1F1;
+      border-radius: 2px;
+      box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+      display: none;
+      z-index: 1000;
+    }
+    .show-menu .dropdown-menu {
+      display: block;
+    }
+    .dropdown-item {
+      padding: 14px 10px;
+      font-size: 14px;
+      font-family: 'Source Sans Pro', sans-serif;
+      color: #000000;
+      border-bottom: 1px solid #F1F1F1;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+    .dropdown-item:hover {
+      background: #D0EDFC;
+    }
+    .dropdown-item.selected {
+      background: #D0EDFC;
+    }
+
+    /* Dropdown menu - Type 2 (3-option with bold text) */
+    .dropdown-menu-type2 {
+      position: absolute;
+      top: calc(100% + 1px);
+      left: 0;
+      width: 335px;
+      background: white;
+      border: 1px solid #F1F1F1;
+      border-radius: 2px;
+      box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+      display: none;
+      z-index: 1000;
+    }
+    .show-menu .dropdown-menu-type2 {
+      display: block;
+    }
+    .dropdown-menu-type2 .dropdown-item {
+      padding: 14px 10px;
+      font-size: 14px;
+      font-family: 'Source Sans Pro', sans-serif;
+      font-weight: 700;
+      color: #000000;
+      border-bottom: 1px solid #F1F1F1;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .dropdown-menu-type2 .dropdown-item:last-child {
+      border-bottom: none;
+    }
+    .dropdown-menu-type2 .dropdown-item:first-child {
+      background: #F1F1F1;
+    }
+    .dropdown-menu-type2 .dropdown-item:hover {
+      background: #D6EBFF;
+    }
+    /* Static hover state - non-interactive demo */
+    .static-hover .dropdown-item:first-child {
+      background: #D6EBFF !important;
+      pointer-events: none;
+    }
+    .static-hover .dropdown-item {
+      pointer-events: none;
+    }
+    /* State labels */
+    .state-label {
+      font-size: 11px;
+      color: #949494;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Input Fields</h1>
+  <p class="intro">Text inputs and dropdowns are fundamental form controls used throughout the PartsSource platform. These components follow consistent styling, spacing, and interaction patterns to ensure a cohesive user experience across all applications.</p>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Text Field — 48px</h2>
+      <div class="desc">Standard text input with floating label. Pulled directly from Figma <code>Input Fields</code> frame.</div>
+    </div>
+    <div class="inputs">
+      <div>
+        <div class="state-label">Idle & Empty (Interactive)</div>
+        <div class="input-wrap">
+          <input type="text" id="input1">
+          <label>Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Hover</div>
+        <div class="input-wrap">
+          <input type="text" id="input2" style="border-color: #000000;">
+          <label>Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Focused</div>
+        <div class="input-wrap">
+          <input type="text" id="input3" style="border: 1px solid #005DA6; box-shadow: 0px 0px 10px 0px rgba(0, 91, 166, 0.5);">
+          <label style="top: 5px; height: 22px; align-items: flex-start; font-size: 12px; font-weight: 700; color: #005BA6;">Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">With Value</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="input4" value="Input Text" readonly style="padding-top: 22px; padding-bottom: 4px;">
+          <label class="has-value">Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Disabled</div>
+        <div class="input-wrap">
+          <input type="text" id="input5" disabled="">
+          <label>Label</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 80px Large Inputs -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Large Input Fields — 80px</h2>
+      <div class="desc">Larger text inputs for prominent form fields.</div>
+    </div>
+    <div class="inputs">
+      <div>
+        <div class="state-label">Idle & Empty (Interactive)</div>
+        <div class="input-wrap large">
+          <input type="text" id="input-lg1">
+          <label>Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Hover</div>
+        <div class="input-wrap large">
+          <input type="text" id="input-lg2" style="border-color: #000000;">
+          <label>Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Focused</div>
+        <div class="input-wrap large">
+          <input type="text" id="input-lg3" style="border: 1px solid #005DA6; box-shadow: 0px 0px 10px 0px rgba(0, 91, 166, 0.5);">
+          <label style="top: 8px; height: 32px; align-items: flex-start; font-size: 12px; font-weight: 700; color: #005BA6;">Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">With Value</div>
+        <div class="input-wrap large has-value">
+          <input type="text" id="input-lg4" value="Text Input" readonly style="padding-top: 32px; padding-bottom: 8px;">
+          <label class="has-value">Label</label>
+        </div>
+      </div>
+
+      <div style="pointer-events: none;">
+        <div class="state-label">Disabled</div>
+        <div class="input-wrap large">
+          <input type="text" id="input-lg5" disabled="">
+          <label>Label</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Text Field — 48px — Error</h2>
+      <div class="desc">Error</div>
+    </div>
+    <div class="inputs">
+      <div style="pointer-events: none;">
+        <div class="state-label">Error State</div>
+        <div class="input-wrap has-value error">
+          <input type="text" id="input-error" value="invalid@" readonly style="padding-top: 22px; padding-bottom: 4px;">
+          <label class="has-value">Email</label>
+        </div>
+        <div class="error-message">Please enter a valid email address</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dropdown Type 1 -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Dropdown · Type 1: Standard with 3-item menu</h2>
+      <div class="desc">Standard dropdown with type-ahead search.</div>
+    </div>
+    <div class="inputs" style="gap: 48px; min-height: 300px;">
+      <!-- Idle & Empty (Interactive) -->
+      <div id="dropdown-type1-interactive">
+        <div class="state-label">Idle & Empty (Interactive)</div>
+        <div class="input-wrap">
+          <input type="text" id="dropdown1-interactive" autocomplete="off">
+          <label>Label</label>
+        </div>
+        <div class="dropdown-menu" style="display: none;">
+          <div class="dropdown-item">Item 1</div>
+          <div class="dropdown-item">Item 2</div>
+          <div class="dropdown-item">Item 3</div>
+        </div>
+      </div>
+      
+      <!-- Open with menu -->
+      <div class="show-menu" style="pointer-events: none;">
+        <div class="state-label">Open with Menu</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="dropdown1" value="Label" autocomplete="off" readonly>
+          <label class="has-value">Label</label>
+        </div>
+        <div class="dropdown-menu">
+          <div class="dropdown-item">Item 1</div>
+          <div class="dropdown-item selected">Item 2</div>
+          <div class="dropdown-item">Item 3</div>
+        </div>
+      </div>
+
+      <!-- Item Selected -->
+      <div style="pointer-events: none;">
+        <div class="state-label">Item Selected</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="dropdown2" value="Item 2" readonly style="padding-top: 22px; padding-bottom: 4px;">
+          <label class="has-value">Label</label>
+        </div>
+      </div>
+
+      <!-- Disabled -->
+      <div style="pointer-events: none;">
+        <div class="state-label">Disabled</div>
+        <div class="input-wrap">
+          <input type="text" id="dropdown3" disabled>
+          <label>Label</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dropdown Type 2 -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Dropdown · Type 2: Input Dropdown with 3-option menu</h2>
+      <div class="desc">Compact dropdown with type-ahead filtering for shorter option lists.</div>
+    </div>
+    <div class="inputs" style="gap: 48px; min-height: 250px;">
+      <!-- Idle & Empty (Interactive) -->
+      <div id="dropdown-type2-interactive">
+        <div class="state-label">Idle & Empty (Interactive)</div>
+        <div class="input-wrap">
+          <input type="text" id="dropdown4-interactive" autocomplete="off">
+          <label>Label</label>
+        </div>
+        <div class="dropdown-menu-type2" style="display: none;">
+          <div class="dropdown-item">Option 1</div>
+          <div class="dropdown-item">Option 2</div>
+          <div class="dropdown-item">Option 3</div>
+        </div>
+      </div>
+      
+      <!-- Open with typing -->
+      <div class="show-menu" style="pointer-events: none;">
+        <div class="state-label">Open with Typing</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="dropdown4" value="Opt" autocomplete="off" readonly>
+          <label class="has-value">Label</label>
+        </div>
+        <div class="dropdown-menu-type2">
+          <div class="dropdown-item">Option 1</div>
+          <div class="dropdown-item">Option 2</div>
+          <div class="dropdown-item">Option 3</div>
+        </div>
+      </div>
+      
+      <!-- Item hovering -->
+      <div class="show-menu" style="pointer-events: none;">
+        <div class="state-label">Item Hovering</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="dropdown5" value="Label" readonly>
+          <label class="has-value">Label</label>
+        </div>
+        <div class="dropdown-menu-type2">
+          <div class="dropdown-item" style="background: #D6EBFF;">Option 1</div>
+          <div class="dropdown-item">Option 2</div>
+          <div class="dropdown-item">Option 3</div>
+        </div>
+      </div>
+      
+      <!-- Item Selected -->
+      <div style="pointer-events: none;">
+        <div class="state-label">Item Selected</div>
+        <div class="input-wrap has-value">
+          <input type="text" id="dropdown-selected" value="Option 2" readonly style="padding-top: 22px; padding-bottom: 4px;">
+          <label class="has-value">Label</label>
+        </div>
+      </div>
+      
+      <!-- Disabled -->
+      <div style="pointer-events: none;">
+        <div class="state-label">Disabled</div>
+        <div class="input-wrap">
+          <input type="text" id="dropdown6" disabled>
+          <label>Label</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle has-value class based on input content
+    function updateLabel(input) {
+      const wrap = input.closest('.input-wrap');
+      if (input.value.trim()) {
+        wrap.classList.add('has-value');
+      } else {
+        wrap.classList.remove('has-value');
+      }
+    }
+
+    // Attach to all inputs
+    document.querySelectorAll('.input-wrap input').forEach(el => {
+      el.addEventListener('input', () => updateLabel(el));
+      el.addEventListener('change', () => updateLabel(el));
+      // Init on load
+      updateLabel(el);
+    });
+    
+    // Dropdown functionality
+    document.querySelectorAll('.dropdown-menu .dropdown-item, .dropdown-menu-type2 .dropdown-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const menu = this.closest('.dropdown-menu, .dropdown-menu-type2');
+        const container = menu.closest('div');
+        const input = container.querySelector('input');
+        
+        // Update input value
+        input.value = this.textContent;
+        updateLabel(input);
+        
+        // Hide menu
+        container.classList.remove('show-menu');
+        
+        // Update selected state
+        menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+    
+    // Show/hide dropdowns on focus/blur and click - ONLY for interactive ones
+    const interactiveDropdowns = ['dropdown1-interactive', 'dropdown4-interactive'];
+    
+    interactiveDropdowns.forEach(id => {
+      const input = document.getElementById(id);
+      if (!input) return;
+      
+      input.addEventListener('click', function() {
+        const container = this.closest('div').parentElement;
+        const menu = container.querySelector('.dropdown-menu, .dropdown-menu-type2');
+        if (menu) {
+          // Toggle menu display
+          if (menu.style.display === 'block') {
+            menu.style.display = 'none';
+          } else {
+            // Close all other interactive menus first
+            interactiveDropdowns.forEach(otherId => {
+              const otherInput = document.getElementById(otherId);
+              if (otherInput && otherInput !== this) {
+                const otherContainer = otherInput.closest('div').parentElement;
+                const otherMenu = otherContainer.querySelector('.dropdown-menu, .dropdown-menu-type2');
+                if (otherMenu) otherMenu.style.display = 'none';
+              }
+            });
+            menu.style.display = 'block';
+          }
+        }
+      });
+      
+      input.addEventListener('blur', function(e) {
+        // Delay to allow click on dropdown item
+        setTimeout(() => {
+          const container = this.closest('div').parentElement;
+          const menu = container.querySelector('.dropdown-menu, .dropdown-menu-type2');
+          if (menu && !menu.querySelector('.dropdown-item:hover')) {
+            menu.style.display = 'none';
+          }
+        }, 200);
+      });
+    });
+    
+    // Handle clicks on interactive dropdown items
+    document.querySelectorAll('#dropdown-type1-interactive .dropdown-item, #dropdown-type2-interactive .dropdown-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const container = this.closest('#dropdown-type1-interactive, #dropdown-type2-interactive');
+        const input = container.querySelector('input');
+        const menu = this.closest('.dropdown-menu, .dropdown-menu-type2');
+        
+        // Update input value
+        input.value = this.textContent;
+        updateLabel(input);
+        
+        // Hide menu
+        menu.style.display = 'none';
+        
+        // Update selected state
+        menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+  </script>
+
+
+</body></html>
+</body></html>

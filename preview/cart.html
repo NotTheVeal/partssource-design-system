@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cart · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA7;font-weight:700;margin:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;margin-top:4px;}
+  .section-body{padding:32px 24px;background:#FAFAFA;}
+  /* Cart spec — 1:1 with Figma node 115:105 Cart=1 ─ */
+  .cart{position:relative;width:42px;height:42px;display:inline-block;}
+  .cart__glyph{position:absolute;left:2px;top:9.25px;width:28.214px;height:25.5px;color:#005BA7;}
+  .cart__glyph svg{width:100%;height:100%;display:block;}
+  .cart__badge{
+    position:absolute;left:18px;top:3px;
+    min-width:22px;height:22px;border-radius:32px;background:#005BA7;
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:1.5px 4px;
+    font:400 10px/1 'Source Sans Pro',sans-serif;color:#FAFAFA;
+  }
+  .row{display:flex;flex-wrap:wrap;gap:36px;align-items:center;justify-content:flex-start;}
+  .demo{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .demo code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#777;}
+  table.tokens{width:100%;border-collapse:collapse;font-size:13px;}
+  table.tokens th,table.tokens td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.tokens th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.tokens code{background:#F1F1F1;font-family:ui-monospace,Menlo,monospace;font-size:11px;padding:1px 6px;border-radius:3px;}
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+</style>
+</head>
+<body>
+<nav class="ps-breadcrumb"><a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a><span class="ps-breadcrumb__sep">/</span><span class="ps-breadcrumb__current">Cart</span></nav>
+
+<h1>Cart</h1>
+<p class="intro">Cart icon with 22&nbsp;px PS Blue badge. 1-for-1 with Figma node <code>115:105</code> — 42&nbsp;×&nbsp;42 cart glyph at position (2,&nbsp;9.25), badge anchored top-right at (18,&nbsp;3) with 32&nbsp;px radius, 4&nbsp;px horizontal padding, Source Sans Pro 10&nbsp;px white numeral.</p>
+
+<div class="section">
+  <div class="section-head"><h2>Default + Badge States</h2><div class="desc">Counts 1–10+. Badge auto-widens via <code>min-width:22</code> when the count grows past two digits.</div></div>
+  <div class="section-body">
+    <div class="row">
+      <div class="demo">
+        <span class="cart" aria-label="Cart, empty"><span class="cart__glyph"><svg viewBox="0 0 28 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L25 5H6"/><circle cx="10" cy="22" r="1.6" fill="currentColor"/><circle cx="21" cy="22" r="1.6" fill="currentColor"/></svg></span></span>
+        <code>Default</code>
+      </div>
+      <div class="demo">
+        <span class="cart" aria-label="Cart, 1 item"><span class="cart__glyph"><svg viewBox="0 0 28 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L25 5H6"/><circle cx="10" cy="22" r="1.6" fill="currentColor"/><circle cx="21" cy="22" r="1.6" fill="currentColor"/></svg></span><span class="cart__badge">1</span></span>
+        <code>Cart=1</code>
+      </div>
+      <div class="demo">
+        <span class="cart" aria-label="Cart, 2 items"><span class="cart__glyph"><svg viewBox="0 0 28 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L25 5H6"/><circle cx="10" cy="22" r="1.6" fill="currentColor"/><circle cx="21" cy="22" r="1.6" fill="currentColor"/></svg></span><span class="cart__badge">2</span></span>
+        <code>Cart=2</code>
+      </div>
+      <div class="demo">
+        <span class="cart" aria-label="Cart, 3 items"><span class="cart__glyph"><svg viewBox="0 0 28 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L25 5H6"/><circle cx="10" cy="22" r="1.6" fill="currentColor"/><circle cx="21" cy="22" r="1.6" fill="currentColor"/></svg></span><span class="cart__badge">3</span></span>
+        <code>Cart=3</code>
+      </div>
+      <div class="demo">
+        <span class="cart" aria-label="Cart, 4 items"><span class="cart__glyph"><svg viewBox="0 0 28 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L25 5H6"/><circle cx="10" cy="22" r="1.6" fill="currentColor"/><circle cx="21" cy="22" r="1.6" fill="currentColor"/></svg></span><span class="cart__badge">4</span></span>
+        <code>Cart=4</code>
+      </div>
+      <div class="demo">
+        <span class="cart" aria-label="Cart, 5 items"><span class="cart__glyph"><svg viewBox="0 0 28 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L25 5H6"/><circle cx="10" cy="22" r="1.6" fill="currentColor"/><circle cx="21" cy="22" r="1.6" fill="currentColor"/></svg></span><span class="cart__badge">5</span></span>
+        <code>Cart=5</code>
+      </div>
+      <div class="demo">
+        <span class="cart" aria-label="Cart, 6 items"><span class="cart__glyph"><svg viewBox="0 0 28 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L25 5H6"/><circle cx="10" cy="22" r="1.6" fill="currentColor"/><circle cx="21" cy="22" r="1.6" fill="currentColor"/></svg></span><span class="cart__badge">6</span></span>
+        <code>Cart=6</code>
+      </div>
+      <div class="demo">
+        <span class="cart" aria-label="Cart, 7 items"><span class="cart__glyph"><svg viewBox="0 0 28 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L25 5H6"/><circle cx="10" cy="22" r="1.6" fill="currentColor"/><circle cx="21" cy="22" r="1.6" fill="currentColor"/></svg></span><span class="cart__badge">7</span></span>
+        <code>Cart=7</code>
+      </div>
+      <div class="demo">
+        <span class="cart" aria-label="Cart, 8 items"><span class="cart__glyph"><svg viewBox="0 0 28 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L25 5H6"/><circle cx="10" cy="22" r="1.6" fill="currentColor"/><circle cx="21" cy="22" r="1.6" fill="currentColor"/></svg></span><span class="cart__badge">8</span></span>
+        <code>Cart=8</code>
+      </div>
+      <div class="demo">
+        <span class="cart" aria-label="Cart, 9 items"><span class="cart__glyph"><svg viewBox="0 0 28 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L25 5H6"/><circle cx="10" cy="22" r="1.6" fill="currentColor"/><circle cx="21" cy="22" r="1.6" fill="currentColor"/></svg></span><span class="cart__badge">9</span></span>
+        <code>Cart=9</code>
+      </div>
+      <div class="demo">
+        <span class="cart" aria-label="Cart, 10 or more items"><span class="cart__glyph"><svg viewBox="0 0 28 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h4l2.4 13.2a2 2 0 0 0 2 1.6h11.4a2 2 0 0 0 2-1.6L25 5H6"/><circle cx="10" cy="22" r="1.6" fill="currentColor"/><circle cx="21" cy="22" r="1.6" fill="currentColor"/></svg></span><span class="cart__badge">10+</span></span>
+        <code>Cart=10+</code>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head"><h2>Tokens</h2></div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <table class="tokens">
+      <thead><tr><th>Property</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Container</td><td>42 × 42</td></tr>
+        <tr><td>Glyph</td><td>28.214 × 25.5 at (2, 9.25) · PS Blue <code>#005BA7</code></td></tr>
+        <tr><td>Badge size</td><td>22 × 22 · 32 px radius · min-width 22 for 10+</td></tr>
+        <tr><td>Badge bg</td><td><code>#005BA7</code></td></tr>
+        <tr><td>Badge offset</td><td>left 18 · top 3</td></tr>
+        <tr><td>Badge padding</td><td>1.5 × 3</td></tr>
+        <tr><td>Numeral</td><td>Source Sans Pro · 10 / 10 · <code>#FAFAFA</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

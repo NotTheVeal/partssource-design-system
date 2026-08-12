@@ -1,0 +1,70 @@
+<!doctype html>
+<!-- @dsCard group="Foundation" name="Neutrals" subtitle="9-step neutral scale 0 → 1000" viewport="700x150" --><html><head><meta charset="utf-8"><title>Neutrals</title>
+<link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;padding:20px 24px;background:var(--ps-sem-bg-surface);font-family:var(--ps-font-sans);}
+  .row{display:grid;grid-template-columns:repeat(9,1fr);gap:8px;}
+  .sw{display:flex;flex-direction:column;gap:4px;}
+  .chip{height:64px;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);}
+  .n{font-size:10px;font-weight:600;color:var(--ps-brand-secondary);letter-spacing:.5px;}
+  .v{font-size:9px;font-family:ui-monospace,Menlo,monospace;color:var(--ps-fg-secondary);}
+</style></head><body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Neutral Colors</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+<div class="row">
+  <div class="sw"><div class="chip" style="background:var(--ps-sem-bg-surface)"></div><div class="n">0</div><div class="v">#FFFFFF</div></div>
+  <div class="sw"><div class="chip" style="background:var(--ps-sem-bg-canvas)"></div><div class="n">50</div><div class="v">#FAFAFA</div></div>
+  <div class="sw"><div class="chip" style="background:var(--ps-sem-bg-muted)"></div><div class="n">100</div><div class="v">#F1F1F1</div></div>
+  <div class="sw"><div class="chip" style="background:#DCDCDC"></div><div class="n">200</div><div class="v">#DCDCDC</div></div>
+  <div class="sw"><div class="chip" style="background:#CCCCCC"></div><div class="n">300</div><div class="v">#CCCCCC</div></div>
+  <div class="sw"><div class="chip" style="background:#949494"></div><div class="n">400</div><div class="v">#949494</div></div>
+  <div class="sw"><div class="chip" style="background:#777777"></div><div class="n">500</div><div class="v">#777777</div></div>
+  <div class="sw"><div class="chip" style="background:#4A4A4A"></div><div class="n">700</div><div class="v">#4A4A4A</div></div>
+  <div class="sw"><div class="chip" style="background:#000000"></div><div class="n">1000</div><div class="v">#000000</div></div>
+</div>
+
+<!-- Accessibility -->
+<div style="margin-top:32px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);">
+  <div style="padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <h2 style="font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-sem-fg-brand);font-weight:700;margin:0;flex-shrink:0;">ACCESSIBILITY &amp; BEST PRACTICES</h2>
+    <div style="font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;">WCAG compliance and implementation guidance for inclusive neutral usage.</div>
+  </div>
+  <ul style="margin:0;padding:20px 24px 20px 44px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+    <li><strong>Body text minimum: Neutral 700 (#4A4A4A) on white</strong> meets WCAG AA at 8.7:1 — primary text default</li>
+    <li><strong>Neutral 500 (#777777) is the floor for body text</strong> on white (4.6:1) — only use for secondary copy and metadata, never for primary content</li>
+    <li><strong>Don't use Neutral 400 (#949494) for text</strong> on white (3.1:1) — fails WCAG AA for body; reserve for placeholders, decorative icons, or disabled states</li>
+    <li><strong>Border colors (200 #DCDCDC, 300 #CCCCCC)</strong> are below text contrast minimums — never use for foreground content</li>
+    <li><strong>Disabled state contrast is exempt</strong> from WCAG AA, but maintain 3:1 against the background so users can still see disabled controls exist</li>
+    <li><strong>Surface hierarchy:</strong> Neutral 0 → 50 → 100 creates depth without shadows — keep contrast steps to 3:1 minimum between adjacent surfaces</li>
+    <li><strong>Black (#000000) is reserved for marketing/print</strong> — UI uses Neutral 700 (#4A4A4A) to reduce eye strain on screens</li>
+  </ul>
+</div>
+</body></html>

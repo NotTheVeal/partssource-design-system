@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Avatar · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+  .section-body{padding:32px 24px;background:#FAFAFA;}
+
+  /* ── Avatar ──────────────────────────────────────────────────── */
+  .av{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:#fff;color:#005BA6;
+    border:1px solid transparent;
+    border-radius:50%;
+    font:700 14px/1 'Source Sans Pro',sans-serif;
+    text-transform:uppercase;overflow:hidden;
+    vertical-align:middle;
+    user-select:none;
+  }
+  .av img{width:100%;height:100%;object-fit:cover;display:block;}
+  .av--xs{width:24px;height:24px;font-size:10px;}
+  .av--sm{width:32px;height:32px;font-size:12px;}
+  .av--md{width:40px;height:40px;font-size:14px;}
+  .av--lg{width:56px;height:56px;font-size:18px;}
+  .av--xl{width:80px;height:80px;font-size:26px;}
+
+  /* Tone presets (deterministic by initial) */
+  .av--blue   {background:#EFF9FE;color:#005BA6;}
+  .av--green  {background:#E5F9F2;color:#0A7850;}
+  .av--orange {background:#FFF4E5;color:#B45309;}
+  .av--purple {background:#F5E6FF;color:#7B2FBF;}
+  .av--red    {background:#FEF0F0;color:#9E2020;}
+  .av--neutral{background:#F1F1F1;color:#2B2B2B;}
+  .av--brand  {background:#005BA6;color:#fff;}
+  .av--inverse{background:#fff;color:#005BA6;border-color:#005BA6;}
+
+  /* Status dot */
+  .av-wrap{position:relative;display:inline-flex;}
+  .av-status{
+    position:absolute;bottom:0;right:0;
+    width:25%;height:25%;min-width:8px;min-height:8px;
+    border-radius:50%;border:2px solid #fff;
+  }
+  .av-status--online{background:#0A7850;}
+  .av-status--busy{background:#B45309;}
+  .av-status--away{background:#949494;}
+  .av-status--offline{background:#DCDCDC;}
+
+  /* Group / stack */
+  .av-group{display:inline-flex;}
+  .av-group .av{box-shadow:0 0 0 2px #fff;}
+  .av-group .av + .av{margin-left:-10px;}
+  .av-overflow{
+    background:#F1F1F1;color:#4A4A4A;font-weight:700;
+  }
+
+  /* Demo grids */
+  .row-demo{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:center;padding:24px 12px;}
+  .row-demo--start{justify-content:flex-start;}
+
+  /* Tokens */
+  table.tokens{width:100%;border-collapse:collapse;font-size:13px;}
+  table.tokens th,table.tokens td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.tokens th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.tokens code{background:#F1F1F1;font-family:ui-monospace,Menlo,monospace;font-size:11px;padding:1px 6px;border-radius:3px;}
+
+  /* Breadcrumb */
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Avatar</span>
+</nav>
+
+<h1>Avatar</h1>
+<p class="intro">A circular identity marker — photo, initials, or organization mark. Used in the left-hand nav header, comment threads, requester rows, approvals and any list of people. Initials are derived from the first letter of the first and last name; never invent them.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Sizes</h2>
+    <div class="desc">Five sizes. <code>md</code> (40&nbsp;px) is the default for content rows; <code>xs</code> (24&nbsp;px) matches the LHN header.</div>
+  </div>
+  <div class="section-body">
+    <div class="row-demo">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><span class="av av--xs av--blue">EG</span><code style="font-size:10px;">xs · 24</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><span class="av av--sm av--blue">EG</span><code style="font-size:10px;">sm · 32</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><span class="av av--md av--blue">EG</span><code style="font-size:10px;">md · 40</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><span class="av av--lg av--blue">EG</span><code style="font-size:10px;">lg · 56</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><span class="av av--xl av--blue">EG</span><code style="font-size:10px;">xl · 80</code></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Variants</h2>
+    <div class="desc">Photo, initials with a tone-tinted fill, or the brand inverse used in the LHN.</div>
+  </div>
+  <div class="section-body">
+    <div class="row-demo">
+      <span class="av av--lg" style="background:#DCDCDC;"><img alt="Earl G." src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 56'&gt;&lt;rect width='56' height='56' fill='%23B0C6D3'/&gt;&lt;circle cx='28' cy='22' r='10' fill='%23004A84'/&gt;&lt;path d='M8 56c0-11 9-20 20-20s20 9 20 20' fill='%23004A84'/&gt;&lt;/svg&gt;"></span>
+      <span class="av av--lg av--blue">EG</span>
+      <span class="av av--lg av--green">CT</span>
+      <span class="av av--lg av--orange">JL</span>
+      <span class="av av--lg av--purple">SP</span>
+      <span class="av av--lg av--red">MK</span>
+      <span class="av av--lg av--neutral">RC</span>
+      <span class="av av--lg av--brand">PS</span>
+      <span class="av av--lg av--inverse">PS</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Status</h2>
+    <div class="desc">Optional presence dot for messaging and approvals contexts.</div>
+  </div>
+  <div class="section-body">
+    <div class="row-demo">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><span class="av-wrap"><span class="av av--md av--blue">EG</span><span class="av-status av-status--online" aria-label="Online"></span></span><code style="font-size:10px;">online</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><span class="av-wrap"><span class="av av--md av--green">CT</span><span class="av-status av-status--busy" aria-label="Busy"></span></span><code style="font-size:10px;">busy</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><span class="av-wrap"><span class="av av--md av--orange">JL</span><span class="av-status av-status--away" aria-label="Away"></span></span><code style="font-size:10px;">away</code></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><span class="av-wrap"><span class="av av--md av--neutral">RC</span><span class="av-status av-status--offline" aria-label="Offline"></span></span><code style="font-size:10px;">offline</code></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Group</h2>
+    <div class="desc">Stack avatars with a 2&nbsp;px white halo. Overflow chip when there's more than 4 collaborators.</div>
+  </div>
+  <div class="section-body">
+    <div class="row-demo">
+      <div class="av-group">
+        <span class="av av--md av--blue">EG</span>
+        <span class="av av--md av--green">CT</span>
+        <span class="av av--md av--orange">JL</span>
+        <span class="av av--md av--purple">SP</span>
+        <span class="av av--md av-overflow">+5</span>
+      </div>
+      <div class="av-group">
+        <span class="av av--sm av--blue">EG</span>
+        <span class="av av--sm av--green">CT</span>
+        <span class="av av--sm av-overflow">+2</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Tokens</h2>
+    <div class="desc">Color tone is derived deterministically from the initial. Use the same hash function across the product so a user always renders the same color.</div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <table class="tokens">
+      <thead><tr><th>Property</th><th>Token / value</th></tr></thead>
+      <tbody>
+        <tr><td>Shape</td><td>Circle · <code>border-radius:50%</code></td></tr>
+        <tr><td>Font</td><td>Source Sans Pro · 700 · uppercase</td></tr>
+        <tr><td>Initials</td><td>1 char (xs) or 2 chars (sm+) — first letter of first &amp; last name</td></tr>
+        <tr><td>Tone palette</td><td>blue · green · orange · purple · red · neutral · brand · inverse</td></tr>
+        <tr><td>Status dot</td><td>25% of avatar diameter · 2 px white border</td></tr>
+        <tr><td>Group halo</td><td>2 px white box-shadow · −10 px overlap (md)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>

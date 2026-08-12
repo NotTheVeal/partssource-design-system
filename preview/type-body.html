@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Foundation" name="Body Type" subtitle="body-01/02, mobile, micro, label" viewport="700x240" -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Typography · Body</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+
+    .states{padding:8px 0;}
+    .state-row{display:grid;grid-template-columns:140px minmax(0,360px) minmax(220px,1fr);gap:32px;align-items:center;padding:16px 24px;border-bottom:1px solid #F1F1F1;}
+    @media (max-width: 980px){
+      .state-row{grid-template-columns:140px minmax(0,1fr);}
+      .state-row .caption{grid-column:2;margin-top:-4px;}
+    }
+    .state-row:last-child{border-bottom:0;}
+    .state-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-fg-tertiary);font-weight:700;}
+    .type-cell{display:flex;align-items:baseline;}
+    .caption{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;}
+    .caption code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--ps-sem-bg-muted);padding:2px 6px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+  </style>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Body Type</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Typography · Body</h1>
+  <p class="intro">Body copy uses Source Sans Pro Regular (400) on a 16 px base, 1.5 line-height. Labels, captions, and small UI text follow a compressed micro-scale. Monospace is reserved for code, part numbers, and technical data.</p>
+
+  <!-- Body Scale -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Body Scale</h2>
+      <div class="desc">Standard text styles for paragraphs, descriptions, and in-product prose.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Body-01</div>
+        <div class="type-cell"><p style="font-size:16px;font-weight:400;line-height:1.5;margin:0;color:var(--ps-sem-fg-secondary);">Default body copy. Use for paragraph text, card descriptions, and most in-product prose.</p></div>
+        <div class="caption"><code>16px / 400 / 1.5</code> — default for all body content.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Body-02</div>
+        <div class="type-cell"><p style="font-size:16px;font-weight:700;line-height:1.5;margin:0;color:var(--ps-sem-fg-secondary);">Emphasized body copy — bold when it matters.</p></div>
+        <div class="caption"><code>16px / 700 / 1.5</code> — for inline emphasis and key phrases.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Body-Mobile</div>
+        <div class="type-cell"><p style="font-size:14px;font-weight:400;line-height:1.4;margin:0;color:var(--ps-sem-fg-secondary);">Mobile body. Tightens line-height to snug (1.4) for denser small-screen layouts.</p></div>
+        <div class="caption"><code>14px / 400 / 1.4</code> — responsive scale for mobile viewports.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Micro & Labels -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Micro & Labels</h2>
+      <div class="desc">Small UI text — captions, helper text, section labels, metadata.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Micro</div>
+        <div class="type-cell"><p style="font-size:12px;font-weight:400;line-height:1.5;margin:0;color:var(--ps-sem-fg-tertiary);">Captions, helper text, footnotes, metadata.</p></div>
+        <div class="caption"><code>12px / 400 / 1.5</code> — Grey 2 <code>#777777</code> for low-emphasis content.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Label</div>
+        <div class="type-cell"><p style="font-size:12px;font-weight:600;line-height:1.5;letter-spacing:1.5px;text-transform:uppercase;margin:0;color:var(--ps-sem-fg-tertiary);">Section Label</p></div>
+        <div class="caption"><code>12px / 600 / UPPER</code> — 1.5px letter-spacing for overlines and section markers.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Label (Brand)</div>
+        <div class="type-cell"><p style="font-size:12px;font-weight:700;line-height:1.5;letter-spacing:1.5px;text-transform:uppercase;margin:0;color:var(--ps-brand-primary);">Primary Action</p></div>
+        <div class="caption"><code>12px / 700 / UPPER</code> — PS Blue <code>#005BA7</code>, used for primary labels and headings.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Italics -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Italics</h2>
+      <div class="desc">Used sparingly for emphasis, titles of works, and quoted material.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Regular Italic</div>
+        <div class="type-cell"><p style="font-size:16px;font-weight:400;font-style:italic;line-height:1.5;margin:0;color:var(--ps-sem-fg-secondary);">Used sparingly for emphasis, titles of works, and quoted material.</p></div>
+        <div class="caption"><code>16px / 400 / italic</code> — rare; prefer bold for inline emphasis.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">SemiBold Italic</div>
+        <div class="type-cell"><p style="font-size:16px;font-weight:600;font-style:italic;line-height:1.5;margin:0;color:var(--ps-sem-fg-secondary);">Editorial callouts and key terms.</p></div>
+        <div class="caption"><code>16px / 600 / italic</code> — for publication-style emphasis.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monospace -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Monospace · Code</h2>
+      <div class="desc">For technical content, part numbers, code snippets, and data that requires character alignment.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Code</div>
+        <div class="type-cell"><p style="font-family:var(--ps-font-mono);font-size:14px;font-weight:400;line-height:1.5;margin:0;color:var(--ps-sem-fg-primary);">const partNumber = "PS-4421-A"; // 0O1Il</p></div>
+        <div class="caption"><code>14px / 400 / monospace</code> — Source Code Pro or system monospace.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Inline Code</div>
+        <div class="type-cell"><p style="font-size:16px;line-height:1.5;margin:0;color:var(--ps-sem-fg-secondary);">Use <code style="font-family:var(--ps-font-mono);font-size:12px;background:var(--ps-sem-bg-muted);padding:2px 6px;border-radius:3px;color:var(--ps-sem-fg-primary);">partNumber</code> to reference the item.</p></div>
+        <div class="caption"><code>12px / monospace</code> — Grey 5 background, 3px radius.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pangrams -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Weight Range Samples</h2>
+      <div class="desc">Pangrams demonstrating available weights in the Source Sans Pro family.</div>
+    </div>
+    <div class="states">
+      <div class="state-row">
+        <div class="state-lbl">Regular</div>
+        <div class="type-cell"><p style="font-size:18px;font-weight:400;line-height:1.5;margin:0;color:var(--ps-sem-fg-primary);">The quick brown fox jumps over the lazy dog. 0123456789</p></div>
+        <div class="caption"><code>400</code> — default body weight.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">SemiBold</div>
+        <div class="type-cell"><p style="font-size:18px;font-weight:600;line-height:1.5;margin:0;color:var(--ps-sem-fg-primary);">The quick brown fox jumps over the lazy dog. 0123456789</p></div>
+        <div class="caption"><code>600</code> — for emphasis and sub-headings.</div>
+      </div>
+      <div class="state-row">
+        <div class="state-lbl">Bold</div>
+        <div class="type-cell"><p style="font-size:18px;font-weight:700;line-height:1.5;margin:0;color:var(--ps-sem-fg-primary);">The quick brown fox jumps over the lazy dog. 0123456789</p></div>
+        <div class="caption"><code>700</code> — for strong emphasis and bold body text.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance and implementation guidance for inclusive typography.</div>
+    </div>
+    <div class="states">
+      <ul style="margin:0;padding:20px 24px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+        <li><strong>Minimum body text size: 13px</strong> (small UI text like captions) — 15px preferred for long-form reading</li>
+        <li><strong>Line height minimum: 1.5</strong> for body text (WCAG 1.4.12) — improves readability for users with cognitive disabilities</li>
+        <li><strong>Contrast ratios:</strong> Body text (13-15px) must meet 4.5:1 (WCAG AA); large text (18px+) needs 3:1 minimum</li>
+        <li><strong>Don't use font weight alone</strong> to convey meaning — pair with color, icons, or explicit labels</li>
+        <li><strong>Avoid ALL CAPS for long text</strong> — harder to read and screen readers may spell out letter-by-letter</li>
+        <li><strong>Monospace for code/data only:</strong> Source Code Pro for technical content, part numbers, code snippets</li>
+        <li><strong>Responsive scaling:</strong> Use rem units for font sizes so text respects user's browser zoom settings</li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Accordion" subtitle="Collapsible content groups — default, row, and filled variants with count badges and drag handle" viewport="700x860" -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Accordion · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+  .section-body{padding:24px;background:#FAFAFA;}
+
+  /* ── Accordion (1:1 with Figma /TRAIT/UI-Unification-Components) ──
+     • Container: white, 2 px #F1F1F1 border, 5 px radius, 24 px padding
+     • Header row: 42 px tall, label left + chevron right
+     • Label: Source Sans Pro 18 px / 600 / #002F48
+     • Sub label (optional): 14 px / 400 / #777
+     • Chevron: 14×14, rotates 180° when open
+     • Content panel: 24 px gap above, top divider in #F1F1F1
+  */
+  .acc{
+    background:#fff;
+    border:2px solid #F1F1F1;
+    border-radius:4px;
+    overflow:hidden;
+    transition:border-color 120ms ease;
+  }
+  .acc + .acc{margin-top:16px;}
+  .acc__header{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;width:100%;
+    padding:16px 26px;
+    min-height:60px;
+    background:#fff;border:0;cursor:pointer;
+    font-family:inherit;text-align:left;
+    transition:background 120ms ease;
+  }
+  .acc__header:hover{background:#FAFBFC;}
+  .acc__header:focus-visible{outline:2px solid #005BA6;outline-offset:-2px;}
+  .acc__drag{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:20px;height:20px;flex-shrink:0;
+    color:#4A4A4A;cursor:grab;
+  }
+  .acc__drag svg{display:block;}
+  .acc__title-wrap{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1;}
+  .acc__title{
+    font:300 25px/1 'Source Sans Pro','Source Sans 3',sans-serif;
+    color:#000;letter-spacing:-.028em;
+  }
+  .acc__sub{
+    font:400 14px/1.4 'Source Sans Pro',sans-serif;
+    color:#777777;margin-top:6px;
+  }
+  .acc__meta{
+    display:flex;align-items:center;gap:14px;flex-shrink:0;
+  }
+  .acc__count{
+    font:600 13px/1 'Source Sans Pro',sans-serif;
+    color:#005BA6;
+    background:#EFF9FE;
+    padding:4px 10px;border-radius:30px;
+    border:0;
+  }
+  .acc__chevron{
+    width:14px;
+    height:14px;
+    flex-shrink:0;
+    color:#777777;
+    transition:transform 200ms ease;
+  }
+  .acc[data-open="true"] .acc__chevron{transform:rotate(180deg);}
+
+  .acc__panel{
+    overflow:hidden;
+    max-height:0;transition:max-height var(--ps-cmp-accordion-motion-duration, 240ms) ease;
+  }
+  .acc[data-open="true"] .acc__panel{
+    max-height:1200px;
+  }
+  /* Header flows straight into the body when open — no divider */
+  .acc__body{padding:20px 24px 24px;color:#2B2B2B;font-size:14px;line-height:1.6;}
+  .acc__body p{margin:0 0 12px;}
+  .acc__body p:last-child{margin:0;}
+
+  /* Compact / row variant — flat, no border, divider between rows */
+  .acc--row{border:0;border-radius:0;border-bottom:1px solid #F1F1F1;background:transparent;}
+  .acc--row + .acc--row{margin-top:0;}
+  .acc--row .acc__header{padding:14px 0;}
+  .acc--row[data-open="true"]{border-color:#F1F1F1;}
+  .acc--row[data-open="true"] .acc__panel{border-top-color:transparent;}
+  .acc--row .acc__body{padding:4px 0 16px;}
+
+  /* Filled / blue (used for primary callouts) */
+  .acc--filled{background:#EFF9FE;border-color:#B0D7F4;}
+  .acc--filled .acc__header{background:#EFF9FE;}
+  .acc--filled .acc__header:hover{background:#D0EDFC;}
+
+  /* List of items inside an open panel */
+  .acc-list{display:flex;flex-direction:column;gap:8px;}
+  .acc-list__row{
+    display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;
+    padding:12px 14px;background:#FAFAFA;border:1px solid #F1F1F1;border-radius:4px;
+    font-size:14px;
+  }
+  .acc-list__row b{color:#002F48;font-weight:600;}
+  .acc-list__row .meta{color:#777;font-size:12px;}
+
+  /* Demo grid */
+  .stage{padding:0;background:#FAFAFA;}
+  .stages{display:flex;flex-direction:column;gap:0;}
+
+  /* States grid */
+  .states-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+  .state-card{background:#fff;border:1px solid #F1F1F1;border-radius:8px;overflow:hidden;}
+  .state-card__stage{padding:18px;background:#FAFAFA;}
+  .state-card__meta{padding:10px 14px;border-top:1px solid #F1F1F1;font-size:12px;color:#777;}
+  .state-card__meta b{display:block;color:#002F48;font-size:13px;font-weight:700;margin-bottom:2px;}
+
+  /* Tokens table */
+  table.tokens{width:100%;border-collapse:collapse;font-size:13px;}
+  table.tokens th,table.tokens td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.tokens th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.tokens code{background:#F1F1F1;font-family:ui-monospace,Menlo,monospace;font-size:11px;padding:1px 6px;border-radius:3px;}
+
+  /* Breadcrumb (page chrome) */
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Accordion</span>
+</nav>
+
+<h1>Accordion</h1>
+<p class="intro">Collapsible content groups. 1-for-1 with Figma <code>/Accordions/Accordion-Section</code> (node <code>4390:39583</code>) — a 4&nbsp;px-radius white card with a 2&nbsp;px <code>#F1F1F1</code> border, 60&nbsp;px header (16&nbsp;×&nbsp;26&nbsp;px padding), Source Sans Pro 25&nbsp;/&nbsp;300 black title, and a 14&nbsp;×&nbsp;5.5 <code>#777</code> chevron that rotates 180° on open. The richer variant (<code>Acordians</code>, node <code>3920:36079</code>) adds a toolbar, Parts/Service segmented control, and search.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Default</h2>
+    <div class="desc">1-for-1 with Figma <code>Accordion-Section</code> (node <code>4390:39583</code>) — collapsed and expanded states. Drag handle, single-line title, chevron.</div>
+  </div>
+  <div class="section-body">
+
+    <div class="acc">
+      <button class="acc__header" aria-expanded="false" aria-controls="acc-1a">
+        <span class="acc__drag" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6.66675 4.99909L6.67175 4.99909M6.66675 9.99909L6.67175 9.99909M6.66675 14.9991L6.67175 14.9991M13.3284 4.99909L13.3334 4.99909M13.3284 9.99908L13.3334 9.99908M13.3284 14.9991L13.3334 14.9991" stroke="currentColor" stroke-width="1.88" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="acc__title-wrap">
+          <span class="acc__title">Accordion Header Collapsed</span>
+        </span>
+        <span class="acc__meta">
+          <svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+      <div class="acc__panel" id="acc-1a"></div>
+    </div>
+
+    <div class="acc" data-open="true">
+      <button class="acc__header" aria-expanded="true" aria-controls="acc-1b">
+        <span class="acc__drag" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6.66675 4.99909L6.67175 4.99909M6.66675 9.99909L6.67175 9.99909M6.66675 14.9991L6.67175 14.9991M13.3284 4.99909L13.3334 4.99909M13.3284 9.99908L13.3334 9.99908M13.3284 14.9991L13.3334 14.9991" stroke="currentColor" stroke-width="1.88" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="acc__title-wrap">
+          <span class="acc__title">Accordion Header Expanded</span>
+        </span>
+        <span class="acc__meta">
+          <svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+      <div class="acc__panel" id="acc-1b">
+        <div class="acc__body">
+          <div class="acc-list">
+            <div class="acc-list__row"><span><b>PS000011</b> · Reusable Finger Sensor by Masimo</span><span class="meta">Install · 03/11/2025</span></div>
+            <div class="acc-list__row"><span><b>PS000012</b> · ECG Leadwire Set, 10-Lead</span><span class="meta">Repair · 03/12/2025</span></div>
+            <div class="acc-list__row"><span><b>PS000013</b> · Warming Unit Hose, Bair Hugger 700</span><span class="meta">Service · 03/13/2025</span></div>
+            <div class="acc-list__row"><span><b>PS000014</b> · Pulse Oximeter Probe, Nellcor</span><span class="meta">Install · 03/14/2025</span></div>
+            <div class="acc-list__row"><span><b>PS000015</b> · Battery, Defibrillator Lifepak 20</span><span class="meta">Repair · 03/15/2025</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Group</h2>
+    <div class="desc">Stacked accordions on the same surface. Only one is open at a time — opening another closes the current one.</div>
+  </div>
+  <div class="section-body">
+    <div class="acc">
+      <button class="acc__header" aria-expanded="false" aria-controls="acc-g1">
+        <span class="acc__title-wrap">
+          <span class="acc__title">In-progress activity</span>
+        </span>
+        <span class="acc__meta">
+          <span class="acc__count">3</span>
+          <svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+      <div class="acc__panel" id="acc-g1"><div class="acc__body"><p>Items currently being worked on.</p></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc__header" aria-expanded="false" aria-controls="acc-g2">
+        <span class="acc__title-wrap">
+          <span class="acc__title">Critical events</span>
+          <span class="acc__sub">Requires immediate attention</span>
+        </span>
+        <span class="acc__meta">
+          <span class="acc__count" style="background:#FEF0F0;color:#9E2020;border-color:#FFCFCF;">2 critical</span>
+          <svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+      <div class="acc__panel" id="acc-g2"><div class="acc__body"><p>Critical events affecting clinical workflow.</p></div></div>
+    </div>
+    <div class="acc">
+      <button class="acc__header" aria-expanded="false" aria-controls="acc-g3">
+        <span class="acc__title-wrap">
+          <span class="acc__title">Your assets</span>
+        </span>
+        <span class="acc__meta">
+          <span class="acc__count">42</span>
+          <svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+      <div class="acc__panel" id="acc-g3"><div class="acc__body"><p>All assets registered to your account.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Row variant</h2>
+    <div class="desc">Borderless, divider-between rows. Use inside cards, drawers, or for FAQ-style stacks.</div>
+  </div>
+  <div class="section-body">
+    <div style="background:#fff;border:1px solid #E6E6E6;border-radius:8px;padding:8px 24px;">
+      <div class="acc acc--row" data-open="true">
+        <button class="acc__header" aria-expanded="true" aria-controls="acc-r1">
+          <span class="acc__title-wrap"><span class="acc__title" style="font-size:16px;">How do I request a quote?</span></span>
+          <span class="acc__meta"><svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <div class="acc__panel" id="acc-r1">
+          <div class="acc__body"><p>From any product page, click <strong>Request a quote</strong>. Add quantity and any service notes, then submit. You'll see the quote appear in your Quotes inbox within a few minutes.</p></div>
+        </div>
+      </div>
+      <div class="acc acc--row">
+        <button class="acc__header" aria-expanded="false" aria-controls="acc-r2">
+          <span class="acc__title-wrap"><span class="acc__title" style="font-size:16px;">Where do I find my order history?</span></span>
+          <span class="acc__meta"><svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <div class="acc__panel" id="acc-r2">
+          <div class="acc__body"><p>Open <strong>Parts Center → Orders</strong> in the left rail. Filter by date or facility.</p></div>
+        </div>
+      </div>
+      <div class="acc acc--row" style="border-bottom:0;">
+        <button class="acc__header" aria-expanded="false" aria-controls="acc-r3">
+          <span class="acc__title-wrap"><span class="acc__title" style="font-size:16px;">Can I share a list with my team?</span></span>
+          <span class="acc__meta"><svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <div class="acc__panel" id="acc-r3">
+          <div class="acc__body"><p>Yes. Open the list, click <strong>Share</strong>, and select your facility group. They'll see it under Company Lists.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>States</h2>
+    <div class="desc">Closed, open, hover, and focus.</div>
+  </div>
+  <div class="section-body">
+    <div class="states-grid">
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="acc"><button class="acc__header" aria-expanded="false"><span class="acc__title-wrap"><span class="acc__title">Closed</span></span><span class="acc__meta"><svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></div>
+        </div>
+        <div class="state-card__meta"><b>Closed</b>Chevron points down</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="acc" data-open="true"><button class="acc__header" aria-expanded="true"><span class="acc__title-wrap"><span class="acc__title">Open</span></span><span class="acc__meta"><svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button><div class="acc__panel" style="max-height:80px;"><div class="acc__body">Content here.</div></div></div>
+        </div>
+        <div class="state-card__meta"><b>Open</b>Chevron rotates 180°; header flows into body, no divider</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="acc"><button class="acc__header" style="background:#FAFBFC;" aria-expanded="false"><span class="acc__title-wrap"><span class="acc__title">Hover</span></span><span class="acc__meta"><svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></div>
+        </div>
+        <div class="state-card__meta"><b>Hover</b>Header bg lightens to #FAFBFC</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="acc"><button class="acc__header" style="outline:2px solid #005BA6;outline-offset:-2px;" aria-expanded="false"><span class="acc__title-wrap"><span class="acc__title">Focus</span></span><span class="acc__meta"><svg class="acc__chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></div>
+        </div>
+        <div class="state-card__meta"><b>Focus</b>2 px PS Blue inset ring</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Tokens</h2>
+    <div class="desc">Composed from existing color, type, radius, and motion tokens.</div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <table class="tokens">
+      <thead><tr><th>Property</th><th>Token / value</th></tr></thead>
+      <tbody>
+        <tr><td>Container</td><td>2 px <code>#F1F1F1</code> border · 4 px radius · #fff bg</td></tr>
+        <tr><td>Header</td><td>Min 60 px · 16 × 26 px padding</td></tr>
+        <tr><td>Title</td><td>Source Sans Pro · 25 px · 300 · <code>#000000</code> · letter-spacing −0.028em</td></tr>
+        <tr><td>Subtitle</td><td>Source Sans Pro · 14 px · 400 · <code>#777777</code></td></tr>
+        <tr><td>Count badge</td><td>4 × 10 px · pill · <code>#EFF9FE</code> bg · <code>#005BA6</code> text</td></tr>
+        <tr><td>Chevron</td><td>14 × 14 · <code>#777777</code> · rotates 180° on open</td></tr>
+        <tr><td>Hover bg</td><td><code>#FAFBFC</code></td></tr>
+        <tr><td>Focus ring</td><td>2 px <code>#005BA6</code> inset (offset −2)</td></tr>
+        <tr><td>Body padding</td><td>20 × 24 × 24 px</td></tr>
+        <tr><td>Motion</td><td>240 ms ease · chevron 200 ms</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Accessibility</h2>
+    <div class="desc">ARIA pattern + keyboard interaction.</div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:24px;">
+    <ul style="margin:0;padding-left:20px;line-height:1.7;font-size:13.5px;color:#4A4A4A;">
+      <li>Header is a real <code>&lt;button&gt;</code> with <code>aria-expanded="true|false"</code> and <code>aria-controls</code> pointing at the panel's <code>id</code>.</li>
+      <li>Panel is a sibling region; do not nest it inside the button.</li>
+      <li><kbd style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;border:1px solid #DCDCDC;border-bottom-width:2px;border-radius:3px;padding:1px 6px;">Enter</kbd> and <kbd style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;border:1px solid #DCDCDC;border-bottom-width:2px;border-radius:3px;padding:1px 6px;">Space</kbd> both toggle. <kbd style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F1F1F1;border:1px solid #DCDCDC;border-bottom-width:2px;border-radius:3px;padding:1px 6px;">Tab</kbd> moves focus into the panel when open.</li>
+      <li>Animations respect <code>prefers-reduced-motion: reduce</code> — duration drops to ~75 ms.</li>
+      <li>Don't hide form fields inside an accordion that's required to submit — users may not realize they're collapsed.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Do &amp; Don't</h2>
+    <div class="desc"></div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;">
+      <div style="padding:16px 20px;border-right:1px solid #F1F1F1;">
+        <div style="font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;color:#0A7850;background:#E5F9F2;padding:8px 12px;border-radius:4px;margin-bottom:12px;display:inline-block;">Do</div>
+        <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#4A4A4A;">
+          <li>Use for scan-then-drill content (dashboards, FAQs).</li>
+          <li>Open the most relevant section by default.</li>
+          <li>Keep one section open at a time — opening another closes the current one.</li>
+          <li>Keep headers under 6 words.</li>
+        </ul>
+      </div>
+      <div style="padding:16px 20px;">
+        <div style="font-size:11px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;color:#9E2020;background:#FDECEC;padding:8px 12px;border-radius:4px;margin-bottom:12px;display:inline-block;">Don't</div>
+        <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#4A4A4A;">
+          <li>Hide required form fields users must complete.</li>
+          <li>Use for primary navigation — use the left rail.</li>
+          <li>Nest accordions more than one level deep.</li>
+          <li>Animate longer than 300 ms.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Click + keyboard toggle. Single-open per group: opening one closes the
+  // currently open sibling in the same group (accordions sharing a parent).
+  document.querySelectorAll('.acc').forEach(acc => {
+    const btn = acc.querySelector('.acc__header');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const open = acc.getAttribute('data-open') === 'true';
+      if (!open) {
+        acc.parentElement.querySelectorAll(':scope > .acc[data-open="true"]').forEach(sib => {
+          if (sib === acc) return;
+          sib.setAttribute('data-open', 'false');
+          const sibBtn = sib.querySelector('.acc__header');
+          if (sibBtn) sibBtn.setAttribute('aria-expanded', 'false');
+        });
+      }
+      acc.setAttribute('data-open', open ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+</script>
+
+</body>
+</html>

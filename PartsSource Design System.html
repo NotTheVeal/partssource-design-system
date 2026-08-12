@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PartsSource Design System — Component Library</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="colors_and_type.css">
+
+  <template id="__bundler_thumbnail" data-bg-color="#FAFAFA">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#FAFAFA"/>
+      <g transform="translate(120, 220)">
+        <rect width="280" height="120" rx="10" fill="#FFFFFF" stroke="#E6E6E6"/>
+        <rect x="24" y="22" width="60" height="10" rx="2" fill="#005BA6"/>
+        <rect x="24" y="48" width="180" height="18" rx="3" fill="#002F48"/>
+        <rect x="24" y="78" width="220" height="8" rx="2" fill="#DCDCDC"/>
+        <rect x="24" y="92" width="160" height="8" rx="2" fill="#DCDCDC"/>
+      </g>
+      <g transform="translate(460, 220)">
+        <rect width="280" height="120" rx="10" fill="#FFFFFF" stroke="#005BA6" stroke-width="2"/>
+        <rect x="24" y="22" width="60" height="10" rx="2" fill="#005BA6"/>
+        <rect x="24" y="48" width="200" height="18" rx="3" fill="#002F48"/>
+        <rect x="24" y="78" width="220" height="8" rx="2" fill="#DCDCDC"/>
+        <rect x="24" y="92" width="140" height="8" rx="2" fill="#DCDCDC"/>
+      </g>
+      <g transform="translate(800, 220)">
+        <rect width="280" height="120" rx="10" fill="#FFFFFF" stroke="#E6E6E6"/>
+        <rect x="24" y="22" width="60" height="10" rx="2" fill="#005BA6"/>
+        <rect x="24" y="48" width="170" height="18" rx="3" fill="#002F48"/>
+        <rect x="24" y="78" width="220" height="8" rx="2" fill="#DCDCDC"/>
+        <rect x="24" y="92" width="180" height="8" rx="2" fill="#DCDCDC"/>
+      </g>
+      <text x="120" y="170" font-family="Source Sans Pro, sans-serif" font-size="46" font-weight="300" fill="#002F48">PartsSource</text>
+      <text x="120" y="170" font-family="Source Sans Pro, sans-serif" font-size="46" font-weight="300" fill="#002F48" dy="50">Design System</text>
+    </svg>
+  </template>
+
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:40px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-canvas);color:var(--ps-fg-primary);}
+
+    .header{max-width:1200px;margin:0 auto 40px;}
+    h1{font-size:34px;font-weight:300;margin:0 0 12px;color:#002F48;}
+    .intro{font-size:16px;color:var(--ps-fg-secondary);margin:0;line-height:1.6;max-width:760px;}
+
+    .wrap{max-width:1200px;margin:0 auto;}
+    .section-label{
+      font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;
+      color:var(--ps-brand-primary);
+      margin:40px 0 16px;
+    }
+    .section-label:first-child{margin-top:0;}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:20px;}
+
+    .card{
+      background:var(--ps-sem-bg-surface);
+      border:1px solid #E6E6E6;
+      border-radius:8px;
+      overflow:hidden;
+      transition:all 0.15s ease;
+      text-decoration:none;
+      display:block;
+    }
+    .card:hover, .card:focus, .card:active{
+      border-color:var(--ps-brand-primary);
+      box-shadow:0 4px 16px rgba(0,91,166,0.12);
+      transform:translateY(-2px);
+      text-decoration:none;
+    }
+    .card:hover *, .card:focus *, .card:active *{ text-decoration:none; }
+
+    .card-header{
+      padding:20px 24px;
+      border-bottom:1px solid #F1F1F1;
+      background:var(--ps-sem-bg-canvas);
+    }
+    .card-category{
+      font-size:10px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:1.5px;
+      color:var(--ps-brand-primary);
+      margin:0 0 8px;
+    }
+    .card-title{
+      font-size:18px;
+      font-weight:600;
+      color:#002F48;
+      margin:0;
+    }
+    .card-body{
+      padding:20px 24px;
+    }
+    .card-desc{
+      font-size:14px;
+      color:var(--ps-sem-fg-tertiary);
+      line-height:1.6;
+      margin:0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>PartsSource Design System</h1>
+    <p class="intro">Complete component library and design foundations for PartsSource digital products. Click any card to view detailed documentation.</p>
+  </div>
+
+  <div class="wrap">
+
+    <!-- ============ GUIDES ============ -->
+    <div class="section-label">Guides</div>
+    <div class="grid">
+
+      <a href="preview/getting-started.html" class="card">
+        <div class="card-header"><div class="card-category">Guide</div><h2 class="card-title">Getting Started</h2></div>
+        <div class="card-body"><p class="card-desc">Front door — install, file structure, first component, where to find what</p></div>
+      </a>
+
+      <a href="preview/accessibility.html" class="card">
+        <div class="card-header"><div class="card-category">Guide</div><h2 class="card-title">Accessibility</h2></div>
+        <div class="card-body"><p class="card-desc">WCAG target, contrast matrix, keyboard reference, focus ring, screen-reader patterns</p></div>
+      </a>
+
+      <a href="preview/layout-grid.html" class="card">
+        <div class="card-header"><div class="card-category">Guide</div><h2 class="card-title">Layout &amp; Grid</h2></div>
+        <div class="card-body"><p class="card-desc">Breakpoints, containers, columns, spacing scale, page templates, responsive principles</p></div>
+      </a>
+
+      <a href="preview/motion.html" class="card">
+        <div class="card-header"><div class="card-category">Guide</div><h2 class="card-title">Motion</h2></div>
+        <div class="card-body"><p class="card-desc">Duration tokens, easing curves, choreography rules, reduced-motion policy</p></div>
+      </a>
+
+      <a href="preview/contribution.html" class="card">
+        <div class="card-header"><div class="card-category">Guide</div><h2 class="card-title">Contributing</h2></div>
+        <div class="card-body"><p class="card-desc">Lifecycle, naming, semver, definition of done, deprecation policy, PR template</p></div>
+      </a>
+
+      <a href="preview/form-patterns.html" class="card">
+        <div class="card-header"><div class="card-category">Guide</div><h2 class="card-title">Form Patterns</h2></div>
+        <div class="card-body"><p class="card-desc">Field grouping, validation timing, error summaries, save / cancel, multi-step flows</p></div>
+      </a>
+
+      <a href="preview/voice-tone.html" class="card">
+        <div class="card-header"><div class="card-category">Guide</div><h2 class="card-title">Voice &amp; Tone</h2></div>
+        <div class="card-body"><p class="card-desc">We are / we aren't, tone by surface, do &amp; don't examples, word choice</p></div>
+      </a>
+
+      <a href="preview/error-pages.html" class="card">
+        <div class="card-header"><div class="card-category">Guide</div><h2 class="card-title">Error Pages</h2></div>
+        <div class="card-body"><p class="card-desc">404 · 500 · 403 · Offline — same shape, same tone across every product</p></div>
+      </a>
+
+    </div>
+
+    <!-- ============ FOUNDATION ============ -->
+    <div class="section-label">Foundation</div>
+    <div class="grid">
+
+      <a href="preview/tokens.html" class="card">
+        <div class="card-header"><div class="card-category">Foundation</div><h2 class="card-title">Tokens</h2></div>
+        <div class="card-body"><p class="card-desc">Three-level token sheet — Primitive → Semantic → Component. Source of truth for every <code>--ps-*</code> variable.</p></div>
+      </a>
+
+      <a href="preview/colors.html" class="card">
+        <div class="card-header"><div class="card-category">Foundation</div><h2 class="card-title">Colors</h2></div>
+        <div class="card-body"><p class="card-desc">Brand · Blue scale · Neutrals · Semantic · Data viz — complete palette with hex/RGB/HSL and usage</p></div>
+      </a>
+
+      <a href="preview/type-display.html" class="card">
+        <div class="card-header"><div class="card-category">Foundation</div><h2 class="card-title">Display Type</h2></div>
+        <div class="card-body"><p class="card-desc">Heading styles H00–H4, Source Sans &amp; Metronic Pro</p></div>
+      </a>
+
+      <a href="preview/type-body.html" class="card">
+        <div class="card-header"><div class="card-category">Foundation</div><h2 class="card-title">Body Type</h2></div>
+        <div class="card-body"><p class="card-desc">Body text, labels, captions, micro copy</p></div>
+      </a>
+
+      <a href="preview/spacing-scale.html" class="card">
+        <div class="card-header"><div class="card-category">Foundation</div><h2 class="card-title">Spacing Scale</h2></div>
+        <div class="card-body"><p class="card-desc">4px base unit, 8–96px scale</p></div>
+      </a>
+
+      <a href="preview/Radius.html" class="card">
+        <div class="card-header"><div class="card-category">Foundation</div><h2 class="card-title">Border Radius</h2></div>
+        <div class="card-body"><p class="card-desc">Corner radius tokens 0–9999 (full round)</p></div>
+      </a>
+
+      <a href="preview/shadows.html" class="card">
+        <div class="card-header"><div class="card-category">Foundation</div><h2 class="card-title">Shadows</h2></div>
+        <div class="card-body"><p class="card-desc">Elevation system: sm / md / lg</p></div>
+      </a>
+
+      <a href="preview/logo.html" class="card">
+        <div class="card-header"><div class="card-category">Foundation</div><h2 class="card-title">Logos</h2></div>
+        <div class="card-body"><p class="card-desc">PartsSource wordmark and monogram usage</p></div>
+      </a>
+
+      <a href="preview/icons.html" class="card">
+        <div class="card-header"><div class="card-category">Foundation</div><h2 class="card-title">Icons</h2></div>
+        <div class="card-body"><p class="card-desc">Lucide icons at 1.5px stroke weight</p></div>
+      </a>
+
+    </div>
+
+    <!-- ============ COMPONENTS ============ -->
+    <div class="section-label">Components</div>
+    <div class="grid">
+
+      <a href="preview/buttons.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Buttons</h2></div>
+        <div class="card-body"><p class="card-desc">Primary, Secondary, Tertiary, Ghost, Icon, Pill</p></div>
+      </a>
+
+      <a href="preview/inputs.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Input Fields</h2></div>
+        <div class="card-body"><p class="card-desc">Text inputs, textareas, search, validation states</p></div>
+      </a>
+
+      <a href="preview/search.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Search Bar</h2></div>
+        <div class="card-body"><p class="card-desc">Global · SRP · inline · within-filter · collapsed icon · type-ahead suggestions</p></div>
+      </a>
+
+      <a href="preview/date-picker.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Date Picker</h2></div>
+        <div class="card-body"><p class="card-desc">Start + end date range with calendar popover · idle / hover / focus / filled / disabled / error</p></div>
+      </a>
+
+      <a href="preview/stepper.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Stepper</h2></div>
+        <div class="card-body"><p class="card-desc">Multi-step progress indicator — horizontal, vertical, compact · complete / current / pending / error</p></div>
+      </a>
+
+      <a href="preview/selections.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Selections</h2></div>
+        <div class="card-body"><p class="card-desc">Checkboxes, radio buttons, all interaction states</p></div>
+      </a>
+
+      <a href="preview/badges.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Badges</h2></div>
+        <div class="card-body"><p class="card-desc">Status badges and pill labels</p></div>
+      </a>
+
+      <a href="preview/cards.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Cards</h2></div>
+        <div class="card-body"><p class="card-desc">Product cards, info cards, elevation states</p></div>
+      </a>
+
+      <a href="preview/modals.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Modals</h2></div>
+        <div class="card-body"><p class="card-desc">Overlays — modal, confirm dialog, drawer, bottom sheet</p></div>
+      </a>
+
+      <a href="preview/drawer.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Drawer</h2></div>
+        <div class="card-body"><p class="card-desc">Right-side overlay panel with scrim — anatomy, tokens, and in-product patterns</p></div>
+      </a>
+
+      <a href="preview/tables.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Tables</h2></div>
+        <div class="card-body"><p class="card-desc">Data tables with sort, selection, pagination, empty/loading</p></div>
+      </a>
+
+      <a href="preview/tabs.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Tabs</h2></div>
+        <div class="card-body"><p class="card-desc">Underline, segmented, pill — page and in-card view switching</p></div>
+      </a>
+
+      <a href="preview/alerts.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Alerts</h2></div>
+        <div class="card-body"><p class="card-desc">Inline banners and toast notifications</p></div>
+      </a>
+
+      <a href="preview/cms-components.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">CMS Components</h2></div>
+        <div class="card-body"><p class="card-desc">Bloomreach content blocks: Banner, ImageBlock, CardGrid</p></div>
+      </a>
+
+      <a href="preview/tooltip.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Tooltip</h2></div>
+        <div class="card-body"><p class="card-desc">Short hover/focus hints — 4 placements, dark Midnight bubble, caret</p></div>
+      </a>
+
+      <a href="preview/avatar.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Avatar</h2></div>
+        <div class="card-body"><p class="card-desc">Circular identity marker — 5 sizes, tone palette, status dot, group stack</p></div>
+      </a>
+
+      <a href="preview/breadcrumb.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Breadcrumb</h2></div>
+        <div class="card-body"><p class="card-desc">Trail above the page title — parent link, separator, current segment</p></div>
+      </a>
+
+      <a href="preview/pagination.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Pagination</h2></div>
+        <div class="card-body"><p class="card-desc">Page controls with result count and per-page picker</p></div>
+      </a>
+
+      <a href="preview/empty-states.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Empty States</h2></div>
+        <div class="card-body"><p class="card-desc">First-run, no-results, error — icon + title + body + CTAs</p></div>
+      </a>
+
+      <a href="preview/skeletons.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Skeletons &amp; Loading</h2></div>
+        <div class="card-body"><p class="card-desc">Shimmering placeholders + spinner; card / row / table / form recipes</p></div>
+      </a>
+
+      <a href="preview/accordion.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Accordion</h2></div>
+        <div class="card-body"><p class="card-desc">Collapsible sections with chevron + count badge; default, group, row, and FAQ variants</p></div>
+      </a>
+
+      <a href="preview/cart.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Cart</h2></div>
+        <div class="card-body"><p class="card-desc">Cart icon + badge counts 1–10+ from Figma node 115:105</p></div>
+      </a>
+
+      <a href="preview/asset-detail-card.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Asset Detail Card</h2></div>
+        <div class="card-body"><p class="card-desc">12 status pills + composite cards for My Dashboard, Asset Uptime, Marketing rail</p></div>
+      </a>
+
+      <a href="preview/Visal Data.html" class="card">
+        <div class="card-header"><div class="card-category">Components</div><h2 class="card-title">Data Visualization</h2></div>
+        <div class="card-body"><p class="card-desc">Chart components, series color tokens, axis conventions, tooltip anatomy — built on the PS Blue scale</p></div>
+      </a>
+
+    </div>
+
+    <!-- ============ NAVIGATION ============ -->
+    <div class="section-label">Navigation</div>
+    <div class="grid">
+
+      <a href="preview/left-hand-navigation.html" class="card">
+        <div class="card-header"><div class="card-category">Navigation</div><h2 class="card-title">Left Hand Navigation</h2></div>
+        <div class="card-body"><p class="card-desc">Expanded 199 px rail, collapsed 70 px rail, hamburger drawer</p></div>
+      </a>
+
+      <a href="preview/top-navigation.html" class="card">
+        <div class="card-header"><div class="card-category">Navigation</div><h2 class="card-title">Top Navigation</h2></div>
+        <div class="card-body"><p class="card-desc">Utility bar, main row, page hero, facility switcher</p></div>
+      </a>
+
+      <a href="preview/filter.html" class="card">
+        <div class="card-header"><div class="card-category">Navigation</div><h2 class="card-title">Filter</h2></div>
+        <div class="card-body"><p class="card-desc">Filter chips and add-a-filter trigger</p></div>
+      </a>
+
+    </div>
+
+    <!-- ============ UI KITS ============ -->
+    <div class="section-label">UI Kits</div>
+    <div class="grid">
+
+      <a href="UI Kit/index.html" class="card">
+        <div class="card-header"><div class="card-category">UI Kit</div><h2 class="card-title">React + Tailwind + TS Kit</h2></div>
+        <div class="card-body"><p class="card-desc">Production-ready React + TypeScript + Tailwind components rebuilt from the design system — Button, Input, Card and growing.</p></div>
+      </a>
+
+      <a href="ui_kits/ps-shell/index.html" class="card">
+        <div class="card-header"><div class="card-category">UI Kit</div><h2 class="card-title">PartsSource Shell</h2></div>
+        <div class="card-body"><p class="card-desc">App shell template — top nav (utility, search, facility, page hero) and ps-nav left rail with sliding-track drill-down and collapse. Drop page content into the main area.</p></div>
+      </a>
+
+      <a href="ui_kits/ps-marketplace/index.html" class="card">
+        <div class="card-header"><div class="card-category">UI Kit</div><h2 class="card-title">Marketplace</h2></div>
+        <div class="card-body"><p class="card-desc">ps.com marketplace recreation — mega-nav, search, product grid, PDP, mini cart, and Midnight footer.</p></div>
+      </a>
+
+      <a href="uploads/PartsSource-Deck.html" class="card">
+        <div class="card-header"><div class="card-category">UI Kit</div><h2 class="card-title">PartsSource Deck</h2></div>
+        <div class="card-body"><p class="card-desc">Self-contained on-brand presentation template — 30+ slide layouts, in-deck editing, Present, and PDF/PowerPoint export. Opens offline with no errors.</p></div>
+      </a>
+
+    </div>
+
+    <!-- ============ INTERACTION ============ -->
+    <div class="section-label">Interaction</div>
+    <div class="grid">
+
+      <a href="preview/hover-states.html" class="card">
+        <div class="card-header"><div class="card-category">Interaction</div><h2 class="card-title">Hover States</h2></div>
+        <div class="card-body"><p class="card-desc">Hover behavior patterns across components</p></div>
+      </a>
+
+      <a href="preview/interaction-states.html" class="card">
+        <div class="card-header"><div class="card-category">Interaction</div><h2 class="card-title">Interaction States</h2></div>
+        <div class="card-body"><p class="card-desc">Idle, Hover, Focus, Pressed, Disabled patterns</p></div>
+      </a>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

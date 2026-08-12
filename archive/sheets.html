@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="utf-8">
+  <title>Sheets — PartsSource Design System</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 96px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:880px;line-height:1.6;}
+    code.kbd{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+    .section-body{padding:32px 24px;background:var(--ps-sem-bg-canvas);}
+    .section-body.plain{background:var(--ps-sem-bg-surface);padding:24px;}
+
+    .demo-cap{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ps-fg-tertiary);font-weight:700;margin:0 0 12px;}
+
+    /* ============================================
+       Sheet stage — page-behind + scrim + sheet
+       ============================================ */
+    .stage{
+      position:relative;width:100%;
+      background:#F4F6F8;border:1px solid var(--ps-border-default);
+      border-radius:8px;overflow:hidden;
+      display:flex;justify-content:flex-end;align-items:stretch;
+    }
+    .stage--desk{height:680px;}
+    .scrim{position:absolute;inset:0;background:rgba(0,0,0,.32);}
+
+    /* Page-behind chrome (faux nav) */
+    .page-chrome{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--ps-sem-bg-surface);}
+    .page-chrome__nav{height:56px;border-bottom:1px solid #E0E0E0;display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;}
+    .page-chrome__logo{width:120px;height:18px;background:linear-gradient(90deg,var(--ps-sem-action-default) 0 50%,#9CC03A 50% 60%,var(--ps-sem-action-default) 60% 100%);border-radius:2px;opacity:.85;}
+    .page-chrome__search{flex:1;max-width:520px;height:30px;background:var(--ps-sem-bg-muted);border-radius:4px;}
+    .page-chrome__cart{width:24px;height:24px;border-radius:4px;background:#E0E0E0;}
+    .page-chrome__hero{height:40px;background:#003763;display:flex;align-items:center;color:var(--ps-sem-fg-inverse);padding:0 24px;font-size:14px;flex-shrink:0;}
+    .page-chrome__content{flex:1;padding:24px;display:flex;flex-direction:column;gap:12px;}
+    .page-chrome__bar{height:14px;border-radius:3px;background:#E5E7EB;}
+    .page-chrome__bar.w70{width:70%;} .page-chrome__bar.w80{width:80%;} .page-chrome__bar.w50{width:50%;} .page-chrome__bar.w90{width:90%;}
+
+    /* Sheet shell — Figma /Sheet/Add-Learners-Drawer spec: 550 × 1024,
+       30px padding top/bottom, -4px 0 20px shadow, white bg. */
+    .sheet{
+      position:relative;
+      background:var(--ps-sem-bg-surface);
+      box-shadow:-4px 0 20px 0 rgba(0,0,0,0.10);
+      width:550px;
+      max-width:100%;
+      display:flex;flex-direction:column;
+      font-family:'Source Sans Pro','Source Sans 3',var(--ps-font-sans);
+      color:var(--ps-prim-gray-900);
+      align-self:stretch;
+    }
+    .sheet--tab{width:450px;}
+    .sheet--mob{width:100%;}
+
+    .sheet-head{
+      padding:30px 30px 0;
+      display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+      flex-shrink:0;
+    }
+    .sheet-head__text{flex:1;display:flex;flex-direction:column;gap:8px;}
+    .sheet-head h3{
+      margin:0;font-family:'Source Sans Pro',sans-serif;
+      font-weight:300;font-size:30px;line-height:34px;color:var(--ps-sem-fg-brand);letter-spacing:0;
+    }
+    .sheet-head p{margin:0;font-size:14px;line-height:1.4;color:var(--ps-sem-fg-secondary);}
+    .sheet-head__close{
+      flex-shrink:0;width:24px;height:24px;
+      display:flex;align-items:center;justify-content:center;cursor:pointer;
+      color:var(--ps-sem-fg-brand);background:transparent;border:0;border-radius:3px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .sheet-head__close:hover{background:#EFF9FE;color:#004A84;}
+    .sheet-head__close svg{width:14px;height:14px;display:block;}
+
+    .sheet-body{
+      padding:24px 30px 30px;display:flex;flex-direction:column;gap:16px;
+      flex:1;overflow-y:auto;
+    }
+
+    /* Sheet action footer */
+    .sheet-actions{
+      display:flex;align-items:center;justify-content:flex-end;gap:12px;
+      padding:16px 30px;background:var(--ps-sem-bg-canvas);border-top:1px solid #F1F1F1;
+      flex-shrink:0;
+    }
+    .sheet-actions--center{justify-content:center;}
+    .sheet-actions--between{justify-content:space-between;}
+
+    /* Form fields inside sheet */
+    .ff{
+      display:flex;flex-direction:column;gap:6px;
+    }
+    .ff label{font:600 12px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);letter-spacing:.3px;text-transform:uppercase;}
+    .ff input,.ff textarea,.ff select{
+      font:14px/1.4 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);
+      border:1px solid #CCCCCC;border-radius:3px;padding:8px 12px;
+      background:var(--ps-sem-bg-surface);width:100%;
+    }
+    .ff input:focus,.ff textarea:focus,.ff select:focus{
+      outline:0;border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(0,91,166,.15);
+    }
+    .ff textarea{min-height:96px;resize:vertical;}
+
+    /* Search bar (sheet) */
+    .sheet-search{
+      display:flex;align-items:center;gap:8px;
+      width:100%;height:40px;
+      border:1px solid #CCCCCC;border-radius:3px;
+      padding:0 12px;background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-tertiary);
+    }
+    .sheet-search input{
+      flex:1;border:0;outline:0;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);background:transparent;
+    }
+    .sheet-search svg{width:16px;height:16px;flex-shrink:0;}
+
+    /* Drawer list cards (Figma Add Learners pattern) */
+    .drawer-card{
+      display:flex;align-items:center;gap:12px;
+      padding:12px 14px;
+      border:1px solid #F1F1F1;border-radius:5px;background:var(--ps-sem-bg-surface);
+      cursor:pointer;transition:background 120ms ease,border-color 120ms ease;
+    }
+    .drawer-card:hover{background:#F4F8FB;border-color:var(--ps-sem-border-strong);}
+    .drawer-card.is-selected{background:#EFF9FE;border-color:#6AC7FC;}
+    .drawer-card__check{
+      flex-shrink:0;width:18px;height:18px;
+      border:1.5px solid #CCCCCC;border-radius:3px;background:var(--ps-sem-bg-surface);
+      display:flex;align-items:center;justify-content:center;color:var(--ps-sem-fg-inverse);
+    }
+    .drawer-card__check.is-checked{background:var(--ps-brand-primary);border-color:var(--ps-brand-primary);}
+    .drawer-card__check svg{width:11px;height:11px;}
+    .drawer-card__avatar{
+      flex-shrink:0;width:32px;height:32px;border-radius:50%;
+      background:#D0EDFC;color:var(--ps-sem-fg-brand);
+      display:flex;align-items:center;justify-content:center;
+      font:600 12px/1 'Source Sans Pro',sans-serif;
+    }
+    .drawer-card__main{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0;}
+    .drawer-card__name{font:600 14px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .drawer-card__meta{font:13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+    /* Buttons */
+    .btn{
+      font-family:inherit;height:40px;padding:0 20px;border-radius:4px;
+      font-size:14px;font-weight:700;cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;gap:6px;
+      letter-spacing:.01em;
+      transition:background 120ms ease,color 120ms ease,border-color 120ms ease;
+      border:1px solid transparent;
+    }
+    .btn--primary{background:var(--ps-brand-primary);color:var(--ps-sem-fg-inverse);}
+    .btn--primary:hover{background:#004A84;}
+    .btn--secondary{background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-secondary);border-color:var(--ps-sem-border-default);}
+    .btn--secondary:hover{border-color:#999;color:var(--ps-sem-fg-primary);}
+    .btn--ghost{background:transparent;color:var(--ps-sem-fg-secondary);}
+    .btn--ghost:hover{background:var(--ps-sem-bg-muted);}
+    .btn--pill{
+      background:#F08A00;color:var(--ps-sem-fg-inverse);border:0;
+      border-radius:999px;height:44px;padding:0 28px;
+      font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:13px;
+    }
+    .btn--pill:hover{background:#D77800;}
+    .btn--pill-amber{background:#F2BC6B;color:var(--ps-sem-fg-inverse);}
+    .btn--pill-amber:hover{background:#E5A94B;}
+    .btn--text{
+      background:transparent;border:0;color:#6B6B6B;
+      font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:13px;
+      padding:0 18px;height:44px;cursor:pointer;
+    }
+    .btn--text:hover{color:var(--ps-sem-fg-primary);}
+
+    /* ============================================
+       Sheet Builder (live preview + tweaks)
+       ============================================ */
+    .sb-tweaks{
+      background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-default);
+      border-radius:8px;padding:18px 20px;margin-bottom:20px;
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px 24px;
+      font-family:var(--ps-font-sans);
+    }
+    .sb-section{
+      grid-column:1 / -1;
+      display:flex;align-items:center;gap:12px;
+      margin:8px 0 -4px;
+      font:700 10px/1 'Source Sans Pro',sans-serif;
+      letter-spacing:1.4px;text-transform:uppercase;color:var(--ps-sem-fg-brand);
+    }
+    .sb-section:first-of-type{margin-top:0;}
+    .sb-section span{flex-shrink:0;}
+    .sb-section::after{content:"";flex:1;height:1px;background:var(--ps-border-default);}
+    .sb-tweak{display:flex;flex-direction:column;gap:6px;}
+    .sb-tweak label.k{font:700 10px/1.2 'Source Sans Pro',sans-serif;letter-spacing:1px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);}
+    .sb-tweak input[type="text"],
+    .sb-tweak textarea,
+    .sb-tweak select{
+      width:100%;height:34px;border:1px solid #CCCCCC;border-radius:4px;
+      padding:0 10px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);background:var(--ps-sem-bg-surface);
+    }
+    .sb-tweak textarea{height:auto;min-height:60px;padding:8px 10px;line-height:1.4;resize:vertical;}
+    .sb-tweak input[type="text"]:focus,
+    .sb-tweak textarea:focus,
+    .sb-tweak select:focus{outline:0;border-color:var(--ps-sem-fg-brand);box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+    .sb-seg{display:inline-flex;background:#F4F6F8;border-radius:5px;padding:3px;height:34px;}
+    .sb-seg button{
+      border:0;background:transparent;font:600 13px/1 'Source Sans Pro',sans-serif;
+      color:var(--ps-sem-fg-secondary);padding:0 12px;border-radius:3px;cursor:pointer;flex:1;
+    }
+    .sb-seg button.on{background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-brand);box-shadow:0 1px 2px rgba(0,0,0,.08);}
+    .sb-check{display:flex;align-items:center;gap:8px;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);cursor:pointer;height:34px;}
+
+    .sb-stage{
+      position:relative;width:100%;min-height:680px;
+      background:#F4F6F8;
+      border-radius:8px;border:1px solid var(--ps-border-default);
+      display:flex;justify-content:flex-end;align-items:stretch;
+      overflow:hidden;
+    }
+    .sb-stage .page-chrome{position:absolute;inset:0;}
+    .sb-scrim{position:absolute;inset:0;background:rgba(0,0,0,.32);}
+    .sb-codebox{
+      margin-top:24px;background:#1F2933;color:#E5E7EB;border-radius:8px;
+      padding:18px 20px;font:12px/1.6 ui-monospace,Menlo,Consolas,monospace;
+      max-height:280px;overflow:auto;white-space:pre;position:relative;
+    }
+    .sb-copy{position:absolute;top:10px;right:10px;background:#374151;border:0;color:var(--ps-sem-fg-inverse);padding:6px 12px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;}
+    .sb-copy:hover{background:#4B5563;}
+    .sb-copy.copied{background:#0A7850;}
+
+    /* Breakpoint cards (Tablet & Mobile) */
+    .bp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;padding:24px;}
+    .bp-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:14px;}
+    .bp-card .demo{height:340px;background:#F4F6F8;border-radius:6px;display:flex;justify-content:flex-end;align-items:stretch;overflow:hidden;position:relative;}
+    .bp-card .demo .scrim{background:rgba(0,0,0,.32);}
+    .bp-card .label{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;}
+    .bp-card .label b{font-size:13px;font-weight:700;color:var(--ps-sem-fg-primary);}
+    .bp-card .label span{font-size:11px;color:var(--ps-sem-fg-tertiary);font-family:var(--ps-font-mono);}
+
+    /* Live Examples grid (2-col) */
+    .examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;padding:24px;}
+
+    /* Anatomy */
+    .anatomy{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start;padding:24px;background:var(--ps-sem-bg-surface);}
+    .anatomy-labels{display:flex;flex-direction:column;padding:0 16px 0 0;border-right:1px dashed #DCDCDC;}
+    .anatomy-label{padding:14px 0;display:flex;flex-direction:column;gap:3px;align-items:flex-end;text-align:right;}
+    .anatomy-label b{color:var(--ps-brand-primary);font-size:13px;font-weight:700;}
+    .anatomy-label em{font-style:normal;color:var(--ps-sem-fg-tertiary);font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+    .anatomy-label span{color:var(--ps-sem-fg-secondary);font-size:12px;line-height:1.4;}
+
+    /* A11y / Do-Don't */
+    .a11y-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;padding:24px;}
+    .a11y-card{background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;}
+    .a11y-card h4{margin:0 0 8px;font-size:13px;font-weight:700;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;}
+    .a11y-card h4 svg{width:16px;height:16px;color:var(--ps-brand-primary);}
+    .a11y-card p{margin:0;font-size:13px;line-height:1.5;color:var(--ps-sem-fg-secondary);}
+    .a11y-card code{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-sem-bg-surface);padding:1px 5px;border-radius:3px;border:1px solid #E5E7EB;}
+
+    .dodont{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px;}
+    .dodont__col{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-subtle);border-radius:8px;overflow:hidden;}
+    .dodont__col h4{margin:0;padding:12px 16px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px;}
+    .dodont__col--do h4{background:#E5F9F2;color:#0A7850;}
+    .dodont__col--dont h4{background:#FDECEC;color:#9E2A1C;}
+    .dodont__col ul{list-style:none;margin:0;padding:14px 18px;display:flex;flex-direction:column;gap:10px;}
+    .dodont__col li{font-size:13px;line-height:1.5;color:var(--ps-sem-fg-primary);display:flex;align-items:flex-start;gap:8px;}
+    .dodont__col li::before{content:"";flex-shrink:0;width:6px;height:6px;border-radius:50%;margin-top:8px;}
+    .dodont__col--do li::before{background:#0A7850;}
+    .dodont__col--dont li::before{background:#9E2A1C;}
+
+    /* ============================================
+       Drawer Patterns · In-Product
+       (mirrors uploads/drawer.tsx + selection-panel.tsx +
+        step-pills.tsx + entity-cards.tsx)
+       ============================================ */
+    .dp-tabs{
+      display:flex;gap:0;padding:0 24px;
+      border-bottom:1px solid var(--ps-border-default);
+      background:var(--ps-sem-bg-canvas);
+      flex-wrap:wrap;
+    }
+    .dp-tab{
+      background:transparent;border:0;cursor:pointer;
+      padding:14px 18px;margin-bottom:-1px;
+      font:600 13px/1 'Source Sans Pro',sans-serif;
+      color:var(--ps-sem-fg-secondary);
+      border-bottom:2px solid transparent;
+      display:inline-flex;align-items:center;gap:8px;
+      transition:color 120ms ease,border-color 120ms ease;
+    }
+    .dp-tab:hover{color:var(--ps-sem-fg-primary);}
+    .dp-tab.on{color:var(--ps-sem-fg-brand);border-bottom-color:var(--ps-sem-fg-brand);}
+    .dp-tab code{
+      font:600 11px/1 var(--ps-font-mono);
+      background:rgba(0,91,166,.08);color:var(--ps-sem-fg-brand);
+      padding:2px 5px;border-radius:3px;
+    }
+    .dp-tab.on code{background:rgba(0,91,166,.14);}
+
+    .dp-pattern-meta{
+      display:flex;gap:16px 28px;flex-wrap:wrap;
+      padding:14px 28px 16px;
+      background:var(--ps-sem-bg-surface);
+      border-bottom:1px solid var(--ps-border-default);
+      font:13px/1.5 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-secondary);
+    }
+    .dp-pattern-meta__row{display:flex;align-items:center;gap:8px;}
+    .dp-pattern-meta__row b{color:var(--ps-sem-fg-primary);font-weight:700;font-size:12px;letter-spacing:.4px;text-transform:uppercase;}
+    .dp-pattern-meta code{font:600 11px/1 var(--ps-font-mono);background:var(--ps-sem-bg-muted);color:var(--ps-sem-fg-primary);padding:2px 5px;border-radius:3px;}
+
+    /* Sheet header variant used by product drawers
+       (text-2xl semibold grey-1, per uploads/drawer.tsx DrawerHeader) */
+    .sheet-head--prod h3{
+      font-family:'Source Sans Pro',sans-serif;
+      font-weight:600;font-size:24px;line-height:28px;
+      color:var(--ps-sem-fg-primary);letter-spacing:-.1px;
+    }
+    .sheet-head--prod p{font-size:15px;line-height:1.45;color:var(--ps-sem-fg-secondary);}
+    .sheet-head--prod{padding:30px 28px 0;}
+    .sheet--prod .sheet-body{padding:24px 28px 28px;gap:16px;}
+
+    /* Step pills (uploads/step-pills.tsx) */
+    .dp-steps{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 4px;}
+    .dp-step{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:5px 12px;border-radius:999px;
+      font:600 12px/1 'Source Sans Pro',sans-serif;
+      border:1px solid #E0E0E0;background:var(--ps-sem-bg-surface);
+      color:var(--ps-sem-fg-secondary);cursor:default;
+    }
+    .dp-step__num{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:16px;height:16px;border-radius:50%;
+      background:#F1F1F1;color:var(--ps-sem-fg-secondary);
+      font:700 10px/1 'Source Sans Pro',sans-serif;padding:0 4px;
+    }
+    .dp-step.is-current{border-color:var(--ps-brand-primary);color:var(--ps-brand-primary);background:rgba(0,91,166,.08);}
+    .dp-step.is-current .dp-step__num{background:rgba(0,91,166,.15);color:var(--ps-brand-primary);}
+    .dp-step.is-visited{border-color:#0A7850;color:#0A7850;background:rgba(10,120,80,.08);cursor:pointer;}
+    .dp-step.is-visited .dp-step__num{background:#0A7850;color:#fff;}
+    .dp-step.is-visited:hover{background:rgba(10,120,80,.14);}
+    .dp-step.is-locked{cursor:not-allowed;}
+
+    /* Search input (drawer-internal) */
+    .dp-search{
+      display:flex;align-items:center;gap:8px;
+      height:40px;padding:0 12px;
+      border:1px solid #CCCCCC;border-radius:5px;
+      background:var(--ps-sem-bg-surface);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .dp-search:focus-within{border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+    .dp-search input{flex:1;border:0;outline:0;background:transparent;font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);}
+    .dp-search svg{width:16px;height:16px;flex-shrink:0;}
+
+    /* List cards (uploads/entity-cards.tsx) */
+    .dp-listcard{
+      display:flex;align-items:center;gap:12px;
+      padding:12px 14px;background:var(--ps-sem-bg-surface);
+      border:1px solid #E5E7EB;border-radius:5px;
+    }
+    .dp-listcard.is-interactive{cursor:pointer;transition:background 120ms ease,border-color 120ms ease;text-align:left;width:100%;font:inherit;color:inherit;}
+    .dp-listcard.is-interactive:hover{background:#F4F8FB;border-color:var(--ps-sem-border-strong);}
+    .dp-listcard__main{flex:1;min-width:0;}
+    .dp-listcard__action{
+      flex-shrink:0;width:34px;height:34px;
+      display:flex;align-items:center;justify-content:center;
+      border:1px solid #CCCCCC;border-radius:4px;
+      background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-brand);
+      cursor:pointer;transition:background 120ms ease,border-color 120ms ease;
+    }
+    .dp-listcard__action:hover{background:#EFF9FE;border-color:var(--ps-brand-primary);}
+    .dp-listcard__action.is-destructive{color:#9E2A1C;border-color:#F0C7C7;}
+    .dp-listcard__action.is-destructive:hover{background:#FDECEC;border-color:#D77878;}
+    .dp-listcard__action svg{width:16px;height:16px;}
+    .dp-listcard.is-busy{opacity:.55;pointer-events:none;}
+
+    /* Module/Profile info blocks */
+    .dp-module{display:flex;flex-direction:column;gap:4px;min-width:0;}
+    .dp-module__title{font:600 14px/1.3 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .dp-module__meta{display:flex;gap:6px;align-items:center;font:13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-tertiary);}
+    .dp-module__badge{display:inline-flex;align-items:center;padding:2px 6px;border-radius:3px;background:#E5F1FB;color:#005BA6;font:700 9.5px/1.4 'Source Sans Pro',sans-serif;letter-spacing:.6px;text-transform:uppercase;}
+    .dp-module__procedure{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;}
+    .dp-profile{display:flex;align-items:center;gap:10px;min-width:0;flex:1;}
+    .dp-profile__avatar{flex-shrink:0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:600 12px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-inverse);}
+    .dp-profile__text{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;}
+    .dp-profile__name{font:600 14px/1.3 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .dp-profile__email{font:13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+    /* Form field — product form style (label above input, p-2 inputs) */
+    .dp-ff{display:flex;flex-direction:column;gap:8px;}
+    .dp-ff__label{font:600 14px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);}
+    .dp-ff__input,.dp-ff__textarea{
+      border:1px solid #CCCCCC;border-radius:4px;padding:8px 12px;
+      font:14px/1.4 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);
+      background:var(--ps-sem-bg-surface);width:100%;
+    }
+    .dp-ff__textarea{min-height:84px;resize:vertical;}
+    .dp-ff__input:focus,.dp-ff__textarea:focus{outline:0;border-color:var(--ps-brand-primary);box-shadow:0 0 0 3px rgba(0,91,166,.15);}
+
+    /* Inline toggle */
+    .dp-toggle{
+      position:relative;display:inline-flex;
+      width:38px;height:22px;border-radius:999px;
+      background:#CCCCCC;cursor:pointer;padding:2px;
+      transition:background 150ms ease;border:0;flex-shrink:0;
+    }
+    .dp-toggle.on{background:var(--ps-brand-primary);}
+    .dp-toggle__thumb{
+      width:18px;height:18px;background:var(--ps-sem-bg-surface);
+      border-radius:50%;transition:transform 150ms ease;
+      box-shadow:0 1px 2px rgba(0,0,0,.2);
+    }
+    .dp-toggle.on .dp-toggle__thumb{transform:translateX(16px);}
+
+    /* Selection footer */
+    .dp-selfooter{
+      border-top:1px solid #E5E7EB;background:var(--ps-sem-bg-canvas);
+      padding:16px 28px;display:flex;flex-direction:column;gap:14px;
+      flex-shrink:0;
+    }
+    .dp-selfooter__head{
+      display:flex;align-items:center;justify-content:space-between;
+      width:100%;background:transparent;border:0;cursor:pointer;padding:0;
+      font:600 14px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);
+    }
+    .dp-selfooter__head svg{transition:transform 200ms ease;}
+    .dp-selfooter__head.expanded svg{transform:rotate(180deg);}
+    .dp-selfooter__list{display:flex;flex-direction:column;gap:8px;max-height:180px;overflow-y:auto;}
+    .dp-selfooter__empty{font:13px/1.4 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-tertiary);font-style:italic;}
+
+    /* Drawer button (submit / next / finalize) */
+    .dp-btn{
+      width:100%;height:42px;border:0;border-radius:4px;
+      background:var(--ps-brand-primary);color:var(--ps-sem-fg-inverse);
+      font:700 14px/1 'Source Sans Pro',sans-serif;
+      cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      transition:background 120ms ease;
+    }
+    .dp-btn:hover{background:#004A84;}
+    .dp-btn:disabled{background:#A8B8C9;cursor:not-allowed;}
+    .dp-btn--ghost{background:transparent;color:var(--ps-sem-fg-brand);}
+    .dp-btn--ghost:hover{background:rgba(0,91,166,.08);}
+    .dp-btn__spinner{
+      width:14px;height:14px;border-radius:50%;
+      border:2px solid rgba(255,255,255,.4);border-top-color:#fff;
+      animation:dp-spin 700ms linear infinite;
+    }
+    @keyframes dp-spin{to{transform:rotate(360deg);}}
+
+    .dp-backlink{
+      background:transparent;border:0;color:var(--ps-sem-fg-brand);
+      font:600 13px/1.2 'Source Sans Pro',sans-serif;cursor:pointer;
+      text-align:left;padding:0;display:inline-flex;align-items:center;gap:6px;
+      align-self:flex-start;
+    }
+    .dp-backlink:hover{text-decoration:none;color:#004A84;}
+
+    /* Confirmation section */
+    .dp-confirm-section{display:flex;flex-direction:column;gap:10px;}
+    .dp-confirm-section__label{font:600 13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);}
+
+    .dp-empty{
+      padding:24px 16px;border:1px dashed #D5D5D5;border-radius:6px;
+      background:var(--ps-sem-bg-canvas);text-align:center;
+      font:14px/1.5 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-secondary);
+    }
+
+    /* Source files list at bottom of section */
+    .dp-sources{
+      padding:18px 28px;background:var(--ps-sem-bg-canvas);
+      border-top:1px solid var(--ps-border-default);
+      display:flex;gap:8px 18px;flex-wrap:wrap;
+      font:12px/1.5 var(--ps-font-mono);color:var(--ps-sem-fg-tertiary);
+    }
+    .dp-sources b{color:var(--ps-sem-fg-secondary);font-family:'Source Sans Pro',sans-serif;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-right:4px;}
+    .dp-sources span{color:var(--ps-sem-fg-primary);}
+
+    /* Breadcrumb */
+    .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+    .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Sheets</span>
+  </nav>
+
+  <h1>Sheets</h1>
+  <p class="intro">Right-side panels for edit, select, and detail flows where the user needs reference back to the page they came from. Sheets slide in from the right at 240 ms ease-out, use a lighter <code class="kbd">rgba(0,0,0,.32)</code> scrim than modals, and persist the page-behind in a partially active state. Default desktop width is <b>550 px</b>; tablet collapses to <b>450 px</b>; mobile becomes a full-screen takeover.</p>
+
+  <!-- Sheet Builder -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Sheet Builder</h2>
+      <div class="desc">Configure a sheet interactively. Pick a content pattern, edit copy, choose CTAs — the preview updates live and the generated HTML is copyable at the bottom.</div>
+    </div>
+    <div class="section-body" id="sb-root" style="background:#F4F6F8;min-height:760px;position:relative;">
+      <div style="padding:60px;color:var(--ps-sem-fg-tertiary);text-align:center;font-style:italic;">Loading Sheet Builder…</div>
+    </div>
+  </div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    const Seg = ({ value, onChange, options }) =>
+      <div className="sb-seg">{options.map((o) =>
+        <button key={o.value} className={value === o.value ? 'on' : ''} onClick={() => onChange(o.value)}>{o.label}</button>
+      )}</div>;
+
+    function SheetBuilder() {
+      const [t, setT] = useState({
+        size: 'desktop',
+        pattern: 'form',
+        title: 'Edit asset',
+        subtitle: 'Update the details for this asset.',
+        showSubtitle: true,
+        primaryLabel: 'Save changes',
+        primaryStyle: 'primary',
+        secondaryLabel: 'Cancel',
+        secondaryStyle: 'ghost',
+      });
+      const set = (k, v) => setT(s => ({ ...s, [k]: v }));
+
+      const widths = { desktop: 550, tablet: 450, mobile: 375 };
+      const w = widths[t.size];
+
+      const body = t.pattern === 'form' ? <FormBody/>
+        : t.pattern === 'select' ? <SelectBody/>
+        : t.pattern === 'detail' ? <DetailBody/>
+        : <InfoBody/>;
+
+      const primary = t.primaryStyle === 'none' ? null
+        : t.primaryStyle === 'pill' ? <button className="btn btn--pill">{t.primaryLabel}</button>
+        : <button className="btn btn--primary">{t.primaryLabel}</button>;
+      const secondary = t.secondaryStyle === 'none' ? null
+        : t.secondaryStyle === 'text' ? <button className="btn--text">{t.secondaryLabel}</button>
+        : <button className="btn btn--ghost">{t.secondaryLabel}</button>;
+
+      return (
+        <>
+          <div className="sb-tweaks">
+
+            <div className="sb-section"><span>1 · Setup</span></div>
+            <div className="sb-tweak"><label className="k">Width</label>
+              <Seg value={t.size} onChange={(v) => set('size', v)} options={[
+                { value: 'desktop', label: 'Desktop' },
+                { value: 'tablet', label: 'Tablet' },
+                { value: 'mobile', label: 'Mobile' },
+              ]}/>
+            </div>
+            <div className="sb-tweak"><label className="k">Content Pattern</label>
+              <select value={t.pattern} onChange={(e) => set('pattern', e.target.value)}>
+                <option value="form">Form · edit fields</option>
+                <option value="select">Select · multi-select cards</option>
+                <option value="detail">Detail · read-only record</option>
+                <option value="info">Info · activity timeline</option>
+              </select>
+            </div>
+            <div className="sb-tweak"><label className="k">Title</label>
+              <input type="text" value={t.title} onChange={(e) => set('title', e.target.value)}/>
+            </div>
+            <div className="sb-tweak"><label className="k">Subtitle</label>
+              <input type="text" value={t.subtitle} onChange={(e) => set('subtitle', e.target.value)}/>
+            </div>
+            <div className="sb-tweak"><label className="k">Options</label>
+              <label className="sb-check"><input type="checkbox" checked={t.showSubtitle} onChange={(e) => set('showSubtitle', e.target.checked)}/>Show subtitle</label>
+            </div>
+
+            <div className="sb-section"><span>2 · Actions</span></div>
+            <div className="sb-tweak"><label className="k">Primary CTA Label</label>
+              <input type="text" value={t.primaryLabel} onChange={(e) => set('primaryLabel', e.target.value)}/>
+            </div>
+            <div className="sb-tweak"><label className="k">Primary CTA Style</label>
+              <select value={t.primaryStyle} onChange={(e) => set('primaryStyle', e.target.value)}>
+                <option value="primary">PS Blue Solid</option>
+                <option value="pill">Orange Pill</option>
+                <option value="none">— None —</option>
+              </select>
+            </div>
+            <div className="sb-tweak"><label className="k">Secondary CTA Label</label>
+              <input type="text" value={t.secondaryLabel} onChange={(e) => set('secondaryLabel', e.target.value)}/>
+            </div>
+            <div className="sb-tweak"><label className="k">Secondary CTA Style</label>
+              <select value={t.secondaryStyle} onChange={(e) => set('secondaryStyle', e.target.value)}>
+                <option value="ghost">Ghost</option>
+                <option value="text">Text Link</option>
+                <option value="secondary">Outlined</option>
+                <option value="none">— None —</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div className="sb-stage">
+            <div className="page-chrome">
+              <div className="page-chrome__nav">
+                <div className="page-chrome__logo"></div>
+                <div className="page-chrome__search"></div>
+                <div className="page-chrome__cart"></div>
+              </div>
+              <div className="page-chrome__hero">Asset Inventory · {t.pattern === 'select' ? 'Add Learners' : t.pattern === 'detail' ? 'Asset Detail' : t.pattern === 'info' ? 'Asset Uptime · Somatom Definition AS' : 'Edit Asset'}</div>
+              <div className="page-chrome__content">
+                <div className="page-chrome__bar w90"></div>
+                <div className="page-chrome__bar w70"></div>
+                <div className="page-chrome__bar w80"></div>
+                <div className="page-chrome__bar w50"></div>
+                <div className="page-chrome__bar w70"></div>
+                <div className="page-chrome__bar w90"></div>
+              </div>
+            </div>
+            <div className="sb-scrim"></div>
+            <div className="sheet" style={{ width: w + 'px' }}>
+              <div className="sheet-head">
+                <div className="sheet-head__text">
+                  <h3>{t.title}</h3>
+                  {t.showSubtitle && t.subtitle && <p>{t.subtitle}</p>}
+                </div>
+                <button className="sheet-head__close" aria-label="Close">
+                  <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M1 1l12 12M13 1L1 13"/></svg>
+                </button>
+              </div>
+              <div className="sheet-body">{body}</div>
+              {(primary || secondary) && (
+                <div className="sheet-actions">
+                  {secondary}
+                  {primary}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <CodeBox t={t} w={w}/>
+        </>
+      );
+    }
+
+    function FormBody() {
+      return (
+        <>
+          <div className="ff"><label>Asset name</label><input defaultValue="Stryker 3M Power Pro XT IV Pole"/></div>
+          <div className="ff"><label>Department</label>
+            <select defaultValue="ICU"><option>ICU — 4 West</option><option>OR — Suite 3</option><option>Emergency</option></select>
+          </div>
+          <div className="ff"><label>Serial number</label><input defaultValue="SPP-XT-449821"/></div>
+          <div className="ff"><label>Notes</label><textarea defaultValue="Pole leans slightly when wheels lock. Caster set replaced 03/22."/></div>
+        </>
+      );
+    }
+
+    function SelectBody() {
+      const learners = [
+        { name: 'Anna Schmidt', meta: 'Biomed · Imaging' },
+        { name: 'Dr. Patel', meta: 'Cardiology' },
+        { name: 'Logan Cole', meta: 'Materials Mgmt.' },
+        { name: 'Earl Grey', meta: 'Biomed · Lab' },
+        { name: 'Maya Lopez', meta: 'Service · OR' },
+        { name: 'Sam Reyes', meta: 'Procurement' },
+      ];
+      return (
+        <>
+          <div className="sheet-search">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
+            <input placeholder="Search learners…"/>
+          </div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            {learners.map((l, i) => {
+              const initials = l.name.split(' ').map(s => s[0]).join('').slice(0,2).toUpperCase();
+              const checked = i < 2;
+              return (
+                <div key={i} className={`drawer-card${checked ? ' is-selected' : ''}`}>
+                  <div className={`drawer-card__check${checked ? ' is-checked' : ''}`}>
+                    {checked && <svg viewBox="0 0 12 10" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 5 4 8 11 1"/></svg>}
+                  </div>
+                  <div className="drawer-card__avatar">{initials}</div>
+                  <div className="drawer-card__main">
+                    <span className="drawer-card__name">{l.name}</span>
+                    <span className="drawer-card__meta">{l.meta}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      );
+    }
+
+    function DetailBody() {
+      const meta = [
+        { label: 'Serial #', value: 'SPP-XT-449821', mono: true },
+        { label: 'Manufacturer', value: 'Stryker' },
+        { label: 'Model', value: '3M Power Pro XT' },
+        { label: 'Department', value: 'ICU — 4 West' },
+        { label: 'Acquired', value: 'Aug 14, 2023' },
+        { label: 'Warranty', value: 'Expires 2027' },
+      ];
+      const timeline = [
+        { date: '03/22/26', label: 'Caster set replaced', tone: 'green' },
+        { date: '01/08/26', label: 'PM inspection passed', tone: 'green' },
+        { date: '11/04/25', label: 'Wheel lock reported', tone: 'amber' },
+        { date: '08/14/23', label: 'Asset commissioned', tone: 'blue' },
+      ];
+      const toneBg = { green: '#0A7850', amber: '#9A6A00', blue: '#005BA6' };
+      return (
+        <div style={{ display:'flex', flexDirection:'column', gap:24 }}>
+
+          {/* Hero summary */}
+          <div style={{ display:'flex', gap:16, alignItems:'flex-start' }}>
+            <div style={{
+              flexShrink:0, width:72, height:72, borderRadius:8,
+              background:'linear-gradient(135deg,#EFF9FE 0%,#D0EDFC 100%)',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              color:'var(--ps-sem-fg-brand)'
+            }}>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2v6m0 0l-3-3m3 3l3-3"/><rect x="4" y="9" width="16" height="13" rx="2"/><path d="M9 22V14h6v8"/>
+              </svg>
+            </div>
+            <div style={{ flex:1, minWidth:0, display:'flex', flexDirection:'column', gap:6 }}>
+              <div style={{ font:"600 16px/1.3 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-primary)' }}>Stryker IV Pole</div>
+              <div style={{ font:"14px/1.4 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-tertiary)' }}>3M Power Pro XT · ICU — 4 West</div>
+              <div style={{ display:'flex', gap:8, marginTop:4 }}>
+                <span style={{ background:'#E5F9F2', color:'#0A7850', font:"700 11px/1 'Source Sans Pro',sans-serif", padding:'5px 9px', borderRadius:99, border:'1px solid #B8E6D5', textTransform:'uppercase', letterSpacing:.5 }}>● Operational</span>
+                <span style={{ background:'var(--ps-sem-bg-muted)', color:'var(--ps-sem-fg-secondary)', font:"600 11px/1 'Source Sans Pro',sans-serif", padding:'5px 9px', borderRadius:99, textTransform:'uppercase', letterSpacing:.5 }}>Warranty active</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick stats */}
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8, padding:'14px 0', borderTop:'1px solid #F1F1F1', borderBottom:'1px solid #F1F1F1' }}>
+            <div>
+              <div style={{ font:"700 10px/1 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-tertiary)', letterSpacing:.8, textTransform:'uppercase', marginBottom:6 }}>Uptime</div>
+              <div style={{ font:"600 20px/1 'Source Sans Pro',sans-serif", color:'#0A7850' }}>98.4%</div>
+              <div style={{ font:"12px/1.2 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-tertiary)', marginTop:4 }}>30-day rolling</div>
+            </div>
+            <div style={{ borderLeft:'1px solid #F1F1F1', paddingLeft:14 }}>
+              <div style={{ font:"700 10px/1 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-tertiary)', letterSpacing:.8, textTransform:'uppercase', marginBottom:6 }}>Last service</div>
+              <div style={{ font:"600 20px/1 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-primary)' }}>51d</div>
+              <div style={{ font:"12px/1.2 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-tertiary)', marginTop:4 }}>Mar 22, 2026</div>
+            </div>
+            <div style={{ borderLeft:'1px solid #F1F1F1', paddingLeft:14 }}>
+              <div style={{ font:"700 10px/1 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-tertiary)', letterSpacing:.8, textTransform:'uppercase', marginBottom:6 }}>Open WOs</div>
+              <div style={{ font:"600 20px/1 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-primary)' }}>0</div>
+              <div style={{ font:"12px/1.2 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-tertiary)', marginTop:4 }}>No active issues</div>
+            </div>
+          </div>
+
+          {/* Specs grid */}
+          <div>
+            <div style={{ font:"700 11px/1 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-tertiary)', letterSpacing:.8, textTransform:'uppercase', marginBottom:12 }}>Specifications</div>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px 20px' }}>
+              {meta.map((m, i) => (
+                <div key={i} style={{ display:'flex', flexDirection:'column', gap:2 }}>
+                  <span style={{ font:"12px/1.2 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-tertiary)' }}>{m.label}</span>
+                  <span style={{ font:`600 14px/1.3 ${m.mono ? 'ui-monospace,Menlo,monospace' : "'Source Sans Pro',sans-serif"}`, color:'var(--ps-sem-fg-primary)' }}>{m.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Activity timeline */}
+          <div>
+            <div style={{ font:"700 11px/1 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-tertiary)', letterSpacing:.8, textTransform:'uppercase', marginBottom:12 }}>Recent activity</div>
+            <ol style={{ margin:0, padding:0, listStyle:'none', display:'flex', flexDirection:'column', gap:10, position:'relative' }}>
+              {timeline.map((e, i) => (
+                <li key={i} style={{ display:'flex', gap:12, alignItems:'flex-start' }}>
+                  <div style={{
+                    flexShrink:0, width:8, height:8, borderRadius:'50%',
+                    background: toneBg[e.tone], marginTop:6,
+                    boxShadow: `0 0 0 3px ${toneBg[e.tone]}22`
+                  }}></div>
+                  <div style={{ flex:1, display:'flex', justifyContent:'space-between', gap:12, alignItems:'baseline', borderBottom: i < timeline.length - 1 ? '1px solid #F1F1F1' : 'none', paddingBottom:10 }}>
+                    <span style={{ font:"14px/1.3 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-primary)' }}>{e.label}</span>
+                    <span style={{ font:"600 12px/1 ui-monospace,Menlo,monospace", color:'var(--ps-sem-fg-tertiary)', flexShrink:0 }}>{e.date}</span>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+        </div>
+      );
+    }
+
+    function InfoBody() {
+      const events = [
+        { date: 'Dec 08, 2025', items: [
+          { kind: 'success', label: 'WO Closed', time: 'Dec 08, 2025  14:22:00', note: { head: 'Resolution Note', body: 'Replaced X-ray tube on the CT Scanner. System is now fully operational', by: 'John Smith', time: 'Dec 04, 2025  -  14:22:00' } },
+          { kind: 'service', label: 'Scheduled Service Complete', time: 'Dec 08, 2025  14:22:00', note: { head: 'Note', body: "The CT's X-Ray tube has failed. A new tube has been ordered and is on the way", send: 'Stakeholders', by: 'John Smith', time: 'Dec 04, 2025  -  14:22:00' } },
+        ]},
+        { date: 'Dec 07, 2025', items: [
+          { kind: 'alert', label: 'Service Scheduled', time: 'Dec 07, 2025  14:22:00' },
+          { kind: 'service', label: 'Parts Order Arrived', time: 'Dec 07, 2025  14:22:00' },
+        ]},
+        { date: 'Dec 06, 2025', items: [
+          { kind: 'service', label: 'Parts Order Shipped', time: 'Dec 06, 2025  14:22:00' },
+        ]},
+        { date: 'Dec 05, 2025', items: [
+          { kind: 'cart', label: 'Parts Order Ordered', time: 'Dec 05, 2025  14:22:00', note: { head: 'Note', body: "The CT's X-Ray tube has failed. A new tube has been ordered and is on the way", send: 'Stakeholders', by: 'John Smith', time: 'Dec 04, 2025  -  14:22:00' } },
+          { kind: 'alert', label: 'WO Status: On Hold (Awaiting Parts)', by: 'by System', time: 'Dec 05, 2025  14:22:00' },
+        ]},
+        { date: 'Dec 04, 2025', items: [
+          { kind: 'alert', label: 'WO Status: Work in Progress', by: 'by System', time: 'Dec 04, 2025  14:22:00' },
+          { kind: 'avatar', label: 'WO Assigned to John Smith', by: 'by System', time: 'Dec 04, 2025  14:22:00' },
+          { kind: 'alert', label: 'WO Created', by: 'by System', time: 'Dec 04, 2025  14:22:00', note: { head: 'Note', body: 'CT is down due to X-ray tube failure. A new tube is needed.', by: 'John Smith', time: 'Dec 04, 2025  -  14:22:00' } },
+          { kind: 'warning', label: 'Critical Hardware Fault: Gradient Power Supply (PDR)', by: 'by Glassbeam', time: 'Dec 04, 2025  14:22:00', meta: 'Severity: High' },
+        ]},
+      ];
+      const Icon = ({ kind }) => {
+        if (kind === 'success') return (
+          <div style={{ width:22, height:22, borderRadius:'50%', background:'#16A34A', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="5 12 10 17 19 8"/></svg>
+          </div>
+        );
+        if (kind === 'service') return (
+          <div style={{ width:22, height:22, borderRadius:5, background:'#1E88E5', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6.6 6.6a1.5 1.5 0 0 0 2.1 2.1l6.6-6.6a4 4 0 0 0 5.4-5.4l-2.6 2.6-1.4-1.4 2.6-2.6z"/></svg>
+          </div>
+        );
+        if (kind === 'alert') return (
+          <div style={{ width:22, height:22, position:'relative', flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#DC2626" stroke="#DC2626" strokeLinejoin="round" strokeWidth="3"><path d="M12 2.5L22.5 21.5H1.5L12 2.5Z"/></svg>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" style={{ position:'absolute', top:8 }}><path d="M12 9v5"/><path d="M12 17h.01"/></svg>
+          </div>
+        );
+        if (kind === 'cart') return (
+          <div style={{ width:22, height:22, borderRadius:'50%', background:'#1E88E5', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+          </div>
+        );
+        if (kind === 'avatar') return (
+          <div style={{ width:22, height:22, borderRadius:'50%', background:'linear-gradient(135deg,#C9A78F,#A8825A)', flexShrink:0 }}></div>
+        );
+        // warning amber circle
+        return (
+          <div style={{ width:22, height:22, borderRadius:'50%', background:'#F59E0B', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+            <svg width="4" height="12" viewBox="0 0 4 12" fill="#fff" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="4" height="7" rx="2"/><circle cx="2" cy="10.5" r="1.5"/></svg>
+          </div>
+        );
+      };
+      return (
+        <div style={{ display:'flex', flexDirection:'column', gap:14, margin:'-24px -30px -30px', background:'#F4F6F8' }}>
+          {events.map((day, di) => (
+            <div key={di} style={{ display:'grid', gridTemplateColumns:'100px 1fr', alignItems:'start' }}>
+              <div style={{ font:"700 12px/1 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-secondary)', letterSpacing:.2, padding:'18px 0 0 18px' }}>{day.date}</div>
+              <div style={{ display:'flex', flexDirection:'column', gap:8, padding:'10px 20px 10px 0' }}>
+                {day.items.map((e, i) => (
+                  <div key={i} style={{ background:'var(--ps-sem-bg-surface)', borderRadius:5, padding:'14px 16px', boxShadow:'0 1px 2px rgba(0,0,0,.04)' }}>
+                    <div style={{ display:'flex', alignItems:'center', gap:12, justifyContent:'space-between' }}>
+                      <div style={{ display:'flex', alignItems:'center', gap:10, minWidth:0 }}>
+                        <Icon kind={e.kind}/>
+                        <span style={{ font:"700 14px/1.3 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-primary)' }}>
+                          {e.label}
+                          {e.by && <span style={{ fontWeight:400, color:'var(--ps-sem-fg-secondary)', marginLeft:6 }}> {e.by}</span>}
+                        </span>
+                      </div>
+                      <span style={{ font:"400 12px/1 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-secondary)', flexShrink:0, letterSpacing:.2 }}>{e.time}</span>
+                    </div>
+                    {e.meta && (
+                      <div style={{ marginTop:6, paddingLeft:34, font:"13px/1.4 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-primary)' }}><b>Severity:</b> High</div>
+                    )}
+                    {e.note && (
+                      <>
+                        <div style={{ borderTop:'1px solid #E5E7EB', margin:'12px 0 12px' }}></div>
+                        <div style={{ font:"700 10px/1 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-secondary)', letterSpacing:1.2, textTransform:'uppercase', marginBottom:8 }}>{e.note.head}</div>
+                        <div style={{ font:"14px/1.4 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-primary)', marginBottom:8 }}>{e.note.body}</div>
+                        <div style={{ display:'flex', gap:18, flexWrap:'wrap', font:"13px/1.2 'Source Sans Pro',sans-serif", color:'var(--ps-sem-fg-primary)' }}>
+                          {e.note.send && <span><b>Send To:</b> {e.note.send}</span>}
+                          <span><b>By:</b> {e.note.by}</span>
+                          <span><b>Time:</b> {e.note.time}</span>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function CodeBox({ t, w }) {
+      const [copied, setCopied] = useState(false);
+      const html = `<div class="sheet" style="width:${w}px;">
+  <div class="sheet-head">
+    <div class="sheet-head__text">
+      <h3>${t.title}</h3>
+      ${t.showSubtitle && t.subtitle ? `<p>${t.subtitle}</p>` : ''}
+    </div>
+    <button class="sheet-head__close" aria-label="Close">…</button>
+  </div>
+  <div class="sheet-body">
+    <!-- ${t.pattern} content -->
+  </div>
+  <div class="sheet-actions">
+    ${t.secondaryStyle !== 'none' ? `<button class="${t.secondaryStyle === 'text' ? 'btn--text' : t.secondaryStyle === 'ghost' ? 'btn btn--ghost' : 'btn btn--secondary'}">${t.secondaryLabel}</button>` : ''}
+    ${t.primaryStyle !== 'none' ? `<button class="${t.primaryStyle === 'pill' ? 'btn btn--pill' : 'btn btn--primary'}">${t.primaryLabel}</button>` : ''}
+  </div>
+</div>`;
+      return (
+        <div className="sb-codebox">
+          <button className={`sb-copy${copied ? ' copied' : ''}`} onClick={() => {
+            navigator.clipboard.writeText(html);
+            setCopied(true); setTimeout(() => setCopied(false), 1600);
+          }}>{copied ? 'Copied ✓' : 'Copy HTML'}</button>
+          {html}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('sb-root'));
+    root.render(<SheetBuilder/>);
+  </script>
+
+
+  <!-- Default Desktop Sheet -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Sheet · Desktop · 550 px</h2>
+      <div class="desc">The standard right-side sheet. Title + subtitle, scrollable body, footer with action buttons. Used for edit, detail, and select flows.</div>
+    </div>
+    <div class="section-body">
+      <div class="stage stage--desk">
+        <div class="page-chrome">
+          <div class="page-chrome__nav"><div class="page-chrome__logo"></div><div class="page-chrome__search"></div><div class="page-chrome__cart"></div></div>
+          <div class="page-chrome__hero">Asset Detail · Stryker 3M Power Pro XT</div>
+          <div class="page-chrome__content">
+            <div class="page-chrome__bar w90"></div>
+            <div class="page-chrome__bar w70"></div>
+            <div class="page-chrome__bar w80"></div>
+            <div class="page-chrome__bar w50"></div>
+          </div>
+        </div>
+        <div class="scrim"></div>
+        <div class="sheet">
+          <div class="sheet-head">
+            <div class="sheet-head__text">
+              <h3>Edit asset</h3>
+              <p>Update the details for this asset.</p>
+            </div>
+            <button class="sheet-head__close" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"/></svg></button>
+          </div>
+          <div class="sheet-body">
+            <div class="ff"><label>Asset name</label><input value="Stryker 3M Power Pro XT IV Pole"></div>
+            <div class="ff"><label>Department</label>
+              <select><option>ICU — 4 West</option><option>OR — Suite 3</option><option>Emergency</option></select>
+            </div>
+            <div class="ff"><label>Serial number</label><input value="SPP-XT-449821"></div>
+            <div class="ff"><label>Notes</label><textarea>Pole leans slightly when wheels lock. Caster set replaced 03/22.</textarea></div>
+          </div>
+          <div class="sheet-actions">
+            <button class="btn btn--ghost">Cancel</button>
+            <button class="btn btn--primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drawer Patterns · In-Product (Picker / Form / Wizard) -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Drawer Patterns · In&nbsp;Product</h2>
+      <div class="desc">Three real drawer flows from the PartsSource Learn codebase, distilled into reference patterns. Each composes the same <code class="kbd">Drawer</code> + <code class="kbd">DrawerHeader</code> + <code class="kbd">DrawerContainer</code> shell — the body content is what changes. The header here uses the in-product variant (<b>24&thinsp;px semibold</b>, grey-1) instead of the marketing-style 30&thinsp;px light header used elsewhere on this page.</div>
+    </div>
+    <div id="dp-root">
+      <div style="padding:80px;color:var(--ps-sem-fg-tertiary);text-align:center;font-style:italic;background:var(--ps-sem-bg-canvas);">Loading drawer patterns…</div>
+    </div>
+  </div>
+
+  <script type="text/babel" data-presets="react">
+    (function () {
+      const { useState, useMemo } = React;
+
+      /* ---------- Source data ---------- */
+      const MODULES = [
+        { id: 'm1', title: 'Bedside Catheter Insertion', procedure: 'Central Line Placement', released: true },
+        { id: 'm2', title: 'Sterile Field Setup', procedure: 'Pre-Op Prep', released: true },
+        { id: 'm3', title: 'Ventilator Initial Settings', procedure: 'Respiratory · ICU', released: true },
+        { id: 'm4', title: 'Defibrillator Pad Placement', procedure: 'Code Blue Response', released: true },
+        { id: 'm5', title: 'IV Pump Programming', procedure: 'Infusion · General', released: true },
+        { id: 'm6', title: 'Chest Tube Drainage System', procedure: 'Thoracic · Post-Op', released: true },
+        { id: 'm7', title: 'Patient Transfer · Spine Precautions', procedure: 'Trauma · ER', released: true },
+        { id: 'm8', title: 'Blood Glucose Monitoring', procedure: 'Med-Surg', released: true },
+      ];
+      const PROFILES = [
+        { id: 'p1', name: 'Anna Schmidt',   email: 'anna.schmidt@hospital.org',   color: '#D0EDFC', fg: '#005BA6' },
+        { id: 'p2', name: 'Dr. Raj Patel',  email: 'r.patel@hospital.org',        color: '#FDE2D3', fg: '#9C4A1B' },
+        { id: 'p3', name: 'Logan Cole',     email: 'l.cole@hospital.org',         color: '#DCEAD2', fg: '#3D6B1F' },
+        { id: 'p4', name: 'Maya Lopez',     email: 'm.lopez@hospital.org',        color: '#E7DAF3', fg: '#5C3686' },
+        { id: 'p5', name: 'Sam Reyes',      email: 's.reyes@hospital.org',        color: '#FFE9B3', fg: '#7C5A0E' },
+        { id: 'p6', name: 'Earl Grey',      email: 'e.grey@hospital.org',         color: '#D8E2EC', fg: '#2F4A66' },
+      ];
+
+      /* ---------- Reusable atoms ---------- */
+      const Icon = ({ d, sw = 2, w = 16, h = 16 }) =>
+        <svg width={w} height={h} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round">{d}</svg>;
+
+      const PlusIcon  = () => <Icon d={<><path d="M12 5v14"/><path d="M5 12h14"/></>}/>;
+      const XIcon     = () => <Icon d={<><path d="M18 6L6 18"/><path d="M6 6l12 12"/></>}/>;
+      const CheckIcon = ({ w = 12 }) => <Icon w={w} h={w} sw={3} d={<polyline points="20 6 9 17 4 12"/>}/>;
+      const SearchIcon= () => (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+          <circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/>
+        </svg>
+      );
+      const ChevronIcon = () => <Icon d={<polyline points="6 9 12 15 18 9"/>}/>;
+      const ArrowLeft   = () => <Icon w={14} h={14} d={<><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></>}/>;
+
+      /* ---------- Info blocks (stand-ins for ModuleInfoBlock / ProfileInfoBlock) ---------- */
+      const ModuleInfoBlock = ({ m }) => (
+        <div className="dp-module">
+          <div className="dp-module__title">{m.title}</div>
+          <div className="dp-module__meta">
+            <span className="dp-module__badge">Interactive</span>
+            <span className="dp-module__procedure">{m.procedure}</span>
+          </div>
+        </div>
+      );
+      const ProfileInfoBlock = ({ p }) => {
+        const initials = p.name.split(' ').map(s => s[0]).join('').slice(0, 2).toUpperCase();
+        return (
+          <div className="dp-profile">
+            <div className="dp-profile__avatar" style={{ background: p.color, color: p.fg }}>{initials}</div>
+            <div className="dp-profile__text">
+              <span className="dp-profile__name">{p.name}</span>
+              <span className="dp-profile__email">{p.email}</span>
+            </div>
+          </div>
+        );
+      };
+
+      /* ---------- Drawer primitives ---------- */
+      const DrawerHeader = ({ title, subtitle, onClose }) => (
+        <div className="sheet-head sheet-head--prod">
+          <div className="sheet-head__text">
+            <h3>{title}</h3>
+            {subtitle && <p>{subtitle}</p>}
+          </div>
+          <button className="sheet-head__close" aria-label="Close" onClick={onClose}>
+            <XIcon/>
+          </button>
+        </div>
+      );
+
+      /* ---------- Step pills (uploads/step-pills.tsx) ---------- */
+      const StepPills = ({ steps, currentIndex, onJumpBack, lockedIndices = new Set() }) => (
+        <div className="dp-steps">
+          {steps.map((s, idx) => {
+            const isCurrent = idx === currentIndex;
+            const isVisited = idx < currentIndex;
+            const isLocked = lockedIndices.has(idx);
+            const canClick = isVisited && !isLocked;
+            const cls = ['dp-step',
+              isCurrent && 'is-current',
+              isVisited && 'is-visited',
+              isLocked && 'is-locked'].filter(Boolean).join(' ');
+            return (
+              <button key={s.id} type="button" className={cls}
+                onClick={canClick ? () => onJumpBack(idx) : undefined}
+                disabled={!canClick}>
+                {isVisited
+                  ? <span className="dp-step__num"><CheckIcon w={10}/></span>
+                  : <span className="dp-step__num">{idx + 1}</span>}
+                <span>{s.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      );
+
+      /* ---------- Entity cards (uploads/entity-cards.tsx) ---------- */
+      const AddEntityCard = ({ children, onClick }) => (
+        <div className="dp-listcard">
+          <div className="dp-listcard__main">{children}</div>
+          <button className="dp-listcard__action" aria-label="Add" onClick={onClick}><PlusIcon/></button>
+        </div>
+      );
+      const RemoveEntityCard = ({ children, onClick, disabled }) => (
+        <div className="dp-listcard">
+          <div className="dp-listcard__main">{children}</div>
+          <button className="dp-listcard__action is-destructive" aria-label="Remove"
+            onClick={onClick} disabled={disabled} style={disabled ? { opacity: .5, cursor: 'not-allowed' } : {}}>
+            <XIcon/>
+          </button>
+        </div>
+      );
+
+      /* ---------- Selection footer (uploads/selection-panel.tsx) ---------- */
+      const SelectionFooter = ({ items, renderItem, getId, onRemove, onNext, nextDisabled, nextLabel = 'Next' }) => {
+        const [expanded, setExpanded] = useState(items.length > 0);
+        return (
+          <div className="dp-selfooter">
+            <button className={'dp-selfooter__head' + (expanded ? ' expanded' : '')} onClick={() => setExpanded(v => !v)}>
+              <span>{items.length} selected</span>
+              <ChevronIcon/>
+            </button>
+            {expanded && items.length > 0 && (
+              <div className="dp-selfooter__list">
+                {items.map(item => (
+                  <RemoveEntityCard key={getId(item)} onClick={() => onRemove(item)}>
+                    {renderItem(item)}
+                  </RemoveEntityCard>
+                ))}
+              </div>
+            )}
+            <button className="dp-btn" disabled={nextDisabled} onClick={onNext}>{nextLabel}</button>
+          </div>
+        );
+      };
+
+      /* ---------- 1 · Picker drawer (Create Assessment) ---------- */
+      function PickerDrawer({ onClose }) {
+        const [usedIds, setUsedIds] = useState(new Set(['m4']));
+        const [busyId, setBusyId] = useState(null);
+        const available = MODULES.filter(m => !usedIds.has(m.id));
+        const pick = (id) => {
+          setBusyId(id);
+          setTimeout(() => {
+            setUsedIds(prev => new Set([...prev, id]));
+            setBusyId(null);
+          }, 700);
+        };
+        return (
+          <>
+            <DrawerHeader
+              title="Create Assessment"
+              subtitle="Select a module to create an assessment"
+              onClose={onClose}
+            />
+            <div className="sheet-body">
+              {available.length === 0 ? (
+                <div className="dp-empty">All modules already have assessments.</div>
+              ) : (
+                <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                  {available.map(m => (
+                    <button key={m.id} type="button"
+                      className={'dp-listcard is-interactive' + (busyId === m.id ? ' is-busy' : '')}
+                      onClick={() => pick(m.id)}>
+                      <div className="dp-listcard__main">
+                        <ModuleInfoBlock m={m}/>
+                      </div>
+                      {busyId === m.id && (
+                        <span style={{ color:'var(--ps-sem-fg-brand)', font:"600 12px/1 'Source Sans Pro',sans-serif" }}>Creating…</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </>
+        );
+      }
+
+      /* ---------- 2 · Form drawer (Create Bundle) ---------- */
+      function FormDrawer({ onClose }) {
+        const [name, setName] = useState('');
+        const [desc, setDesc] = useState('');
+        const [active, setActive] = useState(true);
+        const [pending, setPending] = useState(false);
+        const [submitted, setSubmitted] = useState(false);
+        const canSubmit = name.trim().length > 0 && !pending;
+        const submit = () => {
+          if (!canSubmit) return;
+          setPending(true);
+          setTimeout(() => { setPending(false); setSubmitted(true); }, 900);
+        };
+        return (
+          <>
+            <DrawerHeader
+              title="Create Bundle"
+              subtitle="Create a content bundle to grant access to modules."
+              onClose={onClose}
+            />
+            <div className="sheet-body">
+              {submitted ? (
+                <div className="dp-empty" style={{ background:'#E5F9F2', borderColor:'#B8E6D5', color:'#0A7850' }}>
+                  ✓ Bundle <b>“{name}”</b> created.
+                </div>
+              ) : (
+                <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+                  <label className="dp-ff">
+                    <span className="dp-ff__label">Name</span>
+                    <input className="dp-ff__input" type="text" placeholder="Bundle name"
+                      autoFocus value={name} onChange={(e) => setName(e.target.value)}/>
+                  </label>
+                  <label className="dp-ff">
+                    <span className="dp-ff__label">Description</span>
+                    <textarea className="dp-ff__textarea" placeholder="Optional description"
+                      value={desc} onChange={(e) => setDesc(e.target.value)} rows={3}/>
+                  </label>
+                  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+                    <span className="dp-ff__label">Status</span>
+                    <button type="button" className={'dp-toggle' + (active ? ' on' : '')}
+                      onClick={() => setActive(v => !v)} aria-pressed={active}
+                      aria-label={active ? 'Active' : 'Inactive'}>
+                      <span className="dp-toggle__thumb"></span>
+                    </button>
+                  </div>
+                  <button className="dp-btn" disabled={!canSubmit} onClick={submit} style={{ marginTop:6 }}>
+                    {pending && <span className="dp-btn__spinner"></span>}
+                    {pending ? 'Creating…' : 'Create Bundle'}
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
+        );
+      }
+
+      /* ---------- 3 · Wizard drawer (Create Assignment) ---------- */
+      const WIZARD_STEPS = [
+        { id: 'modules',  label: 'Modules' },
+        { id: 'profiles', label: 'Profiles' },
+        { id: 'confirm',  label: 'Confirm' },
+      ];
+
+      function WizardDrawer({ onClose }) {
+        const [step, setStep] = useState(0);
+        const [modIds, setModIds] = useState(new Set());
+        const [profIds, setProfIds] = useState(new Set());
+        const [query, setQuery] = useState('');
+        const [finalized, setFinalized] = useState(false);
+
+        const toggleMod = (id) => setModIds(prev => {
+          const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n;
+        });
+        const toggleProf = (id) => setProfIds(prev => {
+          const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n;
+        });
+
+        const filteredMods = useMemo(() => {
+          const q = query.trim().toLowerCase();
+          return MODULES
+            .filter(m => !modIds.has(m.id))
+            .filter(m => !q || (m.title + ' ' + m.procedure).toLowerCase().includes(q));
+        }, [modIds, query]);
+
+        const filteredProfs = useMemo(() => {
+          const q = query.trim().toLowerCase();
+          return PROFILES
+            .filter(p => !profIds.has(p.id))
+            .filter(p => !q || (p.name + ' ' + p.email).toLowerCase().includes(q));
+        }, [profIds, query]);
+
+        const selectedMods  = MODULES.filter(m => modIds.has(m.id));
+        const selectedProfs = PROFILES.filter(p => profIds.has(p.id));
+
+        const goTo = (idx) => { setStep(idx); setQuery(''); };
+        const next = () => { setStep(s => Math.min(s + 1, WIZARD_STEPS.length - 1)); setQuery(''); };
+        const back = () => { setStep(s => Math.max(s - 1, 0)); setQuery(''); };
+
+        const pills = (
+          <StepPills steps={WIZARD_STEPS} currentIndex={step} onJumpBack={goTo}/>
+        );
+
+        if (finalized) {
+          return (
+            <>
+              <DrawerHeader title="Assignment created" subtitle="Modules have been assigned to selected team members." onClose={onClose}/>
+              <div className="sheet-body">
+                <div className="dp-empty" style={{ background:'#E5F9F2', borderColor:'#B8E6D5', color:'#0A7850' }}>
+                  ✓ Assigned <b>{selectedMods.length}</b> module{selectedMods.length === 1 ? '' : 's'} to <b>{selectedProfs.length}</b> team member{selectedProfs.length === 1 ? '' : 's'}.
+                </div>
+              </div>
+            </>
+          );
+        }
+
+        if (WIZARD_STEPS[step].id === 'modules') {
+          return (
+            <>
+              <DrawerHeader title="Modules" subtitle="Select the modules you want to assign and click next." onClose={onClose}/>
+              <div className="sheet-body">
+                {pills}
+                <div className="dp-search">
+                  <SearchIcon/>
+                  <input placeholder="Search by title or procedure" value={query} onChange={(e) => setQuery(e.target.value)}/>
+                </div>
+                <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                  {filteredMods.length === 0
+                    ? <div className="dp-empty">No modules match your search.</div>
+                    : filteredMods.map(m => (
+                        <AddEntityCard key={m.id} onClick={() => toggleMod(m.id)}>
+                          <ModuleInfoBlock m={m}/>
+                        </AddEntityCard>
+                      ))
+                  }
+                </div>
+              </div>
+              <SelectionFooter
+                items={selectedMods}
+                getId={(m) => m.id}
+                renderItem={(m) => <ModuleInfoBlock m={m}/>}
+                onRemove={(m) => toggleMod(m.id)}
+                onNext={next}
+                nextDisabled={selectedMods.length === 0}
+              />
+            </>
+          );
+        }
+
+        if (WIZARD_STEPS[step].id === 'profiles') {
+          return (
+            <>
+              <DrawerHeader title="Profiles" subtitle="Select the user profiles you want to assign to the modules." onClose={onClose}/>
+              <div className="sheet-body">
+                {pills}
+                <div className="dp-search">
+                  <SearchIcon/>
+                  <input placeholder="Search by name or email" value={query} onChange={(e) => setQuery(e.target.value)}/>
+                </div>
+                <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                  {filteredProfs.length === 0
+                    ? <div className="dp-empty">No team members match your search.</div>
+                    : filteredProfs.map(p => (
+                        <AddEntityCard key={p.id} onClick={() => toggleProf(p.id)}>
+                          <ProfileInfoBlock p={p}/>
+                        </AddEntityCard>
+                      ))
+                  }
+                </div>
+              </div>
+              <SelectionFooter
+                items={selectedProfs}
+                getId={(p) => p.id}
+                renderItem={(p) => <ProfileInfoBlock p={p}/>}
+                onRemove={(p) => toggleProf(p.id)}
+                onNext={next}
+                nextDisabled={selectedProfs.length === 0}
+              />
+            </>
+          );
+        }
+
+        // confirm
+        return (
+          <>
+            <DrawerHeader title="Finalize Assignment" subtitle="Click finalize assignment to create the assignment." onClose={onClose}/>
+            <div className="sheet-body">
+              {pills}
+              <div className="dp-confirm-section">
+                <div className="dp-confirm-section__label">
+                  {selectedMods.length} module{selectedMods.length === 1 ? '' : 's'}
+                </div>
+                <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                  {selectedMods.map(m => (
+                    <div className="dp-listcard" key={m.id}>
+                      <div className="dp-listcard__main"><ModuleInfoBlock m={m}/></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="dp-confirm-section">
+                <div className="dp-confirm-section__label">
+                  {selectedProfs.length} team member{selectedProfs.length === 1 ? '' : 's'}
+                </div>
+                <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                  {selectedProfs.map(p => (
+                    <div className="dp-listcard" key={p.id}>
+                      <div className="dp-listcard__main"><ProfileInfoBlock p={p}/></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <button className="dp-backlink" onClick={back}><ArrowLeft/> Back to selection</button>
+              <button className="dp-btn" onClick={() => setFinalized(true)}>Finalize Assignment</button>
+            </div>
+          </>
+        );
+      }
+
+      /* ---------- Shell: tabs, page chrome, drawer mount ---------- */
+      const PATTERNS = {
+        picker: {
+          label: 'Picker',
+          source: 'create-assessment-drawer.tsx',
+          shape: 'Tap a list item → commit & close',
+          width: 500,
+          chrome: 'Internal · Assessments',
+          Component: PickerDrawer,
+        },
+        form: {
+          label: 'Form',
+          source: 'create-bundle-drawer.tsx',
+          shape: 'Inputs + toggle + submit button',
+          width: 500,
+          chrome: 'Internal · Content Bundles',
+          Component: FormDrawer,
+        },
+        wizard: {
+          label: 'Wizard',
+          source: 'create-assignment-drawer.tsx',
+          shape: '3 steps · multi-select · confirmation',
+          width: 500,
+          chrome: 'Internal · Assignments',
+          Component: WizardDrawer,
+        },
+      };
+
+      function PageChrome({ label }) {
+        return (
+          <div className="page-chrome">
+            <div className="page-chrome__nav">
+              <div className="page-chrome__logo"></div>
+              <div className="page-chrome__search"></div>
+              <div className="page-chrome__cart"></div>
+            </div>
+            <div className="page-chrome__hero">{label}</div>
+            <div className="page-chrome__content">
+              <div className="page-chrome__bar w90"></div>
+              <div className="page-chrome__bar w70"></div>
+              <div className="page-chrome__bar w80"></div>
+              <div className="page-chrome__bar w50"></div>
+              <div className="page-chrome__bar w70"></div>
+              <div className="page-chrome__bar w90"></div>
+            </div>
+          </div>
+        );
+      }
+
+      function DrawerPatterns() {
+        const [tab, setTab] = useState('picker');
+        const [key, setKey] = useState(0); // reset state on tab change
+        const p = PATTERNS[tab];
+        const Body = p.Component;
+        const handleClose = () => setKey(k => k + 1);
+        return (
+          <>
+            <div className="dp-tabs">
+              {Object.entries(PATTERNS).map(([id, def]) => (
+                <button key={id} type="button"
+                  className={'dp-tab' + (id === tab ? ' on' : '')}
+                  onClick={() => { setTab(id); setKey(k => k + 1); }}>
+                  {def.label}
+                  <code>{def.source}</code>
+                </button>
+              ))}
+            </div>
+
+            <div className="dp-pattern-meta">
+              <div className="dp-pattern-meta__row"><b>Shape</b><span>{p.shape}</span></div>
+              <div className="dp-pattern-meta__row"><b>Width</b><span><code>{p.width}px</code> (<code>max-w-125</code>)</span></div>
+              <div className="dp-pattern-meta__row"><b>Header</b><span><code>DrawerHeader</code> · 24px semibold</span></div>
+              <div className="dp-pattern-meta__row"><b>Container</b><span><code>DrawerContainer</code> · p-4 md:p-8</span></div>
+            </div>
+
+            <div style={{
+              position:'relative', background:'#F4F6F8',
+              display:'flex', justifyContent:'flex-end', alignItems:'stretch',
+              minHeight: 720, overflow:'hidden',
+            }}>
+              <PageChrome label={p.chrome}/>
+              <div className="scrim"></div>
+              <div className="sheet sheet--prod" style={{ width: p.width + 'px' }} key={key}>
+                <Body onClose={handleClose}/>
+              </div>
+            </div>
+
+            <div className="dp-sources">
+              <span><b>Source files</b></span>
+              <span>drawer.tsx</span>
+              <span>{p.source}</span>
+              {tab === 'wizard' && <>
+                <span>selection-panel.tsx</span>
+                <span>step-pills.tsx</span>
+                <span>entity-cards.tsx</span>
+              </>}
+            </div>
+          </>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('dp-root')).render(<DrawerPatterns/>);
+    })();
+  </script>
+
+
+  <!-- Tablet & Mobile breakpoints -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Sheets · Tablet &amp; Mobile</h2>
+      <div class="desc">A deep dive on adapting Sheets below the desktop breakpoint. The chrome stays the same — sizing, gestures, and the action bar are what change. Phones get a bottom sheet, tablets keep the right-side panel.</div>
+    </div>
+
+    <!-- Breakpoint matrix -->
+    <div style="padding:24px;background:var(--ps-sem-bg-surface);border-bottom:1px solid var(--ps-border-default);">
+      <div style="font:700 11px/1 'Source Sans Pro',sans-serif;letter-spacing:1px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);margin:0 0 14px;">Breakpoint matrix</div>
+      <div style="display:grid;grid-template-columns:120px repeat(5,1fr);gap:0;border:1px solid #F1F1F1;border-radius:6px;overflow:hidden;font:13px/1.45 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);">
+        <div style="background:var(--ps-sem-bg-canvas);padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-tertiary);font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #F1F1F1;"></div>
+        <div style="background:var(--ps-sem-bg-canvas);padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-brand);font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Desktop</div>
+        <div style="background:var(--ps-sem-bg-canvas);padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-brand);font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Tablet · landscape</div>
+        <div style="background:var(--ps-sem-bg-canvas);padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-brand);font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Tablet · portrait</div>
+        <div style="background:var(--ps-sem-bg-canvas);padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-brand);font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Mobile</div>
+        <div style="background:var(--ps-sem-bg-canvas);padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-brand);font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Notes</div>
+
+        <div style="padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-tertiary);font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:var(--ps-sem-bg-canvas);border-bottom:1px solid #F1F1F1;">Viewport</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">≥ 1024 px</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">768 – 1023 px</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">600 – 767 px</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">&lt; 600 px</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;color:var(--ps-sem-fg-tertiary);">Apple HIG &amp; Material guidance</div>
+
+        <div style="padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-tertiary);font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:var(--ps-sem-bg-canvas);border-bottom:1px solid #F1F1F1;">Variant</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Right-side, <b>550 px</b></div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Right-side, <b>450 px</b></div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Right-side, <b>60% width</b></div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Bottom sheet · <b>full-bleed</b></div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;color:var(--ps-sem-fg-tertiary);">Right-side gets too cramped under 360 px</div>
+
+        <div style="padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-tertiary);font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:var(--ps-sem-bg-canvas);border-bottom:1px solid #F1F1F1;">Enter</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Slide-in from right · 240 ms</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Slide-in from right · 240 ms</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Slide-in from right · 240 ms</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Slide-up from bottom · 280 ms</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;color:var(--ps-sem-fg-tertiary);">Easing: <code class="kbd">cubic-bezier(.32,.72,0,1)</code></div>
+
+        <div style="padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-tertiary);font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:var(--ps-sem-bg-canvas);border-bottom:1px solid #F1F1F1;">Dismiss</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Esc · scrim · close icon</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Esc · scrim · close icon</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Esc · scrim · close icon</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;"><b>Swipe-down</b> · close icon · back gesture</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;color:var(--ps-sem-fg-tertiary);">Velocity &gt; 0.5 or drag past 30% commits dismiss</div>
+
+        <div style="padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-tertiary);font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:var(--ps-sem-bg-canvas);border-bottom:1px solid #F1F1F1;">Scrim</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;"><code class="kbd">rgba(0,0,0,.32)</code></div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;"><code class="kbd">rgba(0,0,0,.32)</code></div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;"><code class="kbd">rgba(0,0,0,.4)</code></div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;"><code class="kbd">rgba(0,0,0,.45)</code></div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;color:var(--ps-sem-fg-tertiary);">Darken as the panel covers more of the viewport</div>
+
+        <div style="padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-tertiary);font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:var(--ps-sem-bg-canvas);border-bottom:1px solid #F1F1F1;">Action bar</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Right-aligned row · Cancel · Save</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Right-aligned row · Cancel · Save</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;">Right-aligned row · Cancel · Save</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;"><b>Stacked, full-width</b> · primary on top</div>
+        <div style="padding:12px 14px;border-bottom:1px solid #F1F1F1;border-left:1px solid #F1F1F1;color:var(--ps-sem-fg-tertiary);">Sticky to safe-area bottom; keyboard avoids it</div>
+
+        <div style="padding:12px 14px;font-weight:700;color:var(--ps-sem-fg-tertiary);font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:var(--ps-sem-bg-canvas);">Title size</div>
+        <div style="padding:12px 14px;border-left:1px solid #F1F1F1;">30 px / 34 lh · Source Sans Light</div>
+        <div style="padding:12px 14px;border-left:1px solid #F1F1F1;">26 px / 30 lh</div>
+        <div style="padding:12px 14px;border-left:1px solid #F1F1F1;">24 px / 28 lh</div>
+        <div style="padding:12px 14px;border-left:1px solid #F1F1F1;">22 px / 26 lh</div>
+        <div style="padding:12px 14px;border-left:1px solid #F1F1F1;color:var(--ps-sem-fg-tertiary);">Subtitle scales 14 → 13 px below desktop</div>
+      </div>
+    </div>
+
+    <!-- Previews -->
+    <div class="bp-grid">
+      <div class="bp-card">
+        <div class="demo">
+          <div class="scrim"></div>
+          <div class="sheet sheet--tab" style="transform:scale(.72);transform-origin:right center;width:450px;align-self:stretch;">
+            <div class="sheet-head">
+              <div class="sheet-head__text">
+                <h3 style="font-size:26px;line-height:30px;">Edit asset</h3>
+                <p>Update the details for this asset.</p>
+              </div>
+              <button class="sheet-head__close" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"/></svg></button>
+            </div>
+            <div class="sheet-body">
+              <div class="ff"><label>Asset name</label><input value="Stryker 3M Power Pro XT IV Pole"></div>
+              <div class="ff"><label>Serial number</label><input value="SPP-XT-449821"></div>
+            </div>
+            <div class="sheet-actions">
+              <button class="btn btn--ghost">Cancel</button>
+              <button class="btn btn--primary">Save</button>
+            </div>
+          </div>
+        </div>
+        <div class="label"><b>Tablet — landscape</b><span>450 px · right panel</span></div>
+      </div>
+      <div class="bp-card">
+        <div class="demo">
+          <div class="scrim" style="background:rgba(0,0,0,.4);"></div>
+          <div class="sheet sheet--tab" style="transform:scale(.78);transform-origin:right center;width:430px;align-self:stretch;">
+            <div class="sheet-head">
+              <div class="sheet-head__text">
+                <h3 style="font-size:24px;line-height:28px;">Edit asset</h3>
+                <p style="font-size:13px;">Update the details for this asset.</p>
+              </div>
+              <button class="sheet-head__close" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"/></svg></button>
+            </div>
+            <div class="sheet-body">
+              <div class="ff"><label>Asset name</label><input value="Stryker IV Pole"></div>
+              <div class="ff"><label>Department</label><select><option>ICU — 4 West</option></select></div>
+            </div>
+            <div class="sheet-actions">
+              <button class="btn btn--ghost">Cancel</button>
+              <button class="btn btn--primary">Save</button>
+            </div>
+          </div>
+        </div>
+        <div class="label"><b>Tablet — portrait</b><span>60% width · right panel</span></div>
+      </div>
+      <div class="bp-card">
+        <div class="demo" style="background:#1F2933;align-items:flex-end;">
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:32px 14px 0;">
+            <!-- Phone status bar mockup -->
+            <div style="position:absolute;top:8px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:center;color:var(--ps-sem-fg-inverse);font:600 11px/1 'Source Sans Pro',sans-serif;letter-spacing:.3px;opacity:.85;">
+              <span>9:41</span>
+              <div style="display:flex;gap:4px;align-items:center;">
+                <span>●●●</span>
+              </div>
+            </div>
+            <div style="background:var(--ps-sem-bg-surface);border-radius:14px 14px 0 0;box-shadow:0 -8px 24px rgba(0,0,0,.25);overflow:hidden;transform:scale(.9);transform-origin:bottom center;">
+              <div style="display:flex;justify-content:center;padding:8px 0 0;"><div style="width:38px;height:4px;border-radius:2px;background:#CCCCCC;"></div></div>
+              <div class="sheet-head" style="padding:16px 20px 0;">
+                <div class="sheet-head__text">
+                  <h3 style="font-size:20px;line-height:24px;">Edit asset</h3>
+                  <p style="font-size:13px;">Update the details.</p>
+                </div>
+                <button class="sheet-head__close" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"/></svg></button>
+              </div>
+              <div class="sheet-body" style="padding:16px 20px 20px;">
+                <div class="ff"><label>Asset name</label><input value="Stryker IV Pole"></div>
+                <div class="ff"><label>Serial</label><input value="SPP-XT-449821"></div>
+              </div>
+              <div class="sheet-actions" style="flex-direction:column;align-items:stretch;gap:8px;padding:14px 20px 28px;">
+                <button class="btn btn--primary" style="width:100%;">Save changes</button>
+                <button class="btn btn--ghost" style="width:100%;">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="label"><b>Mobile</b><span>Bottom sheet · grabber + stacked CTAs</span></div>
+      </div>
+    </div>
+
+    <!-- Best practices -->
+    <div style="padding:24px;background:var(--ps-sem-bg-surface);border-top:1px solid var(--ps-border-default);">
+      <div style="font:700 11px/1 'Source Sans Pro',sans-serif;letter-spacing:1px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);margin:0 0 16px;">Best practices</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
+
+        <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;">
+          <h4 style="margin:0 0 8px;font:700 13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005BA6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
+            Layout &amp; sizing
+          </h4>
+          <p style="margin:0;font:13px/1.55 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-secondary);">Right-side sheets on tablet (450 px landscape, 60% portrait); bottom sheets on phone. Never less than 320 px wide for a right-side panel — at that point switch to bottom. <b>Don't scale</b> the sheet content; reflow it.</p>
+        </div>
+
+        <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;">
+          <h4 style="margin:0 0 8px;font:700 13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005BA6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6m6-11h6m-22 0h6"/></svg>
+            Touch targets
+          </h4>
+          <p style="margin:0;font:13px/1.55 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-secondary);">Minimum <b>44 × 44 pt</b> for any interactive element (Apple HIG) and <b>48 dp</b> on Android. Pad the visual close icon to 44 px even though the glyph is 24. Stack form fields with at least 16 px gap on phones.</p>
+        </div>
+
+        <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;">
+          <h4 style="margin:0 0 8px;font:700 13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005BA6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h8M12 8v8"/><circle cx="12" cy="12" r="10"/></svg>
+            Gestures (mobile)
+          </h4>
+          <p style="margin:0;font:13px/1.55 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-secondary);">Bottom sheets dismiss with a <b>swipe down</b>. Drag-handle (grabber) above the title signals the gesture. Velocity &gt; 0.5 px/ms <i>or</i> drag past 30% height = commit. Otherwise snap back. Tap-on-scrim also dismisses.</p>
+        </div>
+
+        <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;">
+          <h4 style="margin:0 0 8px;font:700 13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005BA6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 12h4M14 12h3"/></svg>
+            Action bar
+          </h4>
+          <p style="margin:0;font:13px/1.55 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-secondary);">Right-aligned row of buttons on desktop and tablet. On mobile, <b>stack full-width with primary on top</b> — thumb-zone reachable from a single grip. Sticky to the safe-area bottom so it never floats off when content scrolls.</p>
+        </div>
+
+        <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;">
+          <h4 style="margin:0 0 8px;font:700 13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005BA6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Keyboard &amp; safe area
+          </h4>
+          <p style="margin:0;font:13px/1.55 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-secondary);">When the soft keyboard appears, <b>push the sheet up</b> so the focused field stays visible — don't squish or overlap. Respect <code class="kbd">env(safe-area-inset-bottom)</code> for the action bar on notched phones.</p>
+        </div>
+
+        <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;">
+          <h4 style="margin:0 0 8px;font:700 13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005BA6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h12"/></svg>
+            Content density
+          </h4>
+          <p style="margin:0;font:13px/1.55 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-secondary);">Reduce field labels to single line. Drop optional fields below a "More" disclosure. Replace 3-column metadata grids with 2-column on tablet, 1-column on mobile. Body padding shrinks 30 → 24 → 20 px as widths drop.</p>
+        </div>
+
+        <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;">
+          <h4 style="margin:0 0 8px;font:700 13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005BA6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-6m0-2V8m0-2V2M6 12H2m4 6H2m4-12H2m20 6h-4m4 6h-4m4-12h-4"/></svg>
+            Scroll lock
+          </h4>
+          <p style="margin:0;font:13px/1.55 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-secondary);">Lock the underlying page scroll on phones (full-bleed bottom sheet) and on modal sheets. Don't lock on tablet detail/non-modal sheets — the user is still working with both surfaces. Use <code class="kbd">overscroll-behavior: contain</code>.</p>
+        </div>
+
+        <div style="background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;">
+          <h4 style="margin:0 0 8px;font:700 13px/1.2 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005BA6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Performance
+          </h4>
+          <p style="margin:0;font:13px/1.55 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-secondary);">Animate <code class="kbd">transform</code> and <code class="kbd">opacity</code> only. Lazy-load heavy content (search results, long lists) on open — defer until the slide-in completes (~280 ms). On low-end Android, drop scrim blur effects to keep 60 fps.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Don't / Common mistakes -->
+    <div style="padding:24px;background:#FFF8F5;border-top:1px solid var(--ps-border-default);">
+      <div style="font:700 11px/1 'Source Sans Pro',sans-serif;letter-spacing:1px;text-transform:uppercase;color:#9E2A1C;margin:0 0 14px;display:flex;align-items:center;gap:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E2A1C" stroke-width="2.5" stroke-linecap="round"><path d="M3 3l18 18M21 3L3 21"/></svg>
+        Common mistakes to avoid
+      </div>
+      <ul style="margin:0;padding:0 0 0 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:8px 32px;font:13px/1.55 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);">
+        <li><b>Don't shrink-to-fit</b> the desktop sheet on mobile. Reflow, don't scale.</li>
+        <li><b>Don't use a right-side sheet below 600 px</b> — switch to bottom sheet.</li>
+        <li><b>Don't put primary CTA inline with cancel</b> on phones. Stack and full-width.</li>
+        <li><b>Don't auto-dismiss</b> a sheet after a timer. Sheets are user-driven.</li>
+        <li><b>Don't hide the action bar</b> when the keyboard is up — float it above the keyboard.</li>
+        <li><b>Don't allow scroll chaining</b> from the sheet to the page behind it.</li>
+        <li><b>Don't open a sheet inside a sheet.</b> If you need a wizard, page through steps in one sheet.</li>
+        <li><b>Don't put critical errors below the fold.</b> Pin them at the top of the body, above any inputs.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility</h2>
+      <div class="desc">Sheets must be reachable by keyboard, dismissable, and announce themselves to assistive tech.</div>
+    </div>
+    <div class="a11y-grid">
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 6h12"/></svg>Roles &amp; ARIA</h4>
+        <p>Container is <code>role="dialog"</code> with <code>aria-modal="true"</code>. The title gets <code>aria-labelledby</code>; the subtitle gets <code>aria-describedby</code>. Most select-style sheets are non-modal — use <code>aria-modal="false"</code> when the page-behind stays interactive.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="12" height="8" rx="1"/><path d="M5 7l3 2 3-2"/></svg>Focus management</h4>
+        <p>On open, focus the first form field (not the close button). On close, return focus to the trigger that opened the sheet. Trap Tab/Shift+Tab inside the sheet only when it's modal.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>Keyboard</h4>
+        <p><code>Esc</code> always closes. <code>Enter</code> submits when focus is in a single-field form. Action buttons follow document tab order — primary CTA last (Cancel → Save).</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8c2-4 8-4 10 0M3 8c2 4 8 4 10 0"/><circle cx="8" cy="8" r="2"/></svg>Contrast</h4>
+        <p>Title <code>#005BA6</code> on <code>#FFF</code> = 7.4:1. Subtitle <code>#4A4A4A</code> = 8.6:1. Action bar <code>#FAFAFA</code> sits above body via the top border, not contrast alone.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2h12v12H2z"/><path d="M2 6h12M6 2v12"/></svg>Scroll containment</h4>
+        <p>Sheet body is the only scrollable region. Don't lock the underlying page on non-modal sheets; do lock it on modal sheets. Mobile takeover always locks page scroll.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 4v4M8 11h.01"/></svg>Hit targets</h4>
+        <p>Close button is 24×24 visual but 40×40 effective touch. Drawer cards are 56 px tall minimum. Never put two interactive elements closer than 8 px on touch surfaces.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Do / Don't -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Do &amp; Don&rsquo;t</h2>
+      <div class="desc">Sheet vs. modal vs. drawer — picking right prevents 80% of overlay problems.</div>
+    </div>
+    <div class="dodont">
+      <div class="dodont__col dodont__col--do">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="2 8 6 12 14 4"/></svg>Do</h4>
+        <ul>
+          <li>Use a sheet when the user needs to reference the page behind it while working.</li>
+          <li>Slide in from the right at 240 ms ease-out; slide out at the same speed.</li>
+          <li>Lead with a verb in the title — &ldquo;Edit asset,&rdquo; &ldquo;Choose learners&rdquo; — not &ldquo;Asset details&rdquo;.</li>
+          <li>Right-align actions; primary CTA on the right, secondary/cancel on the left.</li>
+          <li>Allow <code class="kbd">Esc</code>, scrim-click, and the close icon to all dismiss the sheet.</li>
+        </ul>
+      </div>
+      <div class="dodont__col dodont__col--dont">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M3 3l10 10M13 3L3 13"/></svg>Don&rsquo;t</h4>
+        <ul>
+          <li>Use a sheet for a single yes/no decision &mdash; that&rsquo;s a Dialog.</li>
+          <li>Stack sheets. If a sheet opens a sheet, split it into a wizard with steps instead.</li>
+          <li>Hide critical form errors below the scroll fold &mdash; pin them above the actions bar.</li>
+          <li>Use a sheet for a one-line confirmation &mdash; that&rsquo;s a Toast.</li>
+          <li>Auto-dismiss a sheet after a timer. Sheets are user-driven.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

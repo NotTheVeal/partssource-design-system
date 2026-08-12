@@ -1,0 +1,335 @@
+/* ================================================================
+   PartsSource Design System — Canonical Stylesheet
+   ────────────────────────────────────────────────────────────────
+   Include this ONE file and any HTML page inherits PartsSource
+   brand defaults out of the box — fonts, colors, type scale,
+   spacing, element styles, and the core brand component classes.
+
+       <link rel="stylesheet" href="partssource.css">
+
+   ────────────────────────────────────────────────────────────────
+   BRAND CHECKLIST · run through this BEFORE shipping any artifact
+   ────────────────────────────────────────────────────────────────
+   1.  Body type is Source Sans 3 / Source Sans Pro.
+   2.  Headings (h1, h2, h3) are Light 300 in Midnight #002F48.
+       Only h4 jumps to Semibold 600.
+   3.  No gradient backgrounds. Anywhere. No exceptions.
+   4.  No emoji. Anywhere. Use Lucide icons instead.
+   5.  Large buttons (.btn-lg, .btn-pill) are UPPERCASE.
+       Small buttons are sentence case.
+   6.  Orange #FF9505 is ONLY used for .btn-pill promo CTAs.
+       Never as a general accent.
+   7.  Default corner radius is 4px. Pills are 9999px.
+       No 10/12/16px radii wandering in.
+   8.  Shadows are Midnight-tinted rgba(0,47,72,…), not black.
+   9.  Focus rings are always visible — never `outline:none`
+       without a replacement.
+   10. Copy is evidence-based, terse, no fluff. No
+       "revolutionary / seamless / magical / 🚀".
+   ================================================================ */
+
+/* —— Tokens (primitive → semantic → component) ———————————————— */
+@import url('./tokens.css');
+
+/* —— Color aliases, extra type tokens & local @font-face ———————— */
+@import url('./colors_and_type.css');
+
+/* —— Fonts (Google Fonts; matches Source Sans Pro metrics) ——— */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700;900&family=Source+Code+Pro:wght@400;600&display=swap');
+
+/* ================================================================
+   RESET & BASE
+   ================================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+img, svg, video { display: block; max-width: 100%; }
+
+body {
+  font-family: var(--ps-sem-font-body);
+  font-size: var(--ps-sem-text-body-lg);          /* 16px */
+  font-weight: var(--ps-sem-weight-body);         /* 400 */
+  line-height: var(--ps-prim-lh-normal);          /* 1.5 */
+  color: var(--ps-sem-fg-primary);                /* #2B2B2B */
+  background: var(--ps-sem-bg-canvas);            /* #FAFAFA */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--ps-sem-bg-airway);            /* Airway #DCEAED */
+  color: var(--ps-sem-fg-brand-dark);             /* Midnight */
+}
+
+/* ================================================================
+   TYPOGRAPHY — the signature: Light 300 headings in Midnight
+   ================================================================ */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: var(--ps-sem-font-body);
+  color: var(--ps-sem-fg-brand-dark);             /* #002F48 Midnight */
+  line-height: var(--ps-prim-lh-tight);
+  letter-spacing: var(--ps-prim-tracking-none);
+}
+h1 { font-size: var(--ps-prim-size-34); font-weight: 300; }
+h2 { font-size: var(--ps-prim-size-30); font-weight: 300; }
+h3 { font-size: var(--ps-prim-size-24); font-weight: 300; }
+h4 { font-size: var(--ps-prim-size-18); font-weight: 600; }   /* signature jump */
+h5 { font-size: var(--ps-prim-size-16); font-weight: 600; }
+h6 { font-size: var(--ps-prim-size-14); font-weight: 700; text-transform: uppercase; letter-spacing: var(--ps-prim-tracking-widest); }
+
+p { margin: 0 0 1em; line-height: var(--ps-prim-lh-relaxed); }
+p:last-child { margin-bottom: 0; }
+
+strong, b { font-weight: 700; }
+em, i { font-style: italic; }
+
+small { font-size: var(--ps-sem-text-caption); color: var(--ps-sem-fg-tertiary); }
+
+code, pre, kbd, samp {
+  font-family: var(--ps-sem-font-mono);
+  font-size: 0.92em;
+}
+code {
+  background: var(--ps-sem-bg-muted);
+  padding: 2px 6px;
+  border-radius: var(--ps-prim-radius-3);
+}
+pre {
+  background: var(--ps-sem-bg-muted);
+  padding: var(--ps-prim-space-4);
+  border-radius: var(--ps-prim-radius-4);
+  overflow: auto;
+  line-height: var(--ps-prim-lh-snug);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--ps-sem-border-default);
+  margin: var(--ps-prim-space-8) 0;
+}
+
+ul, ol { margin: 0 0 1em; padding-left: 1.5em; line-height: var(--ps-prim-lh-relaxed); }
+li + li { margin-top: 4px; }
+
+/* ================================================================
+   LINKS
+   ================================================================ */
+a {
+  color: var(--ps-sem-fg-link);
+  text-decoration: none;
+  transition: color var(--ps-prim-duration-fast) var(--ps-prim-ease-standard);
+}
+a:hover { color: var(--ps-sem-fg-link-hover); text-decoration: underline; }
+a:focus-visible {
+  outline: none;
+  box-shadow: var(--ps-sem-focus-ring);
+  border-radius: var(--ps-prim-radius-2);
+}
+
+/* ================================================================
+   FORM ELEMENTS — neutral defaults so bare <input>/<button> are on-brand
+   ================================================================ */
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button, [type="button"], [type="submit"], [type="reset"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ps-prim-space-2);
+  height: 40px;
+  padding: 0 var(--ps-prim-space-5);
+  background: var(--ps-cmp-button-primary-bg-default);
+  color: var(--ps-cmp-button-primary-fg-default);
+  border: 1px solid var(--ps-cmp-button-primary-border);
+  border-radius: var(--ps-cmp-button-primary-radius);
+  font-size: var(--ps-sem-text-body-lg);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--ps-prim-tracking-wide);
+  cursor: pointer;
+  transition:
+    background var(--ps-prim-duration-fast) var(--ps-prim-ease-standard),
+    border-color var(--ps-prim-duration-fast) var(--ps-prim-ease-standard),
+    color var(--ps-prim-duration-fast) var(--ps-prim-ease-standard);
+}
+button:hover, [type="button"]:hover, [type="submit"]:hover {
+  background: var(--ps-cmp-button-primary-bg-hover);
+  border-color: var(--ps-cmp-button-primary-border-hover);
+}
+button:active { background: var(--ps-cmp-button-primary-bg-pressed); }
+button:focus-visible { outline: none; box-shadow: var(--ps-sem-focus-ring); }
+button:disabled {
+  background: var(--ps-cmp-button-primary-bg-disabled);
+  color: var(--ps-cmp-button-primary-fg-disabled);
+  cursor: not-allowed;
+}
+
+input[type="text"], input[type="email"], input[type="number"],
+input[type="search"], input[type="tel"], input[type="url"],
+input[type="password"], input[type="date"], textarea, select {
+  display: block;
+  width: 100%;
+  height: var(--ps-cmp-input-height-sm);
+  padding: 0 var(--ps-cmp-input-padding-x);
+  background: var(--ps-cmp-input-bg);
+  color: var(--ps-cmp-input-fg);
+  border: var(--ps-cmp-input-border-width) solid var(--ps-cmp-input-border-default);
+  border-radius: var(--ps-cmp-input-radius);
+  font-family: var(--ps-cmp-input-font);
+  font-size: var(--ps-cmp-input-text-size);
+  transition: border-color var(--ps-prim-duration-fast), box-shadow var(--ps-prim-duration-fast);
+}
+textarea { height: auto; min-height: 96px; padding: var(--ps-prim-space-3) var(--ps-cmp-input-padding-x); line-height: var(--ps-prim-lh-normal); }
+input:hover, textarea:hover, select:hover { border-color: var(--ps-cmp-input-border-hover); }
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--ps-cmp-input-border-focus);
+  box-shadow: var(--ps-cmp-input-focus-ring);
+}
+input:disabled, textarea:disabled, select:disabled {
+  background: var(--ps-cmp-input-bg-disabled);
+  color: var(--ps-cmp-input-fg-disabled);
+  border-color: var(--ps-cmp-input-border-disabled);
+  cursor: not-allowed;
+}
+
+label { display: inline-block; font-size: var(--ps-sem-text-body); font-weight: 600; color: var(--ps-sem-fg-primary); margin-bottom: 6px; }
+
+/* ================================================================
+   TABLES
+   ================================================================ */
+table { border-collapse: collapse; width: 100%; font-size: var(--ps-sem-text-body); }
+th, td { padding: var(--ps-prim-space-3) var(--ps-prim-space-4); text-align: left; border-bottom: 1px solid var(--ps-sem-border-default); }
+th { background: var(--ps-cmp-table-header-bg); color: var(--ps-cmp-table-header-fg); font-weight: 700; text-transform: uppercase; font-size: var(--ps-sem-text-caption); letter-spacing: var(--ps-prim-tracking-widest); }
+tr:hover td { background: var(--ps-cmp-table-row-bg-hover); }
+
+/* ================================================================
+   BRAND COMPONENT CLASSES — for things bare HTML can't express
+   ================================================================ */
+
+/* Overline / eyebrow label */
+.ps-eyebrow {
+  display: inline-block;
+  font-size: var(--ps-sem-text-micro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--ps-prim-tracking-widest);
+  color: var(--ps-sem-fg-brand);
+}
+
+/* Promo pill button — the rare orange CTA */
+.ps-btn-pill {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--ps-prim-space-2);
+  height: var(--ps-cmp-button-pill-height);
+  padding: 0 var(--ps-cmp-button-pill-padding-x);
+  background: var(--ps-cmp-button-pill-bg-default);
+  color: var(--ps-cmp-button-pill-fg-default);
+  border: 0;
+  border-radius: var(--ps-cmp-button-pill-radius);
+  font-size: var(--ps-cmp-button-pill-text);
+  font-weight: var(--ps-cmp-button-pill-weight);
+  letter-spacing: var(--ps-cmp-button-pill-tracking);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background var(--ps-prim-duration-fast) var(--ps-prim-ease-standard);
+}
+.ps-btn-pill:hover { background: var(--ps-cmp-button-pill-bg-hover); color: #fff; text-decoration: none; }
+.ps-btn-pill:active { background: var(--ps-cmp-button-pill-bg-pressed); }
+.ps-btn-pill:disabled, .ps-btn-pill[aria-disabled="true"] { background: var(--ps-cmp-button-pill-bg-disabled); cursor: not-allowed; }
+
+/* Secondary button — outlined */
+.ps-btn-secondary {
+  background: var(--ps-cmp-button-secondary-bg-default);
+  color: var(--ps-cmp-button-secondary-fg-default);
+  border: 1px solid var(--ps-cmp-button-secondary-border);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+.ps-btn-secondary:hover { background: var(--ps-cmp-button-secondary-bg-hover); color: var(--ps-cmp-button-secondary-fg-hover); border-color: var(--ps-cmp-button-secondary-border-hover); }
+
+/* Tertiary button — grey pill */
+.ps-btn-tertiary {
+  height: var(--ps-cmp-button-tertiary-height);
+  padding: 0 var(--ps-cmp-button-tertiary-padding-x);
+  background: var(--ps-cmp-button-tertiary-bg-default);
+  color: var(--ps-cmp-button-tertiary-fg-default);
+  border: 0;
+  border-radius: var(--ps-cmp-button-tertiary-radius);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+.ps-btn-tertiary:hover { background: var(--ps-cmp-button-tertiary-bg-hover); color: var(--ps-cmp-button-tertiary-fg-default); }
+
+/* Card */
+.ps-card {
+  background: var(--ps-cmp-card-bg);
+  color: var(--ps-cmp-card-fg);
+  border: 1px solid var(--ps-cmp-card-border);
+  border-radius: var(--ps-cmp-card-radius);
+  padding: var(--ps-cmp-card-padding);
+  box-shadow: var(--ps-cmp-card-shadow-default);
+  transition: border-color var(--ps-prim-duration-fast), box-shadow var(--ps-prim-duration-fast);
+}
+.ps-card:hover { border-color: var(--ps-cmp-card-border-hover); box-shadow: var(--ps-cmp-card-shadow-hover); }
+
+/* Badge */
+.ps-badge {
+  display: inline-flex; align-items: center; gap: var(--ps-cmp-badge-gap);
+  padding: var(--ps-cmp-badge-padding-y) var(--ps-cmp-badge-padding-x);
+  border-radius: var(--ps-cmp-badge-radius);
+  border: var(--ps-cmp-badge-border-width) solid var(--ps-cmp-badge-neutral-border);
+  background: var(--ps-cmp-badge-neutral-bg);
+  color: var(--ps-cmp-badge-neutral-fg);
+  font-size: var(--ps-cmp-badge-text);
+  font-weight: var(--ps-cmp-badge-weight);
+  line-height: 1;
+}
+.ps-badge--success { background: var(--ps-cmp-badge-success-bg); color: var(--ps-cmp-badge-success-fg); border-color: var(--ps-cmp-badge-success-border); }
+.ps-badge--warning { background: var(--ps-cmp-badge-warning-bg); color: var(--ps-cmp-badge-warning-fg); border-color: var(--ps-cmp-badge-warning-border); }
+.ps-badge--danger  { background: var(--ps-cmp-badge-danger-bg);  color: var(--ps-cmp-badge-danger-fg);  border-color: var(--ps-cmp-badge-danger-border); }
+.ps-badge--info    { background: var(--ps-cmp-badge-info-bg);    color: var(--ps-cmp-badge-info-fg);    border-color: var(--ps-cmp-badge-info-border); }
+
+/* Alert / banner */
+.ps-alert {
+  display: flex; align-items: flex-start; gap: var(--ps-cmp-alert-gap);
+  min-height: var(--ps-cmp-alert-min-height);
+  padding: var(--ps-cmp-alert-padding-y) var(--ps-cmp-alert-padding-x);
+  border-radius: var(--ps-cmp-alert-radius);
+  font-size: var(--ps-cmp-alert-text-size);
+  line-height: var(--ps-cmp-alert-line-height);
+  background: var(--ps-cmp-alert-info-bg);
+  color: var(--ps-cmp-alert-info-fg);
+}
+.ps-alert--success { background: var(--ps-cmp-alert-success-bg); color: var(--ps-cmp-alert-success-fg); }
+.ps-alert--warning { background: var(--ps-cmp-alert-warning-bg); color: var(--ps-cmp-alert-warning-fg); }
+.ps-alert--danger  { background: var(--ps-cmp-alert-danger-bg);  color: var(--ps-cmp-alert-danger-fg); }
+
+/* Container — page-width wrapper */
+.ps-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--ps-prim-space-6);
+}
+
+/* ================================================================
+   UTILITY CLASSES — small, focused, brand-locked
+   ================================================================ */
+.ps-text-primary    { color: var(--ps-sem-fg-primary); }
+.ps-text-secondary  { color: var(--ps-sem-fg-secondary); }
+.ps-text-tertiary   { color: var(--ps-sem-fg-tertiary); }
+.ps-text-brand      { color: var(--ps-sem-fg-brand); }
+.ps-text-midnight   { color: var(--ps-sem-fg-brand-dark); }
+.ps-text-inverse    { color: var(--ps-sem-fg-inverse); }
+
+.ps-bg-canvas       { background: var(--ps-sem-bg-canvas); }
+.ps-bg-surface      { background: var(--ps-sem-bg-surface); }
+.ps-bg-airway       { background: var(--ps-sem-bg-airway); }
+.ps-bg-midnight     { background: var(--ps-sem-bg-inverse); color: var(--ps-sem-fg-inverse); }
+.ps-bg-brand        { background: var(--ps-sem-bg-brand);   color: var(--ps-sem-fg-inverse); }

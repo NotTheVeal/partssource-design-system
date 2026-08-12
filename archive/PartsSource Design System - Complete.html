@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PartsSource Design System — Complete Reference</title>
+  
+  <template id="__bundler_thumbnail" data-bg-color="#002F48">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#002F48"/>
+      <text x="600" y="400" font-family="system-ui" font-size="120" font-weight="700" fill="#fff" text-anchor="middle" dominant-baseline="middle">PS</text>
+      <text x="600" y="500" font-family="system-ui" font-size="28" fill="#B0C6D3" text-anchor="middle" dominant-baseline="middle">Design System</text>
+    </svg>
+  </template>
+  
+  <style>
+    
+    :root {
+      --ps-blue-50: #B0C6D3;
+      --ps-blue-100: #DCEAED;
+      --ps-blue-200: #009CF4;
+      --ps-blue-500: #005BA6;
+      --ps-blue-700: #004A84;
+      --ps-blue-800: #002F48;
+      --ps-blue-900: #002F48;
+      --ps-brand-primary: #005BA6;
+      --ps-brand-secondary: #002F48;
+      --ps-brand-light: #DCEAED;
+      --ps-orange-1: #FF9505;
+      --ps-orange-2: #EC8000;
+      --ps-orange-3: #D27200;
+      --ps-orange-4: #FFCA82;
+      --ps-neutral-100: #FFFFFF;
+      --ps-neutral-200: #FAFAFA;
+      --ps-neutral-300: #F1F1F1;
+      --ps-neutral-400: #E6E6E6;
+      --ps-neutral-500: #DCDCDC;
+      --ps-neutral-600: #CCCCCC;
+      --ps-neutral-700: #949494;
+      --ps-neutral-800: #777777;
+      --ps-neutral-900: #5C5C5C;
+      --ps-neutral-1000: #4A4A4A;
+      --ps-neutral-1100: #2B2B2B;
+      --ps-neutral-1200: #000000;
+      --ps-success: #17AB78;
+      --ps-success-light: #E5F9F2;
+      --ps-error: #D32F2F;
+      --ps-error-light: #FEF0F0;
+      --ps-warning: #FF9505;
+      --ps-warning-light: #FFF7EC;
+      --ps-info: #005BA6;
+      --ps-info-light: #E5F4FF;
+      --ps-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --ps-font-mono: ui-monospace, 'SF Mono', Menlo, Monaco, 'Cascadia Code', 'Courier New', monospace;
+      --ps-weight-light: 300;
+      --ps-weight-regular: 400;
+      --ps-weight-semibold: 600;
+      --ps-weight-bold: 700;
+      --ps-fg-primary: #2B2B2B;
+      --ps-fg-secondary: #777777;
+      --ps-fg-tertiary: #949494;
+      --ps-border-default: #E6E6E6;
+      --ps-space-1: 4px;
+      --ps-space-2: 8px;
+      --ps-space-3: 12px;
+      --ps-space-4: 16px;
+      --ps-space-5: 20px;
+      --ps-space-6: 24px;
+      --ps-space-8: 32px;
+      --ps-space-10: 40px;
+      --ps-space-12: 48px;
+      --ps-radius-none: 0;
+      --ps-radius-sm: 2px;
+      --ps-radius-md: 4px;
+      --ps-radius-lg: 6px;
+      --ps-radius-xl: 8px;
+      --ps-radius-2xl: 12px;
+      --ps-radius-pill: 9999px;
+      --ps-shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --ps-shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+      --ps-shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+      --ps-duration-fast: 0.15s;
+      --ps-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      font-family: var(--ps-font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ps-fg-primary);
+      background: #fff;
+    }
+    
+    .nav-sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--ps-brand-secondary);
+      color: #fff;
+      overflow-y: auto;
+      padding: 32px 24px;
+      z-index: 100;
+    }
+    
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 32px;
+      color: #fff;
+    }
+    
+    .nav-section {
+      margin-bottom: 24px;
+    }
+    
+    .nav-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+    
+    .nav-link {
+      display: block;
+      padding: 8px 12px;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: 4px;
+      transition: all 0.15s;
+    }
+    
+    .nav-link:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    
+    .nav-link.active {
+      background: var(--ps-brand-primary);
+      color: #fff;
+    }
+    
+    .main-content {
+      margin-left: 280px;
+      padding: 40px 56px 80px;
+    }
+    
+    h1 {
+      font-size: 36px;
+      font-weight: 300;
+      margin: 0 0 12px;
+      color: var(--ps-brand-secondary);
+      letter-spacing: -0.3px;
+    }
+    
+    .intro {
+      font-size: 16px;
+      color: var(--ps-fg-secondary);
+      margin: 0 0 48px;
+      max-width: 920px;
+      line-height: 1.6;
+    }
+    
+    .section {
+      margin-bottom: 64px;
+      scroll-margin-top: 32px;
+    }
+    
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0 0 24px;
+      color: var(--ps-brand-primary);
+      letter-spacing: -0.2px;
+    }
+    
+    .subsection {
+      margin-bottom: 40px;
+    }
+    
+    .subsection-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ps-brand-primary);
+      margin: 0 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--ps-border-default);
+    }
+    
+    .component-grid {
+      display: grid;
+      gap: 24px;
+    }
+    
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+    
+    .color-swatch {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .color-chip {
+      height: 80px;
+      border-radius: 6px;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+    }
+    
+    .color-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ps-brand-secondary);
+    }
+    
+    .color-value {
+      font-size: 11px;
+      font-family: var(--ps-font-mono);
+      color: var(--ps-fg-secondary);
+    }
+    
+    .type-sample {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--ps-neutral-300);
+    }
+    
+    .type-sample:last-child {
+      border-bottom: none;
+    }
+    
+    .type-meta {
+      font-size: 11px;
+      font-family: var(--ps-font-mono);
+      color: var(--ps-fg-secondary);
+      margin-top: 8px;
+    }
+    
+    .btn {
+      font-family: inherit;
+      font-weight: var(--ps-weight-regular);
+      letter-spacing: 0;
+      border-radius: 4px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--ps-duration-fast) var(--ps-ease-standard);
+    }
+    
+    .btn.lg {
+      height: 50px;
+      min-width: 325px;
+      padding: 0 15px;
+      font-size: 15px;
+    }
+    
+    .btn.sm {
+      height: 32px;
+      min-width: 87px;
+      padding: 0 8px;
+      font-size: 10px;
+      border-width: 1px;
+      font-weight: 500;
+    }
+    
+    .btn.primary {
+      background: #fff;
+      color: var(--ps-brand-primary);
+      border-color: var(--ps-brand-primary);
+    }
+    
+    .btn.primary:hover {
+      background: var(--ps-brand-primary);
+      color: #fff;
+    }
+    
+    .btn.pill {
+      background: var(--ps-orange-1);
+      color: #fff;
+      border-radius: 100px;
+      height: 48px;
+      padding: 0 32px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-color: transparent;
+    }
+    
+    .btn.pill:hover {
+      background: var(--ps-orange-2);
+    }
+    
+    .input {
+      width: 100%;
+      height: 40px;
+      padding: 0 12px;
+      border: 1.5px solid var(--ps-neutral-1000);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 14px;
+      background: #fff;
+      color: var(--ps-fg-primary);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    
+    .input:hover {
+      border-color: var(--ps-orange-2);
+    }
+    
+    .input:focus {
+      outline: none;
+      border-color: var(--ps-orange-2);
+      box-shadow: 0 0 10px 5px rgba(0,91,166,0.5);
+    }
+    
+    .checkbox, .radio {
+      width: 24px;
+      height: 24px;
+      border: 1.5px solid var(--ps-neutral-1000);
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .checkbox {
+      border-radius: 2px;
+    }
+    
+    .radio {
+      border-radius: 50%;
+    }
+    
+    .checkbox.checked {
+      background: var(--ps-orange-1);
+      border-color: var(--ps-orange-1);
+    }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid;
+    }
+    
+    .badge.success {
+      background: #E5F9F2;
+      color: #0A7850;
+      border-color: #B8E6D5;
+    }
+    
+    .badge.info {
+      background: #E5F4FF;
+      color: #005BA6;
+      border-color: #B0D7F4;
+    }
+    
+    .badge.warning {
+      background: #FFF4E5;
+      color: #C56F00;
+      border-color: #FFD9B3;
+    }
+    
+    .badge.critical {
+      background: #FFEBEB;
+      color: #9E2020;
+      border-color: #FFCFCF;
+    }
+    
+    .alert {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 12px 18px;
+      border-radius: 5px;
+      font-size: 14px;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+    
+    .alert.success {
+      background: #E5F9F2;
+      color: #0E7C55;
+    }
+    
+    .alert.error {
+      background: #FEF0F0;
+      color: #DE3700;
+    }
+    
+    .alert.warning {
+      background: #FFF7EC;
+      color: #C56F00;
+    }
+    
+    .alert.info {
+      background: #E5F4FF;
+      color: #005BA6;
+    }
+    
+    .card {
+      background: #fff;
+      border: 1px solid var(--ps-neutral-500);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    
+    .card:hover {
+      box-shadow: var(--ps-shadow-md);
+    }
+    
+    .card-body {
+      padding: 24px;
+    }
+    
+    .spacing-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    
+    .spacing-table th {
+      text-align: left;
+      padding: 12px;
+      background: var(--ps-neutral-200);
+      border-bottom: 1px solid var(--ps-border-default);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .spacing-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--ps-neutral-300);
+    }
+    
+    .spacing-table .visual {
+      width: 120px;
+    }
+    
+    .spacing-bar {
+      height: 24px;
+      background: var(--ps-brand-primary);
+      border-radius: 2px;
+    }
+    
+    .shadow-example {
+      width: 120px;
+      height: 80px;
+      background: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ps-fg-secondary);
+    }
+    
+    .radius-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+    
+    .radius-example {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    
+    .radius-box {
+      width: 96px;
+      height: 72px;
+      background: var(--ps-brand-light);
+      border: 1px solid var(--ps-brand-primary);
+    }
+    
+    .radius-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ps-brand-secondary);
+    }
+    
+    .radius-value {
+      font-size: 11px;
+      font-family: var(--ps-font-mono);
+      color: var(--ps-fg-secondary);
+    }
+    
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+    
+    .accessibility-note {
+      background: var(--ps-info-light);
+      border-left: 4px solid var(--ps-brand-primary);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 4px;
+    }
+    
+    .accessibility-note h4 {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ps-brand-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    
+    .accessibility-note ul {
+      margin: 0;
+      padding-left: 20px;
+      line-height: 1.8;
+      font-size: 13px;
+    }
+    
+    @media (max-width: 1024px) {
+      .nav-sidebar {
+        transform: translateX(-280px);
+        transition: transform 0.3s;
+      }
+      
+      .nav-sidebar.open {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 24px 20px 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav-sidebar">
+    <div class="nav-logo">PartsSource<br>Design System</div>
+    
+    <div class="nav-section">
+      <div class="nav-section-title">Foundation</div>
+      <a href="#colors" class="nav-link">Colors</a>
+      <a href="#typography" class="nav-link">Typography</a>
+      <a href="#spacing" class="nav-link">Spacing</a>
+      <a href="#radius" class="nav-link">Border Radius</a>
+      <a href="#shadows" class="nav-link">Shadows</a>
+      <a href="#logo" class="nav-link">Logo</a>
+      <a href="#icons" class="nav-link">Icons</a>
+    </div>
+    
+    <div class="nav-section">
+      <div class="nav-section-title">Components</div>
+      <a href="#buttons" class="nav-link">Buttons</a>
+      <a href="#inputs" class="nav-link">Input Fields</a>
+      <a href="#selections" class="nav-link">Checkboxes & Radio</a>
+      <a href="#badges" class="nav-link">Badges</a>
+      <a href="#alerts" class="nav-link">Alerts</a>
+      <a href="#cards" class="nav-link">Cards</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <h1>PartsSource Design System</h1>
+    <p class="intro">Complete visual reference for the PartsSource platform. This document captures all colors, typography, components, and patterns used across product and marketing surfaces.</p>
+
+    <section id="colors" class="section">
+      <h2 class="section-title">Colors</h2>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Brand Colors</h3>
+        <div class="color-grid">
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #005BA6;"></div>
+            <div class="color-name">PS Blue</div>
+            <div class="color-value">#005BA6</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #002F48;"></div>
+            <div class="color-name">Midnight</div>
+            <div class="color-value">#002F48</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #DCEAED;"></div>
+            <div class="color-name">Airway</div>
+            <div class="color-value">#DCEAED</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #009CF4;"></div>
+            <div class="color-name">Cyan</div>
+            <div class="color-value">#009CF4</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Blue Scale</h3>
+        <div class="color-grid">
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #B0C6D3;"></div>
+            <div class="color-name">Blue 50</div>
+            <div class="color-value">#B0C6D3</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #DCEAED;"></div>
+            <div class="color-name">Blue 100</div>
+            <div class="color-value">#DCEAED</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #009CF4;"></div>
+            <div class="color-name">Blue 200</div>
+            <div class="color-value">#009CF4</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #005BA6;"></div>
+            <div class="color-name">Blue 500</div>
+            <div class="color-value">#005BA6</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #004A84;"></div>
+            <div class="color-name">Blue 700</div>
+            <div class="color-value">#004A84</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #002F48;"></div>
+            <div class="color-name">Blue 900</div>
+            <div class="color-value">#002F48</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Orange Scale</h3>
+        <div class="color-grid">
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #FF9505;"></div>
+            <div class="color-name">Orange 1</div>
+            <div class="color-value">#FF9505</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #EC8000;"></div>
+            <div class="color-name">Orange 2</div>
+            <div class="color-value">#EC8000</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #D27200;"></div>
+            <div class="color-name">Orange 3</div>
+            <div class="color-value">#D27200</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #FFCA82;"></div>
+            <div class="color-name">Orange 4</div>
+            <div class="color-value">#FFCA82</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Neutrals</h3>
+        <div class="color-grid">
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #FFFFFF; border: 1px solid #E6E6E6;"></div>
+            <div class="color-name">White</div>
+            <div class="color-value">#FFFFFF</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #FAFAFA;"></div>
+            <div class="color-name">Grey 5</div>
+            <div class="color-value">#FAFAFA</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #F1F1F1;"></div>
+            <div class="color-name">Grey 6</div>
+            <div class="color-value">#F1F1F1</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #E6E6E6;"></div>
+            <div class="color-name">Grey 7</div>
+            <div class="color-value">#E6E6E6</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #DCDCDC;"></div>
+            <div class="color-name">Grey 8</div>
+            <div class="color-value">#DCDCDC</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #CCCCCC;"></div>
+            <div class="color-name">Grey 4</div>
+            <div class="color-value">#CCCCCC</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #949494;"></div>
+            <div class="color-name">Grey 3</div>
+            <div class="color-value">#949494</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #777777;"></div>
+            <div class="color-name">Grey 2</div>
+            <div class="color-value">#777777</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #5C5C5C;"></div>
+            <div class="color-name">Grey 9</div>
+            <div class="color-value">#5C5C5C</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #4A4A4A;"></div>
+            <div class="color-name">Grey 1</div>
+            <div class="color-value">#4A4A4A</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #2B2B2B;"></div>
+            <div class="color-name">Grey 10</div>
+            <div class="color-value">#2B2B2B</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #000000;"></div>
+            <div class="color-name">Black</div>
+            <div class="color-value">#000000</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Semantic Colors</h3>
+        <div class="color-grid">
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #17AB78;"></div>
+            <div class="color-name">Success</div>
+            <div class="color-value">#17AB78</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #D32F2F;"></div>
+            <div class="color-name">Error</div>
+            <div class="color-value">#D32F2F</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #FF9505;"></div>
+            <div class="color-name">Warning</div>
+            <div class="color-value">#FF9505</div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-chip" style="background: #005BA6;"></div>
+            <div class="color-name">Info</div>
+            <div class="color-value">#005BA6</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="typography" class="section">
+      <h2 class="section-title">Typography</h2>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Display Type — Source Sans Pro</h3>
+        <div class="component-grid">
+          <div class="type-sample">
+            <h1 style="font-size: 34px; font-weight: 300; line-height: 1.2; margin: 0; color: #002F48;">
+              Mission-critical uptime, on-demand
+            </h1>
+            <div class="type-meta">Header 00 — 34px / 300 / 1.2</div>
+          </div>
+          <div class="type-sample">
+            <h1 style="font-size: 30px; font-weight: 300; line-height: 1.2; margin: 0; color: #002F48;">
+              Evidence-based procurement
+            </h1>
+            <div class="type-meta">H1 — 30px / 300 / 1.2</div>
+          </div>
+          <div class="type-sample">
+            <h2 style="font-size: 24px; font-weight: 300; line-height: 1.2; margin: 0; color: #002F48;">
+              Parts, service, and labor
+            </h2>
+            <div class="type-meta">H2 — 24px / 300 / 1.2</div>
+          </div>
+          <div class="type-sample">
+            <h3 style="font-size: 24px; font-weight: 400; line-height: 1.2; margin: 0; color: #002F48;">
+              Clinical resource management
+            </h3>
+            <div class="type-meta">H3 — 24px / 400 / 1.2</div>
+          </div>
+          <div class="type-sample">
+            <h4 style="font-size: 18px; font-weight: 600; line-height: 1.2; margin: 0; color: #002F48;">
+              Request a quote
+            </h4>
+            <div class="type-meta">H4 — 18px / 600 / 1.2</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Body Type</h3>
+        <div class="component-grid">
+          <div class="type-sample">
+            <p style="font-size: 16px; font-weight: 400; line-height: 1.5; margin: 0; color: #4A4A4A;">
+              Default body copy. Use for paragraph text, card descriptions, and most in-product prose. This is the foundation of all written content in the PartsSource platform.
+            </p>
+            <div class="type-meta">Body-01 — 16px / 400 / 1.5</div>
+          </div>
+          <div class="type-sample">
+            <p style="font-size: 14px; font-weight: 400; line-height: 1.4; margin: 0; color: #4A4A4A;">
+              Mobile body. Tightens line-height to snug (1.4) for denser small-screen layouts.
+            </p>
+            <div class="type-meta">Body-Mobile — 14px / 400 / 1.4</div>
+          </div>
+          <div class="type-sample">
+            <p style="font-size: 12px; font-weight: 400; line-height: 1.5; margin: 0; color: #777;">
+              Captions, helper text, footnotes, metadata.
+            </p>
+            <div class="type-meta">Micro — 12px / 400 / 1.5</div>
+          </div>
+          <div class="type-sample">
+            <p style="font-size: 12px; font-weight: 700; line-height: 1.5; letter-spacing: 1.5px; text-transform: uppercase; margin: 0; color: #005BA6;">
+              Section Label
+            </p>
+            <div class="type-meta">Label (Brand) — 12px / 700 / UPPER / 1.5px spacing</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="spacing" class="section">
+      <h2 class="section-title">Spacing Scale</h2>
+      <p style="margin-bottom: 24px; color: var(--ps-fg-secondary);">4px base scale. Use for padding, margins, and gaps to maintain consistent vertical and horizontal rhythm.</p>
+      
+      <table class="spacing-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Value</th>
+            <th class="visual">Visual</th>
+            <th>Use Case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--ps-space-1</code></td>
+            <td>4px</td>
+            <td><div class="spacing-bar" style="width: 4px;"></div></td>
+            <td>Tight spacing, icon gaps</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-2</code></td>
+            <td>8px</td>
+            <td><div class="spacing-bar" style="width: 8px;"></div></td>
+            <td>Button padding, small gaps</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-3</code></td>
+            <td>12px</td>
+            <td><div class="spacing-bar" style="width: 12px;"></div></td>
+            <td>Input padding, medium gaps</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-4</code></td>
+            <td>16px</td>
+            <td><div class="spacing-bar" style="width: 16px;"></div></td>
+            <td>Card padding, standard gaps</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-6</code></td>
+            <td>24px</td>
+            <td><div class="spacing-bar" style="width: 24px;"></div></td>
+            <td>Section spacing</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-8</code></td>
+            <td>32px</td>
+            <td><div class="spacing-bar" style="width: 32px;"></div></td>
+            <td>Large section gaps</td>
+          </tr>
+          <tr>
+            <td><code>--ps-space-12</code></td>
+            <td>48px</td>
+            <td><div class="spacing-bar" style="width: 48px;"></div></td>
+            <td>Page margins</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="radius" class="section">
+      <h2 class="section-title">Border Radius</h2>
+      <p style="margin-bottom: 24px; color: var(--ps-fg-secondary);">Standard radius tokens for consistent corner rounding across buttons, cards, inputs, and containers.</p>
+      
+      <div class="radius-grid">
+        <div class="radius-example">
+          <div class="radius-box" style="border-radius: 0;"></div>
+          <div>
+            <div class="radius-label">none</div>
+            <div class="radius-value">0</div>
+          </div>
+        </div>
+        <div class="radius-example">
+          <div class="radius-box" style="border-radius: 2px;"></div>
+          <div>
+            <div class="radius-label">sm</div>
+            <div class="radius-value">2px</div>
+          </div>
+        </div>
+        <div class="radius-example">
+          <div class="radius-box" style="border-radius: 4px;"></div>
+          <div>
+            <div class="radius-label">md (default)</div>
+            <div class="radius-value">4px</div>
+          </div>
+        </div>
+        <div class="radius-example">
+          <div class="radius-box" style="border-radius: 8px;"></div>
+          <div>
+            <div class="radius-label">xl</div>
+            <div class="radius-value">8px</div>
+          </div>
+        </div>
+        <div class="radius-example">
+          <div class="radius-box" style="border-radius: 100px;"></div>
+          <div>
+            <div class="radius-label">pill</div>
+            <div class="radius-value">100px</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="shadows" class="section">
+      <h2 class="section-title">Shadows</h2>
+      <p style="margin-bottom: 24px; color: var(--ps-fg-secondary);">Elevation system for cards, dropdowns, and modals. Use to establish visual hierarchy and depth.</p>
+      
+      <div style="display: flex; gap: 32px; flex-wrap: wrap;">
+        <div>
+          <div class="shadow-example" style="box-shadow: 0 1px 2px rgba(0,0,0,0.05);">sm</div>
+          <div style="margin-top: 12px; font-size: 11px; font-family: var(--ps-font-mono); color: var(--ps-fg-secondary);">
+            0 1px 2px rgba(0,0,0,0.05)
+          </div>
+        </div>
+        <div>
+          <div class="shadow-example" style="box-shadow: 0 4px 6px rgba(0,0,0,0.07);">md</div>
+          <div style="margin-top: 12px; font-size: 11px; font-family: var(--ps-font-mono); color: var(--ps-fg-secondary);">
+            0 4px 6px rgba(0,0,0,0.07)
+          </div>
+        </div>
+        <div>
+          <div class="shadow-example" style="box-shadow: 0 10px 15px rgba(0,0,0,0.1);">lg</div>
+          <div style="margin-top: 12px; font-size: 11px; font-family: var(--ps-font-mono); color: var(--ps-fg-secondary);">
+            0 10px 15px rgba(0,0,0,0.1)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="logo" class="section">
+      <h2 class="section-title">Logo</h2>
+      <p style="margin-bottom: 24px; color: var(--ps-fg-secondary);">The PartsSource wordmark in three official colorways: blue (primary), white (reversed), and black (single-color print only).</p>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">PS Blue Wordmark</h3>
+        <p style="margin-bottom: 16px; color: var(--ps-fg-secondary); font-size: 14px;">Use on white, subtle grey (#FAFAFA), and muted grey (#F1F1F1) backgrounds.</p>
+        <div style="background: #FAFAFA; padding: 48px; border-radius: 8px; text-align: center; border: 1px solid var(--ps-border-default);">
+          <div style="font-size: 32px; font-weight: 700; color: #005BA6;">PartsSource</div>
+        </div>
+      </div>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">White Wordmark</h3>
+        <p style="margin-bottom: 16px; color: var(--ps-fg-secondary); font-size: 14px;">Use on PS Blue, Midnight, black, and dark imagery.</p>
+        <div style="background: #005BA6; padding: 48px; border-radius: 8px; text-align: center;">
+          <div style="font-size: 32px; font-weight: 700; color: #FFFFFF;">PartsSource</div>
+        </div>
+      </div>
+      
+      <div class="accessibility-note">
+        <h4>Logo Usage Guidelines</h4>
+        <ul>
+          <li><strong>Clearspace:</strong> Reserve space equal to cap-height of "P" on all sides</li>
+          <li><strong>Minimum size:</strong> 160px width for full wordmark</li>
+          <li><strong>Black wordmark:</strong> Use only for single-color print</li>
+          <li><strong>Clickable logos:</strong> Wrap in &lt;a&gt; with aria-label="Go to homepage"</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="icons" class="section">
+      <h2 class="section-title">Icons</h2>
+      <p style="margin-bottom: 24px; color: var(--ps-fg-secondary);">Full Lucide icon set with 1.75px stroke weight. Default color is Midnight (#002F48) for light backgrounds, white for dark.</p>
+      
+      <div class="accessibility-note">
+        <h4>Icon Guidelines</h4>
+        <ul>
+          <li><strong>Default stroke:</strong> 1.75px for all icons</li>
+          <li><strong>Sizes:</strong> 16px, 20px, 24px (default), 32px</li>
+          <li><strong>Accessibility:</strong> Use aria-label or aria-hidden="true" + visible text</li>
+          <li><strong>Interactive icons:</strong> Minimum 44×44px touch target</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="buttons" class="section">
+      <h2 class="section-title">Buttons</h2>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Primary Button (Large)</h3>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 16px;">
+          <button class="btn primary lg">Request Quote</button>
+          <button class="btn primary lg" style="background: #005BA6; color: #fff;">Request Quote</button>
+        </div>
+        <p style="font-size: 13px; color: var(--ps-fg-secondary);">325×50px • 2px border • 4px radius • Outline default, filled on hover</p>
+      </div>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Small Button</h3>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 16px;">
+          <button class="btn primary sm">FILTER</button>
+        </div>
+        <p style="font-size: 13px; color: var(--ps-fg-secondary);">87×32px • 1px border • 4px radius • 10px text</p>
+      </div>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Orange Pill CTA</h3>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
+          <button class="btn pill">See Buying Options</button>
+        </div>
+        <p style="font-size: 13px; color: var(--ps-fg-secondary);">48px height • 100px radius • Orange fill • Uppercase</p>
+      </div>
+      
+      <div class="accessibility-note">
+        <h4>Button Best Practices</h4>
+        <ul>
+          <li><strong>Minimum 44×44px touch target</strong> (WCAG 2.5.5)</li>
+          <li><strong>Use semantic &lt;button&gt; elements</strong> for actions</li>
+          <li><strong>Disabled state:</strong> Use disabled attribute</li>
+          <li><strong>Focus indicators:</strong> Blue outline for keyboard users</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="inputs" class="section">
+      <h2 class="section-title">Input Fields</h2>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Standard Input (40px)</h3>
+        <div style="max-width: 400px; margin-bottom: 16px;">
+          <input type="text" class="input" placeholder="Enter part number">
+        </div>
+        <p style="font-size: 13px; color: var(--ps-fg-secondary);">40px height • 1.5px border • Orange hover • Blue focus glow</p>
+      </div>
+      
+      <div class="accessibility-note">
+        <h4>Input Field Guidelines</h4>
+        <ul>
+          <li><strong>Always pair with &lt;label&gt;</strong> using for= attribute</li>
+          <li><strong>Placeholder is not a label</strong> — provide visible label</li>
+          <li><strong>Error state:</strong> Red border + error message 11px below</li>
+          <li><strong>Minimum contrast:</strong> 4.5:1 for input text</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="selections" class="section">
+      <h2 class="section-title">Checkboxes & Radio Buttons</h2>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Checkboxes</h3>
+        <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px;">
+          <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+            <span class="checkbox"></span>
+            <span>Include compatible parts</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+            <span class="checkbox checked">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                <path d="M15.31 2.56a1.5 1.5 0 0 0-2.12-2.12L5.25 8.38 2.56 5.69A1.5 1.5 0 1 0 .44 7.81l3.75 3.75a1.5 1.5 0 0 0 2.12 0l9-9z" fill="#fff"></path>
+              </svg>
+            </span>
+            <span>Show original equipment only</span>
+          </label>
+        </div>
+        <p style="font-size: 13px; color: var(--ps-fg-secondary);">24×24px • 2px corner radius • Orange fill when selected</p>
+      </div>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Radio Buttons</h3>
+        <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px;">
+          <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+            <span class="radio"></span>
+            <span>Option A</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+            <span class="radio" style="border-color: #4A4A4A;">
+              <span style="width: 10px; height: 10px; background: #FF9505; border-radius: 50%;"></span>
+            </span>
+            <span>Option B</span>
+          </label>
+        </div>
+        <p style="font-size: 13px; color: var(--ps-fg-secondary);">24×24px circular • 10px inner circle when selected</p>
+      </div>
+      
+      <div class="accessibility-note">
+        <h4>Selection Controls Best Practices</h4>
+        <ul>
+          <li><strong>Minimum 44×44px touch target</strong> — make label clickable</li>
+          <li><strong>Use checkboxes for multi-select,</strong> radio for single-select</li>
+          <li><strong>Group with &lt;fieldset&gt; + &lt;legend&gt;</strong></li>
+          <li><strong>Arrange vertically</strong> when possible</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="badges" class="section">
+      <h2 class="section-title">Badges</h2>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Status Badges</h3>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+          <span class="badge success">Delivered</span>
+          <span class="badge info">In Transit</span>
+          <span class="badge warning">Urgent</span>
+          <span class="badge critical">Critical</span>
+        </div>
+        <p style="font-size: 13px; color: var(--ps-fg-secondary);">4px 8px padding • 4px radius • 12px text • 1px border</p>
+      </div>
+      
+      <div class="accessibility-note">
+        <h4>Badge Guidelines</h4>
+        <ul>
+          <li><strong>Color + text:</strong> Never rely on color alone</li>
+          <li><strong>Contrast:</strong> All badge pairs meet WCAG AA</li>
+          <li><strong>Consistent mapping:</strong> Blue = progress, Green = complete, Red = critical</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="alerts" class="section">
+      <h2 class="section-title">Alerts</h2>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Alert Banners</h3>
+        <div style="max-width: 600px;">
+          <div class="alert success">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span style="font-weight: 700;">Your quote has been sent successfully.</span>
+          </div>
+          <div class="alert error">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+            <span style="font-weight: 700;">Unable to process request. Please try again.</span>
+          </div>
+          <div class="alert warning">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span style="font-weight: 700;">Shipment delayed. Expected delivery: Tomorrow.</span>
+          </div>
+          <div class="alert info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span style="font-weight: 700;">New parts available for this equipment model.</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="accessibility-note">
+        <h4>Alert Best Practices</h4>
+        <ul>
+          <li><strong>Use role="alert"</strong> for critical alerts</li>
+          <li><strong>Icons are decorative:</strong> Add aria-hidden="true"</li>
+          <li><strong>Dismissible alerts:</strong> Include close button with aria-label</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="cards" class="section">
+      <h2 class="section-title">Cards</h2>
+      
+      <div class="subsection">
+        <h3 class="subsection-title">Product Card</h3>
+        <div class="card" style="max-width: 500px;">
+          <div class="card-body">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+              <a href="#" style="font-size: 14px; color: #777; text-decoration: none;">View Details</a>
+              <span style="font-size: 13px; font-weight: 700; color: #000; text-transform: uppercase;">CREATED 04/21/2026</span>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 700; color: #005DA6; margin: 0 0 24px;">
+              <a href="#" style="color: #005DA6; text-decoration: none;">PATIENT CABLE, SPO2 SPOT CHECK</a>
+            </h3>
+            <div style="display: flex; gap: 24px;">
+              <div style="width: 100px; height: 100px; background: #F5F5F5; border: 1px solid #E5E5E5; border-radius: 4px;"></div>
+              <div style="font-size: 16px; line-height: 1.5;">
+                <div><span>Facility:</span> <span style="font-weight: 600;">Chatham Memorial</span></div>
+                <div><span>Ref #:</span> <span style="font-weight: 600;">9535566</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="accessibility-note">
+        <h4>Card Best Practices</h4>
+        <ul>
+          <li><strong>Make entire card focusable</strong> if interactive</li>
+          <li><strong>Use headings for titles</strong> for screen readers</li>
+          <li><strong>Images require alt text</strong></li>
+        </ul>
+      </div>
+    </section>
+
+    <footer style="margin-top: 80px; padding-top: 40px; border-top: 1px solid var(--ps-border-default); color: var(--ps-fg-secondary); font-size: 13px;">
+      <p>PartsSource Design System — Complete Visual Reference</p>
+      <p style="margin-top: 8px;">© 2026 PartsSource. All rights reserved.</p>
+    </footer>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        }
+      });
+    });
+    
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (window.pageYOffset >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

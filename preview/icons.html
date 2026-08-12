@@ -1,0 +1,317 @@
+<!doctype html>
+<!-- @dsCard group="Foundation" name="Iconography" subtitle="Full Lucide set — searchable, copy-on-click" viewport="700x140" --><html><head><meta charset="utf-8"><title>Icons</title>
+<link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+  :root{--ink:#002F48;--blue:#005BA6;--mute:#777;--bg:#fff;--chip:#F4F6F8;--line:#E6EAEE;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);font-family:'Source Sans Pro', var(--ps-font-sans,system-ui);color:var(--ps-sem-fg-primary);}
+  header{position:sticky;top:0;z-index:10;background:var(--ps-sem-bg-surface);border-bottom:1px solid var(--line);padding:18px 28px 14px;}
+  h1{margin:0 0 2px;font-size:28px;font-weight:600;color:var(--ink);letter-spacing:-.2px;}
+  .sub{font-size:15px;color:var(--mute);margin:0 0 16px;max-width:860px;line-height:1.6;}
+  .tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  .search{position:relative;flex:0 0 300px;}
+  .search input{width:100%;height:36px;border:1px solid #D2D7DC;border-radius:4px;padding:0 12px 0 12px;font:inherit;font-size:13px;outline:none;transition:border-color .15s,box-shadow .15s;}
+  .search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,91,167,.15);}
+  .search i{display:none;}
+  .count{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums;}
+  .size{display:flex;gap:0;border:1px solid #D2D7DC;border-radius:4px;overflow:hidden;}
+  .size button{appearance:none;border:0;background:var(--ps-sem-bg-surface);padding:0 10px;height:34px;font:inherit;font-size:12px;color:#555;cursor:pointer;border-right:1px solid #D2D7DC;}
+  .size button:last-child{border-right:0;}
+  .size button.on{background:var(--blue);color:var(--ps-sem-fg-inverse);}
+  .color-pick{display:flex;align-items:center;gap:6px;border:1px solid #D2D7DC;border-radius:4px;padding:0 8px;height:34px;font-size:12px;color:#555;}
+  .color-pick input[type=color]{width:24px;height:24px;border:0;padding:0;background:none;cursor:pointer;}
+  .color-swatches{display:flex;gap:4px;}
+  .color-swatches button{width:22px;height:22px;border-radius:50%;border:1px solid rgba(0,0,0,.1);cursor:pointer;padding:0;}
+  .color-swatches button.on{outline:2px solid var(--blue);outline-offset:1px;}
+  main{padding:20px 28px 60px;}
+  .cell svg{color:var(--icon-color,var(--ink));stroke-width:var(--icon-stroke,1.75);}
+  .stroke-pick{display:flex;align-items:center;gap:6px;border:1px solid #D2D7DC;border-radius:4px;padding:0 10px;height:34px;font-size:12px;color:#555;}
+  .stroke-pick input{width:90px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;}
+  .cell{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;padding:14px 6px 10px;border:1px solid transparent;border-radius:6px;cursor:pointer;contain:layout paint;transition:background .1s,border-color .1s;}
+  .cell:hover{background:var(--chip);border-color:var(--line);}
+  .cell.copied{background:#E2F5EE;border-color:#0E7C55;}
+  .cell svg{color:var(--icon-color,var(--ink));stroke-width:var(--icon-stroke,1.75);}
+  .cell .nm{font-size:10px;color:var(--mute);font-family:ui-monospace,Menlo,monospace;text-align:center;line-height:1.3;word-break:break-all;max-width:100%;}
+  .empty{padding:40px;text-align:center;color:var(--mute);font-size:13px;}
+  /* Section styling to match other pages */
+  .section{margin:0 28px 40px;border:1px solid #E6E6E6;border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+  .section-head{padding:18px 24px;border-bottom:1px solid #E6E6E6;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-sem-fg-brand);font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:var(--ps-sem-fg-tertiary);line-height:1.5;flex:1;}
+  .section-body{padding:24px;}
+</style></head><body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Icons</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+<div id="tweaks-root"></div>
+<header>
+  <h1>Iconography</h1>
+  <div class="sub">Full Lucide icon set. Click any icon to copy its name. Default stroke: 1.75px.</div>
+  <div class="tools">
+    <div class="search">
+      <input id="q" type="text" placeholder="Search icons…" autocomplete="off">
+    </div>
+    <div class="count"><span id="shown">0</span> / <span id="total">0</span></div>
+    <div class="size" role="tablist">
+      <button data-sz="16" >16</button>
+      <button data-sz="20" >20</button>
+      <button data-sz="24" class="on">24</button>
+      <button data-sz="32" >32</button>
+    </div>
+    <div class="color-pick">
+      <span>Color</span>
+      <div class="color-swatches" id="swatches">
+        <button data-color="#002F48" class="on" style="background:#002F48" title="Midnight"></button>
+        <button data-color="#005BA6" style="background:var(--ps-sem-action-default)" title="PS Blue"></button>
+        <button data-color="#FF9505" style="background:#FF9505" title="Orange"></button>
+        <button data-color="#17AB78" style="background:#17AB78" title="Green"></button>
+        <button data-color="#E00000" style="background:#E00000" title="Red"></button>
+        <button data-color="#777777" style="background:#777777" title="Grey"></button>
+      </div>
+      <input id="color" type="color" value="#002F48" aria-label="Custom icon color">
+    </div>
+    <div class="stroke-pick">
+      <span>Stroke</span>
+      <input id="stroke" type="range" min="1" max="3" step="0.25" value="1.75">
+      <span id="strokeVal" style="font-variant-numeric:tabular-nums;min-width:28px;">1.75</span>
+    </div>
+  </div>
+</header>
+<main>
+  <div id="grid" class="grid"></div>
+  <div id="empty" class="empty" hidden>No matches.</div>
+</main>
+<div id="toast" class="toast"></div>
+
+<script>
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  const q = document.getElementById('q');
+  const shown = document.getElementById('shown');
+  const total = document.getElementById('total');
+  const toast = document.getElementById('toast');
+  let size = 24;
+
+  // Lucide UMD exposes every icon on `lucide.icons` (PascalCase keys) with a `toSvg()` method.
+  // Convert PascalCase -> kebab-case for the public name.
+  const pascalToKebab = s => s.replace(/([a-z0-9])([A-Z])/g,'$1-$2').replace(/([A-Z]+)([A-Z][a-z])/g,'$1-$2').toLowerCase();
+
+  const all = Object.entries(lucide.icons).map(([pascal, icon]) => ({
+    pascal,
+    name: pascalToKebab(pascal),
+    icon
+  })).sort((a,b)=>a.name.localeCompare(b.name));
+
+  total.textContent = all.length.toLocaleString();
+
+  function render(filter=''){
+    const f = filter.trim().toLowerCase();
+    const list = f ? all.filter(i => i.name.includes(f)) : all;
+    shown.textContent = list.length.toLocaleString();
+    empty.hidden = list.length > 0;
+    // build with innerHTML for speed
+    const parts = [];
+    for (const {name, icon} of list){
+      let svgHTML = '';
+      try {
+        if (typeof icon?.toSvg === 'function') {
+          svgHTML = icon.toSvg({ width:size, height:size });
+        } else if (typeof lucide.createElement === 'function') {
+          const el = lucide.createElement(icon);
+          el.setAttribute('width', size);
+          el.setAttribute('height', size);
+          svgHTML = el.outerHTML;
+        } else if (Array.isArray(icon)) {
+          // raw [tag, attrs, children] nodes
+          const children = icon.map(([t, a]) => {
+            const attrs = Object.entries(a||{}).map(([k,v])=>`${k}="${v}"`).join(' ');
+            return `<${t} ${attrs}/>`;
+          }).join('');
+          svgHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${children}</svg>`;
+        }
+      } catch(e){}
+      parts.push(`<div class="cell" data-name="${name}" title="${name}">${svgHTML}<div class="nm">${name}</div></div>`);
+    }
+    grid.innerHTML = parts.join('');
+  }
+
+  let t;
+  q.addEventListener('input', () => {
+    clearTimeout(t);
+    t = setTimeout(()=>render(q.value), 80);
+  });
+
+  document.querySelectorAll('.size button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.size button').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      size = +b.dataset.sz;
+      render(q.value);
+    });
+  });
+
+  // Color swatches + custom color picker
+  const swatches = document.getElementById('swatches');
+  const colorInput = document.getElementById('color');
+  function setColor(hex){
+    document.body.style.setProperty('--icon-color', hex);
+    colorInput.value = hex;
+  }
+  swatches.addEventListener('click', e => {
+    const b = e.target.closest('button[data-color]'); if (!b) return;
+    swatches.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    setColor(b.dataset.color);
+  });
+  colorInput.addEventListener('input', () => {
+    swatches.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+    setColor(colorInput.value);
+  });
+  setColor('#002F48');
+
+  // Stroke width
+  const strokeEl = document.getElementById('stroke');
+  const strokeVal = document.getElementById('strokeVal');
+  strokeEl.addEventListener('input', () => {
+    document.body.style.setProperty('--icon-stroke', strokeEl.value);
+    strokeVal.textContent = (+strokeEl.value).toFixed(2);
+  });
+
+  grid.addEventListener('click', e => {
+    const cell = e.target.closest('.cell');
+    if (!cell) return;
+    const name = cell.dataset.name;
+    navigator.clipboard?.writeText(name);
+    cell.classList.add('copied');
+    setTimeout(()=>cell.classList.remove('copied'), 500);
+    toast.textContent = `Copied "${name}"`;
+    toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(()=>toast.classList.remove('show'), 1200);
+  });
+
+  render();
+  lucide.createIcons(); // for the search-field icon
+</script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const { TweaksPanel, TweakSection, TweakRadio, TweakColor, TweakSlider, useTweaks } = window;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"iconSize": 24, "iconColor": "#002F48", "strokeWidth": 1.75}/*EDITMODE-END*/;
+
+function IconTweaks() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    // Update icon size
+    size = tweaks.iconSize;
+    document.querySelectorAll('.size button').forEach(b => {
+      b.classList.toggle('on', +b.dataset.sz === tweaks.iconSize);
+    });
+    
+    // Update icon color
+    document.body.style.setProperty('--icon-color', tweaks.iconColor);
+    document.getElementById('color').value = tweaks.iconColor;
+    document.querySelectorAll('#swatches button').forEach(b => {
+      b.classList.toggle('on', b.dataset.color === tweaks.iconColor);
+    });
+    
+    // Update stroke width
+    document.body.style.setProperty('--icon-stroke', tweaks.strokeWidth);
+    document.getElementById('stroke').value = tweaks.strokeWidth;
+    document.getElementById('strokeVal').textContent = tweaks.strokeWidth.toFixed(2);
+    
+    // Re-render grid
+    render(q.value);
+  }, [tweaks.iconSize, tweaks.iconColor, tweaks.strokeWidth]);
+
+  return React.createElement(TweaksPanel, { title: "Icon Controls" },
+    React.createElement(TweakSection, { label: "Display" },
+      React.createElement(TweakRadio, {
+        label: "Size",
+        value: tweaks.iconSize,
+        options: [
+          { value: 16, label: '16px' },
+          { value: 20, label: '20px' },
+          { value: 24, label: '24px' },
+          { value: 32, label: '32px' }
+        ],
+        onChange: (val) => setTweak('iconSize', val)
+      }),
+      React.createElement(TweakColor, {
+        label: "Color",
+        value: tweaks.iconColor,
+        onChange: (val) => setTweak('iconColor', val),
+        presets: ['#002F48', '#005BA6', '#FF9505', '#17AB78', '#E00000', '#777777']
+      })
+    ),
+    React.createElement(TweakSection, { label: "Stroke" },
+      React.createElement(TweakSlider, {
+        label: "Weight",
+        value: tweaks.strokeWidth,
+        min: 1,
+        max: 3,
+        step: 0.25,
+        onChange: (val) => setTweak('strokeWidth', val)
+      })
+    )
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('tweaks-root'));
+root.render(React.createElement(IconTweaks));
+</script>
+
+<!-- Accessibility -->
+<div class="section">
+  <div class="section-head">
+    <h2>Accessibility & Best Practices</h2>
+    <div class="desc">WCAG compliance and implementation guidance for inclusive icon design.</div>
+  </div>
+  <div class="section-body">
+    <ul style="margin:0;padding:0 0 0 20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);list-style-position:outside;">
+      <li><strong>Icons are decorative by default:</strong> Add <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">aria-hidden="true"</code> to icons paired with visible text labels</li>
+      <li><strong>Standalone icons need labels:</strong> Use <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">aria-label</code> on the parent button/link (e.g., <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);">&lt;button aria-label="Search"&gt;</code>)</li>
+      <li><strong>Minimum size 24×24px</strong> for standalone interactive icons to meet touch target guidelines (WCAG 2.5.5)</li>
+      <li><strong>Stroke weight consistency:</strong> Use 2px stroke across all icons at 24px size; scale proportionally for larger sizes</li>
+      <li><strong>Color contrast:</strong> Icons must meet 3:1 contrast ratio against background (WCAG 1.4.11 for UI components)</li>
+      <li><strong>Don't rely on color alone:</strong> Pair color-coded icons with text, shape, or position to convey meaning</li>
+      <li><strong>Avoid icon-only navigation:</strong> Always pair navigation icons with text labels for clarity</li>
+    </ul>
+  </div>
+</div>
+
+</body></html>

@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Tables" subtitle="Default desktop table, row states, empty/loading, breakpoints, anatomy, tokens, a11y" --><html><head>
+  <meta charset="utf-8">
+  <title>Tables — PartsSource Design System</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 96px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:880px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+    .section-body{padding:24px;background:var(--ps-sem-bg-canvas);}
+    .section-body.plain{background:var(--ps-sem-bg-surface);padding:0;}
+    .section-body.scroll{overflow-x:auto;}
+
+    /* ─────────────────────────────────────────
+       Card wrapper (matches Figma Table View)
+       1285 width, 8 px radius, 2 px #F1F1F1 border,
+       24 padding, 24 gap
+       ───────────────────────────────────────── */
+    .tbl-card{
+      background:var(--ps-sem-bg-surface);
+      border:1px solid #E5E7EB;
+      border-radius:8px;
+      padding:20px 24px 24px;
+      font-family:'Source Sans Pro','Source Sans 3',var(--ps-font-sans);
+      color:var(--ps-prim-gray-900);
+      display:flex;flex-direction:column;gap:18px;
+      min-width:1180px;
+      box-shadow:0 1px 2px rgba(0,0,0,.04);
+    }
+    .tbl-card--inset{min-width:0;box-shadow:none;}
+
+    .tbl-head{
+      display:flex;align-items:center;justify-content:space-between;gap:24px;
+      min-height:42px;
+    }
+    .tbl-head__title{
+      display:flex;align-items:center;gap:12px;
+      font-family:'Source Sans Pro',sans-serif;font-weight:300;
+      font-size:26px;line-height:1;letter-spacing:-.02em;color:#1F2937;
+    }
+    .tbl-drag{
+      display:inline-grid;grid-template-columns:repeat(2,3px);gap:3px;cursor:grab;color:#9CA3AF;flex-shrink:0;
+    }
+    .tbl-drag span{width:3px;height:3px;border-radius:50%;background:currentColor;display:block;}
+    .tbl-head__right{display:flex;align-items:center;gap:18px;}
+    .tbl-head__icons{display:flex;align-items:center;gap:14px;color:var(--ps-sem-fg-secondary);}
+    .tbl-head__icons button{
+      background:transparent;border:0;color:inherit;cursor:pointer;
+      width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px;
+    }
+    .tbl-head__icons button:hover{background:var(--ps-sem-bg-muted);color:var(--ps-sem-fg-primary);}
+    .tbl-head__icons svg{width:20px;height:20px;}
+
+    .tbl-view{
+      display:inline-flex;background:var(--ps-sem-bg-surface);border:1px solid #E5E7EB;border-radius:6px;padding:3px;gap:2px;
+      box-shadow:0 1px 2px rgba(0,0,0,.04);
+    }
+    .tbl-view button{
+      width:32px;height:28px;border:0;background:transparent;color:#6B7280;cursor:pointer;border-radius:4px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .tbl-view button.is-active{background:#F1F5F9;color:#1F2937;}
+    .tbl-view svg{width:16px;height:16px;}
+
+    .tbl-segment{
+      display:inline-flex;background:var(--ps-sem-bg-muted);border-radius:999px;padding:0;height:38px;min-width:240px;
+      position:relative;
+    }
+    .tbl-segment button{
+      flex:1;border:0;background:transparent;font:600 15px/1 'Source Sans Pro',sans-serif;
+      color:#9AA0A6;padding:0 22px;border-radius:999px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .tbl-segment button.is-active{background:var(--ps-brand-primary, var(--ps-sem-action-default));color:var(--ps-sem-fg-inverse);}
+
+    .tbl-collapse{
+      width:32px;height:32px;border:0;background:transparent;color:#6B7280;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;border-radius:4px;
+    }
+    .tbl-collapse:hover{background:var(--ps-sem-bg-muted);color:var(--ps-sem-fg-primary);}
+    .tbl-collapse svg{width:18px;height:18px;}
+
+    /* Search bar row */
+    .tbl-tools{display:flex;align-items:center;justify-content:space-between;gap:14px;}
+    .tbl-search{
+      width:320px;height:40px;
+      display:flex;align-items:center;
+      border:1px solid #D1D5DB;border-radius:6px;background:var(--ps-sem-bg-surface);
+      padding:0 12px;gap:8px;color:#6B7280;
+    }
+    .tbl-search svg{width:16px;height:16px;flex-shrink:0;order:2;color:#4B5563;}
+    .tbl-search input{
+      flex:1;border:0;outline:0;font:15px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-primary);background:transparent;order:1;
+    }
+    .tbl-search input::placeholder{color:#9CA3AF;}
+
+    /* Table grid (8 cols matches Figma TableView) */
+    .grid{
+      display:grid;
+      grid-template-columns:1.1fr 1fr 1.1fr 1fr .9fr 1fr 1fr 1.4fr;
+      column-gap:0;
+      border-top:1px solid #E5E7EB;
+    }
+    .grid--md{grid-template-columns:1.1fr 1fr 1fr 1fr 1fr 1.6fr;border-top:1px solid #E5E7EB;}
+
+    .gh, .gc{
+      padding:14px 16px;
+      font-family:'Source Sans Pro',sans-serif;font-size:15px;line-height:20px;letter-spacing:-.005em;
+      display:flex;align-items:center;
+      box-shadow:inset -1px 0 0 #E5E7EB;
+    }
+    /* Strip the right-edge divider off the last column so the table doesn't
+       get a stray vertical line outside the data. */
+    .grid > .gh:nth-last-of-type(1),
+    .row > .gc:last-child{box-shadow:none;}
+    .row > .gc:last-child{border-right:0;}
+    .gh{
+      background:#F9FAFB;
+      color:#1F2937;font-weight:600;
+      border-bottom:1px solid #E5E7EB;
+      gap:6px;cursor:pointer;user-select:none;
+      font-size:15px;
+    }
+    .gh:hover{color:var(--ps-brand-primary);}
+    .gh .sort{width:12px;height:12px;color:#9CA3AF;flex-shrink:0;opacity:0;transition:opacity 120ms ease;}
+    .gh:hover .sort{opacity:1;}
+    .gh.is-sorted{color:#1F2937;}
+    .gh.is-sorted .sort{color:#1F2937;opacity:1;}
+
+    .gc{
+      color:#374151;
+      border-bottom:1px solid #F1F1F1;
+      background:var(--ps-sem-bg-surface);
+      transition:background 120ms ease;
+      font-weight:400;
+    }
+    .row:hover .gc{background:#F4F8FB;}
+    .row.is-selected .gc{background:#E5F4FF;}
+    .row.is-selected:hover .gc{background:#D6ECFC;}
+
+    /* row coloring (group) — done via contents wrapper using :hover on row */
+    .row{display:contents;}
+
+    .gc.center{justify-content:center;}
+    .gc.right{justify-content:flex-end;text-align:right;}
+    .gc.mono{font-family:var(--ps-font-mono);font-size:13px;color:var(--ps-sem-fg-primary);}
+
+    /* Checkbox */
+    .cb{
+      width:18px;height:18px;border:1.5px solid #CCCCCC;border-radius:3px;background:var(--ps-sem-bg-surface);
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;
+    }
+    .cb.is-checked{background:#FF9505;border-color:#FF9505;color:#fff;}
+    .cb.is-indeterminate{background:#FF9505;border-color:#FF9505;color:#fff;}
+    .cb svg{width:11px;height:11px;}
+    .gh .cb{margin:0 auto;}
+
+    /* Status pills (match Badges page) */
+    .pill{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:2px 8px;border-radius:4px;
+      font-size:12px;font-weight:700;
+      border:1px solid;height:22px;letter-spacing:0;
+    }
+    .pill--inTransit{background:#E5F4FF;color:var(--ps-sem-fg-brand);border-color:#B0D7F4;}
+    .pill--delivered{background:#E5F9F2;color:#0A7850;border-color:#B8E6D5;}
+    .pill--urgent{background:#FFF4E5;color:#C56F00;border-color:#FFD9B3;}
+    .pill--notShipped{background:#E5E5E5;color:#525252;border-color:var(--ps-sem-border-default);}
+    .pill--ordered{background:#EDE5FA;color:#5C2E97;border-color:#D2BCEE;}
+
+    .row-actions{
+      display:flex;align-items:center;gap:4px;opacity:0;transition:opacity 120ms ease;
+    }
+    .row:hover .row-actions, .row.is-selected .row-actions{opacity:1;}
+    .row-actions button{
+      width:28px;height:28px;background:transparent;border:0;color:#5C5C5C;cursor:pointer;border-radius:3px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .row-actions button:hover{background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-brand);}
+    .row-actions svg{width:15px;height:15px;}
+
+    /* Footer / pagination — matches Figma Table Pagination */
+    .tbl-foot{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+      padding:18px 4px 0;flex-wrap:wrap;
+    }
+    .tbl-foot__count{font-size:15px;color:#1F2937;}
+    .tbl-foot__count b{font-weight:700;}
+    .tbl-foot__count .muted{color:#6B7280;font-weight:400;}
+    .tbl-foot__pager{display:flex;align-items:center;gap:4px;}
+    .pager-btn{
+      min-width:32px;height:32px;padding:0 10px;
+      display:flex;align-items:center;justify-content:center;
+      border:0;background:transparent;color:#1F2937;cursor:pointer;border-radius:4px;
+      font:400 15px/1 'Source Sans Pro',sans-serif;
+    }
+    .pager-btn:hover{background:var(--ps-sem-bg-muted);}
+    .pager-btn[disabled]{opacity:.4;cursor:not-allowed;}
+    .pager-btn--page{color:#1F2937;}
+    .pager-btn--page.is-active{background:#E5E7EB;color:#1F2937;font-weight:600;}
+    .tbl-foot__show{display:flex;align-items:center;gap:10px;font-size:15px;color:#1F2937;}
+    .tbl-foot__show select{
+      height:32px;border:1px solid #D1D5DB;border-radius:4px;
+      padding:0 8px;font:15px/1 'Source Sans Pro',sans-serif;color:#1F2937;
+      background:var(--ps-sem-bg-surface);cursor:pointer;
+    }
+
+    /* Mobile / responsive list mode (cards) */
+    .mlist{display:flex;flex-direction:column;gap:8px;}
+    .mlist-row{
+      background:var(--ps-sem-bg-surface);border:1px solid #F1F1F1;border-radius:6px;
+      padding:14px 16px;display:flex;flex-direction:column;gap:8px;
+    }
+    .mlist-row__head{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+    .mlist-row__title{font-size:15px;font-weight:700;color:var(--ps-sem-fg-primary);}
+    .mlist-row__meta{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:13px;}
+    .mlist-row__meta dt{color:var(--ps-sem-fg-tertiary);font-weight:600;}
+    .mlist-row__meta dd{margin:0;color:var(--ps-sem-fg-primary);font-weight:600;font-variant-numeric:tabular-nums;}
+
+    /* States grid */
+    .states-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:18px;padding:24px;}
+    .state-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-default);border-radius:8px;overflow:hidden;}
+    .state-card__stage{padding:16px;background:#F4F6F8;display:flex;align-items:center;justify-content:center;min-height:140px;}
+    .state-card__meta{padding:12px 14px;border-top:1px solid var(--ps-border-subtle);}
+    .state-card__meta b{display:block;font-size:13px;font-weight:700;color:var(--ps-sem-fg-primary);margin-bottom:2px;}
+    .state-card__meta span{font-size:12px;color:var(--ps-sem-fg-tertiary);}
+
+    /* Row demo for state cards — uses the same chrome as production rows
+       in .pq-table / .grid above: shared inset dividers, no rounded edges,
+       white default bg with row-level hover/critical/selected variants. */
+    .mini-row{
+      display:grid;grid-template-columns:36px 1.4fr 1fr 1fr;
+      width:100%;background:var(--ps-sem-bg-surface);
+      font-family:'Source Sans Pro',sans-serif;font-size:13px;line-height:18px;
+      color:#1F2937;
+    }
+    .mini-row > div{
+      padding:12px 10px;display:flex;align-items:center;
+      box-shadow:inset 0 -1px 0 #E5E7EB, inset -1px 0 0 #E5E7EB;
+      background:inherit;
+    }
+    .mini-row > div:first-child{
+      box-shadow:inset 0 -1px 0 #E5E7EB, inset -1px 0 0 #E5E7EB, inset 1px 0 0 #E5E7EB;
+    }
+    .mini-row > div:last-child{box-shadow:inset 0 -1px 0 #E5E7EB;}
+    .mini-row.is-hover{background:#F4F6F8;}
+    .mini-row.is-selected{background:#E5F4FF;}
+    .mini-row.is-critical{background:#FBD9D2;font-weight:700;}
+    .mini-row.is-focus{outline:2px solid #005BA7;outline-offset:-2px;}
+    .mini-row.is-disabled{opacity:.5;}
+
+    /* Tokens */
+    .tokens{width:100%;border-collapse:collapse;font-size:12px;}
+    .tokens th, .tokens td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--ps-border-subtle);}
+    .tokens th{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);font-weight:700;background:var(--ps-sem-bg-canvas);}
+    .tokens td code{font-family:var(--ps-font-mono);font-size:11px;color:var(--ps-sem-fg-primary);}
+    .tokens td.label{font-weight:600;color:var(--ps-sem-fg-primary);}
+    .tokens td.swatch{width:42px;}
+    .tokens td.swatch span{display:block;width:24px;height:24px;border-radius:4px;border:1px solid rgba(0,0,0,.08);}
+
+    /* A11y / Do-Dont / Patterns */
+    .a11y-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;padding:24px;}
+    .a11y-card{background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;}
+    .a11y-card h4{margin:0 0 8px;font-size:13px;font-weight:700;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;}
+    .a11y-card h4 svg{width:16px;height:16px;color:var(--ps-brand-primary);}
+    .a11y-card p{margin:0;font-size:13px;line-height:1.5;color:var(--ps-sem-fg-secondary);}
+    .a11y-card code{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-sem-bg-surface);padding:1px 5px;border-radius:3px;border:1px solid #E5E7EB;}
+
+    .dodont{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px;}
+    .dodont__col{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-subtle);border-radius:8px;overflow:hidden;}
+    .dodont__col h4{margin:0;padding:12px 16px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px;}
+    .dodont__col--do h4{background:#E5F9F2;color:#0A7850;}
+    .dodont__col--dont h4{background:#FDECEC;color:#9E2A1C;}
+    .dodont__col ul{list-style:none;margin:0;padding:14px 18px;display:flex;flex-direction:column;gap:10px;}
+    .dodont__col li{font-size:13px;line-height:1.5;color:var(--ps-sem-fg-primary);display:flex;align-items:flex-start;gap:8px;}
+    .dodont__col li::before{content:"";flex-shrink:0;width:6px;height:6px;border-radius:50%;margin-top:8px;}
+    .dodont__col--do li::before{background:#0A7850;}
+    .dodont__col--dont li::before{background:#9E2A1C;}
+
+    /* Anatomy */
+    .anatomy{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start;padding:24px;background:var(--ps-sem-bg-surface);}
+    .anatomy-labels{display:flex;flex-direction:column;padding:0 16px 0 0;border-right:1px dashed #DCDCDC;}
+    .anatomy-label{padding:14px 0;display:flex;flex-direction:column;gap:3px;align-items:flex-end;text-align:right;}
+    .anatomy-label b{color:var(--ps-brand-primary);font-size:13px;font-weight:700;}
+    .anatomy-label em{font-style:normal;color:var(--ps-sem-fg-tertiary);font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+    .anatomy-label span{color:var(--ps-sem-fg-secondary);font-size:12px;line-height:1.4;}
+
+    /* Empty state */
+    .empty{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:48px 24px;color:var(--ps-sem-fg-tertiary);gap:8px;text-align:center;
+    }
+    .empty__icon{
+      width:56px;height:56px;border-radius:50%;background:#F4F6F8;
+      display:flex;align-items:center;justify-content:center;color:#999;margin-bottom:6px;
+    }
+    .empty__icon svg{width:24px;height:24px;}
+    .empty h3{margin:0;font-size:18px;font-weight:700;color:var(--ps-sem-fg-primary);}
+    .empty p{margin:0;font-size:13px;line-height:1.5;}
+
+    /* Skeleton */
+    .skel-bar{height:14px;border-radius:3px;background:linear-gradient(90deg,var(--ps-sem-bg-muted) 0,#E5E7EB 50%,var(--ps-sem-bg-muted) 100%);background-size:200% 100%;animation:skel 1.4s ease-in-out infinite;}
+    @keyframes skel{0%{background-position:0% 0;}100%{background-position:-200% 0;}}
+
+    code.kbd{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+
+    /* ─────────────────────────────────────────
+       Page-level table (Parts Quotes pattern)
+       No card chrome — sits inside the page
+       with tabs above and legend below.
+       ───────────────────────────────────────── */
+    .pq{
+      font-family:'Source Sans Pro',sans-serif;color:#1F2937;
+      background:var(--ps-sem-bg-surface);padding:24px 28px 32px;
+      min-width:1100px;
+    }
+    .pq-tools{
+      display:flex;align-items:center;justify-content:space-between;gap:24px;
+      padding:4px 0 18px;
+    }
+    .pq-toggle{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:#1F2937;}
+    .pq-switch{
+      width:44px;height:22px;border-radius:999px;background:#E5E7EB;position:relative;cursor:pointer;
+      transition:background 120ms ease;flex-shrink:0;
+    }
+    .pq-switch::after{
+      content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:var(--ps-sem-bg-surface);
+      box-shadow:0 1px 2px rgba(0,0,0,.2);transition:left 120ms ease, background 120ms ease;
+    }
+    .pq-switch.is-on{background:#FFE2C7;}
+    .pq-switch.is-on::after{left:22px;background:#EE8221;box-shadow:0 1px 2px rgba(0,0,0,.18);}
+    .pq-tools__right{display:flex;align-items:center;gap:14px;}
+    .pq-view-label{font-size:14px;color:#6B7280;}
+    .pq-icon-btn{
+      width:32px;height:32px;border:0;background:transparent;color:#1F2937;cursor:pointer;border-radius:4px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .pq-icon-btn svg{width:18px;height:18px;}
+    .pq-icon-btn:hover{background:var(--ps-sem-bg-muted);}
+    .pq-icon-btn.is-active{color:#1F2937;background:var(--ps-sem-bg-muted);}
+    .pq-divider{width:1px;height:20px;background:#D1D5DB;}
+
+    .pq-tabs{
+      display:flex;align-items:flex-end;gap:0;
+      background:#fff;margin-bottom:0;
+      position:relative;
+      border-bottom:1px solid #E5E7EB;
+    }
+    .pq-tab{
+      display:inline-flex;align-items:center;gap:10px;
+      height:38px;padding:0 20px;border:0;background:transparent;cursor:pointer;
+      font:400 16px/38px 'Source Sans Pro','Source Sans 3',sans-serif;color:#000;
+      transition:color 120ms ease, border-color 120ms ease;
+    }
+    .pq-tab:hover:not(.is-active){color:#005BA7;}
+    .pq-tab.is-active{
+      color:#000;
+      font-weight:700;
+      border-top:3px solid #005BA7;
+      border-left:1px solid #E5E7EB;
+      border-right:1px solid #E5E7EB;
+      background:#fff;
+      height:41px;
+      margin-bottom:-1px;
+    }
+    .pq-tab__count{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:18px;height:18px;border-radius:30px;
+      background:#DCDCDC;color:#000;font:700 12px/1 'Source Sans Pro',sans-serif;
+    }
+    .pq-tab.is-active .pq-tab__count{background:#DCDCDC;color:#000;}
+
+    .pq-table{
+      display:grid;
+      grid-template-columns: minmax(90px,.7fr) minmax(100px,.8fr) minmax(170px,1.4fr) minmax(110px,.9fr) minmax(170px,1.4fr) minmax(90px,.7fr) minmax(80px,.7fr) minmax(130px,1fr) minmax(90px,.7fr) minmax(80px,.6fr);
+      margin-top:24px;
+    }
+    .pq-th, .pq-td{
+      padding:18px 20px;font-size:15px;line-height:20px;display:flex;align-items:center;
+      border:0;
+      box-shadow: inset 0 -1px 0 #E5E7EB, inset -1px 0 0 #E5E7EB;
+      background:var(--ps-sem-bg-surface);
+    }
+    /* Strip the right-side vertical divider off the last column so the table
+       doesn't get a stray edge line outside the data. */
+    .pq-th:nth-last-of-type(1),
+    .pq-row > .pq-td:last-child{
+      box-shadow: inset 0 -1px 0 #E5E7EB;
+    }
+    .pq-th{
+      color:#1F2937;font-weight:700;background:var(--ps-sem-bg-surface);
+      padding:14px 20px 22px;
+      font-size:15px;
+    }
+    .pq-td{color:#1F2937;font-weight:400;background:var(--ps-sem-bg-surface);transition:background 120ms ease;}
+    /* Row wrapper — display:contents lets the cells participate in the grid
+       while letting :hover bubble through for the row-level highlight. */
+    .pq-row{display:contents;}
+    /* Critical rows are pink-tinted at the row level */
+    .pq-row.is-critical .pq-td{background:#FBD9D2;font-weight:700;}
+    /* Hover — neutral gray (skip on critical rows so the warning stays visible) */
+    .pq-row:hover .pq-td{background:#F4F6F8;cursor:pointer;}
+    .pq-row.is-critical:hover .pq-td{background:#F5C9C2;}
+    /* Status colored cells (kept for legacy Parts Quotes pattern) */
+    .pq-td.is-critical{background:#FEE8E5;}
+    .pq-td.is-minorder{background:#FFF7E0;}
+
+    .pq-foot{
+      display:flex;align-items:center;justify-content:space-between;gap:24px;
+      padding:18px 0 0;
+    }
+    .pq-foot__count{font-size:15px;color:#1F2937;}
+    .pq-foot__count b{font-weight:700;}
+    .pq-foot__count .muted{color:#6B7280;font-weight:400;}
+    .pq-pager{display:flex;align-items:center;gap:4px;}
+    .pq-page{
+      min-width:36px;height:32px;padding:0 10px;border:0;background:transparent;
+      color:#1F2937;cursor:pointer;border-radius:4px;
+      font:400 15px/1 'Source Sans Pro',sans-serif;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .pq-page.is-active{background:#E5E7EB;font-weight:700;}
+    .pq-page:hover:not(.is-active){background:var(--ps-sem-bg-muted);}
+    .pq-show,.pq-foot__show{display:flex;align-items:center;gap:10px;font-size:15px;color:#1F2937;}
+    .pq-show select,.pq-foot__show select{
+      height:40px;border:1px solid #D1D5DB;border-radius:4px;
+      padding:0 12px;font:15px/1 'Source Sans Pro',sans-serif;color:#1F2937;
+      background:var(--ps-sem-bg-surface);cursor:pointer;
+    }
+
+    .pq-legend{
+      display:flex;align-items:center;gap:32px;margin-top:24px;font-size:14px;color:#1F2937;
+    }
+    .pq-legend b{font-weight:700;}
+    .pq-legend__item{display:inline-flex;align-items:center;gap:8px;}
+    .pq-legend__sw{width:20px;height:20px;border-radius:2px;border:0;}
+    .pq-legend__sw--critical{background:#FEE8E5;}
+    .pq-legend__sw--minorder{background:#FFF7E0;}
+
+    /* Empty state for page-level table (Awaiting Quote with 0 items) */
+    .pq-empty{
+      grid-column:1/-1;
+      display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+      padding:120px 24px 80px;gap:32px;
+      background:var(--ps-sem-bg-surface);
+    }
+    .pq-empty__icon{width:93px;height:65px;display:block;}
+    .pq-empty__text{display:flex;flex-direction:column;align-items:center;gap:10px;}
+    .pq-empty__title{
+      font:700 18px/1.3 'Source Sans Pro',sans-serif;color:#1F2937;margin:0;
+    }
+    .pq-empty__sub{
+      font:400 15px/1.4 'Source Sans Pro',sans-serif;color:#1F2937;margin:0;
+    }
+
+    /* ─────────────────────────────────────────
+       Quote card view (Parts Quotes card grid)
+       ───────────────────────────────────────── */
+    .qcards{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+      padding:24px;background:var(--ps-sem-bg-surface);
+      font-family:'Source Sans Pro',sans-serif;
+    }
+
+    /* Service Event card grid (On-Site Service / Depot pattern) */
+    .se-cards{
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;
+      padding:24px 0;font-family:'Source Sans Pro',sans-serif;
+    }
+    .se-card{
+      background:#fff;border:1px solid #E5E7EB;border-radius:4px;
+      display:flex;flex-direction:column;overflow:hidden;
+    }
+    .se-card__head{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 20px 6px;font-size:14px;color:#1F2937;
+    }
+    .se-card__head b{font-weight:700;}
+    .se-card__head a{color:#005BA7;font-size:13px;text-decoration:underline;margin-left:6px;}
+    .se-card__head time{font-size:13px;color:#1F2937;font-weight:400;}
+    .se-card__alert{
+      display:flex;align-items:center;gap:6px;padding:0 20px 4px;
+      color:#E00000;font-size:14px;font-weight:700;
+    }
+    .se-card__label{
+      padding:0 20px 8px;
+      color:#005BA7;font-weight:700;letter-spacing:.5px;text-transform:uppercase;font-size:14px;
+    }
+    .se-card__body{
+      display:grid;grid-template-columns:64px 1fr;gap:18px;
+      padding:6px 20px 20px;align-items:flex-start;
+    }
+    .se-card__icon{
+      width:64px;height:64px;display:flex;align-items:center;justify-content:center;
+      color:#777;
+    }
+    .se-card__icon svg{width:42px;height:42px;}
+    .se-card__meta{
+      margin:0;display:grid;grid-template-columns:auto 1fr;column-gap:6px;row-gap:6px;
+      font-size:14px;line-height:1.45;color:#1F2937;
+    }
+    .se-card__meta dt{color:#1F2937;font-weight:400;}
+    .se-card__meta dd{margin:0;color:#1F2937;font-weight:700;}
+    .se-card__foot{
+      background:#F4F6F8;padding:14px 20px;border-top:1px solid #E5E7EB;
+    }
+    .se-card__step{
+      display:flex;flex-direction:column;gap:6px;font-size:14px;color:#1F2937;
+    }
+    .se-card__step-text b{font-weight:700;}
+    .se-card__track{
+      display:flex;align-items:center;gap:0;height:20px;
+    }
+    .se-card__dot{
+      width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid #CCCCCC;flex-shrink:0;
+    }
+    .se-card__dot.is-current{background:#005BA7;border-color:#005BA7;}
+    .se-card__dot.is-pending{background:#fff;border-color:#CCCCCC;}
+    .se-card__connector{
+      flex:1;height:2px;background:#005BA7;
+    }
+    .se-card__step-current{font-weight:700;}
+
+    .qcard{
+      border:1px solid #E5E7EB;border-radius:2px;background:var(--ps-sem-bg-surface);
+      display:flex;flex-direction:column;
+    }
+    .qcard__head{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:10px 16px;
+    }
+    .qcard__head a{color:var(--ps-brand-primary,var(--ps-sem-fg-brand));font-size:13px;text-decoration:underline;font-weight:500;}
+    .qcard__head time{font-size:12px;color:#1F2937;letter-spacing:.4px;}
+    .qcard__title{
+      padding:14px 16px 12px;
+      color:var(--ps-brand-primary,var(--ps-sem-fg-brand));
+      font-weight:700;font-size:14px;letter-spacing:.4px;text-transform:uppercase;
+      line-height:1.4;min-height:48px;
+    }
+    .qcard__body{display:flex;gap:14px;padding:0 16px 20px;flex:1;}
+    .qcard__thumb{
+      width:80px;height:80px;border-radius:2px;background:#F1F5F9;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;color:#9CA3AF;
+      background-image:repeating-linear-gradient(45deg,#F1F5F9 0,#F1F5F9 6px,#E5E7EB 6px,#E5E7EB 7px);
+    }
+    .qcard__meta{display:grid;grid-template-columns:78px 1fr;gap:6px 10px;font-size:13px;align-content:start;line-height:1.35;}
+    .qcard__meta dt{color:#1F2937;font-weight:400;}
+    .qcard__meta dd{margin:0;color:#1F2937;font-weight:700;}
+    .qcard__status{
+      margin-top:auto;background:var(--ps-sem-bg-muted);padding:10px 16px;
+      font-size:13px;color:#1F2937;
+    }
+    .qcard__status b{display:block;font-weight:700;margin-bottom:2px;}
+    .qcard__cta{
+      padding:14px 16px;display:flex;justify-content:flex-end;background:var(--ps-sem-bg-surface);
+    }
+    .qcard__cta button{
+      background:#EE8221;color:var(--ps-sem-fg-inverse);border:0;border-radius:2px;
+      padding:11px 28px;font:700 13px/1 'Source Sans Pro',sans-serif;letter-spacing:.8px;
+      cursor:pointer;
+    }
+    .qcard__cta button:hover{background:#D86F0F;}
+
+    /* Breakpoints */
+    .bp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;padding:24px;}
+    .bp-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:14px;}
+    .bp-card .demo{background:#F4F6F8;border-radius:6px;overflow:auto;padding:14px;display:flex;justify-content:center;}
+    .bp-card.bp-card--mobile .demo{padding:14px 60px;}
+    .bp-card .label{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;}
+    .bp-card .label b{font-size:13px;font-weight:700;color:var(--ps-sem-fg-primary);}
+    .bp-card .label span{font-size:11px;color:var(--ps-sem-fg-tertiary);font-family:var(--ps-font-mono);}
+
+    /* Table / Cards segmented pill toggle */
+    .tbl-toggle{
+      display:inline-flex;background:var(--ps-sem-bg-surface);
+      border:1px solid #D1D5DB;border-radius:6px;overflow:hidden;
+      font-family:'Source Sans Pro',sans-serif;
+    }
+    .tbl-toggle button{
+      height:34px;padding:0 16px;background:transparent;border:0;
+      border-left:1px solid #D1D5DB;
+      font:600 14px/1 'Source Sans Pro',sans-serif;color:#1F2937;
+      cursor:pointer;transition:background 120ms ease;
+    }
+    .tbl-toggle button:first-child{border-left:0;}
+    .tbl-toggle button.is-active{background:#F4F6F8;color:#1F2937;}
+    .tbl-toggle button:hover:not(.is-active){background:#F9FAFB;}
+
+    /* Filter dropdown chevron button (the "All ▾" pill) */
+    .tbl-filter-chip{
+      display:inline-flex;align-items:center;gap:8px;
+      height:34px;padding:0 14px;
+      background:var(--ps-sem-bg-surface);border:1px solid #D1D5DB;border-radius:6px;
+      font:600 14px/1 'Source Sans Pro',sans-serif;color:#1F2937;cursor:pointer;
+      transition:border-color 120ms ease;
+    }
+    .tbl-filter-chip:hover{border-color:#005BA7;color:#005BA7;}
+    .tbl-filter-chip svg{width:14px;height:14px;}
+
+    /* View toggle (Compact / Grid) — Figma node 4577:102438 spec */
+    .tbl-view-toggle{
+      display:inline-flex;background:#fff;border-radius:6px;overflow:hidden;
+      box-shadow:0 2px 4px rgba(21,21,21,.08), 0 6px 12px rgba(21,21,21,.08);
+    }
+    .tbl-view-toggle button{
+      width:30px;height:30px;padding:0;border:0;cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;color:#000;
+      background:#fff;transition:background 120ms ease, color 120ms ease;
+    }
+    .tbl-view-toggle button + button{position:relative;}
+    .tbl-view-toggle button + button::before{
+      content:"";position:absolute;left:0;top:6px;bottom:6px;width:1px;background:#E5E7EB;
+    }
+    .tbl-view-toggle button.is-active{background:rgba(0,0,0,.06);}
+    .tbl-view-toggle button:hover:not(.is-active){background:#F9FAFB;}
+    .tbl-view-toggle svg{width:12px;height:12px;display:block;}
+
+    /* Parts / Service pill segment — Figma Group 1000004835 spec */
+    .tbl-segment{
+      display:inline-flex;align-items:center;background:#D9D9D9;
+      border-radius:21px;padding:4px;height:42px;min-width:262px;
+    }
+    .tbl-segment button{
+      flex:1;height:34px;border:0;border-radius:17px;background:transparent;cursor:pointer;
+      font:600 14px/1 'Source Sans Pro',sans-serif;color:#1F2937;
+      transition:background 120ms ease, color 120ms ease;
+    }
+    .tbl-segment button.is-active{background:#005BA7;color:#fff;}
+  </style>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Tables</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Tables</h1>
+  <p class="intro">Tables present structured data &mdash; orders, parts, assets, approvals &mdash; in scannable rows with sortable columns and inline actions. PartsSource ships three flavours: <b>page-level tables</b> (Parts Quotes, Approvals, Orders &mdash; tabs above, legend below, no card chrome), <b>widget tables</b> (the dashboard <code class="kbd">TableView</code> component &mdash; wrapped in a card, with view-mode toggle and segmented control), and <b>card grids</b> for visual-first browsing. All three share the same type, color, and density tokens.</p>
+
+  <!-- Page-level table (Parts Quotes pattern) ── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Table · Page Level · Parts Quotes</h2>
+      <div class="desc">Sits inside the page body with no card wrapper. Tabs above, legend below. Use for primary list surfaces where the table <i>is</i> the page (Parts Quotes, Approvals, Order History).</div>
+    </div>
+    <div class="section-body scroll plain">
+      <div class="pq">
+        <div class="pq-tools">
+          <label class="pq-toggle"><span class="pq-switch is-on" aria-hidden="true"></span>Only Me</label>
+          <div class="pq-tools__right">
+            <span class="pq-view-label">View:</span>
+            <div class="tbl-view-toggle" role="tablist" aria-label="View toggle">
+              <button class="is-active" role="tab" aria-selected="true" aria-label="Compact view"><svg viewBox="0 0 12 12" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.46 5.5457H12V0H8.46V5.5457ZM4.2343 5.5457H7.7743V0H4.2343V5.5457ZM0 5.5457H3.54V0H0V5.5457ZM8.46 12H12V6.4543H8.46V12ZM4.2343 12H7.7743V6.4543H4.2343V12ZM0 12H3.54V6.4543H0V12Z"/></svg></button>
+              <button role="tab" aria-selected="false" aria-label="Grid view"><svg viewBox="0 0 12 12" fill="currentColor"><path d="M10.8294 3.604V1.1786H8.404V3.604H10.8294ZM10.8294 7.2082V4.7827H8.404V7.2082H10.8294ZM10.8294 10.8209V8.3955H8.404V10.8209H10.8294ZM7.2167 3.604V1.1786H4.7912V3.604H7.2167ZM7.2167 7.2082V4.7827H4.7912V7.2082H7.2167ZM7.2167 10.8209V8.3955H4.7912V10.8209H7.2167ZM3.6124 3.604V1.1786H1.187V3.604H3.6124ZM3.6124 7.2082V4.7827H1.187V7.2082H3.6124ZM3.6124 10.8209V8.3955H1.187V10.8209H3.6124ZM10.8294 0C11.1601 0 11.4315 0.1187 11.669 0.3477C11.9064 0.5767 12.0167 0.8565 12.0167 1.1873V10.8209C12.0167 11.1516 11.8979 11.4229 11.669 11.6604C11.44 11.8894 11.1601 12.0082 10.8294 12.0082H1.187C0.8562 12.0082 0.5849 11.8894 0.3474 11.6604C0.1185 11.4314 0 11.1516 0 10.8209V1.1785C0 0.8477 0.1185 0.5767 0.3474 0.3389C0.5764 0.1015 0.8562 0 1.187 0H10.8209L10.8294 0Z"/></svg></button>
+            </div>
+            <span class="pq-divider"></span>
+            <button class="pq-icon-btn" aria-label="Search"><img src="icons/search.svg" alt="" width="18" height="18"></button>
+            <button class="pq-icon-btn" aria-label="Settings"><img src="icons/settings.svg" alt="" width="18" height="18"></button>
+          </div>
+        </div>
+
+        <div class="pq-tabs" role="tablist">
+          <button class="pq-tab" role="tab">Initiated <span class="pq-tab__count">2</span></button>
+          <button class="pq-tab" role="tab">Quoted <span class="pq-tab__count">0</span></button>
+          <button class="pq-tab" role="tab">Open Service Event <span class="pq-tab__count">4</span></button>
+          <button class="pq-tab is-active" role="tab" aria-selected="true">Work Completed <span class="pq-tab__count">10</span></button>
+        </div>
+
+        <div class="pq-table" role="table">
+          <div class="pq-th">Created</div>
+          <div class="pq-th">Work Order</div>
+          <div class="pq-th">Facility</div>
+          <div class="pq-th">Service Type</div>
+          <div class="pq-th">OEM</div>
+          <div class="pq-th">Asset ID</div>
+          <div class="pq-th">Priority</div>
+          <div class="pq-th">Status</div>
+          <div class="pq-th">Ref #</div>
+          <div class="pq-th">Contract</div>
+
+          <div class="pq-row">
+            <div class="pq-td">9/18/2025</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Memorial Clinic</div>
+            <div class="pq-td">Corrective</div>
+            <div class="pq-td">(OEM NOT LISTED)</div>
+            <div class="pq-td">111237x</div>
+            <div class="pq-td">Normal</div>
+            <div class="pq-td">Work Completed</div>
+            <div class="pq-td">8835833</div>
+            <div class="pq-td">Yes</div>
+          </div>
+          <div class="pq-row is-critical">
+            <div class="pq-td">9/5/2025</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Memorial Hospital</div>
+            <div class="pq-td">Corrective</div>
+            <div class="pq-td">Hologic, Inc.</div>
+            <div class="pq-td">PS00002</div>
+            <div class="pq-td">Critical</div>
+            <div class="pq-td">Work Completed</div>
+            <div class="pq-td">8794971</div>
+            <div class="pq-td">Yes</div>
+          </div>
+          <div class="pq-row is-critical">
+            <div class="pq-td">9/4/2025</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Memorial Hospital</div>
+            <div class="pq-td">Corrective</div>
+            <div class="pq-td">Hologic, Inc.</div>
+            <div class="pq-td">PS00002</div>
+            <div class="pq-td">Critical</div>
+            <div class="pq-td">Work Completed</div>
+            <div class="pq-td">8790991</div>
+            <div class="pq-td">Yes</div>
+          </div>
+          <div class="pq-row is-critical">
+            <div class="pq-td">9/4/2025</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Memorial Hospital</div>
+            <div class="pq-td">Corrective</div>
+            <div class="pq-td">GE Healthcare</div>
+            <div class="pq-td">PS00003</div>
+            <div class="pq-td">Critical</div>
+            <div class="pq-td">Work Completed</div>
+            <div class="pq-td">8790652</div>
+            <div class="pq-td">Yes</div>
+          </div>
+          <div class="pq-row">
+            <div class="pq-td">7/10/2025</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Memorial Hospital</div>
+            <div class="pq-td">Corrective</div>
+            <div class="pq-td">Hologic, Inc.</div>
+            <div class="pq-td">PS00002</div>
+            <div class="pq-td">Normal</div>
+            <div class="pq-td">Work Completed</div>
+            <div class="pq-td">8650597</div>
+            <div class="pq-td">Yes</div>
+          </div>
+          <div class="pq-row is-critical">
+            <div class="pq-td">3/17/2025</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Memorial Clinic</div>
+            <div class="pq-td">Corrective</div>
+            <div class="pq-td">Hologic, Inc.</div>
+            <div class="pq-td">PS00002</div>
+            <div class="pq-td">Critical</div>
+            <div class="pq-td">Work Completed</div>
+            <div class="pq-td">8363744</div>
+            <div class="pq-td">Yes</div>
+          </div>
+          <div class="pq-row is-critical">
+            <div class="pq-td">8/15/2024</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Memorial Hospital</div>
+            <div class="pq-td">Corrective</div>
+            <div class="pq-td">Hologic, Inc.</div>
+            <div class="pq-td">4509495</div>
+            <div class="pq-td">Critical</div>
+            <div class="pq-td">Work Completed</div>
+            <div class="pq-td">7852400</div>
+            <div class="pq-td">Yes</div>
+          </div>
+          <div class="pq-row is-critical">
+            <div class="pq-td">8/8/2024</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Memorial Hospital</div>
+            <div class="pq-td">Corrective</div>
+            <div class="pq-td">Hologic, Inc.</div>
+            <div class="pq-td">4509495</div>
+            <div class="pq-td">Critical</div>
+            <div class="pq-td">Work Completed</div>
+            <div class="pq-td">7832177</div>
+            <div class="pq-td">Yes</div>
+          </div>
+          <div class="pq-row is-critical">
+            <div class="pq-td">5/9/2024</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Memorial Hospital</div>
+            <div class="pq-td">Corrective</div>
+            <div class="pq-td">Siemens Healthcare Diagnostics</div>
+            <div class="pq-td">4512366</div>
+            <div class="pq-td">Critical</div>
+            <div class="pq-td">Work Completed</div>
+            <div class="pq-td">7622165</div>
+            <div class="pq-td">Yes</div>
+          </div>
+          <div class="pq-row is-critical">
+            <div class="pq-td">4/25/2024</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Memorial Hospital</div>
+            <div class="pq-td">Corrective</div>
+            <div class="pq-td">Siemens Healthcare Diagnostics</div>
+            <div class="pq-td">4512366</div>
+            <div class="pq-td">Critical</div>
+            <div class="pq-td">Work Completed</div>
+            <div class="pq-td">7590077</div>
+            <div class="pq-td">Yes</div>
+          </div>
+        </div>
+
+        <div class="pq-foot">
+          <div class="pq-foot__count"><b>1 - 10</b> <span class="muted">of 10</span></div>
+          <div class="pq-pager">
+            <button class="pq-page is-active">1</button>
+          </div>
+          <div class="pq-foot__show">Show <select><option>10</option><option>25</option><option>50</option></select></div>
+        </div>
+
+        <div class="pq-legend">
+          <b>Legend:</b>
+          <span class="pq-legend__item"><span class="pq-legend__sw pq-legend__sw--critical"></span>Critical Items</span>
+          <span class="pq-legend__item"><span class="pq-legend__sw pq-legend__sw--minorder"></span>This item has a min. order qty.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No-tabs variant ── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Page table · No tabs</h2>
+      <div class="desc">Same Parts/Service column schema without the tab strip. Use when there's a single status to show (e.g. a saved-search result or a detail-page table) and tabs would be misleading. Tools row collapses to View + Search only on the right.</div>
+    </div>
+    <div class="section-body scroll plain">
+      <div class="pq">
+        <div class="pq-tools" style="justify-content:flex-end;">
+          <div class="pq-tools__right">
+            <span class="pq-view-label">View:</span>
+            <div class="tbl-view-toggle" role="tablist" aria-label="View toggle">
+              <button class="is-active" role="tab" aria-selected="true" aria-label="Compact view"><svg viewBox="0 0 12 12" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.46 5.5457H12V0H8.46V5.5457ZM4.2343 5.5457H7.7743V0H4.2343V5.5457ZM0 5.5457H3.54V0H0V5.5457ZM8.46 12H12V6.4543H8.46V12ZM4.2343 12H7.7743V6.4543H4.2343V12ZM0 12H3.54V6.4543H0V12Z"/></svg></button>
+              <button role="tab" aria-selected="false" aria-label="Grid view"><svg viewBox="0 0 12 12" fill="currentColor"><path d="M10.8294 3.604V1.1786H8.404V3.604H10.8294ZM10.8294 7.2082V4.7827H8.404V7.2082H10.8294ZM10.8294 10.8209V8.3955H8.404V10.8209H10.8294ZM7.2167 3.604V1.1786H4.7912V3.604H7.2167ZM7.2167 7.2082V4.7827H4.7912V7.2082H7.2167ZM7.2167 10.8209V8.3955H4.7912V10.8209H7.2167ZM3.6124 3.604V1.1786H1.187V3.604H3.6124ZM3.6124 7.2082V4.7827H1.187V7.2082H3.6124ZM3.6124 10.8209V8.3955H1.187V10.8209H3.6124ZM10.8294 0C11.1601 0 11.4315 0.1187 11.669 0.3477C11.9064 0.5767 12.0167 0.8565 12.0167 1.1873V10.8209C12.0167 11.1516 11.8979 11.4229 11.669 11.6604C11.44 11.8894 11.1601 12.0082 10.8294 12.0082H1.187C0.8562 12.0082 0.5849 11.8894 0.3474 11.6604C0.1185 11.4314 0 11.1516 0 10.8209V1.1785C0 0.8477 0.1185 0.5767 0.3474 0.3389C0.5764 0.1015 0.8562 0 1.187 0H10.8209L10.8294 0Z"/></svg></button>
+            </div>
+            <button class="pq-icon-btn" aria-label="Settings"><img src="icons/settings.svg" alt="" width="18" height="18"></button>
+            <span class="pq-divider"></span>
+            <button class="pq-icon-btn" aria-label="Search"><img src="icons/search.svg" alt="" width="18" height="18"></button>
+          </div>
+        </div>
+
+        <div class="pq-table" role="table">
+          <div class="pq-th">Created</div>
+          <div class="pq-th">Work Order</div>
+          <div class="pq-th">Facility</div>
+          <div class="pq-th">Service Type</div>
+          <div class="pq-th">OEM</div>
+          <div class="pq-th">Asset ID</div>
+          <div class="pq-th">Priority</div>
+          <div class="pq-th">Status</div>
+          <div class="pq-th">Ref #</div>
+          <div class="pq-th">Contract</div>
+
+          <div class="pq-row">
+            <div class="pq-td">11/5/2025</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Memorial Clinic</div>
+            <div class="pq-td">PM</div>
+            <div class="pq-td">Nanosonics</div>
+            <div class="pq-td">123</div>
+            <div class="pq-td">Normal</div>
+            <div class="pq-td">Initiated</div>
+            <div class="pq-td">8901234</div>
+            <div class="pq-td">Yes</div>
+          </div>
+          <div class="pq-row is-critical">
+            <div class="pq-td">07/3/2025</div>
+            <div class="pq-td"></div>
+            <div class="pq-td">Chatham Cancer Center</div>
+            <div class="pq-td">Install</div>
+            <div class="pq-td">1850</div>
+            <div class="pq-td">aaa</div>
+            <div class="pq-td">Critical</div>
+            <div class="pq-td">Initiated</div>
+            <div class="pq-td">8856102</div>
+            <div class="pq-td">Yes</div>
+          </div>
+        </div>
+
+        <div class="pq-foot">
+          <div class="pq-foot__count"><b>1 - 2</b> <span class="muted">of 2</span></div>
+          <div class="pq-pager">
+            <button class="pq-page is-active">1</button>
+          </div>
+          <div class="pq-foot__show">Show <select><option>25</option><option>50</option><option>100</option></select></div>
+        </div>
+
+        <div class="pq-legend">
+          <b>Legend:</b>
+          <span class="pq-legend__item"><span class="pq-legend__sw pq-legend__sw--critical"></span>Critical Items</span>
+          <span class="pq-legend__item"><span class="pq-legend__sw pq-legend__sw--minorder"></span>This item has a min. order qty.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Event card view with tabs ── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Card View · Service Events (with tabs)</h2>
+      <div class="desc">Card grid alternative to the Parts/Service Events page table. Tabs and tools row sit above a 2-column responsive grid. Each card carries an Order #, View Details link, optional critical status, ON-SITE SERVICE label, a wrench/screwdriver glyph, full asset meta, and a footer timeline indicating the current step.</div>
+    </div>
+    <div class="section-body scroll plain">
+      <div class="pq">
+        <div class="pq-tools">
+          <label class="pq-toggle"><span class="pq-switch" aria-hidden="true"></span>Only Me</label>
+          <div class="pq-tools__right">
+            <span class="pq-view-label">View:</span>
+            <div class="tbl-view-toggle" role="tablist" aria-label="View toggle">
+              <button role="tab" aria-selected="false" aria-label="Compact view"><svg viewBox="0 0 12 12" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.46 5.5457H12V0H8.46V5.5457ZM4.2343 5.5457H7.7743V0H4.2343V5.5457ZM0 5.5457H3.54V0H0V5.5457ZM8.46 12H12V6.4543H8.46V12ZM4.2343 12H7.7743V6.4543H4.2343V12ZM0 12H3.54V6.4543H0V12Z"/></svg></button>
+              <button class="is-active" role="tab" aria-selected="true" aria-label="Grid view"><svg viewBox="0 0 12 12" fill="currentColor"><path d="M10.8294 3.604V1.1786H8.404V3.604H10.8294ZM10.8294 7.2082V4.7827H8.404V7.2082H10.8294ZM10.8294 10.8209V8.3955H8.404V10.8209H10.8294ZM7.2167 3.604V1.1786H4.7912V3.604H7.2167ZM7.2167 7.2082V4.7827H4.7912V7.2082H7.2167ZM7.2167 10.8209V8.3955H4.7912V10.8209H7.2167ZM3.6124 3.604V1.1786H1.187V3.604H3.6124ZM3.6124 7.2082V4.7827H1.187V7.2082H3.6124ZM3.6124 10.8209V8.3955H1.187V10.8209H3.6124ZM10.8294 0C11.1601 0 11.4315 0.1187 11.669 0.3477C11.9064 0.5767 12.0167 0.8565 12.0167 1.1873V10.8209C12.0167 11.1516 11.8979 11.4229 11.669 11.6604C11.44 11.8894 11.1601 12.0082 10.8294 12.0082H1.187C0.8562 12.0082 0.5849 11.8894 0.3474 11.6604C0.1185 11.4314 0 11.1516 0 10.8209V1.1785C0 0.8477 0.1185 0.5767 0.3474 0.3389C0.5764 0.1015 0.8562 0 1.187 0H10.8209L10.8294 0Z"/></svg></button>
+            </div>
+            <span class="pq-divider"></span>
+            <button class="pq-icon-btn" aria-label="Search"><img src="icons/search.svg" alt="" width="18" height="18"></button>
+            <button class="pq-icon-btn" aria-label="Settings"><img src="icons/settings.svg" alt="" width="18" height="18"></button>
+          </div>
+        </div>
+
+        <div class="pq-tabs" role="tablist">
+          <button class="pq-tab is-active" role="tab" aria-selected="true">Initiated <span class="pq-tab__count">2</span></button>
+          <button class="pq-tab" role="tab">Quoted <span class="pq-tab__count">0</span></button>
+          <button class="pq-tab" role="tab">Open Service Event <span class="pq-tab__count">4</span></button>
+          <button class="pq-tab" role="tab">Work Completed <span class="pq-tab__count">10</span></button>
+        </div>
+
+        <div class="qcards" style="grid-template-columns:repeat(2,1fr);padding:24px 0;">
+          <div class="qcard">
+            <div class="qcard__head"><a href="#">View Details</a><time>CREATED 11/5/2025</time></div>
+            <div class="qcard__title">Order #7663171 · On-Site Service</div>
+            <div class="qcard__body">
+              <div class="qcard__thumb" aria-label="Service event">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4.5 4.5 0 0 0-6.4 6.4l1.4 1.4-7.8 7.8a1 1 0 0 0 1.4 1.4l7.8-7.8 1.4 1.4a4.5 4.5 0 0 0 6.4-6.4l-1.4 1.4 2.1 2.1-2.8 2.8-2.1-2.1-1.4 1.4-2.1-2.1 1.4-1.4-2.1-2.1 2.8-2.8 2.1 2.1z"/></svg>
+              </div>
+              <dl class="qcard__meta">
+                <dt>OEM:</dt><dd>Nanosonics</dd>
+                <dt>Model Number:</dt><dd>(MODEL NOT LISTED)</dd>
+                <dt>Asset ID:</dt><dd>123</dd>
+                <dt>Facility:</dt><dd>Chatham Memorial Clinic</dd>
+                <dt>Status:</dt><dd>Initiated</dd>
+                <dt>Ref #:</dt><dd>8984018</dd>
+                <dt>Requester:</dt><dd>PETE ZILKO</dd>
+                <dt>Service Category:</dt><dd>PM</dd>
+                <dt>Created Date:</dt><dd>11/5/2025</dd>
+                <dt>Qty:</dt><dd>1</dd>
+              </dl>
+            </div>
+            <div class="qcard__status"><b>Scheduled Completion PENDING</b>Open Service Event</div>
+          </div>
+
+          <div class="qcard">
+            <div class="qcard__head"><a href="#">View Details</a><time>CREATED 07/3/2025</time></div>
+            <div class="qcard__title" style="color:#E00000;">Critical Hard Down · Order #7339756</div>
+            <div class="qcard__body">
+              <div class="qcard__thumb" aria-label="Service event">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4.5 4.5 0 0 0-6.4 6.4l1.4 1.4-7.8 7.8a1 1 0 0 0 1.4 1.4l7.8-7.8 1.4 1.4a4.5 4.5 0 0 0 6.4-6.4l-1.4 1.4 2.1 2.1-2.8 2.8-2.1-2.1-1.4 1.4-2.1-2.1 1.4-1.4-2.1-2.1 2.8-2.8 2.1 2.1z"/></svg>
+              </div>
+              <dl class="qcard__meta">
+                <dt>OEM:</dt><dd>1850</dd>
+                <dt>Model Number:</dt><dd>(MODEL NOT LISTED)</dd>
+                <dt>Asset ID:</dt><dd>aaa</dd>
+                <dt>Facility:</dt><dd>Chatham Cancer Center</dd>
+                <dt>Status:</dt><dd>Initiated</dd>
+                <dt>Ref #:</dt><dd>8636803</dd>
+                <dt>Requester:</dt><dd>PETE ZILKO</dd>
+                <dt>Service Category:</dt><dd>Install</dd>
+                <dt>Created Date:</dt><dd>7/3/2025</dd>
+                <dt>Qty:</dt><dd>1</dd>
+              </dl>
+            </div>
+            <div class="qcard__status"><b>Scheduled Completion PENDING</b>Open Service Event</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card grid view (Parts Quotes card mode) ── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Card View · Quote Grid</h2>
+      <div class="desc">Same data, visual-first. Three-column grid on desktop. Each card shows the part image, identifying meta, and a status footer. When buying options exist, a primary CTA appears at the bottom.</div>
+    </div>
+    <div class="section-body plain">
+      <div class="qcards">
+        <div class="qcard">
+          <div class="qcard__head"><a href="#">View Details</a><time>CREATED 05/12/2026</time></div>
+          <div class="qcard__title">Steam Trap Repair Kit</div>
+          <div class="qcard__body">
+            <div class="qcard__thumb" aria-label="Part image">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m3 17 5-5 4 4 4-4 5 5"/></svg>
+            </div>
+            <dl class="qcard__meta">
+              <dt>Facility:</dt><dd>Chatham Memorial Clinic</dd>
+              <dt>Ref #:</dt><dd>9602642</dd>
+              <dt>Requester:</dt><dd>PETE ZILKO</dd>
+              <dt>Qty:</dt><dd>1</dd>
+            </dl>
+          </div>
+          <div class="qcard__status"><b>Quote Available</b>Item is ready for purchase.</div>
+        </div>
+
+        <div class="qcard">
+          <div class="qcard__head"><a href="#">View Details</a><time>CREATED 05/08/2026</time></div>
+          <div class="qcard__title">Welch Allyn Blue Temp Probe 9' Aftermarket (OEM 02895-000)</div>
+          <div class="qcard__body">
+            <div class="qcard__thumb" aria-label="Part image">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m3 17 5-5 4 4 4-4 5 5"/></svg>
+            </div>
+            <dl class="qcard__meta">
+              <dt>Facility:</dt><dd>Chatham Memorial Clinic</dd>
+              <dt>Ref #:</dt><dd>9594728</dd>
+              <dt>Requester:</dt><dd>EARL GREY</dd>
+              <dt>Qty:</dt><dd>25</dd>
+            </dl>
+          </div>
+          <div class="qcard__status"><b>Quote Available</b>Item is ready for purchase.</div>
+        </div>
+
+        <div class="qcard">
+          <div class="qcard__head"><a href="#">View Details</a><time>CREATED 05/07/2026</time></div>
+          <div class="qcard__title">Power Cord for Space Infusion Pump</div>
+          <div class="qcard__body">
+            <div class="qcard__thumb" aria-label="Part image">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m3 17 5-5 4 4 4-4 5 5"/></svg>
+            </div>
+            <dl class="qcard__meta">
+              <dt>Facility:</dt><dd>Chatham Memorial Clinic</dd>
+              <dt>Ref #:</dt><dd>9590318</dd>
+              <dt>Requester:</dt><dd>PETE ZILKO</dd>
+              <dt>Qty:</dt><dd>1</dd>
+            </dl>
+          </div>
+          <div class="qcard__status"><b>Quote Available</b>Item is ready for purchase.</div>
+          <div class="qcard__cta"><button>SEE BUYING OPTIONS (3)</button></div>
+        </div>
+
+        <div class="qcard">
+          <div class="qcard__head"><a href="#">View Details</a><time>CREATED 05/05/2026</time></div>
+          <div class="qcard__title">Welch Allyn Blue Temp Probe 9' Aftermarket</div>
+          <div class="qcard__body">
+            <div class="qcard__thumb" aria-label="Part image">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m3 17 5-5 4 4 4-4 5 5"/></svg>
+            </div>
+            <dl class="qcard__meta">
+              <dt>Facility:</dt><dd>Chatham Memorial Hospital</dd>
+              <dt>Ref #:</dt><dd>9581152</dd>
+              <dt>Requester:</dt><dd>EARL GREY</dd>
+              <dt>Qty:</dt><dd>1</dd>
+            </dl>
+          </div>
+          <div class="qcard__status"><b>Quote Available</b>Item is ready for purchase.</div>
+          <div class="qcard__cta"><button>SEE BUYING OPTIONS (2)</button></div>
+        </div>
+
+        <div class="qcard">
+          <div class="qcard__head"><a href="#">View Details</a><time>CREATED 04/29/2026</time></div>
+          <div class="qcard__title">SpO2 Sensor, Oximax, Adult with Fingerclip, 3 ft</div>
+          <div class="qcard__body">
+            <div class="qcard__thumb" aria-label="Part image">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m3 17 5-5 4 4 4-4 5 5"/></svg>
+            </div>
+            <dl class="qcard__meta">
+              <dt>Facility:</dt><dd>Chatham Memorial Hospital</dd>
+              <dt>Ref #:</dt><dd>9564332</dd>
+              <dt>Requester:</dt><dd>DOUG MERKER</dd>
+              <dt>Qty:</dt><dd>1</dd>
+            </dl>
+          </div>
+          <div class="qcard__status"><b>Quote Available</b>Item is ready for purchase.</div>
+          <div class="qcard__cta"><button>SEE BUYING OPTIONS (2)</button></div>
+        </div>
+
+        <div class="qcard">
+          <div class="qcard__head"><a href="#">View Details</a><time>CREATED 04/24/2026</time></div>
+          <div class="qcard__title">Adult Reusable SpO2 Sensor</div>
+          <div class="qcard__body">
+            <div class="qcard__thumb" aria-label="Part image">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m3 17 5-5 4 4 4-4 5 5"/></svg>
+            </div>
+            <dl class="qcard__meta">
+              <dt>Facility:</dt><dd>Chatham Memorial Clinic</dd>
+              <dt>Ref #:</dt><dd>9549430</dd>
+              <dt>Requester:</dt><dd>PETE ZILKO</dd>
+              <dt>Qty:</dt><dd>7</dd>
+            </dl>
+          </div>
+          <div class="qcard__status"><b>Quote Available</b>Item is ready for purchase.</div>
+          <div class="qcard__cta"><button>SEE BUYING OPTIONS (2)</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Default Desktop Table ───────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Table · Widget · Parts Events</h2>
+      <div class="desc">Card-wrapped dashboard widget. Drag handle + collapse on either end of the title row, icon set + view-mode toggle + segmented Parts/Service control on the right, search bar on its own row, eight-column body. Sourced from the <code class="kbd">TableView</code> Figma component.</div>
+    </div>
+    <div class="section-body scroll">
+      <div class="tbl-card">
+        <div class="tbl-head">
+          <div class="tbl-head__title">
+            <span class="tbl-drag" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></span>
+            Parts Events
+          </div>
+          <div class="tbl-head__right">
+            <div class="tbl-head__icons">
+              <button aria-label="Settings"><img src="icons/settings.svg" alt="" width="20" height="20"></button>
+              <button aria-label="Export"><img src="icons/download.svg" alt="" width="20" height="20"></button>
+              <button aria-label="Search"><img src="icons/search.svg" alt="" width="20" height="20"></button>
+            </div>
+            <div class="tbl-view-toggle" role="tablist" aria-label="View toggle">
+              <button class="is-active" role="tab" aria-selected="true" aria-label="Compact / table view">
+                <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.46 5.5457H12V0H8.46V5.5457ZM4.2343 5.5457H7.7743V0H4.2343V5.5457ZM0 5.5457H3.54V0H0V5.5457ZM8.46 12H12V6.4543H8.46V12ZM4.2343 12H7.7743V6.4543H4.2343V12ZM0 12H3.54V6.4543H0V12Z"/>
+                </svg>
+              </button>
+              <button role="tab" aria-selected="false" aria-label="Card / grid view">
+                <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+                  <path d="M10.8294 3.604V1.1786H8.404V3.604H10.8294ZM10.8294 7.2082V4.7827H8.404V7.2082H10.8294ZM10.8294 10.8209V8.3955H8.404V10.8209H10.8294ZM7.2167 3.604V1.1786H4.7912V3.604H7.2167ZM7.2167 7.2082V4.7827H4.7912V7.2082H7.2167ZM7.2167 10.8209V8.3955H4.7912V10.8209H7.2167ZM3.6124 3.604V1.1786H1.187V3.604H3.6124ZM3.6124 7.2082V4.7827H1.187V7.2082H3.6124ZM3.6124 10.8209V8.3955H1.187V10.8209H3.6124ZM10.8294 0C11.1601 0 11.4315 0.1187 11.669 0.3477C11.9064 0.5767 12.0167 0.8565 12.0167 1.1873V10.8209C12.0167 11.1516 11.8979 11.4229 11.669 11.6604C11.44 11.8894 11.1601 12.0082 10.8294 12.0082H1.187C0.8562 12.0082 0.5849 11.8894 0.3474 11.6604C0.1185 11.4314 0 11.1516 0 10.8209V1.1785C0 0.8477 0.1185 0.5767 0.3474 0.3389C0.5764 0.1015 0.8562 0 1.187 0H10.8209L10.8294 0Z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="tbl-segment" role="tablist">
+              <button class="is-active" role="tab" aria-selected="true">Parts</button>
+              <button role="tab" aria-selected="false">Service</button>
+            </div>
+            <button class="tbl-collapse" aria-label="Collapse"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l5-5 5 5"/></svg></button>
+          </div>
+        </div>
+
+        <div class="tbl-tools">
+          <div class="tbl-search">
+            <input placeholder="Search History" />
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
+          </div>
+        </div>
+
+        <div class="grid">
+          <!-- Header -->
+          <div class="gh">Facility<svg class="sort" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3-3 3 3M3 7l3 3 3-3"/></svg></div>
+          <div class="gh">WO<svg class="sort" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3-3 3 3M3 7l3 3 3-3"/></svg></div>
+          <div class="gh">Ref #<svg class="sort" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3-3 3 3M3 7l3 3 3-3"/></svg></div>
+          <div class="gh">PO #<svg class="sort" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3-3 3 3M3 7l3 3 3-3"/></svg></div>
+          <div class="gh">Price<svg class="sort" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3-3 3 3M3 7l3 3 3-3"/></svg></div>
+          <div class="gh">Status<svg class="sort" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3-3 3 3M3 7l3 3 3-3"/></svg></div>
+          <div class="gh">Order #<svg class="sort" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3-3 3 3M3 7l3 3 3-3"/></svg></div>
+          <div class="gh">Description</div>
+
+          <!-- Rows -->
+          <div class="row">
+            <div class="gc">Chatham Memorial</div>
+            <div class="gc">CW 34343</div>
+            <div class="gc">8888808</div>
+            <div class="gc">889</div>
+            <div class="gc">$222.42</div>
+            <div class="gc">Ordered</div>
+            <div class="gc">769799</div>
+            <div class="gc">xxxxxxxxxxxxxxxx</div>
+          </div>
+          <div class="row">
+            <div class="gc">Chatham Memorial</div>
+            <div class="gc">WW342342</div>
+            <div class="gc">3423423</div>
+            <div class="gc">009</div>
+            <div class="gc">$600.35</div>
+            <div class="gc">Ordered</div>
+            <div class="gc">665677</div>
+            <div class="gc">xxxxxxxxxxxxxxxx</div>
+          </div>
+          <div class="row">
+            <div class="gc">Chatham Memorial</div>
+            <div class="gc">343E</div>
+            <div class="gc">4444534</div>
+            <div class="gc">008</div>
+            <div class="gc">$365.00</div>
+            <div class="gc">Ordered</div>
+            <div class="gc">234433</div>
+            <div class="gc">xxxxxxxxxxxxxxxx</div>
+          </div>
+          <div class="row">
+            <div class="gc">Chatham Memorial</div>
+            <div class="gc">–</div>
+            <div class="gc">666343</div>
+            <div class="gc">788</div>
+            <div class="gc">$400.00</div>
+            <div class="gc">Ordered</div>
+            <div class="gc">234454</div>
+            <div class="gc">xxxxxxxxxxxxxxxx</div>
+          </div>
+          <div class="row">
+            <div class="gc">Chatham Memorial</div>
+            <div class="gc">343243</div>
+            <div class="gc">4343434</div>
+            <div class="gc">777</div>
+            <div class="gc">$1,300.00</div>
+            <div class="gc">Backordered</div>
+            <div class="gc">333533</div>
+            <div class="gc">xxxxxxxxxxxxxxxx</div>
+          </div>
+          <div class="row">
+            <div class="gc">Chatham Memorial</div>
+            <div class="gc">–</div>
+            <div class="gc">6699322</div>
+            <div class="gc">657</div>
+            <div class="gc">$800.00</div>
+            <div class="gc">Ordered</div>
+            <div class="gc">009877</div>
+            <div class="gc">xxxxxxxxxxxxxxxx</div>
+          </div>
+          <div class="row">
+            <div class="gc">Chatham Memorial</div>
+            <div class="gc">99899</div>
+            <div class="gc">9932922</div>
+            <div class="gc">4466</div>
+            <div class="gc">$550.25</div>
+            <div class="gc">Ordered</div>
+            <div class="gc">677800</div>
+            <div class="gc">xxxxxxxxxxxxxxxx</div>
+          </div>
+        </div>
+
+        <div class="tbl-foot">
+          <div class="tbl-foot__count"><b>1-12</b> <span class="muted">of 48</span></div>
+          <div class="tbl-foot__pager">
+            <button class="pager-btn pager-btn--page is-active">1</button>
+            <button class="pager-btn pager-btn--page">2</button>
+            <button class="pager-btn pager-btn--page">3</button>
+            <button class="pager-btn pager-btn--page">4</button>
+          </div>
+          <div class="tbl-foot__show">
+            <span>Show</span>
+            <select><option>12</option><option>24</option><option>48</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row states ───────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Row States</h2>
+      <div class="desc">Every row passes through these states. Cell text color stays constant; only background changes to communicate state. Focus ring lives on the row container, not individual cells.</div>
+    </div>
+    <div class="section-body">
+      <div class="states-grid">
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-row"><div>•</div><div>Ref 9932922</div><div>$550.25</div><div><span class="pill pill--ordered">Ordered</span></div></div>
+          </div>
+          <div class="state-card__meta"><b>Default</b><span>White bg · shared 1 px <code>#E5E7EB</code> grid dividers</span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-row is-hover"><div>•</div><div>Ref 9932922</div><div>$550.25</div><div><span class="pill pill--ordered">Ordered</span></div></div>
+          </div>
+          <div class="state-card__meta"><b>Hover</b><span>Bg <code>#F4F6F8</code> · cursor pointer · matches production <code>.pq-row:hover</code></span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-row is-selected"><div><div class="cb is-checked" style="margin:0 auto;"><svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"/></svg></div></div><div>Ref 9932922</div><div>$550.25</div><div><span class="pill pill--ordered">Ordered</span></div></div>
+          </div>
+          <div class="state-card__meta"><b>Selected</b><span>Bg <code>#E5F4FF</code> · checkbox filled</span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-row is-focus"><div>•</div><div>Ref 9932922</div><div>$550.25</div><div><span class="pill pill--ordered">Ordered</span></div></div>
+          </div>
+          <div class="state-card__meta"><b>Keyboard focus</b><span>2 px inset ring <code>#005BA7</code></span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-row is-disabled"><div>•</div><div>Ref 9932922</div><div>$550.25</div><div><span class="pill pill--notShipped">Cancelled</span></div></div>
+          </div>
+          <div class="state-card__meta"><b>Disabled</b><span>Opacity .5 · checkbox un-clickable</span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage">
+            <div class="mini-row is-critical"><div>•</div><div>Ref 9932922</div><div>$550.25</div><div><span class="pill pill--urgent">Past Due</span></div></div>
+          </div>
+          <div class="state-card__meta"><b>Critical / Flagged</b><span>Bg <code>#FBD9D2</code> · bold text · matches <code>.pq-row.is-critical</code></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty + Loading -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Empty &amp; Loading</h2>
+      <div class="desc">Always provide both. Empty states give the user a way forward; loading states prevent layout shift while data fetches.</div>
+    </div>
+    <div class="section-body">
+      <div class="states-grid">
+        <div class="state-card">
+          <div class="state-card__stage" style="padding:0;background:var(--ps-sem-bg-surface);min-height:240px;">
+            <div class="tbl-card tbl-card--inset" style="width:100%;border-radius:0;border:0;padding:16px;gap:12px;">
+              <div class="tbl-head__title" style="font-size:18px;">Parts Events</div>
+              <div class="empty">
+                <div class="empty__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M3 10h18M3 15h18M3 20h12"/></svg></div>
+                <h3>No parts events yet</h3>
+                <p>When orders ship or are received, they&rsquo;ll appear here.</p>
+                <button class="btn primary lg" style="margin-top:8px;min-width:0;padding:0 24px;font-family:'Source Sans Pro',sans-serif;font-weight:400;letter-spacing:0;border-radius:4px;border:2px solid #005BA7;background:#fff;color:#005BA7;height:50px;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background 120ms ease,color 120ms ease,border-color 120ms ease;" onmouseover="this.style.background='#005BA7';this.style.color='#fff';this.style.borderColor='#009CF4'" onmouseout="this.style.background='#fff';this.style.color='#005BA7';this.style.borderColor='#005BA7'">Create order</button>
+              </div>
+            </div>
+          </div>
+          <div class="state-card__meta"><b>Empty &mdash; first run</b><span>Icon + sentence + primary action</span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage" style="padding:0;background:var(--ps-sem-bg-surface);min-height:240px;">
+            <div class="tbl-card tbl-card--inset" style="width:100%;border-radius:0;border:0;padding:16px;gap:12px;">
+              <div class="tbl-head__title" style="font-size:18px;">Parts Events</div>
+              <div class="empty">
+                <div class="empty__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+                <h3>No results for &ldquo;cardiac&rdquo;</h3>
+                <p>Try a different keyword or clear your filters.</p>
+                <button class="btn primary lg" style="margin-top:8px;min-width:0;padding:0 24px;font-family:'Source Sans Pro',sans-serif;font-weight:400;letter-spacing:0;border-radius:4px;border:2px solid #005BA7;background:#fff;color:#005BA7;height:50px;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background 120ms ease,color 120ms ease,border-color 120ms ease;" onmouseover="this.style.background='#005BA7';this.style.color='#fff';this.style.borderColor='#009CF4'" onmouseout="this.style.background='#fff';this.style.color='#005BA7';this.style.borderColor='#005BA7'">Clear filters</button>
+              </div>
+            </div>
+          </div>
+          <div class="state-card__meta"><b>Empty &mdash; filtered</b><span>Distinguish &ldquo;no data&rdquo; from &ldquo;no matches&rdquo;</span></div>
+        </div>
+        <div class="state-card">
+          <div class="state-card__stage" style="padding:0;background:var(--ps-sem-bg-surface);min-height:240px;">
+            <div class="tbl-card tbl-card--inset" style="width:100%;border-radius:0;border:0;padding:16px;gap:8px;">
+              <div class="tbl-head__title" style="font-size:18px;">Parts Events</div>
+              <div style="display:flex;flex-direction:column;gap:14px;padding:12px 0;">
+                <div class="skel-bar" style="width:30%;"></div>
+                <div class="skel-bar"></div>
+                <div class="skel-bar"></div>
+                <div class="skel-bar"></div>
+                <div class="skel-bar" style="width:75%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="state-card__meta"><b>Loading</b><span>Skeleton bars match row height</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breakpoints / Mobile collapse -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Breakpoints</h2>
+      <div class="desc">From tablet down (≤ 1024 px), the table reflows to a stacked card list — the production pattern keeps tablet and mobile on the same cards-first layout so the breakpoint switch happens between desktop and tablet, not between tablet and mobile.</div>
+    </div>
+    <div class="bp-grid">
+      <div class="bp-card">
+        <div class="demo">
+          <div class="qcards" style="grid-template-columns:1fr;padding:0;background:transparent;gap:12px;width:100%;max-width:420px;">
+            <div class="qcard">
+              <div class="qcard__head"><a href="#">View Details</a><time>CREATED 05/12/2026</time></div>
+              <div class="qcard__title">STEAM TRAP REPAIR KIT</div>
+              <div class="qcard__body">
+                <div class="qcard__thumb" aria-label="Part image"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m3 17 5-5 4 4 4-4 5 5"/></svg></div>
+                <dl class="qcard__meta">
+                  <dt>Facility:</dt><dd>Chatham Memorial Clinic</dd>
+                  <dt>Ref #:</dt><dd>9602642</dd>
+                  <dt>Requester:</dt><dd>PETE ZILKO</dd>
+                  <dt>Qty:</dt><dd>1</dd>
+                </dl>
+              </div>
+              <div class="qcard__status"><b>Quote Available</b>Item is ready for purchase.</div>
+            </div>
+          </div>
+        </div>
+        <div class="label"><b>Tablet · qcard</b><span>768–1024 px</span></div>
+      </div>
+      <div class="bp-card bp-card--mobile">
+        <div class="demo">
+          <div class="qcards" style="grid-template-columns:1fr;padding:0;background:transparent;gap:12px;width:100%;max-width:340px;">
+            <div class="qcard">
+              <div class="qcard__head"><a href="#">View Details</a><time>CREATED 05/12/2026</time></div>
+              <div class="qcard__title">STEAM TRAP REPAIR KIT</div>
+              <div class="qcard__body">
+                <div class="qcard__thumb" aria-label="Part image"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m3 17 5-5 4 4 4-4 5 5"/></svg></div>
+                <dl class="qcard__meta">
+                  <dt>Facility:</dt><dd>Chatham Memorial Clinic</dd>
+                  <dt>Ref #:</dt><dd>9602642</dd>
+                  <dt>Requester:</dt><dd>PETE ZILKO</dd>
+                  <dt>Qty:</dt><dd>1</dd>
+                </dl>
+              </div>
+              <div class="qcard__status"><b>Quote Available</b>Item is ready for purchase.</div>
+            </div>
+          </div>
+        </div>
+        <div class="label"><b>Mobile · qcard</b><span>&lt; 768 px</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Anatomy -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Anatomy</h2>
+      <div class="desc">Six layers — card, header, tools, header row, body rows, footer. Each takes a fixed slot in the layout grid.</div>
+    </div>
+    <div class="anatomy">
+      <div class="anatomy-labels">
+        <div class="anatomy-label" style="height:60px;"><em>1 · Card</em><b>Container</b><span>8 px radius, 2 px <code class="kbd">#F1F1F1</code> border</span></div>
+        <div class="anatomy-label" style="height:60px;"><em>2 · Header</em><b>Title row</b><span>25 px Source Sans Light + right-aligned tools</span></div>
+        <div class="anatomy-label" style="height:60px;"><em>3 · Tools</em><b>Search + filters</b><span>33 px search · 30 px filter chips</span></div>
+        <div class="anatomy-label" style="height:60px;"><em>4 · Head row</em><b>Column headers</b><span>13 px uppercase · sortable affordance</span></div>
+        <div class="anatomy-label" style="height:60px;"><em>5 · Body rows</em><b>Data cells</b><span>14 px / 18 px · 14 px vertical padding</span></div>
+        <div class="anatomy-label" style="height:60px;"><em>6 · Footer</em><b>Pagination</b><span>Count · pager · show selector</span></div>
+      </div>
+      <div>
+        <div class="tbl-card tbl-card--inset" style="min-width:0;">
+          <div class="tbl-head">
+            <div class="tbl-head__title">
+              Parts Events
+            </div>
+            <div class="tbl-head__right">
+              <div class="tbl-head__icons">
+                <button aria-label="Settings"><img src="icons/settings.svg" alt="" width="20" height="20"></button>
+                <button aria-label="Export"><img src="icons/download.svg" alt="" width="20" height="20"></button>
+                <button aria-label="Search"><img src="icons/search.svg" alt="" width="20" height="20"></button>
+              </div>
+              <div class="tbl-view-toggle" role="tablist" aria-label="View toggle">
+                <button class="is-active" role="tab" aria-selected="true" aria-label="Compact view"><svg viewBox="0 0 12 12" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.46 5.5457H12V0H8.46V5.5457ZM4.2343 5.5457H7.7743V0H4.2343V5.5457ZM0 5.5457H3.54V0H0V5.5457ZM8.46 12H12V6.4543H8.46V12ZM4.2343 12H7.7743V6.4543H4.2343V12ZM0 12H3.54V6.4543H0V12Z"/></svg></button>
+                <button role="tab" aria-selected="false" aria-label="Grid view"><svg viewBox="0 0 12 12" fill="currentColor"><path d="M10.8294 3.604V1.1786H8.404V3.604H10.8294ZM10.8294 7.2082V4.7827H8.404V7.2082H10.8294ZM10.8294 10.8209V8.3955H8.404V10.8209H10.8294ZM7.2167 3.604V1.1786H4.7912V3.604H7.2167ZM7.2167 7.2082V4.7827H4.7912V7.2082H7.2167ZM7.2167 10.8209V8.3955H4.7912V10.8209H7.2167ZM3.6124 3.604V1.1786H1.187V3.604H3.6124ZM3.6124 7.2082V4.7827H1.187V7.2082H3.6124ZM3.6124 10.8209V8.3955H1.187V10.8209H3.6124ZM10.8294 0C11.1601 0 11.4315 0.1187 11.669 0.3477C11.9064 0.5767 12.0167 0.8565 12.0167 1.1873V10.8209C12.0167 11.1516 11.8979 11.4229 11.669 11.6604C11.44 11.8894 11.1601 12.0082 10.8294 12.0082H1.187C0.8562 12.0082 0.5849 11.8894 0.3474 11.6604C0.1185 11.4314 0 11.1516 0 10.8209V1.1785C0 0.8477 0.1185 0.5767 0.3474 0.3389C0.5764 0.1015 0.8562 0 1.187 0H10.8209L10.8294 0Z"/></svg></button>
+              </div>
+              <div class="tbl-segment" role="tablist">
+                <button class="is-active" role="tab" aria-selected="true">Parts</button>
+                <button role="tab" aria-selected="false">Service</button>
+              </div>
+            </div>
+          </div>
+          <div class="tbl-tools"><div class="tbl-search"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg><input placeholder="Search" /></div><div class="tbl-filters"><button class="tbl-filter-chip">All<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3 3 3-3"/></svg></button></div></div>
+          <div class="grid grid--md">
+            <div class="gh center" style="padding:10px 8px;"><div class="cb"></div></div>
+            <div class="gh">WO</div>
+            <div class="gh">Ref</div>
+            <div class="gh right">Price</div>
+            <div class="gh">Status</div>
+            <div class="gh">Description</div>
+            <div class="row"><div class="gc center"><div class="cb"></div></div><div class="gc mono">99899</div><div class="gc mono">9932922</div><div class="gc right" style="font-weight:700;">$550</div><div class="gc"><span class="pill pill--ordered">Ordered</span></div><div class="gc">Stryker IV Pole</div></div>
+            <div class="row"><div class="gc center"><div class="cb is-checked"><svg viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"/></svg></div></div><div class="gc mono">343E</div><div class="gc mono">4444534</div><div class="gc right" style="font-weight:700;">$365</div><div class="gc"><span class="pill pill--inTransit">In Transit</span></div><div class="gc">Mindray DPM 7</div></div>
+          </div>
+          <div class="tbl-foot"><div class="tbl-foot__count"><b>1-2</b> of 48</div><div class="tbl-foot__pager"><button class="pager-btn pager-btn--page is-active">1</button><button class="pager-btn pager-btn--page">2</button></div><div class="tbl-foot__show"><span>Show</span><select><option>12</option></select></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tokens -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Tokens</h2>
+      <div class="desc">Copy these directly into Figma vars or your CSS. Sort indicator, hover, selected, and divider all use existing color tokens — no new colors needed.</div>
+    </div>
+    <div class="section-body plain">
+      <table class="tokens">
+        <thead><tr><th></th><th>Token</th><th>Value</th><th>Where used</th></tr></thead>
+        <tbody>
+          <tr><td class="swatch"><span style="background:var(--ps-sem-bg-surface);border-color:#E0E0E0;"></span></td><td class="label">table/bg</td><td><code>#FFFFFF</code></td><td>Cell background</td></tr>
+          <tr><td class="swatch"><span style="background:var(--ps-sem-bg-canvas);"></span></td><td class="label">table/head-bg</td><td><code>#FAFAFA</code></td><td>Header row</td></tr>
+          <tr><td class="swatch"><span style="background:#F4F8FB;"></span></td><td class="label">table/row-hover</td><td><code>#F4F8FB</code></td><td>Hover state</td></tr>
+          <tr><td class="swatch"><span style="background:#E5F4FF;"></span></td><td class="label">table/row-selected</td><td><code>#E5F4FF</code></td><td>Checked row</td></tr>
+          <tr><td class="swatch"><span style="background:#FFF7E6;"></span></td><td class="label">table/row-flagged</td><td><code>#FFF7E6</code></td><td>Past-due / urgent row tint</td></tr>
+          <tr><td class="swatch"><span style="background:var(--ps-sem-bg-muted);"></span></td><td class="label">table/row-divider</td><td><code>#F1F1F1</code></td><td>1 px bottom border on every row</td></tr>
+          <tr><td class="swatch"><span style="background:#E0E0E0;"></span></td><td class="label">table/head-divider</td><td><code>#E0E0E0</code></td><td>Below header row</td></tr>
+          <tr><td class="swatch"><span style="background:#373F41;"></span></td><td class="label">table/head-text</td><td><code>#373F41</code></td><td>Column labels</td></tr>
+          <tr><td class="swatch"><span style="background:#2B2B2B;"></span></td><td class="label">table/cell-text</td><td><code>#2B2B2B</code></td><td>Body cells</td></tr>
+          <tr><td></td><td class="label">table/radius</td><td><code>8 px</code></td><td>Card corner</td></tr>
+          <tr><td></td><td class="label">table/border</td><td><code>2 px #F1F1F1</code></td><td>Card outer border</td></tr>
+          <tr><td></td><td class="label">table/padding</td><td><code>24 px</code></td><td>Card padding · 14 px cell padding</td></tr>
+          <tr><td></td><td class="label">table/cell-h</td><td><code>46 px</code></td><td>Default row height (14/18 + 14/14 padding)</td></tr>
+          <tr><td></td><td class="label">table/cell-h-compact</td><td><code>34 px</code></td><td>Compact density (12/16 + 8/8 padding)</td></tr>
+          <tr><td></td><td class="label">table/font-head</td><td><code>13 / .6 / 700</code></td><td>Source Sans Pro · uppercase</td></tr>
+          <tr><td></td><td class="label">table/font-cell</td><td><code>14 / 18 / 400</code></td><td>Source Sans Pro · body</td></tr>
+          <tr><td></td><td class="label">table/font-numeric</td><td><code>IBM Plex Mono · 13</code></td><td>Tabular columns (Ref, PO, Order #)</td></tr>
+          <tr><td></td><td class="label">table/focus-ring</td><td><code>2 px #005BA7</code></td><td>Keyboard focus on row</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- A11y -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility</h2>
+      <div class="desc">Data tables are one of the hardest patterns to make screen-reader friendly. Get the semantics right and the rest follows.</div>
+    </div>
+    <div class="a11y-grid">
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 6h12M6 3v10"/></svg>Semantics</h4>
+        <p>Use real <code>&lt;table&gt;</code>, <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;th scope="col"&gt;</code>. If implementing as CSS grid (like above), apply <code>role="table"</code>, <code>role="row"</code>, <code>role="columnheader"</code>, <code>role="cell"</code> to preserve semantics for AT.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3-3 3 3M3 11l3 3 3-3"/></svg>Sorting</h4>
+        <p>Sortable columns set <code>aria-sort="ascending"</code> / <code>"descending"</code> / <code>"none"</code>. The header button announces the new sort order when clicked (live region).</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8l2 2 4-4"/></svg>Selection</h4>
+        <p>Checkbox column has <code>aria-label="Select row"</code>. The header checkbox is labelled <code>"Select all 48 rows"</code>. When some-but-not-all are selected, it shows indeterminate state and reports <code>aria-checked="mixed"</code>.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>Keyboard</h4>
+        <p>Tab walks the column headers, then enters the body. Arrow keys move between cells once focus is inside. <code>Space</code> toggles row selection. <code>Enter</code> opens the row detail.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8c2-4 8-4 10 0M3 8c2 4 8 4 10 0"/><circle cx="8" cy="8" r="2"/></svg>Contrast</h4>
+        <p>Body text <code>#2B2B2B</code> on <code>#FFF</code> = 13.6:1. Status pills all meet AAA. Hover state <code>#F4F8FB</code> on white is decorative only — never rely on it to communicate state.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12V4M8 12V4M13 12V4"/></svg>Tabular numerals</h4>
+        <p>All numeric columns (Ref, PO, Order #, Price) use IBM Plex Mono with <code>font-variant-numeric: tabular-nums</code> so digits align vertically and the eye can scan a column for outliers.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Do/Don't -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Do &amp; Don&rsquo;t</h2>
+      <div class="desc">Common pitfalls when building tables, and what to do instead.</div>
+    </div>
+    <div class="dodont">
+      <div class="dodont__col dodont__col--do">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="2 8 6 12 14 4"/></svg>Do</h4>
+        <ul>
+          <li>Right-align numeric columns; left-align text and identifiers.</li>
+          <li>Show only the columns the user can act on — push everything else into row detail.</li>
+          <li>Persist sort, filter, and page-size in the URL so deep links work.</li>
+          <li>Make whole rows clickable for the most common action (usually &ldquo;view detail&rdquo;), with hover state to telegraph it.</li>
+          <li>Show row count in the footer; users want to know &ldquo;how much more is there?&rdquo;</li>
+        </ul>
+      </div>
+      <div class="dodont__col dodont__col--dont">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M3 3l10 10M13 3L3 13"/></svg>Don&rsquo;t</h4>
+        <ul>
+          <li>Use color alone to communicate status — pair with a label (the Status pill does both).</li>
+          <li>Force horizontal scroll on mobile. Collapse to a card list at &lt; 768 px instead.</li>
+          <li>Mix interactive elements in cell text — keep actions in the action column or row menu.</li>
+          <li>Truncate identifiers (PO, Ref) — they&rsquo;re what users search by.</li>
+          <li>Use zebra stripes <i>and</i> hover bg — pick one. PartsSource uses hover, not zebra.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Enable clicking between page-level table tabs (Parts Quotes pattern)
+  document.querySelectorAll('.pq-tabs').forEach(group => {
+    const tabs = group.querySelectorAll('.pq-tab');
+    const pq = group.closest('.pq');
+    const table = pq && pq.querySelector('.pq-table');
+    const foot = pq && pq.querySelector('.pq-foot');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.classList.remove('is-active');
+          t.removeAttribute('aria-selected');
+        });
+        tab.classList.add('is-active');
+        tab.setAttribute('aria-selected', 'true');
+
+        // If switching to a tab whose count is "0", show an empty placeholder
+        const countEl = tab.querySelector('.pq-tab__count');
+        const count = countEl ? parseInt(countEl.textContent.trim(), 10) : null;
+        if (!table) return;
+        let empty = pq.querySelector('.pq-empty');
+        if (count === 0) {
+          // hide headers, rows + footer, show empty
+          table.querySelectorAll('.pq-th').forEach(h => h.style.display = 'none');
+          table.querySelectorAll('.pq-row').forEach(r => r.style.display = 'none');
+          if (foot) foot.style.display = 'none';
+          if (!empty) {
+            empty = document.createElement('div');
+            empty.className = 'pq-empty';
+            empty.innerHTML = `
+              <svg class="pq-empty__icon" viewBox="0 0 93 65" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <polygon fill="#DCDCDC" points="79.4215375 -8.76685935e-05 13.4596625 -8.76685935e-05 3.74999999e-05 36.996685 3.74999999e-05 64.9042283 92.8811625 64.9042283 92.8811625 36.996685"/>
+                <path fill="#FFFFFF" d="M56.2459125,32.4520703 C56.2459125,37.8790067 51.8562875,42.2773401 46.4396625,42.2773401 C41.0250375,42.2773401 36.6332875,37.8790067 36.6332875,32.4520703 C36.6332875,32.3615212 36.6352875,32.2709721 36.6371625,32.1804229 L6.8682875,32.1804229 L16.8245375,4.81617437 L76.0566625,4.81617437 L86.0130375,32.1804229 L56.2421625,32.1804229 C56.2440375,32.2709721 56.2459125,32.3615212 56.2459125,32.4520703 Z"/>
+              </svg>
+              <div class="pq-empty__text">
+                <p class="pq-empty__title">No Active orders in ${tab.firstChild.textContent.trim()}</p>
+                <p class="pq-empty__sub">Your currently have no active orders in ${tab.firstChild.textContent.trim()}</p>
+              </div>`;
+            table.appendChild(empty);
+          } else {
+            empty.style.display = '';
+          }
+        } else {
+          table.querySelectorAll('.pq-th').forEach(h => h.style.display = '');
+          table.querySelectorAll('.pq-row').forEach(r => r.style.display = '');
+          if (foot) foot.style.display = '';
+          if (empty) empty.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

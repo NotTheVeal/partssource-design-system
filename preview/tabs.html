@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Tabs" subtitle="Underline, segmented, pill variants — states, tokens, anatomy, a11y" --><html><head>
+  <meta charset="utf-8">
+  <title>Tabs — PartsSource Design System</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 96px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:880px;line-height:1.6;}
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-brand-primary);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:var(--ps-fg-secondary);line-height:1.5;flex:1;}
+    .section-body{padding:32px 24px;background:var(--ps-sem-bg-canvas);}
+    .section-body.plain{background:var(--ps-sem-bg-surface);padding:0;}
+
+    /* ── Folder Tabs (default PartsSource pattern) ──
+       Active tab lifts above a horizontal divider with a 3 px brand-blue
+       top border + 1 px gray side borders; open bottom flows into the
+       panel. Inactive tabs sit flush below the divider, borderless. */
+    .tabs-ul{
+      display:flex;align-items:flex-end;
+      padding-top:6px;
+      border-bottom:1px solid #E0E0E0;
+      font-family:'Source Sans Pro','Source Sans 3',var(--ps-font-sans);
+    }
+    .tab-ul{
+      position:relative;
+      display:inline-flex;align-items:center;gap:8px;
+      height:40px;padding:0 24px;
+      margin-bottom:0;
+      font-size:16px;color:var(--ps-prim-gray-900);
+      background:transparent;border:1px solid transparent;border-bottom:0;
+      cursor:pointer;font-family:inherit;
+      border-top-left-radius:2px;border-top-right-radius:2px;
+    }
+    .tab-ul:hover:not(.is-active):not([disabled]){color:var(--ps-sem-fg-brand);}
+    .tab-ul.is-active{
+      height:46px;
+      background:var(--ps-sem-bg-surface);
+      border:1px solid #E0E0E0;
+      border-top:3px solid #005BA6;
+      border-bottom:0;
+      color:var(--ps-prim-gray-900);font-weight:700;
+      margin-bottom:-1px;  /* cover the divider beneath the active tab */
+    }
+    .tab-ul[disabled]{color:#BBB;cursor:not-allowed;}
+    .tab-ul:focus-visible{outline:2px solid var(--ps-brand-primary);outline-offset:-3px;border-radius:3px;}
+
+    .tab-count{
+      min-width:22px;height:20px;padding:0 7px;
+      border-radius:30px;background:#DCDCDC;color:var(--ps-prim-gray-900);
+      font-size:12px;font-weight:700;
+      display:inline-flex;align-items:center;justify-content:center;
+    }
+
+    /* ── Segmented View Toggle (icon-only, divided buttons) ──
+       "View: [icon][icon]" — single rounded container with an internal
+       divider. Active half = white; inactive half = light gray. */
+    .view-toggle{display:inline-flex;align-items:center;gap:12px;}
+    .view-toggle__label{
+      font:14px/1 'Source Sans Pro',sans-serif;color:var(--ps-sem-fg-tertiary);font-weight:400;
+    }
+    .tabs-seg{
+      display:inline-flex;
+      height:36px;
+      border:1px solid #E0E0E0;
+      border-radius:6px;
+      overflow:hidden;
+      background:var(--ps-sem-bg-surface);
+      font-family:'Source Sans Pro',sans-serif;
+    }
+    .tab-seg{
+      position:relative;
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:42px;height:100%;padding:0 10px;
+      border:0;border-left:1px solid #E0E0E0;
+      background:#F4F6F8;color:var(--ps-sem-fg-primary);
+      cursor:pointer;
+      font:13px/1 'Source Sans Pro',sans-serif;font-weight:600;
+    }
+    .tab-seg:first-child{border-left:0;}
+    .tab-seg.is-active{background:var(--ps-sem-bg-surface);color:var(--ps-prim-gray-900);}
+    .tab-seg:hover:not(.is-active):not([disabled]){background:#ECEFF2;}
+    .tab-seg:focus-visible{outline:2px solid var(--ps-brand-primary);outline-offset:-3px;}
+    .tab-seg svg{width:16px;height:16px;display:block;}
+    .tab-seg .tab-seg__lbl{margin-left:6px;}
+    .tab-seg[disabled]{opacity:.4;cursor:not-allowed;}
+
+    /* ── Pill Tabs (filter chips, multi-select feel) ── */
+    .tabs-pill{display:flex;gap:8px;flex-wrap:wrap;}
+    .tab-pill{
+      display:inline-flex;align-items:center;gap:6px;
+      height:30px;padding:0 14px;border-radius:30px;
+      border:1px solid #CCCCCC;background:var(--ps-sem-bg-surface);color:var(--ps-sem-fg-primary);
+      font:14px/1 'Source Sans Pro',sans-serif;cursor:pointer;
+    }
+    .tab-pill:hover{border-color:var(--ps-sem-fg-brand);color:var(--ps-sem-fg-brand);}
+    .tab-pill.is-active{background:var(--ps-sem-action-default);border-color:var(--ps-sem-fg-brand);color:var(--ps-sem-fg-inverse);}
+    .tab-pill .tab-count{background:rgba(255,255,255,.25);color:inherit;}
+    .tab-pill:not(.is-active) .tab-count{background:#DCDCDC;}
+
+    /* ── Demo content panel ── */
+    .panel{background:var(--ps-sem-bg-surface);border:1px solid #F1F1F1;border-top:0;border-radius:0 0 6px 6px;padding:20px 24px;color:var(--ps-sem-fg-primary);font-size:14px;line-height:1.5;}
+    .panel-card{background:var(--ps-sem-bg-surface);border:1px solid #F1F1F1;border-radius:6px;padding:20px 24px;color:var(--ps-sem-fg-primary);font-size:14px;line-height:1.5;margin-top:14px;}
+
+    /* States grid */
+    .states-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;padding:24px;}
+    .state-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-default);border-radius:8px;overflow:hidden;}
+    .state-card__stage{padding:24px 20px;background:#F4F6F8;display:flex;align-items:center;justify-content:center;min-height:90px;}
+    .state-card__meta{padding:10px 14px;border-top:1px solid var(--ps-border-subtle);}
+    .state-card__meta b{display:block;font-size:13px;font-weight:700;color:var(--ps-sem-fg-primary);}
+    .state-card__meta span{font-size:12px;color:var(--ps-sem-fg-tertiary);}
+
+    /* Tokens */
+    .tokens{width:100%;border-collapse:collapse;font-size:12px;}
+    .tokens th, .tokens td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--ps-border-subtle);}
+    .tokens th{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ps-sem-fg-tertiary);font-weight:700;background:var(--ps-sem-bg-canvas);}
+    .tokens td code{font-family:var(--ps-font-mono);font-size:11px;color:var(--ps-sem-fg-primary);}
+    .tokens td.label{font-weight:600;color:var(--ps-sem-fg-primary);}
+    .tokens td.swatch{width:42px;}
+    .tokens td.swatch span{display:block;width:24px;height:24px;border-radius:4px;border:1px solid rgba(0,0,0,.08);}
+
+    /* A11y / Do-Don't */
+    .a11y-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;padding:24px;}
+    .a11y-card{background:var(--ps-sem-bg-canvas);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:16px 18px;}
+    .a11y-card h4{margin:0 0 8px;font-size:13px;font-weight:700;color:var(--ps-sem-fg-primary);display:flex;align-items:center;gap:8px;}
+    .a11y-card h4 svg{width:16px;height:16px;color:var(--ps-brand-primary);}
+    .a11y-card p{margin:0;font-size:13px;line-height:1.5;color:var(--ps-sem-fg-secondary);}
+    .a11y-card code{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-sem-bg-surface);padding:1px 5px;border-radius:3px;border:1px solid #E5E7EB;}
+
+    .dodont{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px;}
+    .dodont__col{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-subtle);border-radius:8px;overflow:hidden;}
+    .dodont__col h4{margin:0;padding:12px 16px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px;}
+    .dodont__col--do h4{background:#E5F9F2;color:#0A7850;}
+    .dodont__col--dont h4{background:#FDECEC;color:#9E2A1C;}
+    .dodont__col ul{list-style:none;margin:0;padding:14px 18px;display:flex;flex-direction:column;gap:10px;}
+    .dodont__col li{font-size:13px;line-height:1.5;color:var(--ps-sem-fg-primary);display:flex;align-items:flex-start;gap:8px;}
+    .dodont__col li::before{content:"";flex-shrink:0;width:6px;height:6px;border-radius:50%;margin-top:8px;}
+    .dodont__col--do li::before{background:#0A7850;}
+    .dodont__col--dont li::before{background:#9E2A1C;}
+
+    /* Anatomy */
+    .anatomy{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start;padding:24px;background:var(--ps-sem-bg-surface);}
+    .anatomy-labels{display:flex;flex-direction:column;padding:0 16px 0 0;border-right:1px dashed #DCDCDC;}
+    .anatomy-label{padding:14px 0;display:flex;flex-direction:column;gap:3px;align-items:flex-end;text-align:right;}
+    .anatomy-label b{color:var(--ps-brand-primary);font-size:13px;font-weight:700;}
+    .anatomy-label em{font-style:normal;color:var(--ps-sem-fg-tertiary);font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+    .anatomy-label span{color:var(--ps-sem-fg-secondary);font-size:12px;line-height:1.4;}
+
+    .usage{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px;}
+    .usage-card{background:var(--ps-sem-bg-surface);border:1px solid var(--ps-border-subtle);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:6px;}
+    .usage-card .tag{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--ps-brand-primary);}
+    .usage-card h4{margin:0;font-size:15px;font-weight:700;color:var(--ps-sem-fg-primary);}
+    .usage-card p{margin:0;font-size:13px;line-height:1.5;color:var(--ps-sem-fg-secondary);}
+
+    code.kbd{font-family:var(--ps-font-mono);font-size:11px;background:var(--ps-sem-bg-muted);padding:2px 5px;border-radius:3px;color:var(--ps-sem-fg-primary);}
+  </style>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Tabs</span>
+  </nav>
+  <style>
+    .ps-breadcrumb{
+      display:flex;align-items:center;gap:10px;
+      margin:0 0 24px;
+      font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);
+      color:var(--ps-sem-fg-tertiary);
+    }
+    .ps-breadcrumb__back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;
+      padding:6px 10px 6px 6px;border-radius:4px;
+      transition:background 120ms ease,color 120ms ease;
+    }
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+  
+
+
+  <h1>Tabs</h1>
+  <p class="intro">Tabs let users switch between sibling views that share context. PartsSource uses three variants &mdash; <b>Folder tabs</b> (page-level views, the default), <b>Segmented tabs</b> (compact in-card switching, two&ndash;three options), and <b>Pill tabs</b> (filter-style multi-category navigation). All three are sourced from the Figma <code class="kbd">Tabs</code> symbol family.</p>
+
+  <!-- Folder tabs ─────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Folder · Default</h2>
+      <div class="desc">The active tab lifts above the page divider with a 3 px brand-blue top border, 1 px gray side borders, and an open bottom that flows into the panel. Inactive tabs sit borderless on the divider line. 16 px Source Sans Pro, 24 px side padding. Use for page-level sub-navigation.</div>
+    </div>
+    <div class="section-body">
+      <nav class="tabs-ul" role="tablist">
+        <button class="tab-ul is-active" role="tab" aria-selected="true">Tab 1<span class="tab-count">0</span></button>
+        <button class="tab-ul" role="tab" aria-selected="false">Tab 2<span class="tab-count">11</span></button>
+        <button class="tab-ul" role="tab" aria-selected="false">Tab 3<span class="tab-count">4</span></button>
+        <button class="tab-ul" role="tab" aria-selected="false">Tab 4</button>
+      </nav>
+      <div class="panel" role="tabpanel">
+        Active panel content sits flush under the active tab. The divider line breaks under the active tab so the folder shape reads as continuous with the panel.
+      </div>
+    </div>
+  </div>
+
+  <!-- Segmented view-toggle ─────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Segmented · View toggle</h2>
+      <div class="desc">Compact icon-only switcher for 2&ndash;3 view modes of the same data &mdash; Asset uptime, Heatmap, List. 36 px tall, single rounded container with internal 1 px dividers. Active half = white, inactive = <code class="kbd">#F4F6F8</code>. Pair with a gray <b>View:</b> label so the control reads as a setting, not navigation.</div>
+    </div>
+    <div class="section-body">
+      <div class="view-toggle">
+        <span class="view-toggle__label">View:</span>
+        <div class="tabs-seg" role="tablist" aria-label="View mode">
+          <button class="tab-seg is-active" role="tab" aria-selected="true" aria-label="Asset uptime" title="Asset uptime">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="1.5" y="1.5" width="5.5" height="3.8" rx=".8"/><rect x="9" y="1.5" width="5.5" height="3.8" rx=".8"/><rect x="1.5" y="6.1" width="5.5" height="3.8" rx=".8"/><rect x="9" y="6.1" width="5.5" height="3.8" rx=".8"/><rect x="1.5" y="10.7" width="5.5" height="3.8" rx=".8"/><rect x="9" y="10.7" width="5.5" height="3.8" rx=".8"/></svg>
+          </button>
+          <button class="tab-seg" role="tab" aria-selected="false" aria-label="Heatmap" title="Heatmap">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2.5 1.5h11a1 1 0 0 1 1 1V6H1.5V2.5a1 1 0 0 1 1-1z"/><rect x="1.5" y="7.5" width="4" height="3.2" rx=".4"/><rect x="6" y="7.5" width="4" height="3.2" rx=".4"/><rect x="10.5" y="7.5" width="4" height="3.2" rx=".4"/><rect x="1.5" y="11.3" width="4" height="3.2" rx=".4"/><rect x="6" y="11.3" width="4" height="3.2" rx=".4" opacity=".35"/><rect x="10.5" y="11.3" width="4" height="3.2" rx=".4"/></svg>
+          </button>
+          <button class="tab-seg" role="tab" aria-selected="false" aria-label="List" title="List">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.5" y="1.5" width="13" height="13" rx="1"/><path d="M1.5 5.83h13M1.5 10.17h13M5.83 1.5v13M10.17 1.5v13"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="panel-card">Switch between <b>Asset uptime</b>, <b>Heatmap</b>, and <b>List</b> views without losing your filters, sort, or selection. Each icon button carries a tooltip and an <code class="kbd">aria-label</code>.</div>
+    </div>
+  </div>
+
+  <!-- Pill tabs ──────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Pill</h2>
+      <div class="desc">Filter-style category switcher. 30 px tall, fully rounded. Active pill takes solid brand fill. Use for many sibling categories where users want to feel they&rsquo;re narrowing a list (parts categories, departments, status filters).</div>
+    </div>
+    <div class="section-body">
+      <div class="tabs-pill">
+        <button class="tab-pill is-active">All<span class="tab-count">324</span></button>
+        <button class="tab-pill">Imaging<span class="tab-count">82</span></button>
+        <button class="tab-pill">Patient Monitoring<span class="tab-count">47</span></button>
+        <button class="tab-pill">Surgical<span class="tab-count">60</span></button>
+        <button class="tab-pill">Respiratory<span class="tab-count">35</span></button>
+        <button class="tab-pill">Lab</button>
+        <button class="tab-pill">IV Therapy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- States ─────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>States</h2>
+      <div class="desc">Every tab variant shares the same state vocabulary &mdash; idle, hover, active, focus, disabled.</div>
+    </div>
+    <div class="states-grid">
+      <div class="state-card"><div class="state-card__stage"><nav class="tabs-ul"><button class="tab-ul">Tab 1<span class="tab-count">11</span></button></nav></div><div class="state-card__meta"><b>Idle</b><span>Black 16 px / gray badge</span></div></div>
+      <div class="state-card"><div class="state-card__stage"><nav class="tabs-ul"><button class="tab-ul" style="color:var(--ps-sem-fg-brand);">Tab 1<span class="tab-count">11</span></button></nav></div><div class="state-card__meta"><b>Hover</b><span>Text → brand primary</span></div></div>
+      <div class="state-card"><div class="state-card__stage"><nav class="tabs-ul"><button class="tab-ul is-active">Tab 1<span class="tab-count">11</span></button></nav></div><div class="state-card__meta"><b>Active</b><span>3 px blue top · 1 px side borders · bold</span></div></div>
+      <div class="state-card"><div class="state-card__stage"><nav class="tabs-ul"><button class="tab-ul is-active" style="outline:2px solid var(--ps-brand-primary);outline-offset:-3px;border-radius:3px;">Tab 1<span class="tab-count">11</span></button></nav></div><div class="state-card__meta"><b>Focus</b><span>2 px brand ring inset</span></div></div>
+      <div class="state-card"><div class="state-card__stage"><nav class="tabs-ul"><button class="tab-ul" disabled>Tab 4</button></nav></div><div class="state-card__meta"><b>Disabled</b><span>Gray text · not focusable</span></div></div>
+      <div class="state-card"><div class="state-card__stage"><div class="view-toggle"><span class="view-toggle__label">View:</span><div class="tabs-seg"><button class="tab-seg is-active" aria-label="Asset uptime"><svg viewBox="0 0 16 16" fill="currentColor"><rect x="1.5" y="1.5" width="5.5" height="3.8" rx=".8"/><rect x="9" y="1.5" width="5.5" height="3.8" rx=".8"/><rect x="1.5" y="6.1" width="5.5" height="3.8" rx=".8"/><rect x="9" y="6.1" width="5.5" height="3.8" rx=".8"/><rect x="1.5" y="10.7" width="5.5" height="3.8" rx=".8"/><rect x="9" y="10.7" width="5.5" height="3.8" rx=".8"/></svg></button><button class="tab-seg" aria-label="Heatmap"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M2.5 1.5h11a1 1 0 0 1 1 1V6H1.5V2.5a1 1 0 0 1 1-1z"/><rect x="1.5" y="7.5" width="4" height="3.2" rx=".4"/><rect x="6" y="7.5" width="4" height="3.2" rx=".4"/><rect x="10.5" y="7.5" width="4" height="3.2" rx=".4"/><rect x="1.5" y="11.3" width="4" height="3.2" rx=".4"/><rect x="6" y="11.3" width="4" height="3.2" rx=".4" opacity=".35"/><rect x="10.5" y="11.3" width="4" height="3.2" rx=".4"/></svg></button><button class="tab-seg" aria-label="List"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="1.5" width="13" height="13" rx="1"/><path d="M1.5 5.83h13M1.5 10.17h13M5.83 1.5v13M10.17 1.5v13"/></svg></button></div></div></div><div class="state-card__meta"><b>Segmented active</b><span>White half · gray inactive half</span></div></div>
+    </div>
+  </div>
+
+  <!-- Anatomy ────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Anatomy</h2>
+      <div class="desc">Four layers per folder tab. Counts are optional; the label is the only required element.</div>
+    </div>
+    <div class="anatomy">
+      <div class="anatomy-labels">
+        <div class="anatomy-label" style="height:60px;"><em>1 · Divider</em><b>Track line</b><span>1 px <code class="kbd">#E0E0E0</code> across the full width</span></div>
+        <div class="anatomy-label" style="height:60px;"><em>2 · Active</em><b>Top border</b><span>3 px brand primary <code class="kbd">#005BA6</code></span></div>
+        <div class="anatomy-label" style="height:60px;"><em>3 · Label</em><b>Text</b><span>Source Sans Pro · 16 px · 700 active / 400 idle</span></div>
+        <div class="anatomy-label" style="height:60px;"><em>4 · Count</em><b>Badge</b><span>20 px pill · 12 px bold · gray fill</span></div>
+      </div>
+      <div>
+        <nav class="tabs-ul" style="padding-left:8px;padding-right:8px;">
+          <button class="tab-ul is-active">Tab 1<span class="tab-count">0</span></button>
+          <button class="tab-ul">Tab 2<span class="tab-count">11</span></button>
+          <button class="tab-ul">Tab 3</button>
+        </nav>
+        <div class="panel" role="tabpanel">Active panel content sits flush under the active tab. The divider line breaks under the active tab, and the open-bottomed folder shape reads as continuous with the panel.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tokens ─────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Tokens</h2>
+      <div class="desc">All three variants reuse existing color tokens. No new colors are introduced.</div>
+    </div>
+    <div class="section-body plain">
+      <table class="tokens">
+        <thead><tr><th></th><th>Token</th><th>Value</th><th>Where used</th></tr></thead>
+        <tbody>
+          <tr><td class="swatch"><span style="background:#000;"></span></td><td class="label">tab/idle-text</td><td><code>#000000</code></td><td>Folder tab idle label</td></tr>
+          <tr><td class="swatch"><span style="background:var(--ps-sem-action-default);"></span></td><td class="label">tab/active-accent</td><td><code>#005BA6</code></td><td>3 px top border on active folder tab · segmented active text</td></tr>
+          <tr><td class="swatch"><span style="background:#DCDCDC;"></span></td><td class="label">tab/count-bg</td><td><code>#DCDCDC</code></td><td>Count badge fill (idle &amp; active)</td></tr>
+          <tr><td class="swatch"><span style="background:#E0E0E0;"></span></td><td class="label">tab/divider</td><td><code>#E0E0E0</code></td><td>Page divider under folder tabs · active tab side borders</td></tr>
+          <tr><td class="swatch"><span style="background:#F4F6F8;"></span></td><td class="label">tab/seg-inactive</td><td><code>#F4F6F8</code></td><td>Inactive segmented half</td></tr>
+          <tr><td class="swatch"><span style="background:var(--ps-sem-bg-surface);border-color:#E0E0E0;"></span></td><td class="label">tab/seg-active</td><td><code>#FFFFFF</code></td><td>Active segmented half</td></tr>
+          <tr><td></td><td class="label">tab/h-folder-idle</td><td><code>40 px</code></td><td>Inactive folder tab height</td></tr>
+          <tr><td></td><td class="label">tab/h-folder-active</td><td><code>46 px</code></td><td>Active folder tab height (lifts 6 px above divider)</td></tr>
+          <tr><td></td><td class="label">tab/h-seg</td><td><code>36 px</code></td><td>Segmented control height</td></tr>
+          <tr><td></td><td class="label">tab/h-pill</td><td><code>30 px</code></td><td>Pill tab height</td></tr>
+          <tr><td></td><td class="label">tab/pad-x</td><td><code>24 px</code></td><td>Folder tab horizontal padding</td></tr>
+          <tr><td></td><td class="label">tab/font</td><td><code>Source Sans Pro · 16 px · 400 idle / 700 active</code></td><td>Folder label</td></tr>
+          <tr><td></td><td class="label">tab/font-seg</td><td><code>Source Sans Pro · 13 px · 600</code></td><td>Segmented label</td></tr>
+          <tr><td></td><td class="label">tab/top-border-h</td><td><code>3 px</code></td><td>Active folder tab top-border thickness</td></tr>
+          <tr><td></td><td class="label">tab/side-border-w</td><td><code>1 px</code></td><td>Active folder tab side borders (match divider)</td></tr>
+          <tr><td></td><td class="label">tab/transition</td><td><code>120 ms ease</code></td><td>Color + border cross-fade</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- A11y ──────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility</h2>
+      <div class="desc">Tabs are one of the most under-implemented ARIA patterns. Get the keyboard + roles right.</div>
+    </div>
+    <div class="a11y-grid">
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 6h12"/></svg>Roles</h4>
+        <p>Container is <code>role="tablist"</code>. Each tab is <code>role="tab"</code> with <code>aria-selected="true|false"</code>. Each panel is <code>role="tabpanel"</code> and references its tab via <code>aria-labelledby</code>.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h12M10 4l4 4-4 4"/></svg>Keyboard</h4>
+        <p><code>← →</code> move between tabs and activate the new one automatically. <code>Home / End</code> jump to first / last tab. <code>Tab</code> moves focus into the active panel, never to inactive tabs.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8c2-4 8-4 10 0M3 8c2 4 8 4 10 0"/><circle cx="8" cy="8" r="2"/></svg>Contrast</h4>
+        <p>Active <code>#005BA6</code> on <code>#FFF</code> = 7.4:1 (AAA). Idle <code>#000</code> = 21:1. Disabled <code>#BBB</code> = 2.85:1 &mdash; this fails normal-text AA, which is intentional: disabled tabs must look disabled.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>Hit targets</h4>
+        <p>Folder tab is 46 px tall active / 40 px idle &mdash; meets the 44 px target with 24 px horizontal padding. Pill tabs at 30 px need wider padding (min 14 px) so the effective tap zone is &ge; 44 px.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M5 9l2 2 4-4"/></svg>Selection vs activation</h4>
+        <p>Default to <i>automatic activation</i> &mdash; arrow keys both move focus and load the panel. Only use <i>manual activation</i> (arrow keys move focus, <code>Enter</code> activates) if panel loading is slow or destructive.</p>
+      </div>
+      <div class="a11y-card">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M5 8l2 2 4-4"/></svg>Don&rsquo;t hide via icon-only</h4>
+        <p>Segmented view-toggles are icon-only by design — the leading <b>View:</b> label tells users what the control does, and each icon button has an <code>aria-label</code> ("Cards", "Table") for screen readers. If you have &gt; 3 view modes, drop the rare ones into an overflow menu.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Do/Don't ──────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Do &amp; Don&rsquo;t</h2>
+      <div class="desc">Picking the right variant prevents 80% of tab problems.</div>
+    </div>
+    <div class="dodont">
+      <div class="dodont__col dodont__col--do">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="2 8 6 12 14 4"/></svg>Do</h4>
+        <ul>
+          <li>Use folder tabs for sibling views of the same data (My Lists / Company Lists / Shared).</li>
+          <li>Keep tab labels short (1&ndash;3 words). Long labels squeeze the bar and weaken the folder silhouette.</li>
+          <li>Show counts on the badge when they help orient the user (&ldquo;47 lists&rdquo;).</li>
+          <li>Persist active tab in the URL so deep links work and back-button feels native.</li>
+          <li>Keep the active tab one click away &mdash; never gate the panel behind a click on a sub-tab.</li>
+        </ul>
+      </div>
+      <div class="dodont__col dodont__col--dont">
+        <h4><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M3 3l10 10M13 3L3 13"/></svg>Don&rsquo;t</h4>
+        <ul>
+          <li>Nest tabs. A tab inside a tab inside a tab is always a routing problem dressed up as UI.</li>
+          <li>Use tabs when the views aren&rsquo;t siblings &mdash; that&rsquo;s navigation, use the sidebar.</li>
+          <li>Use a segmented control for &gt; 3 options. Switch to folder tabs or a select.</li>
+          <li>Use pill tabs for single-select primary views &mdash; pills read as filter chips.</li>
+          <li>Hide content in inactive tabs that the user needs to compare. Use side-by-side instead.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Make every tab group click-switchable (folder, segmented, pill).
+    document.querySelectorAll('.tabs-ul, .tabs-seg, .tabs-pill').forEach(function(group){
+      var selector = group.classList.contains('tabs-ul') ? '.tab-ul'
+                  : group.classList.contains('tabs-seg') ? '.tab-seg'
+                  : '.tab-pill';
+      group.addEventListener('click', function(e){
+        var tab = e.target.closest(selector);
+        if (!tab || tab.hasAttribute('disabled') || !group.contains(tab)) return;
+        group.querySelectorAll(selector + '.is-active').forEach(function(el){
+          el.classList.remove('is-active');
+          el.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('is-active');
+        tab.setAttribute('aria-selected', 'true');
+      });
+      // Arrow-key navigation for folder tabs
+      if (group.classList.contains('tabs-ul')) {
+        group.addEventListener('keydown', function(e){
+          if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+          var tabs = [].slice.call(group.querySelectorAll(selector + ':not([disabled])'));
+          var i = tabs.indexOf(document.activeElement);
+          if (i === -1) return;
+          var next = e.key === 'ArrowRight' ? (i + 1) % tabs.length : (i - 1 + tabs.length) % tabs.length;
+          tabs[next].focus();
+          tabs[next].click();
+          e.preventDefault();
+        });
+      }
+    });
+  </script>
+
+  <!-- Usage ─────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>When to use what</h2>
+      <div class="desc">Three patterns, three jobs. Pick by the relationship between the views, not by how many there are.</div>
+    </div>
+    <div class="usage">
+      <div class="usage-card"><span class="tag">Folder</span><h4>Page-level siblings</h4><p>Switch between top-level views of the same domain. My Lists / Company Lists / Shared. Cart / Saved / History. 3&ndash;6 tabs maximum.</p></div>
+      <div class="usage-card"><span class="tag">Segmented</span><h4>View mode switcher</h4><p>Same data, different layout. Cards / Table. Day / Week / Month. 2&ndash;3 icon-only options paired with a <b>View:</b> label.</p></div>
+      <div class="usage-card"><span class="tag">Pill</span><h4>Filter-style narrow-down</h4><p>Many sibling categories where one is the &ldquo;All&rdquo; reset. Imaging / Surgical / Lab / IV Therapy. Reads as &ldquo;narrowing&rdquo; rather than &ldquo;switching.&rdquo;</p></div>
+      <div class="usage-card"><span class="tag">Sidebar (not here)</span><h4>Cross-section navigation</h4><p>If the views don&rsquo;t share data (Cart vs. Settings vs. Reports), it&rsquo;s navigation &mdash; use the left-hand sidebar, not tabs.</p></div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+<svg width="700" height="40" viewBox="0 0 700 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="700" height="40" rx="5" fill="#FFF4E5"></rect>
+  <g transform="translate(18, 8)">
+    <path d="M12.73 18l-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 -5 21h16a2 2 0 0 0 1.73-3" transform="translate(9, 3)" stroke="#B45309" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M12 9v4" stroke="#B45309" stroke-width="2" stroke-linecap="round"></path>
+    <path d="M12 17h.01" stroke="#B45309" stroke-width="2" stroke-linecap="round"></path>
+  </g>
+  <text x="60" y="25" font-family="Source Sans Pro, sans-serif" font-size="14" font-weight="700" fill="#B45309">This action cannot be undone. Are you sure you want to continue?</text>
+  <g transform="translate(497, 4)">
+    <rect width="87" height="32" rx="4" fill="white" stroke="#DCDCDC" stroke-width="1"></rect>
+    <text x="43.5" y="21" font-family="Inter, sans-serif" font-size="10" font-weight="500" fill="#4A4A4A" text-anchor="middle">Cancel</text>
+  </g>
+  <g transform="translate(592, 4)">
+    <rect width="87" height="32" rx="4" fill="white" stroke="#DCDCDC" stroke-width="1"></rect>
+    <text x="43.5" y="21" font-family="Inter, sans-serif" font-size="10" font-weight="500" fill="#4A4A4A" text-anchor="middle">Continue</text>
+  </g>
+</svg>

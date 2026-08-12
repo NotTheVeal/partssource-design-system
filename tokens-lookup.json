@@ -1,0 +1,1739 @@
+{
+  "0": [
+    "primitive-primitive-zindex-base",
+    "primitive-primitive-opacity-0"
+  ],
+  "1": [
+    "component-tab-count-opacity-active",
+    "primitive-primitive-opacity-100"
+  ],
+  "100": [
+    "primitive-primitive-zindex-dropdown"
+  ],
+  "200": [
+    "primitive-primitive-zindex-overlay"
+  ],
+  "300": [
+    "primitive-primitive-zindex-modal",
+    "primitive-primitive-typography-fontweight-light"
+  ],
+  "400": [
+    "primitive-primitive-typography-fontweight-regular"
+  ],
+  "600": [
+    "component-input-input-label-floating-fontweight",
+    "primitive-primitive-typography-fontweight-semibold"
+  ],
+  "700": [
+    "component-badge-status-fontweight",
+    "component-badge-listtype-fontweight",
+    "component-cart-badge-fontweight",
+    "component-tab-count-fontweight",
+    "primitive-primitive-typography-fontweight-bold"
+  ],
+  "9999": [
+    "primitive-primitive-zindex-toast"
+  ],
+  "4px": [
+    "component-alert-radius",
+    "component-alert-toast-radius",
+    "component-badge-status-radius",
+    "component-badge-listtype-paddingv",
+    "component-button-primary-radius",
+    "component-button-secondary-lg-radius",
+    "component-button-secondary-sm-radius",
+    "component-button-square-lg-radius",
+    "component-button-square-sm-radius",
+    "component-button-chip-sm-paddingv",
+    "component-button-chip-removable-sm-paddingv",
+    "component-button-segmented-asset-radius",
+    "component-button-inline-director-gap",
+    "component-button-inline-gap",
+    "component-button-arrow-radius",
+    "component-card-base-radius",
+    "component-filter-chip-paddingv",
+    "component-iconcustom-squarefilled-radius",
+    "component-iconcustom-squareoutline-radius",
+    "component-iconmodality-squarefilled-radius",
+    "component-iconmodality-squareoutline-radius",
+    "component-input-input-radius",
+    "component-input-inputlarge-radius",
+    "component-input-dropdown-radius",
+    "component-input-datepicker-radius",
+    "component-navleft-item-itemgap",
+    "component-navleft-item-radius",
+    "component-navtop-search-radius",
+    "component-navtop-icon-radius",
+    "component-navtop-usermenu-radius",
+    "component-navtop-dropdown-radius",
+    "component-tab-count-paddingy",
+    "primitive-primitive-borderwidth-4",
+    "primitive-primitive-border-width-thick",
+    "primitive-primitive-borderradius-md",
+    "primitive-primitive-sizing-4",
+    "primitive-primitive-spacing-1"
+  ],
+  "16px": [
+    "component-alert-padding",
+    "component-button-tertiary-lg-paddingh",
+    "component-button-square-sm-paddingh",
+    "component-button-chip-lg-paddingh",
+    "component-button-chip-removable-lg-paddingh",
+    "component-button-segmented-asset-paddingh",
+    "component-card-event-padding",
+    "component-card-aidata-padding",
+    "component-card-aidata-gap",
+    "component-card-list-paddingh",
+    "component-card-analytics-padding",
+    "component-cart-badge-minwidth",
+    "component-cart-badge-height",
+    "component-filter-bar-paddingh",
+    "component-icon-size-sm",
+    "component-iconcustom-size-sm",
+    "component-iconmodality-size-sm",
+    "component-input-input-label-resting-fontsize",
+    "component-input-input-paddingh",
+    "component-input-inputlarge-paddingh",
+    "component-input-dropdown-paddingh",
+    "component-input-datepicker-calendargap",
+    "component-modal-headerpaddingv",
+    "component-modal-footerpaddingv",
+    "component-navleft-container-paddingv",
+    "component-navleft-container-paddingh",
+    "component-navleft-header-paddingh",
+    "component-navleft-section-paddingh",
+    "component-navleft-item-paddingh",
+    "component-navleft-subitem-paddingright",
+    "component-navtop-container-gap",
+    "component-navtop-dropdown-item-paddingh",
+    "component-pageshell-contentpadding-mobile",
+    "component-tab-typography-fontsize",
+    "primitive-primitive-borderradius-2xl",
+    "primitive-primitive-sizing-16",
+    "primitive-primitive-sizing-icon-sm",
+    "primitive-primitive-spacing-4",
+    "primitive-primitive-typography-fontsize-base",
+    "primitive-primitive-typography-lineheight-4"
+  ],
+  "var(--ps-semantic-color-feedback-successsubtle)": [
+    "component-alert-success-background",
+    "component-badge-status-active-background",
+    "component-badge-listtype-success-background",
+    "component-modal-datamodal-alert-alertbackground"
+  ],
+  "var(--ps-semantic-color-feedback-successdark)": [
+    "component-alert-success-text",
+    "component-alert-success-icon",
+    "component-alert-success-iconborder",
+    "component-badge-status-active-text",
+    "component-badge-listtype-success-text",
+    "component-icon-color-success"
+  ],
+  "var(--ps-semantic-color-feedback-success)": [
+    "component-alert-success-border",
+    "component-badge-status-active-border",
+    "component-card-analytics-trendpositive",
+    "component-checkbox-completed-border",
+    "component-checkbox-completed-checkmark",
+    "component-stepper-bar-complete",
+    "component-stepper-indicator-finished-background",
+    "component-stepper-indicator-finished-border",
+    "component-stepper-indicator-finished-checkmark",
+    "component-stepper-indicator-current-border",
+    "component-stepper-indicator-current-text",
+    "component-stepper-step-connector-complete"
+  ],
+  "var(--ps-semantic-color-feedback-dangersubtle)": [
+    "component-alert-error-background",
+    "component-badge-status-error-background",
+    "component-badge-listtype-error-background",
+    "component-filter-withchips-chipgroup",
+    "component-filter-savedfilter-chipgroup"
+  ],
+  "var(--ps-semantic-color-feedback-dangerdark)": [
+    "component-alert-error-text",
+    "component-alert-error-icon",
+    "component-alert-error-iconborder",
+    "component-alert-error-border",
+    "component-badge-status-error-text",
+    "component-badge-status-error-border",
+    "component-badge-listtype-error-text",
+    "component-card-analytics-trendnegative",
+    "component-icon-color-error",
+    "component-input-input-label-error-color",
+    "component-input-input-error-border",
+    "component-input-input-error-labelcolor",
+    "component-input-input-error-helpertext",
+    "component-input-inputlarge-error-border",
+    "component-input-inputlarge-error-helpertext"
+  ],
+  "var(--ps-semantic-color-feedback-infosubtle)": [
+    "component-alert-info-background",
+    "component-badge-status-info-background",
+    "component-filter-dropdown-selecteditembg",
+    "component-input-datepicker-calendar-dayrange-background"
+  ],
+  "var(--ps-semantic-color-brand-primary)": [
+    "component-alert-info-text",
+    "component-alert-info-icon",
+    "component-alert-info-iconborder",
+    "component-alert-dismissable-closeicon-hover",
+    "component-badge-status-info-text",
+    "component-badge-listtype-primary-background",
+    "component-button-primary-default-background",
+    "component-button-primary-focused-background",
+    "component-button-secondary-lg-default-text",
+    "component-button-secondary-lg-default-border",
+    "component-button-secondary-lg-hover-background",
+    "component-button-secondary-lg-hover-border",
+    "component-button-secondary-lg-focused-text",
+    "component-button-secondary-lg-focused-border",
+    "component-button-secondary-sm-hover-background",
+    "component-button-secondary-sm-hover-border",
+    "component-button-tertiary-lg-focused-focusring",
+    "component-button-chip-sm-selected-background",
+    "component-button-chip-sm-selected-border",
+    "component-button-chip-sm-hover-border",
+    "component-button-chip-lg-selected-background",
+    "component-button-chip-lg-selected-border",
+    "component-button-chip-lg-hover-border",
+    "component-button-chip-removable-sm-hover-border",
+    "component-button-chip-removable-sm-hover-icon",
+    "component-button-chip-removable-lg-hover-border",
+    "component-button-chip-removable-lg-hover-icon",
+    "component-button-segmented-asset-enabled-background",
+    "component-button-segmented-asset-hover-background",
+    "component-button-segmented-asset-focused-background",
+    "component-button-segmented-event-enabled-background",
+    "component-button-segmented-event-hover-background",
+    "component-button-segmented-event-focused-background",
+    "component-button-segmented-left-selected-background",
+    "component-button-segmented-left-selected-border",
+    "component-button-segmented-right-selected-background",
+    "component-button-segmented-right-selected-border",
+    "component-button-inline-default-text",
+    "component-button-inline-director-hover-text",
+    "component-button-inline-director-hover-icon",
+    "component-button-inline-underline-hover-text",
+    "component-button-inline-allcaps-hover-text",
+    "component-card-aidata-link",
+    "component-card-aidata-selected-border",
+    "component-card-status-icon",
+    "component-card-data-action",
+    "component-card-list-link",
+    "component-card-analytics-metric",
+    "component-cart-icon",
+    "component-cart-iconstroke",
+    "component-cart-badge-background",
+    "component-cart-default-icon",
+    "component-cart-withcount-icon",
+    "component-cart-withcount-badge",
+    "component-checkbox-hover-border",
+    "component-filter-dropdown-border",
+    "component-filter-chip-selected-background",
+    "component-filter-chip-selected-border",
+    "component-icon-color-brand",
+    "component-iconcustom-line-brand-color",
+    "component-iconcustom-squarefilled-background",
+    "component-iconcustom-squareoutline-icon",
+    "component-iconcustom-squareoutline-border",
+    "component-iconcustom-circlefilled-background",
+    "component-iconcustom-circleoutline-icon",
+    "component-iconcustom-circleoutline-border",
+    "component-iconlineart-color-brand",
+    "component-iconmodality-line-brand-color",
+    "component-iconmodality-squarefilled-background",
+    "component-iconmodality-squareoutline-icon",
+    "component-iconmodality-squareoutline-border",
+    "component-iconmodality-circlefilled-background",
+    "component-iconmodality-circleoutline-icon",
+    "component-iconmodality-circleoutline-border",
+    "component-input-input-label-floating-color",
+    "component-input-input-focused-border",
+    "component-input-input-focused-labelcolor",
+    "component-input-inputlarge-focused-border",
+    "component-input-dropdown-hover-border",
+    "component-input-dropdown-focused-border",
+    "component-input-dropdown-option-selected-background",
+    "component-input-datepicker-focused-border",
+    "component-input-datepicker-calendar-dayselected-background",
+    "component-input-datepicker-calendar-daytoday-border",
+    "component-input-datepicker-calendar-daytoday-text",
+    "component-input-checkmarktextnumber-hover-border",
+    "component-input-checkmarktextnumber-selected-background",
+    "component-modal-close-hover-color",
+    "component-navleft-container-border",
+    "component-navleft-userbadge-background",
+    "component-navleft-collapsebutton-container",
+    "component-navtop-container-background",
+    "component-tab-color-active-bordertop"
+  ],
+  "var(--ps-semantic-color-brand-light)": [
+    "component-alert-info-border",
+    "component-badge-status-info-border",
+    "component-badge-status-new-border",
+    "component-badge-listtype-accent-background",
+    "component-button-primary-focused-focusring",
+    "component-button-secondary-lg-focused-focusring",
+    "component-button-secondary-sm-focused-focusring",
+    "component-button-segmented-asset-focused-border",
+    "component-button-segmented-event-focused-border",
+    "component-card-event-link",
+    "component-card-event-linkicon",
+    "component-icon-color-light"
+  ],
+  "var(--ps-semantic-color-feedback-warningsubtle)": [
+    "component-alert-warning-background",
+    "component-badge-status-pending-background",
+    "component-badge-listtype-warning-background"
+  ],
+  "var(--ps-semantic-color-feedback-warningdark)": [
+    "component-alert-warning-text",
+    "component-alert-warning-icon",
+    "component-alert-warning-iconborder",
+    "component-badge-status-pending-text",
+    "component-badge-listtype-warning-text",
+    "component-icon-color-warning"
+  ],
+  "var(--ps-semantic-color-feedback-warning)": [
+    "component-alert-warning-border",
+    "component-badge-status-pending-border"
+  ],
+  "var(--ps-semantic-color-text-primary)": [
+    "component-alert-dismissable-closeicon-default",
+    "component-badge-status-discontinued-text",
+    "component-badge-listtype-secondary-text",
+    "component-button-secondary-sm-default-text",
+    "component-button-secondary-sm-focused-text",
+    "component-button-tertiary-lg-default-text",
+    "component-button-tertiary-lg-hover-text",
+    "component-button-tertiary-lg-pressed-text",
+    "component-button-tertiary-lg-focused-text",
+    "component-button-chip-sm-single-text",
+    "component-button-chip-lg-single-text",
+    "component-button-chip-removable-sm-default-text",
+    "component-button-chip-removable-lg-default-text",
+    "component-button-segmented-asset-start-text",
+    "component-button-segmented-event-start-text",
+    "component-button-segmented-left-default-text",
+    "component-button-segmented-right-default-text",
+    "component-button-inline-director-default-text",
+    "component-button-inline-director-default-icon",
+    "component-button-inline-allcaps-default-text",
+    "component-button-arrow-default-icon",
+    "component-button-arrow-hover-icon",
+    "component-button-arrow-pressed-icon",
+    "component-button-arrow-ghost-hover-icon",
+    "component-card-aidata-title",
+    "component-card-aidata-value",
+    "component-card-status-value",
+    "component-card-data-value",
+    "component-card-list-text",
+    "component-filter-dropdown-text",
+    "component-filter-chip-default-text",
+    "component-icon-color-default",
+    "component-iconcustom-line-default-color",
+    "component-iconmodality-line-default-color",
+    "component-input-input-default-text",
+    "component-input-input-filled-text",
+    "component-input-inputlarge-default-text",
+    "component-input-dropdown-icon",
+    "component-input-dropdown-default-text",
+    "component-input-dropdown-selected-text",
+    "component-input-dropdown-option-default-text",
+    "component-input-dropdown-inputdropdown-text",
+    "component-input-datepicker-filled-text",
+    "component-input-datepicker-calendar-daydefault-text",
+    "component-input-checkboxshort-nonselected-text",
+    "component-input-checkboxshort-hover-text",
+    "component-input-checkboxshort-selected-text",
+    "component-input-checkboxlong-nonselected-text",
+    "component-input-checkboxlong-hover-text",
+    "component-input-checkboxlong-selected-text",
+    "component-input-checkmarktextnumber-nonselected-text",
+    "component-modal-header-title",
+    "component-modal-body-text",
+    "component-modal-close-default-color",
+    "component-modal-datamodal-desktop-title",
+    "component-modal-datamodal-desktop-body",
+    "component-modal-datamodal-tablet-title",
+    "component-modal-datamodal-tablet-body",
+    "component-modal-datamodal-mobile-title",
+    "component-modal-datamodal-mobile-body",
+    "component-modal-lineitems-icon",
+    "component-navtop-search-textfocus",
+    "component-navtop-dropdown-item-default-text",
+    "component-navtop-dropdown-item-hover-text",
+    "component-stepper-step-label-current",
+    "component-stepper-step-label-finished",
+    "component-tab-color-default-text",
+    "component-tab-color-active-text",
+    "component-tab-count-text"
+  ],
+  "48px": [
+    "component-alert-dismissable-height",
+    "component-button-pill-desktop-height",
+    "component-button-square-lg-height",
+    "component-filter-bar-height",
+    "component-iconcustom-size-xl",
+    "component-iconmodality-size-xl",
+    "component-input-input-height",
+    "component-input-dropdown-height",
+    "component-input-datepicker-height",
+    "component-pageshell-contentpadding-desktop1920",
+    "primitive-primitive-sizing-48",
+    "primitive-primitive-spacing-12"
+  ],
+  "18px": [
+    "component-alert-dismissable-gap",
+    "component-alert-paddingh",
+    "component-navleft-badge-size",
+    "component-navtop-badge-size",
+    "primitive-primitive-typography-fontsize-lg"
+  ],
+  "var(--ps-semantic-color-brand-secondary)": [
+    "component-alert-toast-background",
+    "component-badge-status-new-text",
+    "component-iconlineart-container-background",
+    "component-iconpictogram-container-background-dark"
+  ],
+  "var(--ps-semantic-color-surface-default)": [
+    "component-alert-toast-text",
+    "component-alert-toast-close",
+    "component-badge-listtype-primary-text",
+    "component-badge-listtype-accent-text",
+    "component-button-primary-default-text",
+    "component-button-primary-hover-text",
+    "component-button-primary-pressed-text",
+    "component-button-primary-focused-text",
+    "component-button-secondary-lg-default-background",
+    "component-button-secondary-lg-hover-text",
+    "component-button-secondary-lg-pressed-text",
+    "component-button-secondary-lg-focused-background",
+    "component-button-secondary-sm-default-background",
+    "component-button-secondary-sm-hover-text",
+    "component-button-secondary-sm-pressed-text",
+    "component-button-secondary-sm-focused-background",
+    "component-button-pill-desktop-default-text",
+    "component-button-pill-desktop-hover-text",
+    "component-button-pill-desktop-pressed-text",
+    "component-button-square-lg-default-text",
+    "component-button-square-lg-hover-text",
+    "component-button-square-lg-pressed-text",
+    "component-button-square-lg-disabled-text",
+    "component-button-square-sm-default-text",
+    "component-button-square-sm-hover-text",
+    "component-button-square-sm-pressed-text",
+    "component-button-square-sm-disabled-text",
+    "component-button-chip-sm-single-background",
+    "component-button-chip-sm-selected-text",
+    "component-button-chip-lg-single-background",
+    "component-button-chip-lg-selected-text",
+    "component-button-chip-removable-sm-default-background",
+    "component-button-chip-removable-lg-default-background",
+    "component-button-segmented-asset-enabled-text",
+    "component-button-segmented-asset-enabled-icon",
+    "component-button-segmented-asset-hover-text",
+    "component-button-segmented-asset-hover-icon",
+    "component-button-segmented-asset-pressed-text",
+    "component-button-segmented-asset-pressed-icon",
+    "component-button-segmented-asset-focused-icon",
+    "component-button-segmented-event-enabled-text",
+    "component-button-segmented-event-hover-text",
+    "component-button-segmented-event-pressed-text",
+    "component-button-segmented-left-default-background",
+    "component-button-segmented-left-selected-text",
+    "component-button-segmented-right-default-background",
+    "component-button-segmented-right-selected-text",
+    "component-button-arrow-default-background",
+    "component-card-base-background",
+    "component-card-event-background",
+    "component-card-event-default-background",
+    "component-card-event-hover-background",
+    "component-card-status-background",
+    "component-card-data-background",
+    "component-card-list-background",
+    "component-card-analytics-background",
+    "component-checkbox-default-background",
+    "component-checkbox-hover-background",
+    "component-checkbox-selected-checkmark",
+    "component-checkbox-completed-background",
+    "component-checkbox-disabled-background",
+    "component-checkbox-indeterminate-dash",
+    "component-filter-withchips-clearall",
+    "component-filter-dropdown-background",
+    "component-filter-dropdown-optionbg",
+    "component-filter-chip-default-background",
+    "component-filter-chip-selected-text",
+    "component-icon-color-ondark",
+    "component-iconcustom-line-ondark-color",
+    "component-iconcustom-squarefilled-icon",
+    "component-iconcustom-squareoutline-background",
+    "component-iconcustom-circlefilled-icon",
+    "component-iconcustom-circleoutline-background",
+    "component-iconlineart-color-default",
+    "component-iconlineart-color-ondark",
+    "component-iconmodality-line-ondark-color",
+    "component-iconmodality-squarefilled-icon",
+    "component-iconmodality-squareoutline-background",
+    "component-iconmodality-circlefilled-icon",
+    "component-iconmodality-circleoutline-background",
+    "component-iconpictogram-container-background-light",
+    "component-input-input-default-background",
+    "component-input-input-filled-background",
+    "component-input-inputlarge-default-background",
+    "component-input-inputlarge-filled-background",
+    "component-input-dropdown-default-background",
+    "component-input-dropdown-selected-background",
+    "component-input-dropdown-option-default-background",
+    "component-input-dropdown-option-selected-text",
+    "component-input-dropdown-inputdropdown-background",
+    "component-input-datepicker-background",
+    "component-input-datepicker-idle-background",
+    "component-input-datepicker-filled-background",
+    "component-input-datepicker-calendar-background",
+    "component-input-datepicker-calendar-dayselected-text",
+    "component-input-checkboxshort-nonselected-background",
+    "component-input-checkboxshort-hover-background",
+    "component-input-checkboxshort-selected-checkmark",
+    "component-input-checkboxlong-nonselected-background",
+    "component-input-checkboxlong-hover-background",
+    "component-input-checkboxlong-selected-checkmark",
+    "component-input-checkmarktextnumber-selected-text",
+    "component-input-checkmarktextnumber-selected-checkmark",
+    "component-modal-background",
+    "component-modal-header-background",
+    "component-modal-body-background",
+    "component-modal-datamodal-desktop-background",
+    "component-modal-datamodal-tablet-background",
+    "component-modal-datamodal-mobile-background",
+    "component-modal-lineitems-actionbar-background",
+    "component-modal-placeholderimage-icon",
+    "component-navleft-header-logotext",
+    "component-navleft-userbadge-text",
+    "component-navleft-collapsebutton-background",
+    "component-navleft-collapsebutton-icon",
+    "component-navleft-item-default-text",
+    "component-navleft-item-default-icon",
+    "component-navleft-item-hover-text",
+    "component-navleft-item-hover-icon",
+    "component-navleft-item-active-text",
+    "component-navleft-item-active-icon",
+    "component-navleft-subitem-default-text",
+    "component-navleft-subitem-hover-text",
+    "component-navleft-subitem-active-text",
+    "component-navleft-badge-text",
+    "component-navtop-logo-text",
+    "component-navtop-logo-icon",
+    "component-navtop-search-backgroundfocus",
+    "component-navtop-search-text",
+    "component-navtop-search-placeholder",
+    "component-navtop-search-icon",
+    "component-navtop-icon-default-color",
+    "component-navtop-icon-hover-color",
+    "component-navtop-icon-active-color",
+    "component-navtop-badge-text",
+    "component-navtop-usermenu-default-text",
+    "component-navtop-usermenu-default-icon",
+    "component-navtop-dropdown-background",
+    "component-stepper-indicator-finished-text",
+    "component-stepper-indicator-current-background",
+    "component-stepper-indicator-future-background",
+    "component-stepper-container-background",
+    "component-tab-color-active-background",
+    "component-tab-color-hover-background"
+  ],
+  "06px20pxrgba(0,47,72,0.18)": [
+    "component-alert-toast-shadow",
+    "component-modal-shadow"
+  ],
+  "12px": [
+    "component-alert-paddingv",
+    "component-badge-status-fontsize",
+    "component-badge-listtype-fontsize",
+    "component-button-pill-desktop-paddingv",
+    "component-button-square-lg-paddingv",
+    "component-button-chip-sm-paddingh",
+    "component-button-chip-removable-sm-paddingh",
+    "component-card-list-paddingv",
+    "component-filter-chip-paddingh",
+    "component-input-input-label-floating-fontsize",
+    "component-input-input-paddingv",
+    "component-input-inputlarge-paddingv",
+    "component-navleft-item-gap",
+    "component-navtop-search-paddingh",
+    "component-tab-count-fontsize",
+    "primitive-primitive-borderradius-xl",
+    "primitive-primitive-sizing-12",
+    "primitive-primitive-sizing-icon-xs",
+    "primitive-primitive-spacing-3",
+    "primitive-primitive-typography-fontsize-xs"
+  ],
+  "10px": [
+    "component-alert-gap",
+    "component-badge-listtype-paddingh",
+    "component-button-primary-gap",
+    "component-button-secondary-lg-gap",
+    "component-card-status-gap",
+    "component-card-data-gap",
+    "component-cart-badge-fontsize",
+    "component-tab-spacing-gap"
+  ],
+  "40px": [
+    "component-alert-height",
+    "component-button-primary-paddingh",
+    "component-button-chip-lg-height",
+    "component-button-chip-removable-lg-height",
+    "component-button-segmented-asset-height",
+    "component-button-arrow-size",
+    "component-navleft-item-height",
+    "component-navtop-search-height",
+    "component-navtop-icon-hitarea",
+    "component-navtop-usermenu-height",
+    "component-navtop-dropdown-item-height",
+    "primitive-primitive-sizing-40",
+    "primitive-primitive-spacing-10",
+    "primitive-primitive-typography-lineheight-10"
+  ],
+  "[objectobject]": [
+    "component-alert-typography",
+    "component-alert-titletypography",
+    "component-badge-status-typography",
+    "component-badge-listtype-typography",
+    "component-button-primary-typography",
+    "component-button-secondary-lg-typography",
+    "component-button-secondary-sm-typography",
+    "component-button-tertiary-lg-typography",
+    "component-button-pill-desktop-typography",
+    "component-button-square-lg-typography",
+    "component-button-square-sm-typography",
+    "component-button-chip-sm-typography",
+    "component-button-chip-lg-typography",
+    "component-button-segmented-asset-typography",
+    "component-button-inline-director-typography",
+    "component-button-inline-underline-typography",
+    "component-button-inline-allcaps-typography",
+    "component-button-inline-typography",
+    "component-card-event-linktypography",
+    "component-card-aidata-titletypography",
+    "component-card-aidata-subtitletypography",
+    "component-card-aidata-labeltypography",
+    "component-card-aidata-linktypography",
+    "component-card-status-labeltypography",
+    "component-card-status-valuetypography",
+    "component-card-data-labeltypography",
+    "component-card-data-actiontypography",
+    "component-card-list-primarytypography",
+    "component-card-list-secondarytypography",
+    "component-card-analytics-metrictypography",
+    "component-card-analytics-labeltypography",
+    "component-checkbox-labeltypography",
+    "component-filter-nullstate-typography",
+    "component-filter-chip-typography",
+    "component-input-input-labelrestingtypography",
+    "component-input-input-labelfloatingtypography",
+    "component-input-input-inputtypography",
+    "component-input-input-helpertypography",
+    "component-input-inputlarge-inputtypography",
+    "component-input-dropdown-labeltypography",
+    "component-input-dropdown-optiontypography",
+    "component-input-datepicker-inputtypography",
+    "component-input-datepicker-daytypography",
+    "component-input-datepicker-monthtypography",
+    "component-input-checkboxshort-typography",
+    "component-input-checkboxlong-typography",
+    "component-input-checkmarktextnumber-typography",
+    "component-modal-titletypography",
+    "component-modal-bodytypography",
+    "component-navleft-header-typography",
+    "component-navleft-userbadge-typography",
+    "component-navleft-section-typography",
+    "component-navleft-item-typography",
+    "component-navleft-subitem-typography",
+    "component-navleft-badge-typography",
+    "component-navtop-logo-typography",
+    "component-navtop-search-typography",
+    "component-navtop-badge-typography",
+    "component-navtop-usermenu-typography",
+    "component-navtop-dropdown-item-typography",
+    "component-stepper-labeltypography",
+    "component-stepper-stepnumbertypography",
+    "primitive-primitive-shadow-sm",
+    "primitive-primitive-shadow-md",
+    "primitive-primitive-shadow-lg",
+    "primitive-primitive-shadow-elevation1",
+    "primitive-primitive-shadow-elevation2",
+    "primitive-primitive-shadow-elevation3",
+    "primitive-primitive-shadow-elevation4",
+    "primitive-primitive-shadow-focusring",
+    "primitive-primitive-shadow-inputfocus",
+    "primitive-primitive-shadow-inputerror",
+    "primitive-primitive-shadow-checkboxfocus",
+    "primitive-primitive-shadow-cardhover",
+    "primitive-primitive-shadow-buttonpressed",
+    "semantic-semantic-typography-desktopheaders-h00",
+    "semantic-semantic-typography-desktopheaders-h1",
+    "semantic-semantic-typography-desktopheaders-h2",
+    "semantic-semantic-typography-desktopheaders-h3",
+    "semantic-semantic-typography-desktopheaders-h4",
+    "semantic-semantic-typography-mobileheaders-h1",
+    "semantic-semantic-typography-mobileheaders-h2",
+    "semantic-semantic-typography-desktopbody-default",
+    "semantic-semantic-typography-desktopbody-bold",
+    "semantic-semantic-typography-desktopbody-small",
+    "semantic-semantic-typography-desktopbody-micro",
+    "semantic-semantic-typography-desktopbody-label",
+    "semantic-semantic-typography-button-large",
+    "semantic-semantic-typography-button-medium",
+    "semantic-semantic-typography-button-inline"
+  ],
+  "2px8px": [
+    "component-badge-status-padding"
+  ],
+  "var(--ps-semantic-color-surface-subtle)": [
+    "component-badge-status-inactive-background",
+    "component-badge-status-discontinued-background",
+    "component-badge-listtype-secondary-background",
+    "component-button-tertiary-lg-default-background",
+    "component-button-tertiary-lg-disabled-background",
+    "component-button-tertiary-lg-focused-background",
+    "component-button-chip-sm-hover-background",
+    "component-button-chip-sm-disabled-background",
+    "component-button-chip-lg-hover-background",
+    "component-button-chip-lg-disabled-background",
+    "component-button-segmented-asset-start-background",
+    "component-button-segmented-asset-deactivated-background",
+    "component-button-segmented-event-start-background",
+    "component-button-segmented-event-deactivated-background",
+    "component-button-arrow-hover-background",
+    "component-button-arrow-disabled-background",
+    "component-card-event-footer-divider",
+    "component-card-aidata-background",
+    "component-card-aidata-selected-background",
+    "component-card-data-divider",
+    "component-card-list-divider",
+    "component-filter-dropdown-optionhoverbg",
+    "component-filter-dropdown-divider",
+    "component-filter-chip-hover-background",
+    "component-filter-chip-disabled-background",
+    "component-iconpictogram-container-background-subtle",
+    "component-input-input-disabled-background",
+    "component-input-inputlarge-disabled-background",
+    "component-input-dropdown-disabled-background",
+    "component-input-dropdown-option-hover-background",
+    "component-input-datepicker-calendar-dayhover-background",
+    "component-modal-header-divider",
+    "component-modal-footer-divider",
+    "component-modal-datamodal-desktop-divider",
+    "component-modal-datamodal-tablet-divider",
+    "component-modal-datamodal-mobile-divider",
+    "component-modal-datamodal-alert-divider",
+    "component-modal-lineitems-background",
+    "component-modal-lineitems-divider",
+    "component-modal-lineitems-actionbar-border",
+    "component-navtop-dropdown-item-hover-background"
+  ],
+  "var(--ps-semantic-color-text-secondary)": [
+    "component-badge-status-inactive-text",
+    "component-button-secondary-lg-disabled-text",
+    "component-button-secondary-lg-disabled-border",
+    "component-button-secondary-sm-disabled-text",
+    "component-button-secondary-sm-disabled-border",
+    "component-button-chip-removable-sm-default-icon",
+    "component-button-chip-removable-lg-default-icon",
+    "component-button-inline-underline-default-text",
+    "component-button-arrow-ghost-default-icon",
+    "component-card-aidata-manufacturer",
+    "component-card-aidata-prolabel",
+    "component-card-aidata-deliverylabel",
+    "component-card-status-label",
+    "component-card-data-label",
+    "component-card-list-subtext",
+    "component-card-analytics-metriclabel",
+    "component-card-analytics-label",
+    "component-icon-color-secondary",
+    "component-iconcustom-line-secondary-color",
+    "component-iconlineart-color-subtle",
+    "component-input-input-label-resting-color",
+    "component-modal-lineitems-paginationtext",
+    "component-navtop-search-iconfocus",
+    "component-stepper-bar-default",
+    "component-stepper-indicator-future-border",
+    "component-stepper-indicator-future-text",
+    "component-stepper-step-label-future",
+    "component-stepper-step-connector-incomplete"
+  ],
+  "var(--ps-semantic-color-border-default)": [
+    "component-badge-status-inactive-border",
+    "component-badge-status-discontinued-border",
+    "component-button-primary-disabled-background",
+    "component-button-secondary-lg-disabled-background",
+    "component-button-secondary-sm-default-border",
+    "component-button-secondary-sm-disabled-background",
+    "component-button-secondary-sm-focused-border",
+    "component-button-tertiary-lg-hover-background",
+    "component-button-tertiary-lg-pressed-background",
+    "component-button-pill-desktop-disabled-background",
+    "component-button-chip-sm-single-border",
+    "component-button-chip-lg-single-border",
+    "component-button-chip-removable-sm-default-border",
+    "component-button-chip-removable-lg-default-border",
+    "component-button-segmented-left-default-border",
+    "component-button-segmented-right-default-border",
+    "component-button-arrow-default-border",
+    "component-button-arrow-hover-border",
+    "component-button-arrow-pressed-background",
+    "component-card-base-border",
+    "component-card-event-border",
+    "component-card-event-default-border",
+    "component-card-event-hover-border",
+    "component-card-aidata-border",
+    "component-card-aidata-statusbadge",
+    "component-card-status-border",
+    "component-card-data-border",
+    "component-card-list-border",
+    "component-card-analytics-border",
+    "component-filter-bar-border",
+    "component-filter-nullstate-border",
+    "component-filter-withchips-border",
+    "component-filter-savedfilter-border",
+    "component-filter-chip-default-border",
+    "component-filter-chip-hover-border",
+    "component-input-input-default-border",
+    "component-input-input-filled-border",
+    "component-input-input-disabled-border",
+    "component-input-inputlarge-default-border",
+    "component-input-inputlarge-filled-border",
+    "component-input-inputlarge-disabled-border",
+    "component-input-dropdown-default-border",
+    "component-input-dropdown-selected-border",
+    "component-input-dropdown-disabled-border",
+    "component-input-dropdown-inputdropdown-border",
+    "component-input-datepicker-border",
+    "component-input-datepicker-idle-border",
+    "component-input-datepicker-filled-border",
+    "component-input-datepicker-calendar-border",
+    "component-input-checkmarktextnumber-nonselected-border",
+    "component-modal-border",
+    "component-modal-placeholderimage-background",
+    "component-navleft-userbadge-border",
+    "component-navtop-dropdown-border"
+  ],
+  "var(--ps-semantic-color-brand-tint)": [
+    "component-badge-status-new-background"
+  ],
+  "2px": [
+    "component-badge-status-paddingv",
+    "component-button-primary-borderwidth",
+    "component-button-secondary-lg-borderwidth",
+    "component-checkbox-radius",
+    "component-stepper-bar-height",
+    "component-stepper-connectorheight",
+    "primitive-primitive-borderwidth-2",
+    "primitive-primitive-border-width-medium",
+    "primitive-primitive-borderradius-sm"
+  ],
+  "8px": [
+    "component-badge-status-paddingh",
+    "component-button-secondary-sm-paddingh",
+    "component-button-tertiary-lg-paddingv",
+    "component-button-tertiary-lg-gap",
+    "component-button-chip-lg-paddingv",
+    "component-button-chip-lg-gap",
+    "component-button-chip-removable-lg-paddingv",
+    "component-button-chip-removable-lg-gap",
+    "component-button-segmented-asset-paddingv",
+    "component-button-segmented-asset-gap",
+    "component-card-list-gap",
+    "component-card-analytics-gap",
+    "component-checkbox-gap",
+    "component-filter-bar-paddingv",
+    "component-filter-bar-gap",
+    "component-iconcustom-squarefilled-padding",
+    "component-iconcustom-squareoutline-padding",
+    "component-iconcustom-circlefilled-padding",
+    "component-iconcustom-circleoutline-padding",
+    "component-iconlineart-container-radius",
+    "component-iconmodality-squarefilled-padding",
+    "component-iconmodality-squareoutline-padding",
+    "component-iconmodality-circlefilled-padding",
+    "component-iconmodality-circleoutline-padding",
+    "component-iconpictogram-container-radius",
+    "component-input-checkboxshort-gap",
+    "component-input-checkboxlong-gap",
+    "component-input-checkmarktextnumber-gap",
+    "component-modal-radius",
+    "component-navleft-section-paddingv",
+    "component-navtop-usermenu-paddingh",
+    "component-navtop-dropdown-paddingv",
+    "component-stepper-gap",
+    "primitive-primitive-borderradius-lg",
+    "primitive-primitive-sizing-8",
+    "primitive-primitive-spacing-2"
+  ],
+  "100px": [
+    "component-badge-listtype-radius",
+    "component-button-tertiary-lg-radius",
+    "component-button-pill-desktop-radius",
+    "component-button-chip-sm-radius",
+    "component-button-chip-lg-radius",
+    "component-button-chip-removable-sm-radius",
+    "component-button-chip-removable-lg-radius",
+    "component-cart-badge-radius",
+    "component-filter-chip-radius",
+    "component-iconcustom-circlefilled-radius",
+    "component-iconcustom-circleoutline-radius",
+    "component-iconmodality-circlefilled-radius",
+    "component-iconmodality-circleoutline-radius",
+    "component-navleft-userbadge-radius",
+    "component-navleft-collapsebutton-radius",
+    "component-navleft-badge-radius",
+    "component-navtop-badge-radius",
+    "component-stepper-indicator-radius"
+  ],
+  "0.5px": [
+    "component-badge-listtype-letterspacing"
+  ],
+  "transparent": [
+    "component-button-primary-default-border",
+    "component-button-tertiary-lg-default-border",
+    "component-button-square-lg-default-border",
+    "component-button-square-sm-default-border",
+    "component-button-arrow-ghost-default-background",
+    "component-checkbox-default-checkmark",
+    "component-checkbox-disabled-checkmark",
+    "component-input-datepicker-calendar-daydefault-background",
+    "component-navleft-item-default-background",
+    "component-navleft-item-disabled-background",
+    "component-navleft-subitem-default-background",
+    "component-navtop-search-border",
+    "component-navtop-icon-default-background",
+    "component-navtop-usermenu-default-background",
+    "component-navtop-dropdown-item-default-background",
+    "component-tab-color-default-background"
+  ],
+  "var(--ps-semantic-color-interactive-hoverdark)": [
+    "component-button-primary-hover-background",
+    "component-button-primary-pressed-background",
+    "component-button-secondary-lg-pressed-background",
+    "component-button-secondary-lg-pressed-border",
+    "component-button-secondary-sm-pressed-background",
+    "component-button-secondary-sm-pressed-border",
+    "component-button-segmented-asset-pressed-background",
+    "component-button-segmented-event-pressed-background",
+    "component-button-inline-hover-text",
+    "component-button-inline-pressed-text",
+    "component-navleft-container-divider",
+    "component-navleft-item-hover-background",
+    "component-navleft-item-active-background",
+    "component-navleft-subitem-hover-background",
+    "component-navleft-subitem-active-background",
+    "component-navtop-container-borderbottom",
+    "component-navtop-search-background",
+    "component-navtop-icon-hover-background",
+    "component-navtop-icon-active-background",
+    "component-navtop-usermenu-hover-background"
+  ],
+  "var(--ps-semantic-color-text-disabled)": [
+    "component-button-primary-disabled-text",
+    "component-button-tertiary-lg-disabled-text",
+    "component-button-segmented-asset-deactivated-text",
+    "component-button-segmented-event-deactivated-text",
+    "component-button-inline-underline-disabled-text",
+    "component-button-inline-allcaps-disabled-text",
+    "component-button-arrow-ghost-disabled-icon",
+    "component-checkbox-disabled-inner",
+    "component-icon-color-disabled",
+    "component-iconcustom-line-disabled-color",
+    "component-iconmodality-line-disabled-color"
+  ],
+  "52px": [
+    "component-button-primary-height",
+    "primitive-primitive-sizing-52"
+  ],
+  "15px": [
+    "component-button-primary-paddingv",
+    "component-button-secondary-lg-paddingv"
+  ],
+  "50px": [
+    "component-button-secondary-lg-height",
+    "primitive-primitive-sizing-50"
+  ],
+  "56px": [
+    "component-button-secondary-lg-paddingh",
+    "primitive-primitive-sizing-56",
+    "primitive-primitive-spacing-14"
+  ],
+  "32px": [
+    "component-button-secondary-sm-height",
+    "component-button-square-sm-height",
+    "component-button-chip-sm-height",
+    "component-button-chip-removable-sm-height",
+    "component-filter-chip-height",
+    "component-icon-size-lg",
+    "component-iconcustom-size-lg",
+    "component-iconmodality-size-lg",
+    "component-navleft-userbadge-size",
+    "component-pageshell-contentpadding-desktop1440",
+    "component-stepper-indicator-size",
+    "component-stepper-indicatorsize",
+    "primitive-primitive-sizing-32",
+    "primitive-primitive-sizing-icon-xl",
+    "primitive-primitive-spacing-8",
+    "primitive-primitive-typography-lineheight-8"
+  ],
+  "5px": [
+    "component-button-secondary-sm-paddingv",
+    "component-button-secondary-sm-gap"
+  ],
+  "1px": [
+    "component-button-secondary-sm-borderwidth",
+    "primitive-primitive-borderwidth-1",
+    "primitive-primitive-border-width-thin"
+  ],
+  "38px": [
+    "component-button-tertiary-lg-height",
+    "component-tab-height",
+    "primitive-primitive-sizing-38"
+  ],
+  "#ff9505": [
+    "component-button-pill-desktop-default-background",
+    "component-button-square-lg-default-background",
+    "component-button-square-sm-default-background",
+    "component-checkbox-selected-background",
+    "component-checkbox-indeterminate-background",
+    "component-input-checkboxshort-hover-border",
+    "component-input-checkboxshort-selected-background",
+    "component-input-checkboxlong-hover-border",
+    "component-input-checkboxlong-selected-background"
+  ],
+  "#ec8000": [
+    "component-button-pill-desktop-hover-background",
+    "component-button-square-lg-hover-background",
+    "component-button-square-sm-hover-background",
+    "component-checkbox-selected-border",
+    "component-checkbox-indeterminate-border"
+  ],
+  "#db8106": [
+    "component-button-pill-desktop-pressed-background",
+    "component-input-checkboxshort-selected-border",
+    "component-input-checkboxlong-selected-border"
+  ],
+  "var(--ps-semantic-color-text-tertiary)": [
+    "component-button-pill-desktop-disabled-text",
+    "component-button-chip-sm-disabled-text",
+    "component-button-chip-lg-disabled-text",
+    "component-button-inline-disabled-text",
+    "component-button-arrow-disabled-icon",
+    "component-card-aidata-label",
+    "component-checkbox-default-border",
+    "component-checkbox-disabled-border",
+    "component-filter-nullstate-placeholdertext",
+    "component-filter-chip-disabled-text",
+    "component-icon-color-tertiary",
+    "component-input-input-label-disabled-color",
+    "component-input-input-default-placeholder",
+    "component-input-input-disabled-text",
+    "component-input-input-disabled-labelcolor",
+    "component-input-inputlarge-disabled-text",
+    "component-input-dropdown-default-placeholder",
+    "component-input-dropdown-disabled-text",
+    "component-input-datepicker-idle-placeholder",
+    "component-input-datepicker-calendar-daydisabled-text",
+    "component-input-checkboxshort-nonselected-border",
+    "component-input-checkboxlong-nonselected-border",
+    "component-navleft-section-text",
+    "component-navleft-item-disabled-text",
+    "component-navleft-item-disabled-icon",
+    "component-navtop-search-placeholderfocus"
+  ],
+  "24px": [
+    "component-button-pill-desktop-paddingh",
+    "component-button-square-lg-paddingh",
+    "component-card-data-paddingv",
+    "component-card-data-paddingh",
+    "component-checkbox-size",
+    "component-icon-size-default",
+    "component-iconcustom-size-md",
+    "component-iconlineart-container-padding",
+    "component-iconmodality-size-md",
+    "component-iconpictogram-container-padding",
+    "component-input-checkboxshort-height",
+    "component-input-checkmarktextnumber-height",
+    "component-modal-headerpaddingh",
+    "component-modal-bodypadding",
+    "component-modal-footerpaddingh",
+    "component-navleft-collapsebutton-size",
+    "component-navtop-container-paddingh",
+    "component-navtop-icon-size",
+    "component-pageshell-contentpadding-tablet",
+    "component-stepper-container-padding",
+    "component-stepper-paddingv",
+    "component-stepper-paddingh",
+    "primitive-primitive-sizing-24",
+    "primitive-primitive-sizing-icon-lg",
+    "primitive-primitive-spacing-6",
+    "primitive-primitive-typography-fontsize-2xl",
+    "primitive-primitive-typography-lineheight-6"
+  ],
+  "#db7206": [
+    "component-button-square-lg-pressed-background",
+    "component-button-square-sm-pressed-background"
+  ],
+  "#ffca80": [
+    "component-button-square-lg-disabled-background",
+    "component-button-square-sm-disabled-background"
+  ],
+  "6px": [
+    "component-button-square-sm-paddingv",
+    "component-button-chip-sm-gap",
+    "component-button-chip-removable-sm-gap",
+    "component-checkbox-paddinginner",
+    "component-filter-chip-gap"
+  ],
+  "none": [
+    "component-button-inline-default-textdecoration",
+    "component-button-inline-director-default-textdecoration",
+    "component-button-inline-allcaps-default-textdecoration",
+    "primitive-primitive-border-style-none"
+  ],
+  "underline": [
+    "component-button-inline-underline-default-textdecoration",
+    "component-button-inline-underline-hover-textdecoration",
+    "component-button-inline-hover-textdecoration"
+  ],
+  "01px4pxrgba(0,47,72,0.08)": [
+    "component-card-base-shadow"
+  ],
+  "04px12pxrgba(0,0,0,0.1)": [
+    "component-card-base-hovershadow",
+    "component-card-event-hover-shadow",
+    "component-card-aidata-hover-shadow"
+  ],
+  "var(--ps-semantic-color-surface-page)": [
+    "component-card-event-footer-background",
+    "component-card-list-hover-background",
+    "component-cart-badge-text",
+    "component-cart-withcount-badgetext",
+    "component-filter-bar-background",
+    "component-filter-nullstate-background",
+    "component-filter-withchips-background",
+    "component-filter-savedfilter-background",
+    "component-modal-footer-background",
+    "component-pageshell-background"
+  ],
+  "220px": [
+    "component-card-event-height",
+    "component-card-status-width"
+  ],
+  "73px": [
+    "component-card-status-height"
+  ],
+  "14px": [
+    "component-card-status-padding",
+    "component-icon-size-xs",
+    "primitive-primitive-typography-fontsize-sm"
+  ],
+  "620px": [
+    "component-card-data-maxwidth"
+  ],
+  "1.5px": [
+    "component-checkbox-strokewidth",
+    "component-iconcustom-strokewidth",
+    "component-iconmodality-strokewidth"
+  ],
+  "0010px5pxrgba(0,91,166,0.5)": [
+    "component-checkbox-focus-shadow"
+  ],
+  "1.75px": [
+    "component-icon-strokewidth"
+  ],
+  "20px": [
+    "component-icon-size-md",
+    "component-tab-spacing-paddingx",
+    "primitive-primitive-sizing-20",
+    "primitive-primitive-sizing-icon-md",
+    "primitive-primitive-spacing-5",
+    "primitive-primitive-typography-fontsize-xl",
+    "primitive-primitive-typography-lineheight-5"
+  ],
+  "80px": [
+    "component-iconlineart-size-sm",
+    "component-iconpictogram-size-sm",
+    "component-input-inputlarge-height",
+    "primitive-primitive-sizing-80",
+    "primitive-primitive-spacing-20"
+  ],
+  "120px": [
+    "component-iconlineart-size-md",
+    "component-iconpictogram-size-md"
+  ],
+  "160px": [
+    "component-iconlineart-size-lg",
+    "component-iconpictogram-size-lg"
+  ],
+  "200px": [
+    "component-iconlineart-size-xl"
+  ],
+  "240px": [
+    "component-iconpictogram-size-xl",
+    "component-navleft-container-width"
+  ],
+  "0003pxrgba(0,147,244,0.3)": [
+    "component-input-input-focused-shadow",
+    "component-input-inputlarge-focused-shadow",
+    "component-input-dropdown-focused-shadow",
+    "component-input-datepicker-focused-shadow"
+  ],
+  "54px": [
+    "component-input-checkboxlong-minheight"
+  ],
+  "rgba(0,0,0,0.5)": [
+    "component-modal-overlay"
+  ],
+  "480px": [
+    "component-modal-minwidth"
+  ],
+  "800px": [
+    "component-modal-maxwidth"
+  ],
+  "var(--ps-semantic-color-brand-navdark)": [
+    "component-navleft-container-background",
+    "component-navleft-header-background"
+  ],
+  "64px": [
+    "component-navleft-container-widthcollapsed",
+    "component-navleft-header-height",
+    "component-navtop-container-height",
+    "primitive-primitive-sizing-64",
+    "primitive-primitive-spacing-16"
+  ],
+  "3px": [
+    "component-navleft-item-activeindicatorwidth",
+    "component-tab-border-activewidth",
+    "primitive-primitive-borderwidth-3"
+  ],
+  "var(--ps-semantic-color-brand-accent)": [
+    "component-navleft-item-active-borderleft",
+    "component-navleft-subitem-active-borderleft"
+  ],
+  "36px": [
+    "component-navleft-subitem-height",
+    "primitive-primitive-sizing-36",
+    "primitive-primitive-spacing-9"
+  ],
+  "44px": [
+    "component-navleft-subitem-paddingleft",
+    "primitive-primitive-sizing-44",
+    "primitive-primitive-spacing-11"
+  ],
+  "var(--ps-semantic-color-feedback-danger)": [
+    "component-navleft-badge-background",
+    "component-navtop-badge-background"
+  ],
+  "var(--ps-semantic-color-border-brand)": [
+    "component-navtop-search-borderfocus"
+  ],
+  "var(--ps-primitive-shadow-md)": [
+    "component-navtop-dropdown-shadow"
+  ],
+  "1920px": [
+    "component-pageshell-breakpoint-desktop1920"
+  ],
+  "1440px": [
+    "component-pageshell-breakpoint-desktop1440",
+    "component-pageshell-maxcontentwidth"
+  ],
+  "768px": [
+    "component-pageshell-breakpoint-tablet"
+  ],
+  "375px": [
+    "component-pageshell-breakpoint-mobile"
+  ],
+  "0003pxrgba(23,171,120,0.2)": [
+    "component-stepper-indicator-current-shadow"
+  ],
+  "#dcdcdc": [
+    "component-tab-count-background"
+  ],
+  "30px": [
+    "component-tab-count-radius"
+  ],
+  "5.5px": [
+    "component-tab-count-paddingx"
+  ],
+  "0.8": [
+    "component-tab-count-opacity-default",
+    "primitive-primitive-opacity-80"
+  ],
+  "150ms": [
+    "primitive-primitive-motion-duration-fast"
+  ],
+  "200ms": [
+    "primitive-primitive-motion-duration-standard"
+  ],
+  "250ms": [
+    "primitive-primitive-motion-duration-slow"
+  ],
+  "cubic-bezier(0.4,0,0.2,1)": [
+    "primitive-primitive-motion-easing-standard"
+  ],
+  "cubic-bezier(0,0,0.2,1)": [
+    "primitive-primitive-motion-easing-easeout"
+  ],
+  "0px": [
+    "primitive-primitive-border-width-none",
+    "primitive-primitive-borderradius-none",
+    "primitive-primitive-sizing-0",
+    "primitive-primitive-spacing-0"
+  ],
+  "solid": [
+    "primitive-primitive-border-style-solid"
+  ],
+  "dashed": [
+    "primitive-primitive-border-style-dashed"
+  ],
+  "#edf4fb": [
+    "primitive-primitive-color-blue-50"
+  ],
+  "#daeaf8": [
+    "primitive-primitive-color-blue-100"
+  ],
+  "#b6d5f0": [
+    "primitive-primitive-color-blue-200"
+  ],
+  "#78aedd": [
+    "primitive-primitive-color-blue-300"
+  ],
+  "#3f88cb": [
+    "primitive-primitive-color-blue-400"
+  ],
+  "#005ba7": [
+    "primitive-primitive-color-blue-500"
+  ],
+  "#0051a0": [
+    "primitive-primitive-color-blue-600"
+  ],
+  "#003e7a": [
+    "primitive-primitive-color-blue-700"
+  ],
+  "#002f61": [
+    "primitive-primitive-color-blue-800"
+  ],
+  "#002f48": [
+    "primitive-primitive-color-blue-900"
+  ],
+  "#e0f5fd": [
+    "primitive-primitive-color-teal-50"
+  ],
+  "#b3e6fa": [
+    "primitive-primitive-color-teal-100"
+  ],
+  "#80d5f7": [
+    "primitive-primitive-color-teal-200"
+  ],
+  "#4dc4f3": [
+    "primitive-primitive-color-teal-300"
+  ],
+  "#26b8f1": [
+    "primitive-primitive-color-teal-400"
+  ],
+  "#009cf4": [
+    "primitive-primitive-color-teal-500"
+  ],
+  "#0088d8": [
+    "primitive-primitive-color-teal-600"
+  ],
+  "#006eb2": [
+    "primitive-primitive-color-teal-700"
+  ],
+  "#00548d": [
+    "primitive-primitive-color-teal-800"
+  ],
+  "#003a68": [
+    "primitive-primitive-color-teal-900"
+  ],
+  "#e8f8f2": [
+    "primitive-primitive-color-green-50"
+  ],
+  "#c6efe0": [
+    "primitive-primitive-color-green-100"
+  ],
+  "#99e0c8": [
+    "primitive-primitive-color-green-200"
+  ],
+  "#65d1af": [
+    "primitive-primitive-color-green-300"
+  ],
+  "#3ac49c": [
+    "primitive-primitive-color-green-400"
+  ],
+  "#17ab78": [
+    "primitive-primitive-color-green-500"
+  ],
+  "#0f9a68": [
+    "primitive-primitive-color-green-600"
+  ],
+  "#0a8056": [
+    "primitive-primitive-color-green-700"
+  ],
+  "#066644": [
+    "primitive-primitive-color-green-800"
+  ],
+  "#044d33": [
+    "primitive-primitive-color-green-900"
+  ],
+  "#fff0f0": [
+    "primitive-primitive-color-red-50"
+  ],
+  "#ffd6d6": [
+    "primitive-primitive-color-red-100"
+  ],
+  "#ffadad": [
+    "primitive-primitive-color-red-200"
+  ],
+  "#ff8585": [
+    "primitive-primitive-color-red-300"
+  ],
+  "#ff5c5c": [
+    "primitive-primitive-color-red-400"
+  ],
+  "#ff0000": [
+    "primitive-primitive-color-red-500"
+  ],
+  "#e60000": [
+    "primitive-primitive-color-red-600"
+  ],
+  "#cc0000": [
+    "primitive-primitive-color-red-700"
+  ],
+  "#990000": [
+    "primitive-primitive-color-red-800"
+  ],
+  "#660000": [
+    "primitive-primitive-color-red-900"
+  ],
+  "#fef8ec": [
+    "primitive-primitive-color-amber-50"
+  ],
+  "#fcefd0": [
+    "primitive-primitive-color-amber-100"
+  ],
+  "#f9dfa0": [
+    "primitive-primitive-color-amber-200"
+  ],
+  "#f5c85a": [
+    "primitive-primitive-color-amber-300"
+  ],
+  "#e3a92d": [
+    "primitive-primitive-color-amber-400"
+  ],
+  "#cc8f0f": [
+    "primitive-primitive-color-amber-500"
+  ],
+  "#b07b0c": [
+    "primitive-primitive-color-amber-600"
+  ],
+  "#8c620a": [
+    "primitive-primitive-color-amber-700"
+  ],
+  "#6a4a07": [
+    "primitive-primitive-color-amber-800"
+  ],
+  "#4a3305": [
+    "primitive-primitive-color-amber-900"
+  ],
+  "#ffffff": [
+    "primitive-primitive-color-neutral-0"
+  ],
+  "#f7f9fa": [
+    "primitive-primitive-color-neutral-50"
+  ],
+  "#f0f2f4": [
+    "primitive-primitive-color-neutral-100"
+  ],
+  "#e0e5e9": [
+    "primitive-primitive-color-neutral-200"
+  ],
+  "#c4cdd6": [
+    "primitive-primitive-color-neutral-300"
+  ],
+  "#a0aeb9": [
+    "primitive-primitive-color-neutral-400"
+  ],
+  "#6e8291": [
+    "primitive-primitive-color-neutral-500"
+  ],
+  "#4e6577": [
+    "primitive-primitive-color-neutral-600"
+  ],
+  "#324e60": [
+    "primitive-primitive-color-neutral-700"
+  ],
+  "#1a3546": [
+    "primitive-primitive-color-neutral-800"
+  ],
+  "#0d1f2d": [
+    "primitive-primitive-color-neutral-900"
+  ],
+  "#000000": [
+    "primitive-primitive-color-neutral-1000"
+  ],
+  "0.1": [
+    "primitive-primitive-opacity-10"
+  ],
+  "0.2": [
+    "primitive-primitive-opacity-20"
+  ],
+  "0.4": [
+    "primitive-primitive-opacity-40"
+  ],
+  "0.5": [
+    "primitive-primitive-opacity-50"
+  ],
+  "0.6": [
+    "primitive-primitive-opacity-60"
+  ],
+  "9999px": [
+    "primitive-primitive-borderradius-pill"
+  ],
+  "[objectobject],[objectobject]": [
+    "primitive-primitive-shadow-toast"
+  ],
+  "28px": [
+    "primitive-primitive-sizing-28",
+    "primitive-primitive-spacing-7",
+    "primitive-primitive-typography-lineheight-7"
+  ],
+  "96px": [
+    "primitive-primitive-sizing-96",
+    "primitive-primitive-spacing-24"
+  ],
+  "sourcesanspro": [
+    "primitive-primitive-typography-fontfamily-sans"
+  ],
+  "inter": [
+    "primitive-primitive-typography-fontfamily-ui"
+  ],
+  "jetbrainsmono": [
+    "primitive-primitive-typography-fontfamily-mono"
+  ],
+  "34px": [
+    "primitive-primitive-typography-fontsize-3xl"
+  ],
+  "42px": [
+    "primitive-primitive-typography-lineheight-11"
+  ],
+  "var(--ps-primitive-border-width-none)": [
+    "semantic-semantic-border-width-none"
+  ],
+  "var(--ps-primitive-border-width-thin)": [
+    "semantic-semantic-border-width-default"
+  ],
+  "var(--ps-primitive-border-width-medium)": [
+    "semantic-semantic-border-width-interactive",
+    "semantic-semantic-border-width-focus"
+  ],
+  "var(--ps-primitive-border-width-thick)": [
+    "semantic-semantic-border-width-emphasis"
+  ],
+  "var(--ps-primitive-border-style-solid)": [
+    "semantic-semantic-border-style-default"
+  ],
+  "var(--ps-primitive-border-style-dashed)": [
+    "semantic-semantic-border-style-dashed"
+  ],
+  "var(--ps-primitive-borderradius-none)": [
+    "semantic-semantic-border-radius-none"
+  ],
+  "var(--ps-primitive-borderradius-sm)": [
+    "semantic-semantic-border-radius-sm",
+    "semantic-semantic-borderradius-small"
+  ],
+  "var(--ps-primitive-borderradius-md)": [
+    "semantic-semantic-border-radius-md",
+    "semantic-semantic-borderradius-default"
+  ],
+  "var(--ps-primitive-borderradius-lg)": [
+    "semantic-semantic-border-radius-lg",
+    "semantic-semantic-borderradius-large"
+  ],
+  "var(--ps-primitive-borderradius-pill)": [
+    "semantic-semantic-border-radius-full",
+    "semantic-semantic-borderradius-pill"
+  ],
+  "var(--ps-primitive-color-blue-500)": [
+    "semantic-semantic-color-brand-primary",
+    "semantic-semantic-color-text-brand",
+    "semantic-semantic-color-interactive-focus",
+    "semantic-semantic-color-border-brand"
+  ],
+  "var(--ps-primitive-color-blue-900)": [
+    "semantic-semantic-color-brand-secondary",
+    "semantic-semantic-color-brand-navdark",
+    "semantic-semantic-color-text-primary"
+  ],
+  "var(--ps-primitive-color-blue-800)": [
+    "semantic-semantic-color-brand-navmid"
+  ],
+  "var(--ps-primitive-color-teal-500)": [
+    "semantic-semantic-color-brand-accent"
+  ],
+  "var(--ps-primitive-color-blue-100)": [
+    "semantic-semantic-color-brand-light",
+    "semantic-semantic-color-interactive-pressed"
+  ],
+  "var(--ps-primitive-color-blue-50)": [
+    "semantic-semantic-color-brand-tint",
+    "semantic-semantic-color-interactive-hover",
+    "semantic-semantic-color-feedback-infosubtle"
+  ],
+  "#dceaed": [
+    "semantic-semantic-color-brand-airway"
+  ],
+  "var(--ps-primitive-color-neutral-600)": [
+    "semantic-semantic-color-text-secondary"
+  ],
+  "var(--ps-primitive-color-neutral-500)": [
+    "semantic-semantic-color-text-tertiary"
+  ],
+  "var(--ps-primitive-color-neutral-400)": [
+    "semantic-semantic-color-text-disabled"
+  ],
+  "var(--ps-primitive-color-neutral-0)": [
+    "semantic-semantic-color-text-inverse",
+    "semantic-semantic-color-surface-default",
+    "semantic-semantic-color-surface-page",
+    "semantic-semantic-color-surface-raised"
+  ],
+  "var(--ps-primitive-color-green-500)": [
+    "semantic-semantic-color-text-success",
+    "semantic-semantic-color-border-success",
+    "semantic-semantic-color-feedback-success"
+  ],
+  "var(--ps-primitive-color-red-500)": [
+    "semantic-semantic-color-text-danger",
+    "semantic-semantic-color-border-danger",
+    "semantic-semantic-color-feedback-danger"
+  ],
+  "var(--ps-primitive-color-amber-400)": [
+    "semantic-semantic-color-text-warning",
+    "semantic-semantic-color-feedback-warning"
+  ],
+  "var(--ps-primitive-color-blue-700)": [
+    "semantic-semantic-color-interactive-hoverdark"
+  ],
+  "var(--ps-primitive-color-blue-200)": [
+    "semantic-semantic-color-interactive-focusring",
+    "semantic-semantic-color-feedback-info"
+  ],
+  "var(--ps-primitive-color-neutral-100)": [
+    "semantic-semantic-color-surface-subtle",
+    "semantic-semantic-color-surface-muted"
+  ],
+  "var(--ps-primitive-color-neutral-50)": [
+    "semantic-semantic-color-surface-overlay"
+  ],
+  "var(--ps-primitive-color-neutral-300)": [
+    "semantic-semantic-color-border-default"
+  ],
+  "var(--ps-primitive-color-neutral-200)": [
+    "semantic-semantic-color-border-subtle"
+  ],
+  "var(--ps-primitive-color-green-50)": [
+    "semantic-semantic-color-feedback-successsubtle"
+  ],
+  "var(--ps-primitive-color-red-50)": [
+    "semantic-semantic-color-feedback-dangersubtle"
+  ],
+  "var(--ps-primitive-color-amber-50)": [
+    "semantic-semantic-color-feedback-warningsubtle"
+  ],
+  "var(--ps-primitive-color-green-700)": [
+    "semantic-semantic-color-feedback-successdark"
+  ],
+  "var(--ps-primitive-color-red-700)": [
+    "semantic-semantic-color-feedback-dangerdark"
+  ],
+  "var(--ps-primitive-color-amber-700)": [
+    "semantic-semantic-color-feedback-warningdark"
+  ],
+  "var(--ps-primitive-opacity-40)": [
+    "semantic-semantic-opacity-disabled"
+  ],
+  "var(--ps-primitive-opacity-50)": [
+    "semantic-semantic-opacity-overlay"
+  ],
+  "var(--ps-primitive-opacity-80)": [
+    "semantic-semantic-opacity-hover"
+  ],
+  "var(--ps-primitive-opacity-0)": [
+    "semantic-semantic-opacity-invisible"
+  ],
+  "var(--ps-primitive-opacity-100)": [
+    "semantic-semantic-opacity-visible"
+  ],
+  "var(--ps-primitive-sizing-32)": [
+    "semantic-semantic-sizing-component-xs"
+  ],
+  "var(--ps-primitive-sizing-38)": [
+    "semantic-semantic-sizing-component-sm"
+  ],
+  "var(--ps-primitive-sizing-40)": [
+    "semantic-semantic-sizing-component-md"
+  ],
+  "var(--ps-primitive-sizing-48)": [
+    "semantic-semantic-sizing-component-lg"
+  ],
+  "var(--ps-primitive-sizing-50)": [
+    "semantic-semantic-sizing-component-xl"
+  ],
+  "var(--ps-primitive-sizing-52)": [
+    "semantic-semantic-sizing-component-2xl"
+  ],
+  "var(--ps-primitive-sizing-icon-xs)": [
+    "semantic-semantic-sizing-icon-xs"
+  ],
+  "var(--ps-primitive-sizing-icon-sm)": [
+    "semantic-semantic-sizing-icon-sm"
+  ],
+  "var(--ps-primitive-sizing-icon-md)": [
+    "semantic-semantic-sizing-icon-md"
+  ],
+  "var(--ps-primitive-sizing-icon-lg)": [
+    "semantic-semantic-sizing-icon-lg"
+  ],
+  "var(--ps-primitive-sizing-icon-xl)": [
+    "semantic-semantic-sizing-icon-xl"
+  ],
+  "var(--ps-primitive-sizing-44)": [
+    "semantic-semantic-sizing-touch-min"
+  ],
+  "var(--ps-primitive-spacing-3)": [
+    "semantic-semantic-spacing-componentgap"
+  ],
+  "var(--ps-primitive-spacing-2)": [
+    "semantic-semantic-spacing-componentpadsm"
+  ],
+  "var(--ps-primitive-spacing-4)": [
+    "semantic-semantic-spacing-componentpadmd"
+  ],
+  "var(--ps-primitive-spacing-6)": [
+    "semantic-semantic-spacing-componentpadlg"
+  ],
+  "var(--ps-primitive-spacing-8)": [
+    "semantic-semantic-spacing-sectiongap"
+  ],
+  "var(--ps-primitive-shadow-elevation1)": [
+    "semantic-semantic-shadow-card"
+  ],
+  "var(--ps-primitive-shadow-cardhover)": [
+    "semantic-semantic-shadow-cardhover"
+  ],
+  "var(--ps-primitive-shadow-elevation3)": [
+    "semantic-semantic-shadow-modal"
+  ],
+  "var(--ps-primitive-shadow-focusring)": [
+    "semantic-semantic-shadow-focus"
+  ]
+}

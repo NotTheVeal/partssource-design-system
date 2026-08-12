@@ -1,0 +1,103 @@
+<!doctype html>
+<!-- @dsCard group="Foundation" name="Elevation" subtitle="Three Midnight-tinted shadow levels" viewport="700x180" -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Shadows</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+    h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+    .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+
+    .section{margin-bottom:40px;border:1px solid var(--ps-border-default, #DCDCDC);border-radius:12px;overflow:hidden;background:var(--ps-sem-bg-surface);}
+    .section-head{padding:18px 24px;border-bottom:1px solid var(--ps-border-default, #DCDCDC);background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ps-sem-fg-brand, #005BA6);font-weight:700;margin:0;flex-shrink:0;}
+    .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+    .section-body{padding:24px;}
+
+    .row{display:grid;grid-template-columns:repeat(3, 1fr);gap:28px;}
+    .cell{display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;}
+    .box{
+      width:100%;max-width:160px;aspect-ratio:5/3;
+      background:var(--ps-sem-bg-surface);
+      border-radius:6px;
+      border:1px solid #DCDCDC;
+    }
+    .sm{box-shadow:0 1px 4px 0 rgba(0, 47, 72, 0.08);}
+    .md{box-shadow:0 2px 10px 0 rgba(0, 47, 72, 0.10);}
+    .lg{box-shadow:0 6px 20px 0 rgba(0, 47, 72, 0.18);}
+    .n{font-size:13px;font-weight:600;color:#002F48;font-family:ui-monospace,Menlo,monospace;margin-top:4px;}
+    .v{font-size:11px;font-family:ui-monospace,Menlo,monospace;color:#777;}
+
+    /* Breadcrumb */
+    .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+    .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+    .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+    .ps-breadcrumb__back svg{flex-shrink:0;}
+    .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+    .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+  </style>
+</head>
+<body>
+
+  <nav class="ps-breadcrumb" data-breadcrumb="installed" aria-label="Breadcrumb">
+    <a href="index.html" class="ps-breadcrumb__back" title="Back to Design System">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Design System
+    </a>
+    <span class="ps-breadcrumb__sep" aria-hidden="true">/</span>
+    <span class="ps-breadcrumb__current">Shadows</span>
+  </nav>
+
+  <h1>Shadows</h1>
+  <p class="intro">Three elevation levels for hierarchy and interactivity. Use <code style="font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;">shadow-sm</code> for resting surfaces, <code style="font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;">shadow-md</code> for hover-lifted cards, and <code style="font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;">shadow-lg</code> for overlays. Shadows use Midnight (<code style="font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;">#002F48</code>) at low opacity rather than pure black for warmth.</p>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Shadow Scale</h2>
+      <div class="desc">Three levels of elevation paired with corresponding offset and blur radius.</div>
+    </div>
+    <div class="section-body">
+      <div class="row">
+        <div class="cell">
+          <div class="box sm"></div>
+          <div class="n">shadow-sm</div>
+          <div class="v">0 1px 4px rgba(0,47,72,.08)</div>
+        </div>
+        <div class="cell">
+          <div class="box md"></div>
+          <div class="n">shadow-md</div>
+          <div class="v">0 2px 10px rgba(0,47,72,.10)</div>
+        </div>
+        <div class="cell">
+          <div class="box lg"></div>
+          <div class="n">shadow-lg</div>
+          <div class="v">0 6px 20px rgba(0,47,72,.18)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Accessibility &amp; Best Practices</h2>
+      <div class="desc">WCAG compliance and implementation guidance for inclusive shadow usage.</div>
+    </div>
+    <div class="section-body">
+      <ul style="margin:0;padding-left:20px;line-height:1.8;font-size:13px;color:var(--ps-sem-fg-secondary);">
+        <li><strong>Shadows are purely visual</strong> — don't rely on elevation alone to convey hierarchy; pair with borders, spacing, or contrast</li>
+        <li><strong>Elevation indicates interactivity</strong> — cards that lift on hover signal clickability; static content needs less shadow</li>
+        <li><strong>Avoid excessive shadows</strong> — too many elevated surfaces creates visual noise and reduces clarity</li>
+        <li><strong>Test on low-contrast displays</strong> — subtle shadows may disappear on certain screens; ensure borders provide fallback structure</li>
+        <li><strong>Motion sensitivity:</strong> Animate shadow changes smoothly (200ms ease) to avoid jarring transitions</li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>

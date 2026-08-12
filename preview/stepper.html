@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stepper · PartsSource Design System</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{padding:32px 40px 72px;font-family:var(--ps-font-sans);background:var(--ps-sem-bg-surface);color:var(--ps-fg-primary);font-size:15px;}
+
+  h1{font-size:28px;font-weight:600;margin:0 0 8px;letter-spacing:-.2px;}
+  .intro{font-size:15px;color:var(--ps-fg-secondary);margin:0 0 32px;max-width:860px;line-height:1.6;}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#F1F1F1;padding:1px 6px;border-radius:3px;color:#2B2B2B;}
+
+  .section{margin-bottom:40px;border:1px solid #DCDCDC;border-radius:12px;overflow:hidden;background:#fff;}
+  .section-head{padding:18px 24px;border-bottom:1px solid #DCDCDC;background:var(--ps-sem-bg-canvas);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .section-head h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#005BA6;font-weight:700;margin:0;flex-shrink:0;}
+  .section-head .desc{font-size:13px;color:#5C5C5C;line-height:1.5;flex:1;}
+  .section-body{padding:32px 24px;background:#FAFAFA;}
+
+  /* ── Stepper (Figma node 396:1813) ──────────────────────────────
+        Horizontal row of numbered/checkmark circles connected by a
+        2 px track. Each step has 3 states: complete, current, pending.
+        Per Property 1=First/Middle/End the circle is 32×32 with a
+        2 px stroke; the connector is 2 px and bridges the centers.
+  */
+  .stp{
+    display:flex;align-items:center;
+    list-style:none;margin:0;padding:0;
+    font-family:'Source Sans Pro','Source Sans 3',sans-serif;
+    width:100%;max-width:560px;
+  }
+  .stp__item{
+    display:flex;flex-direction:column;align-items:center;
+    position:relative;flex:1;
+    text-align:center;
+  }
+  .stp__item:not(:last-child)::after{
+    content:"";position:absolute;
+    top:15px;left:calc(50% + 22px);right:calc(-50% + 22px);
+    height:2px;background:#DCDCDC;
+    z-index:0;
+  }
+  .stp__item.is-complete::after{background:#005BA6;}
+  .stp__circle{
+    position:relative;z-index:1;
+    width:32px;height:32px;border-radius:50%;
+    background:#fff;border:2px solid #DCDCDC;
+    color:#777;
+    display:inline-flex;align-items:center;justify-content:center;
+    font:700 14px/1 'Source Sans Pro',sans-serif;
+    transition:background 150ms ease, border-color 150ms ease, color 150ms ease;
+  }
+  .stp__label{
+    margin-top:10px;font-size:14px;color:#4A4A4A;font-weight:400;
+    line-height:1.3;max-width:140px;
+  }
+  .stp__sub{
+    margin-top:2px;font-size:12px;color:#949494;line-height:1.4;
+  }
+
+  /* States */
+  .stp__item.is-current .stp__circle{
+    background:#fff;border-color:#005BA6;color:#005BA6;
+    box-shadow:0 0 0 4px #EFF9FE;
+  }
+  .stp__item.is-current .stp__label{color:#002F48;font-weight:700;}
+  .stp__item.is-complete .stp__circle{
+    background:#005BA6;border-color:#005BA6;color:#fff;
+  }
+  .stp__item.is-complete .stp__label{color:#005BA6;font-weight:600;}
+  .stp__item.is-error .stp__circle{
+    background:#FEF0F0;border-color:#E00000;color:#E00000;
+  }
+  .stp__item.is-error .stp__label{color:#E00000;font-weight:600;}
+  .stp__item.is-disabled .stp__circle{
+    background:#FAFAFA;border-color:#E6E6E6;color:#CCCCCC;
+  }
+  .stp__item.is-disabled .stp__label{color:#CCCCCC;}
+
+  /* Clickable affordance */
+  .stp__item--button{cursor:pointer;}
+  .stp__item--button:hover .stp__circle{border-color:#005BA6;}
+  .stp__item--button:focus-visible{outline:none;}
+  .stp__item--button:focus-visible .stp__circle{
+    box-shadow:0 0 0 3px rgba(176,198,211,0.91);
+  }
+
+  /* Vertical variant */
+  .stp--vertical{
+    flex-direction:column;align-items:flex-start;max-width:280px;
+  }
+  .stp--vertical .stp__item{
+    flex:0 0 auto;flex-direction:row;align-items:flex-start;
+    text-align:left;gap:14px;padding-bottom:24px;width:100%;
+  }
+  .stp--vertical .stp__item:last-child{padding-bottom:0;}
+  .stp--vertical .stp__item::after{
+    top:32px;bottom:0;left:15px;right:auto;
+    width:2px;height:auto;
+  }
+  .stp--vertical .stp__item:not(:last-child)::after{
+    top:32px;left:15px;right:auto;height:auto;width:2px;
+  }
+  .stp--vertical .stp__label{margin-top:6px;max-width:none;}
+
+  /* Compact variant — small dots, no labels */
+  .stp--compact .stp__circle{width:14px;height:14px;font-size:0;border-width:0;background:#DCDCDC;}
+  .stp--compact .stp__label{display:none;}
+  .stp--compact .stp__item:not(:last-child)::after{top:6px;left:calc(50% + 9px);right:calc(-50% + 9px);}
+  .stp--compact .stp__item.is-current .stp__circle{background:#005BA6;box-shadow:0 0 0 4px #EFF9FE;}
+  .stp--compact .stp__item.is-complete .stp__circle{background:#005BA6;}
+
+  /* States grid */
+  .states-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;}
+  .state-card{background:#fff;border:1px solid #F1F1F1;border-radius:8px;overflow:hidden;}
+  .state-card__stage{padding:24px 18px;background:#FAFAFA;display:flex;align-items:center;justify-content:center;min-height:120px;}
+  .state-card__meta{padding:10px 14px;border-top:1px solid #F1F1F1;font-size:12px;color:#777;}
+  .state-card__meta b{display:block;color:#002F48;font-size:13px;font-weight:700;margin-bottom:2px;}
+
+  /* Tokens table */
+  table.tokens{width:100%;border-collapse:collapse;font-size:13px;}
+  table.tokens th,table.tokens td{padding:10px 12px;border-bottom:1px solid #F1F1F1;text-align:left;vertical-align:top;}
+  table.tokens th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#777;font-weight:700;background:#FAFAFA;}
+  table.tokens code{background:#F1F1F1;font-family:ui-monospace,Menlo,monospace;font-size:11px;padding:1px 6px;border-radius:3px;}
+
+  /* Breadcrumb */
+  .ps-breadcrumb{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:14px/1 'Source Sans Pro',var(--ps-font-sans,sans-serif);color:var(--ps-sem-fg-tertiary);}
+  .ps-breadcrumb__back{display:inline-flex;align-items:center;gap:6px;color:var(--ps-sem-fg-brand);text-decoration:none;font-weight:600;padding:6px 10px 6px 6px;border-radius:4px;transition:background 120ms ease,color 120ms ease;}
+  .ps-breadcrumb__back:hover{background:#EFF9FE;color:#004A84;}
+  .ps-breadcrumb__sep{color:#CCCCCC;font-weight:300;}
+  .ps-breadcrumb__current{color:var(--ps-sem-fg-primary);font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav class="ps-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html" class="ps-breadcrumb__back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Design System</a>
+  <span class="ps-breadcrumb__sep">/</span>
+  <span class="ps-breadcrumb__current">Stepper</span>
+</nav>
+
+<h1>Stepper</h1>
+<p class="intro">Communicates progress through a multi-step flow — quote request, onboarding, return RMA. From Figma node <code>396:1813</code> with three step states (Complete, Current, Pending) plus error and disabled. Numbered circles join with a 2&nbsp;px track that fills in PS Blue as the user advances.</p>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Horizontal</h2>
+    <div class="desc">Default for top-of-page progress bars. Each step is a numbered circle with a label below.</div>
+  </div>
+  <div class="section-body">
+    <ol class="stp" aria-label="Quote request progress">
+      <li class="stp__item is-complete" aria-current="false">
+        <span class="stp__circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span class="stp__label">Part selection</span>
+      </li>
+      <li class="stp__item is-complete">
+        <span class="stp__circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span class="stp__label">Vendor &amp; shipping</span>
+      </li>
+      <li class="stp__item is-current" aria-current="step">
+        <span class="stp__circle">3</span>
+        <span class="stp__label">Review</span>
+      </li>
+      <li class="stp__item">
+        <span class="stp__circle">4</span>
+        <span class="stp__label">Submit</span>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Vertical</h2>
+    <div class="desc">Sidebar / drawer pattern. Step label sits to the right of the circle; track runs down the left.</div>
+  </div>
+  <div class="section-body">
+    <ol class="stp stp--vertical" aria-label="Onboarding progress">
+      <li class="stp__item is-complete">
+        <span class="stp__circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <div>
+          <div class="stp__label" style="margin-top:6px;">Verify account</div>
+          <div class="stp__sub">Email confirmed · 03/12/25</div>
+        </div>
+      </li>
+      <li class="stp__item is-current" aria-current="step">
+        <span class="stp__circle">2</span>
+        <div>
+          <div class="stp__label" style="margin-top:6px;">Add facility</div>
+          <div class="stp__sub">Tell us where the equipment lives.</div>
+        </div>
+      </li>
+      <li class="stp__item">
+        <span class="stp__circle">3</span>
+        <div>
+          <div class="stp__label" style="margin-top:6px;">Invite teammates</div>
+          <div class="stp__sub">Optional · skip for now</div>
+        </div>
+      </li>
+      <li class="stp__item">
+        <span class="stp__circle">4</span>
+        <div>
+          <div class="stp__label" style="margin-top:6px;">First order</div>
+          <div class="stp__sub">Place your first part order.</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Compact</h2>
+    <div class="desc">Dots only, no labels. Use inside cards or dense toolbars when the steps are self-evident.</div>
+  </div>
+  <div class="section-body">
+    <ol class="stp stp--compact" aria-label="Pages 1 of 5" style="max-width:260px;">
+      <li class="stp__item is-complete"><span class="stp__circle"></span></li>
+      <li class="stp__item is-complete"><span class="stp__circle"></span></li>
+      <li class="stp__item is-current" aria-current="step"><span class="stp__circle"></span></li>
+      <li class="stp__item"><span class="stp__circle"></span></li>
+      <li class="stp__item"><span class="stp__circle"></span></li>
+    </ol>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>States</h2>
+    <div class="desc">Five step states. Error is the only one that interrupts forward progress.</div>
+  </div>
+  <div class="section-body">
+    <div class="states-grid">
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="stp__item is-complete" style="flex:0;"><span class="stp__circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="stp__label">Done</span></div>
+        </div>
+        <div class="state-card__meta"><b>Complete</b>Filled PS Blue · checkmark</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="stp__item is-current" style="flex:0;"><span class="stp__circle">3</span><span class="stp__label">In progress</span></div>
+        </div>
+        <div class="state-card__meta"><b>Current</b>PS Blue border + glow halo</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="stp__item" style="flex:0;"><span class="stp__circle">5</span><span class="stp__label">Up next</span></div>
+        </div>
+        <div class="state-card__meta"><b>Pending</b>Grey border · grey numeral</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="stp__item is-error" style="flex:0;"><span class="stp__circle">!</span><span class="stp__label">Action needed</span></div>
+        </div>
+        <div class="state-card__meta"><b>Error</b>Red ring + red label</div>
+      </div>
+      <div class="state-card">
+        <div class="state-card__stage">
+          <div class="stp__item is-disabled" style="flex:0;"><span class="stp__circle">6</span><span class="stp__label">Skipped</span></div>
+        </div>
+        <div class="state-card__meta"><b>Disabled</b>Light grey · not focusable</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Tokens</h2>
+    <div class="desc">Composed from existing color, type, and motion tokens.</div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:0;">
+    <table class="tokens">
+      <thead><tr><th>Property</th><th>Token / value</th></tr></thead>
+      <tbody>
+        <tr><td>Circle</td><td>32 × 32 · 2 px border · 14 px bold numeral</td></tr>
+        <tr><td>Connector</td><td>2 px · <code>#DCDCDC</code> pending → <code>#005BA6</code> complete</td></tr>
+        <tr><td>Pending</td><td>Border <code>#DCDCDC</code> · text <code>#777</code></td></tr>
+        <tr><td>Current</td><td>Border <code>#005BA6</code> · text <code>#005BA6</code> · 4 px <code>#EFF9FE</code> halo</td></tr>
+        <tr><td>Complete</td><td>Fill <code>#005BA6</code> · white check</td></tr>
+        <tr><td>Error</td><td>Fill <code>#FEF0F0</code> · border <code>#E00000</code> · text <code>#E00000</code></td></tr>
+        <tr><td>Disabled</td><td>Fill <code>#FAFAFA</code> · border <code>#E6E6E6</code> · text <code>#CCCCCC</code></td></tr>
+        <tr><td>Label</td><td>Source Sans Pro · 14 px · 700 current / 400 pending</td></tr>
+        <tr><td>Sub-label</td><td>12 px · <code>#949494</code></td></tr>
+        <tr><td>Compact dot</td><td>14 × 14 · borderless</td></tr>
+        <tr><td>Focus ring</td><td>3 px Blue-Gray (matches button)</td></tr>
+        <tr><td>Transition</td><td>150 ms ease across bg/border/color</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Accessibility</h2>
+    <div class="desc">ARIA pattern + keyboard interaction.</div>
+  </div>
+  <div class="section-body" style="background:#fff;padding:24px;">
+    <ul style="margin:0;padding-left:20px;line-height:1.7;font-size:13.5px;color:#4A4A4A;">
+      <li>Container is an <code>&lt;ol&gt;</code> with an <code>aria-label</code> describing the flow.</li>
+      <li>Current step carries <code>aria-current="step"</code>; complete steps carry no special attr (their checkmark conveys state).</li>
+      <li>Steps that are clickable (e.g. backtrack to a complete step) use the <code>stp__item--button</code> modifier and become <code>&lt;button&gt;</code> elements.</li>
+      <li>Color is never the sole signal — every state pairs with an icon, label, or text change.</li>
+      <li>Error state must be paired with a descriptive sub-label or inline alert beneath the form ("Fix the address before continuing.").</li>
+      <li>Compact dot variant adds a visually hidden label ("Step 3 of 5") for screen readers.</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>
