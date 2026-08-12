@@ -5,6 +5,20 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style id="ps-mobile-fix">
+/* Mobile safety net: no horizontal page scroll on phones. */
+@media (max-width: 640px){
+  html, body { max-width: 100% !important; overflow-x: hidden !important; }
+  body { padding-left: 16px !important; padding-right: 16px !important; }
+  * { max-width: 100% !important; box-sizing: border-box !important; }
+  img, svg, canvas, video, iframe { height: auto; }
+  pre, code { white-space: pre-wrap !important; word-break: break-word !important; overflow-wrap: anywhere !important; }
+  pre { overflow-x: auto !important; }
+  table { display: block !important; width: 100% !important; overflow-x: auto !important; }
+  [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+  [style*="display:flex"], [style*="display: flex"] { flex-wrap: wrap !important; }
+}
+</style>
   <title>Left Hand Navigation</title>
   <template id="__bundler_thumbnail" data-bg-color="#003763">
     <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
